@@ -25,7 +25,7 @@
 	<div class="row">
         <div class="col-md-12">
             <div class="well login-box">
-                <form action="">
+                <form action="{{URL::to('/login')}}" method="POST">
                     <legend>Iniciar Sesión</legend>
                     <div class="form-group">
                         <label for="username">Usuario</label>

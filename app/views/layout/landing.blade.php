@@ -5,7 +5,6 @@
 	    <title>@yield('title')</title>
 
 	    {{ HTML::style('css/bootstrap.min.css') }}
-	    {{ HTML::style('css/landing.css') }}
 
 	    {{-- yield para agregar css opcionales de cada página --}}
 	    @yield('css')

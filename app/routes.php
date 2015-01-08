@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('login', function(){return View::make('login');});
+/* Admin de Usuarios */
+Route::post('/login', 'UserController@postLogin');
+Route::get('/logout', 'UserController@getLogout');
 
 Route::get('home', function(){return View::make('home');});
 
@@ -22,4 +24,5 @@ Route::get('hola/{usuario}', function($usuario)
     return "Hola $usuario";
 });
 
-Route::get('/', function(){return View::make('hello');});
+// Route::get('/', function(){return View::make('hello');});
+Route::get('/', 'UserController@getLogin');
