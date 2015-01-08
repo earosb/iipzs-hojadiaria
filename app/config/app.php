@@ -123,6 +123,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
     	'Mrjuliuss\Syntara\SyntaraServiceProvider',
+    	'Way\Generators\GeneratorsServiceProvider',
 
 	),
 

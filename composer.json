@@ -8,6 +8,9 @@
 		"laravel/framework": "4.2.*",
 		"mrjuliuss/syntara": "1.2.*"
 	},
+	"require-dev": {
+	    "way/generators": "~2.0"
+	},
 	"autoload": {
 		"classmap": [
 			"app/commands",
