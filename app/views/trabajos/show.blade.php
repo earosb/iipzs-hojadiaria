@@ -1,0 +1,1 @@
+/home/earosb/web/icafalApp/app/views/trabajos/show.blade.php

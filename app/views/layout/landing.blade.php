@@ -25,7 +25,7 @@
 		  </div>
 		  <div class="navbar-collapse collapse navbar-responsive-collapse">
 		    <ul class="nav navbar-nav">
-		      <li class="active"><a href="#">Ingresar trabajos</a></li>
+		      <li class="active"><a href="{{ URL::to('/trabajos/create') }}">Ingresar trabajos</a></li>
 		      <li><a href="#">Consultar trabajos</a></li>
 		      <li class="dropdown">
 		        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes <b class="caret"></b></a>

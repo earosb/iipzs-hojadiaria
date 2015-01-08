@@ -15,6 +15,8 @@ Route::get('login', function(){return View::make('login');});
 
 Route::get('home', function(){return View::make('home');});
 
+Route::resource('trabajos', 'TrabajosController');
+
 Route::get('hola/{usuario}', function($usuario)
 {
     return "Hola $usuario";
