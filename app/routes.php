@@ -24,5 +24,5 @@ Route::get('hola/{usuario}', function($usuario)
     return "Hola $usuario";
 });
 
-// Route::get('/', function(){return View::make('hello');});
-Route::get('/', 'UserController@getLogin');
+Route::get('/', function(){return View::make('home');});
+//Route::get('/', 'UserController@getLogin');
