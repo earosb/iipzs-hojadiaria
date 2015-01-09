@@ -26,20 +26,20 @@
         <div class="col-md-12">
             <div class="well login-box">
                 <form action="{{URL::to('/login')}}" method="POST">
-                    <legend>Iniciar Sesión</legend>
+                    <legend>{{ trans('form.signin'); }}</legend>
                     <div class="form-group">
-                        <label for="username">Usuario</label>
+                        <label for="username">{{ trans('form.username'); }}</label>
                         <input value='' id="username" placeholder="Ingrese usuario" type="text" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="password">Contraseña</label>
+                        <label for="password">{{ trans('form.password'); }}</label>
                         <input id="password" value='' placeholder="Ingrese contraseña" type="password" class="form-control" />
                     </div>
                     <div class="form-group text-center">
-                        <input type="submit" class="btn btn-success btn-login-submit" value="Ingresar" />
+                        <input type="submit" class="btn btn-success btn-login-submit" value="{{ trans('form.signin'); }}" />
                     </div>
                     <div class="form-group">
-                        <a href="">Olvidé mi contraseña</a>
+                        <a href="">{{ trans('form.password_lost'); }}</a>
                     </div>
                 </form>
             </div>
