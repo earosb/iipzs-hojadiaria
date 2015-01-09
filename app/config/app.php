@@ -124,6 +124,7 @@ return array(
 		'Cartalyst\Sentry\SentryServiceProvider',
     	'Mrjuliuss\Syntara\SyntaraServiceProvider',
     	'Way\Generators\GeneratorsServiceProvider',
+    	'Barryvdh\Debugbar\ServiceProvider',
 
 	),
 
