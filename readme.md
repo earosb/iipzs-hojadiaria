@@ -1,3 +1,23 @@
+## Icafal.App
+###Librerías utilizadas
+**Dev tools**
+- <https://github.com/JeffreyWay/Laravel-4-Generators>
+- <https://github.com/barryvdh/laravel-debugbar>
+
+**Backend**
+- <https://github.com/cartalyst/sentry>
+- <https://github.com/MrJuliuss/syntara>
+
+**Fontend**
+- <https://github.com/jquery/jquery>
+- <https://github.com/twbs/bootstrap>
+- <http://bootswatch.com/cosmo/>
+
+- <https://github.com/silviomoreto/bootstrap-select>
+- <https://github.com/marcuswestin/store.js/>
+- <https://github.com/dobtco/jquery-resizable-columns>
+
+
 ## Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
