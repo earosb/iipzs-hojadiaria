@@ -1,14 +1,17 @@
 ## Icafal.App
 ###Librerías utilizadas
 **Dev tools**
+
 - <https://github.com/JeffreyWay/Laravel-4-Generators>
 - <https://github.com/barryvdh/laravel-debugbar>
 
 **Backend**
+
 - <https://github.com/cartalyst/sentry>
 - <https://github.com/MrJuliuss/syntara>
 
 **Fontend**
+
 - <https://github.com/jquery/jquery>
 - <https://github.com/twbs/bootstrap>
 - <http://bootswatch.com/cosmo/>
