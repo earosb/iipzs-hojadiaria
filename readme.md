@@ -19,6 +19,7 @@
 - <https://github.com/silviomoreto/bootstrap-select>
 - <https://github.com/marcuswestin/store.js/>
 - <https://github.com/dobtco/jquery-resizable-columns>
+- <https://github.com/moment/moment>
 
 
 ## Laravel PHP Framework

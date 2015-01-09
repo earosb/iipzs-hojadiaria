@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTrabajosTable extends Migration {
+class CreateGrupoTrabajosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,10 @@ class CreateTrabajosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('trabajos', function(Blueprint $table)
+		Schema::create('grupo_trabajos', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('trabajo');
-			$table->text('observaciones');
-			$table->integer('id_tipo_trabajo')->unsigned();
-			$table->integer('id_hoja_diaria')->unsigned();
+			$table->string('sector');
 			$table->timestamps();
 		});
 	}
@@ -31,7 +28,7 @@ class CreateTrabajosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('trabajos');
+		Schema::drop('grupo_trabajos');
 	}
 
 }

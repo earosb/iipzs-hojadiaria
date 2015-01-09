@@ -1,7 +1,7 @@
 @extends('layout.landing')
 
 @section('title')
-    Icil-icafal - Hello
+    Icil-icafal - Nueva hoja diaria de trabajo
 @stop
 
 @section('css')
@@ -21,7 +21,10 @@
 	<div class="row">
         <form class="form-horizontal">
 		  <fieldset>
-		    <legend>Nueva hoja diaria de trabajo</legend>
+		    <legend>Nueva hoja diaria de trabajo     
+		    		<input type="text" placeholder="Ingrese Fecha" style="margin:15px;">
+		    </legend>
+
 		    {{-- Select sector  --}}
 	    	<div class="form-group col-md-4">
 				<label class="control-label" for="selectsector">Sector</label>
@@ -83,8 +86,8 @@
 			  	<tbody>
 			  		<tr>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><select class="selectpicker" id="selectestacion" name="selectestacion" class="input-xlarge">
-								<option>Seleccione</option>
+			  			<td><select class="selectpicker" data-style="btn-inverse" id="selectestacion" name="selectestacion" class="input-xlarge">
+								<option>Vía Principal</option>
 								<optgroup label="Desvíos">
 								<option>Local</option>
 								<option>Dv 101</option>
@@ -93,6 +96,8 @@
 								<option>DVR 101</option>
 								<option>DVR 102</option>
 								<option>DVR 103</option>
+								<optgroup label="Ramales">
+								<option>Coigue - Nacimiento</option>
 							</select></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
@@ -102,8 +107,8 @@
 			  		</tr>
 			  		<tr>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><select class="selectpicker" id="selectestacion" name="selectestacion" class="input-xlarge">
-								<option>Seleccione</option>
+			  			<td><select class="selectpicker" data-style="btn-inverse" id="selectestacion" name="selectestacion" class="input-xlarge">
+								<option>Vía Principal</option>
 								<optgroup label="Desvíos">
 								<option>Local</option>
 								<option>Dv 101</option>
@@ -112,6 +117,8 @@
 								<option>DVR 101</option>
 								<option>DVR 102</option>
 								<option>DVR 103</option>
+								<optgroup label="Ramales">
+								<option>Coigue - Nacimiento</option>
 							</select></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
@@ -160,7 +167,7 @@
 			  			<th data-resizable-column-id="2">Cargo</th>
 			  			<th data-resizable-column-id="3">Entrada</th>
 			  			<th data-resizable-column-id="4">Salida</th>
-			  			<th data-resizable-column-id="5">Hrs extra</th>
+			  			<th data-resizable-column-id="5">Horas extra</th>
 			  			<th data-resizable-column-id="6">Obs Asistencia</th>
 			  		</tr>
 			  	</thead>
@@ -203,7 +210,6 @@
 					<a href="#" class="btn btn-success pull-right">Guardar</a>
 		        </div>
 	        </div>
-
 		  </fieldset>
 		</form>
     </div>

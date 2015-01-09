@@ -26,3 +26,5 @@ Route::get('hola/{usuario}', function($usuario)
 
 Route::get('/', function(){return View::make('home');});
 //Route::get('/', 'UserController@getLogin');
+
+// Route::resource('trabajadors', 'TrabajadorsController');
