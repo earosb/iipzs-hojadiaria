@@ -11,8 +11,9 @@
 
 	</head>
 	<body >
-		<!-- Navbar 
-		================================== -->
+
+		{{-- Navbar
+			===================================================== --}}
 		<div class="navbar navbar-default">
 		  <div class="navbar-header">
 		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
@@ -50,20 +51,20 @@
 		      </li>
 		    </ul>
 		  </div>
-		</div><!-- Fin Navbar -->
+		</div>
 
-		<!-- Container 
-		================================== -->
+		{{-- Container
+			===================================================== --}}
 		<div class="container">
 			@yield('alert')
 			@yield('content')
-	    </div><!-- Container -->
+	    </div>
 
-	    <!-- Footer 
-		================================== -->
+	    {{-- Footer
+			===================================================== --}}
 		<div class="footer">
 			@yield('footer')
-		</div><!-- Footer -->
+		</div>
 
 		{{ HTML::script('js/jquery-1.11.2.min.js') }}
 		{{ HTML::script('js/bootstrap.min.js') }}

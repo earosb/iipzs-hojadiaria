@@ -22,7 +22,7 @@
         <form class="form-horizontal">
 		  <fieldset>
 		    <legend>Nueva hoja diaria de trabajo</legend>
-		    <!--Select sector-->
+		    {{-- Select sector  --}}
 	    	<div class="form-group col-md-4">
 				<label class="control-label" for="selectsector">Sector</label>
 				<div class="controls">
@@ -35,7 +35,7 @@
 					</select>
 				</div>
 	        </div>
-	        <!--Select block-->
+	        {{-- Select block  --}}
 	    	<div class="form-group col-md-4">
 				<label class="control-label" for="selectblock">Block</label>
 				<div class="controls">
@@ -51,7 +51,7 @@
 					</select>
 				</div>
 	        </div>
-	        <!--Select estación-->
+	        {{-- Select estación  --}}
 	    	<div class="form-group col-md-4">
 				<label class="control-label" for="selectestacion">Estación</label>
 				<div class="controls">
@@ -65,8 +65,10 @@
 				</div>
 	        </div>
 
+			{{-- Tabla trabajos realizados
+			===================================================== --}}
 	        <div class="form-group col-md-12">
-			  <table class="table table-bordered table-striped" data-resizable-columns-id="demo-table">
+			  <table class="table table-bordered table-striped" data-resizable-columns-id="trabajos-table">
 			  	<thead>
 			  		<tr>
 			  			<th data-resizable-column-id="1">Trabajos Realizados</th>
@@ -80,7 +82,7 @@
 			  	</thead>
 			  	<tbody>
 			  		<tr>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><select class="selectpicker" id="selectestacion" name="selectestacion" class="input-xlarge">
 								<option>Seleccione</option>
 								<optgroup label="Desvíos">
@@ -92,14 +94,14 @@
 								<option>DVR 102</option>
 								<option>DVR 103</option>
 							</select></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  		</tr>
 			  		<tr>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><select class="selectpicker" id="selectestacion" name="selectestacion" class="input-xlarge">
 								<option>Seleccione</option>
 								<optgroup label="Desvíos">
@@ -111,83 +113,48 @@
 								<option>DVR 102</option>
 								<option>DVR 103</option>
 							</select></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
-			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  		</tr>
 			  	</tbody>
 			  </table>
 	        </div>
 
-		    <div class="form-group">
-		      <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-		      <div class="col-lg-10">
-		        <input class="form-control" id="inputEmail" placeholder="Email" type="text">
-		      </div>
-		    </div>
-		    <div class="form-group">
-		      <label for="inputPassword" class="col-lg-2 control-label">Password</label>
-		      <div class="col-lg-10">
-		        <input class="form-control" id="inputPassword" placeholder="Password" type="password">
-		        <div class="checkbox">
-		          <label>
-		            <input type="checkbox"> Checkbox
-		          </label>
+	        {{-- Tabla materiales
+			===================================================== --}}
+	        <div class="form-group col-md-6">
+			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-table">
+			  	<thead>
+			  		<tr>
+			  			<th data-resizable-column-id="1">Materiales Colocados</th>
+			  			<th data-resizable-column-id="2">Cantidad</th>
+			  		</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  		</tr>
+			  		<tr>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  		</tr>
+			  	</tbody>
+			  </table>
+	        </div>
+
+			{{-- Botones
+			===================================================== --}}
+	        <div class="form-group col-md-12">
+	        	<div class="form-group col-md-3 pull-right">
+		        	<a href="#" class="btn btn-default ">Guardar y nuevo</a>
+					<a href="#" class="btn btn-success pull-right">Guardar</a>
 		        </div>
-		      </div>
-		    </div>
-		    <div class="form-group">
-		      <label for="textArea" class="col-lg-2 control-label">Textarea</label>
-		      <div class="col-lg-10">
-		        <textarea class="form-control" rows="3" id="textArea"></textarea>
-		        <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-		      </div>
-		    </div>
-		    <div class="form-group">
-		      <label class="col-lg-2 control-label">Radios</label>
-		      <div class="col-lg-10">
-		        <div class="radio">
-		          <label>
-		            <input name="optionsRadios" id="optionsRadios1" value="option1" checked="" type="radio">
-		            Option one is this
-		          </label>
-		        </div>
-		        <div class="radio">
-		          <label>
-		            <input name="optionsRadios" id="optionsRadios2" value="option2" type="radio">
-		            Option two can be something else
-		          </label>
-		        </div>
-		      </div>
-		    </div>
-		    <div class="form-group">
-		      <label for="select" class="col-lg-2 control-label">Selects</label>
-		      <div class="col-lg-10">
-		        <select class="form-control" id="select">
-		          <option>1</option>
-		          <option>2</option>
-		          <option>3</option>
-		          <option>4</option>
-		          <option>5</option>
-		        </select>
-		        <br>
-		        <select multiple="" class="form-control">
-		          <option>1</option>
-		          <option>2</option>
-		          <option>3</option>
-		          <option>4</option>
-		          <option>5</option>
-		        </select>
-		      </div>
-		    </div>
-		    <div class="form-group">
-		      <div class="col-lg-10 col-lg-offset-2">
-		        <button class="btn btn-default">Cancel</button>
-		        <button type="submit" class="btn btn-primary">Submit</button>
-		      </div>
-		    </div>
+	        </div>
+
 		  </fieldset>
 		</form>
     </div>
