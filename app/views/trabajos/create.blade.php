@@ -6,6 +6,8 @@
 
 @section('css')
 	{{ HTML::style('css/bootstrap-select.min.css') }}
+	{{ HTML::style('css/jquery.resizableColumns.css') }}
+	
 @stop
 
 @section('alert')
@@ -63,42 +65,60 @@
 				</div>
 	        </div>
 
-	        <!--Select sector-->
-	    	<div class="form-group col-md-4">
-				<label class="control-label" for="selectsector">Desvío</label>
-				<div class="controls">
-					<select class="selectpicker" id="selectsector" name="selectsector" class="input-xlarge">
-						<option>Seleccione</option>
-						<option>Local</option>
-						<option>Dv 1</option>
-						<option>Dv 2</option>
-					</select>
-				</div>
-	        </div>
-	        <!--Select desviador-->
-	    	<div class="form-group col-md-4">
-				<label class="control-label" for="selectblock">Desviador</label>
-				<div class="controls">
-					<select class="selectpicker" id="selectblock" name="selectblock" class="input-xlarge">
-						<optgroup label="Blocks">
-						<option>Seleccione</option>
-						<option>DVR 101</option>
-						<option>DVR 102</option>
-					</select>
-				</div>
-	        </div>
-
-	        <!--col vacía-->
-	    	<div class="form-group col-md-4">
-				<label class="control-label" for="selectblock">Desviador</label>
-				<div class="controls">
-					<select class="selectpicker" id="selectblock" name="selectblock" class="input-xlarge">
-						<optgroup label="Blocks">
-						<option>Seleccione</option>
-						<option>DVR 101</option>
-						<option>DVR 102</option>
-					</select>
-				</div>
+	        <div class="form-group col-md-12">
+			  <table class="table table-bordered table-striped" data-resizable-columns-id="demo-table">
+			  	<thead>
+			  		<tr>
+			  			<th data-resizable-column-id="1">Trabajos Realizados</th>
+			  			<th data-resizable-column-id="2">Desvío / Desviador</th>
+			  			<th data-resizable-column-id="3">Km inicio</th>
+			  			<th data-resizable-column-id="4">Km término</th>
+			  			<th data-resizable-column-id="5">Unidad</th>
+			  			<th data-resizable-column-id="6">Cantidad</th>
+			  			<th data-resizable-column-id="7">Comentarios</th>
+			  		</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><select class="selectpicker" id="selectestacion" name="selectestacion" class="input-xlarge">
+								<option>Seleccione</option>
+								<optgroup label="Desvíos">
+								<option>Local</option>
+								<option>Dv 101</option>
+								<option>Dv 103</option>
+								<optgroup label="Desviadores">
+								<option>DVR 101</option>
+								<option>DVR 102</option>
+								<option>DVR 103</option>
+							</select></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  		</tr>
+			  		<tr>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><select class="selectpicker" id="selectestacion" name="selectestacion" class="input-xlarge">
+								<option>Seleccione</option>
+								<optgroup label="Desvíos">
+								<option>Local</option>
+								<option>Dv 101</option>
+								<option>Dv 103</option>
+								<optgroup label="Desviadores">
+								<option>DVR 101</option>
+								<option>DVR 102</option>
+								<option>DVR 103</option>
+							</select></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  			<td><input class="form-control" id="inputEmail" placeholder="Email" type="text"></td>
+			  		</tr>
+			  	</tbody>
+			  </table>
 	        </div>
 
 		    <div class="form-group">
@@ -175,4 +195,23 @@
 
 @section('js')
 	{{ HTML::script('js/bootstrap-select.min.js') }}
+	{{ HTML::script('js/store.min.js') }}
+	{{ HTML::script('js/jquery.resizableColumns.min.js') }}
+
+	<script type="text/javascript">
+	    init()
+	    function init() {
+	        if (!store.enabled) {
+	            alert('Local storage is not supported by your browser. Please disable "Private Mode", or upgrade to a modern browser.')
+	            return
+	        }
+	        var user = store.get('user')
+	        // ... and so on ...
+	    }
+	    $(function(){
+			$("table").resizableColumns({
+				store: store
+			});
+		});
+	</script>
 @stop
