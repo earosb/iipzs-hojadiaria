@@ -26,7 +26,7 @@
 	    	<div class="form-group col-md-4">
 				<label class="control-label" for="selectsector">Sector</label>
 				<div class="controls">
-					<select class="selectpicker" id="selectsector" name="selectsector" class="input-xlarge">
+					<select class="selectpicker" data-style="btn-inverse" id="selectsector" name="selectsector" class="input-xlarge">
 						<option>San Rosendo - Victoria</option>
 						<option>Victoria - Temuco</option>
 						<option>Temuco - Mariquina</option>
@@ -39,7 +39,7 @@
 	    	<div class="form-group col-md-4">
 				<label class="control-label" for="selectblock">Block</label>
 				<div class="controls">
-					<select class="selectpicker" id="selectblock" name="selectblock" class="input-xlarge">
+					<select class="selectpicker" data-style="btn-inverse" id="selectblock" name="selectblock" class="input-xlarge">
 						<optgroup label="Blocks">
 						<option>San Rosendo - Laja</option>
 						<option>Laja - Diuqín</option>
@@ -55,7 +55,7 @@
 	    	<div class="form-group col-md-4">
 				<label class="control-label" for="selectestacion">Estación</label>
 				<div class="controls">
-					<select class="selectpicker" id="selectestacion" name="selectestacion" class="input-xlarge">
+					<select class="selectpicker" data-style="btn-inverse" id="selectestacion" name="selectestacion" class="input-xlarge">
 						<option>Seleccione</option>
 						<option>Victoria - Temuco</option>
 						<option>Temuco - Mariquina</option>
@@ -125,7 +125,7 @@
 
 	        {{-- Tabla materiales
 			===================================================== --}}
-	        <div class="form-group col-md-6">
+	        <div class="form-group col-md-4">
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-table">
 			  	<thead>
 			  		<tr>
@@ -139,6 +139,55 @@
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  		</tr>
 			  		<tr>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  		</tr>
+			  	</tbody>
+			  </table>
+	        </div>
+
+	        <div class="form-group col-md-1">
+	        	{{-- forma mas chanta del mundo de tener las tablas separadas por un espacio --}}
+	        </div>
+
+	        {{-- Tabla Asistencia trabajadores
+			===================================================== --}}
+	        <div class="form-group col-md-7 ">
+			  <table class="table table-bordered table-striped" data-resizable-columns-id="asistencia-table">
+			  	<thead>
+			  		<tr>
+			  			<th data-resizable-column-id="1">Nombre</th>
+			  			<th data-resizable-column-id="2">Cargo</th>
+			  			<th data-resizable-column-id="3">Entrada</th>
+			  			<th data-resizable-column-id="4">Salida</th>
+			  			<th data-resizable-column-id="5">Hrs extra</th>
+			  			<th data-resizable-column-id="6">Obs Asistencia</th>
+			  		</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><select class="">
+								<option>Operador</option>
+								<option>Jefe</option>
+								<option>Obrero</option>
+								<option>etc...</option>
+							</select></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  		</tr>
+			  		<tr>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><select class="">
+								<option>Operador</option>
+								<option>Jefe</option>
+								<option>Obrero</option>
+								<option>etc...</option>
+							</select></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  		</tr>
