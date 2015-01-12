@@ -1,10 +1,10 @@
 <?php
 
-class TrabajadorsController extends \BaseController {
+class DesviadorsController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
-	 * GET /trabajadors
+	 * GET /desviadors
 	 *
 	 * @return Response
 	 */
@@ -15,18 +15,18 @@ class TrabajadorsController extends \BaseController {
 
 	/**
 	 * Show the form for creating a new resource.
-	 * GET /trabajadors/create
+	 * GET /desviadors/create
 	 *
 	 * @return Response
 	 */
 	public function create()
 	{
-		return View::make('trabajadors.create');
+		//
 	}
 
 	/**
 	 * Store a newly created resource in storage.
-	 * POST /trabajadors
+	 * POST /desviadors
 	 *
 	 * @return Response
 	 */
@@ -37,7 +37,7 @@ class TrabajadorsController extends \BaseController {
 
 	/**
 	 * Display the specified resource.
-	 * GET /trabajadors/{id}
+	 * GET /desviadors/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -49,7 +49,7 @@ class TrabajadorsController extends \BaseController {
 
 	/**
 	 * Show the form for editing the specified resource.
-	 * GET /trabajadors/{id}/edit
+	 * GET /desviadors/{id}/edit
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -61,7 +61,7 @@ class TrabajadorsController extends \BaseController {
 
 	/**
 	 * Update the specified resource in storage.
-	 * PUT /trabajadors/{id}
+	 * PUT /desviadors/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -73,7 +73,7 @@ class TrabajadorsController extends \BaseController {
 
 	/**
 	 * Remove the specified resource from storage.
-	 * DELETE /trabajadors/{id}
+	 * DELETE /desviadors/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response

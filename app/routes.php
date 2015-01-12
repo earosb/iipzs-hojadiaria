@@ -18,6 +18,8 @@ Route::get('/logout', 'UserController@getLogout');
 Route::get('home', function(){return View::make('home');});
 
 Route::resource('trabajos', 'TrabajosController');
+// Route::resource('trabajadors', 'TrabajadorsController');
+// Route::resource('blocks', 'BlocksController');
 
 Route::get('hola/{usuario}', function($usuario)
 {
@@ -27,4 +29,3 @@ Route::get('hola/{usuario}', function($usuario)
 Route::get('/', function(){return View::make('home');});
 //Route::get('/', 'UserController@getLogin');
 
-// Route::resource('trabajadors', 'TrabajadorsController');

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTrabajosTable extends Migration {
+class CreateDesviadorsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,13 @@ class CreateTrabajosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('trabajos', function(Blueprint $table)
+		Schema::create('desviadors', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('trabajo');
-			$table->text('observaciones');
-			$table->integer('id_tipo_trabajo')->unsigned();
-			$table->integer('id_hoja_diaria')->unsigned();
+			$table->string('nombre');
+			$table->integer('km_inicio');
+			$table->integer('id_block')->unsigned();
+			$table->foreign('id_block')->references('id')->on('blocks');
 			$table->timestamps();
 		});
 	}
@@ -31,7 +31,7 @@ class CreateTrabajosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('trabajos');
+		Schema::drop('desviadors');
 	}
 
 }
