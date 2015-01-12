@@ -3,7 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTipoTrabajoTable extends Migration {
+/**
+ *
+ * @author earosb
+ */
+
+class CreateTipoMaterialsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +17,13 @@ class CreateTipoTrabajoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tipo_trabajos', function(Blueprint $table)
+		Schema::create('tipo_materials', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('nombre');
-			$table->text('desc');
+			$table->string('unidad',20);
+			$table->string('proveedor');
+			$table->string('clase',20);
 			$table->timestamps();
 		});
 	}
@@ -29,7 +36,7 @@ class CreateTipoTrabajoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tipo_trabajos');
+		Schema::drop('tipo_materials');
 	}
 
 }

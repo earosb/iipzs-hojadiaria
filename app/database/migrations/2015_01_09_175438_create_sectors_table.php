@@ -15,9 +15,11 @@ class CreateSectorsTable extends Migration {
 		Schema::create('sectors', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('nombre');
 			$table->string('estacion_inicio');
 			$table->string('estacion_termino');
 			$table->integer('km_inicio');
+			$table->integer('km_termino');
 			$table->timestamps();
 		});
 	}

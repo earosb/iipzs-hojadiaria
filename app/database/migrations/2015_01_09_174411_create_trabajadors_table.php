@@ -20,8 +20,13 @@ class CreateTrabajadorsTable extends Migration {
 			$table->string('apellido_p',100);
 			$table->string('apellido_m',100);
 			$table->boolean('jefe_grupo')->default(false);
-			$table->integer('id_grupo_trabajo')->unsigned();
-			$table->foreign('id_grupo_trabajo')->references('id')->on('grupo_trabajos');
+
+			$table->integer('id_grupo_trabajo')
+				->unsigned();
+			$table->foreign('id_grupo_trabajo')
+				->references('id')
+				->on('grupo_trabajos');
+				
 			$table->timestamps();
 		});
 	}

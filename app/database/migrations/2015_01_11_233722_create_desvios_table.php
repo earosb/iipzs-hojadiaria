@@ -16,8 +16,16 @@ class CreateDesviosTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nombre');
+
+			$table->integer('id_desviador_inicio')->unsigned()->nullable();
+			$table->foreign('id_desviador_inicio')->references('id')->on('desviadors');
+
+			$table->integer('id_desviador_termino')->unsigned()->nullable();
+			$table->foreign('id_desviador_termino')->references('id')->on('desviadors');
+
 			$table->integer('id_block')->unsigned();
 			$table->foreign('id_block')->references('id')->on('blocks');
+			
 			$table->timestamps();
 		});
 	}

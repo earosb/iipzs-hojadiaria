@@ -16,10 +16,16 @@ class CreateBlocksTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('estacion');
+			$table->string('nro_bien',10);
 			$table->integer('km_inicio');
 			$table->integer('km_termino');
-			$table->integer('id_sector')->unsigned();
-			$table->foreign('id_sector')->references('id')->on('sectors');
+
+			$table->integer('id_sector')
+				->unsigned();
+			$table->foreign('id_sector')
+				->references('id')
+				->on('sectors');
+				
 			$table->timestamps();
 		});
 	}

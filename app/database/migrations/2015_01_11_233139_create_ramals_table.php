@@ -17,8 +17,13 @@ class CreateRamalsTable extends Migration {
 			$table->increments('id');
 			$table->integer('km_inicio');
 			$table->integer('km_termino');
-			$table->integer('id_sector')->unsigned();
-			$table->foreign('id_sector')->references('id')->on('sectors');
+
+			$table->integer('id_sector')
+				->unsigned();
+			$table->foreign('id_sector')
+				->references('id')
+				->on('sectors');
+				
 			$table->timestamps();
 		});
 	}
