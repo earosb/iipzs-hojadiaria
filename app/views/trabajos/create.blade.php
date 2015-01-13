@@ -7,16 +7,21 @@
 @section('css')
 	{{ HTML::style('css/bootstrap-select.min.css') }}
 	{{ HTML::style('css/jquery.resizableColumns.css') }}
+	{{ HTML::style('css/trabajos/create.css') }}
 	
 @stop
-{{-- 
 @section('alert')
-	<div class="alert alert-dismissable alert-success">
+	<div class="alert alert-dismissable alert-success" style="display:none;">
 	  <button type="button" class="close" data-dismiss="alert">×</button>
 	  <p>La hoja diaria fue ingresada correctamente!, <a href="#" class="alert-link">Ver</a>.</p>
 	</div>
+
+	<div id="msg_error" class="alert alert-dismissable alert-danger" style="display:none;">
+	  <button type="button" class="close" data-dismiss="alert">×</button>
+	  <strong>Error al obtener datos!</strong> Verifique su conexión a Internet.
+	</div>
 @stop
- --}}
+ 
 @section('content')
 	<div class="row">
         {{ Form::open(array('url' => 'trabajos/store', 'method' => 'post', 'class' => 'form-horizontal')) }}
@@ -30,13 +35,13 @@
 	    	<div class="form-group col-md-4">
 				{{ Form::label('selectsector', 'Sector', array('class' => 'control-label')) }}
 				<div class="controls">
-					<select class="selectpicker input-xlarge" data-style="btn-inverse" id="selectsector" name="selectsector">
-						<option value="empty">Seleccione un sector</option>
+					<select class="selectpicker" id="selectsector" name="selectsector" data-size="6">
+						<option class="special" value="empty">Seleccione un sector</option>
 						@foreach ($sectores as $sector)
 			              @if ($sector)
-			                <option value={{ $sector->id }}>
-			                	{{ $sector->nombre }}: 
-			                	{{ $sector->estacion_inicio }} - {{ $sector->estacion_termino }}
+			                <option value={{ $sector->id }}
+			                	data-subtext="{{ $sector->estacion_inicio }} - {{ $sector->estacion_termino }}">
+			                	{{ $sector->nombre }}
 		                	</option>
 			              @endif
 			            @endforeach
@@ -49,8 +54,8 @@
 	    	<div class="form-group col-md-4">
 				{{ Form::label('selectblock', 'Block', array('class' => 'control-label')) }}
 				<div class="controls">
-					<select class="selectpicker input-xlarge" data-style="btn-inverse" id="selectblock" name="selectblock">
-						<option value=""></option>
+					<select class="selectpicker" id="selectblock" name="selectblock" data-live-search="true" data-size="6">
+						{{-- <option value=""></option> --}}
 					</select>
 				</div>
 	        </div>
@@ -58,9 +63,9 @@
 	        {{-- Div para imprimir pruebas
 	        ===================================================== --}}
 	    	<div class="form-group col-md-4">
-				{{ Form::label('test', 'Test', array('class' => 'control-label')) }}
+				{{ Form::label('test', '', array('class' => 'control-label')) }}
 				<div class="controls">
-					<p id="test" name="test"></p>
+					
 				</div>
 	        </div>
 
@@ -128,6 +133,7 @@
 
 	        {{-- Tabla materiales colocados
 			===================================================== --}}
+			<div class="form-group col-md-12">
 	        <div class="form-group col-md-6">
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-table">
 			  	<thead>
@@ -171,10 +177,11 @@
 			  	</tbody>
 			  </table>
 	        </div>
+	        </div>
 
 	        {{-- Tabla Asistencia trabajadores
 			===================================================== --}}
-	        <div class="form-group col-md-12 ">
+	        <div class="form-group col-md-12 " style="display:block;">
 				<h3>Asistencia</h3>
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="asistencia-table">
 			  	<thead>
@@ -221,7 +228,7 @@
 			{{-- Botones
 			===================================================== --}}
 	        <div class="form-group col-md-12">
-	        	<div class="form-group col-md-3 pull-right">
+	        	<div class="form-group col-md-4 pull-right">
 		        	<a href="#" class="btn btn-default ">Guardar y nuevo</a>
 					<a href="#" class="btn btn-success pull-right">Guardar</a>
 		        </div>

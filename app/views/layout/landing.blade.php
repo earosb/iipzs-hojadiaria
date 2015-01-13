@@ -4,9 +4,10 @@
 	    <meta charset="UTF-8">
 	    <title>@yield('title')</title>
 
-	    {{ HTML::style('css/bootstrap.min.css') }}
+	    {{-- HTML::style('css/bootstrap.cosmo.min.css') --}}
+	    {{ HTML::style('css/bootstrap.yeti.min.css') }}
 
-	    {{-- yield para agregar css opcionales de cada página --}}
+	    {{-- yield para agregar css de cada página --}}
 	    @yield('css')
 
 	</head>
@@ -69,7 +70,7 @@
 		{{ HTML::script('js/jquery-1.11.2.min.js') }}
 		{{ HTML::script('js/bootstrap.min.js') }}
 
-		{{-- yield para agregar scripts opcionales de cada página --}}
+		{{-- yield para agregar scripts de cada página --}}
 		@yield('js')
 
 	</body>
