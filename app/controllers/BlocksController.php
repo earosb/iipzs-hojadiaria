@@ -116,4 +116,17 @@ class BlocksController extends \BaseController {
 		return Response::json($blocks);
 	}
 
+	/**
+	 * Retorna todo lo que hay dentro de un block.
+	 * desvios y desviadores
+	 *
+	 * @param  int  $idBlock
+	 * @return Response
+	 */
+	public function ajaxBlocksTodo($idBlock)
+	{
+		$blocks = Block::where('id_sector', '=', $idBlock)->get();
+		return Response::json($blocks);
+	}
+
 }

@@ -11,15 +11,15 @@ class BlocksTableSeeder extends Seeder {
 	public function run()
 	{
 		// $sectors = DB::table('sectors')->get();
-		$sector_1 = DB::table('sectors')->select('id')->where('nombre', 'Sector 1')->first()->id;
-		$sector_2 = DB::table('sectors')->select('id')->where('nombre', 'Sector 2')->first()->id;
-		$sector_3 = DB::table('sectors')->select('id')->where('nombre', 'Sector 3')->first()->id;
-		$sector_4 = DB::table('sectors')->select('id')->where('nombre', 'Sector 4')->first()->id;
-		$sector_5 = DB::table('sectors')->select('id')->where('nombre', 'Sector 5')->first()->id;
+		$sector_1 = DB::table('sector')->select('id')->where('nombre', 'Sector 1')->first()->id;
+		$sector_2 = DB::table('sector')->select('id')->where('nombre', 'Sector 2')->first()->id;
+		$sector_3 = DB::table('sector')->select('id')->where('nombre', 'Sector 3')->first()->id;
+		$sector_4 = DB::table('sector')->select('id')->where('nombre', 'Sector 4')->first()->id;
+		$sector_5 = DB::table('sector')->select('id')->where('nombre', 'Sector 5')->first()->id;
 
 		$now = date('Y-m-d H:i:s');
                         
-		DB::table('blocks')->insert(
+		DB::table('block')->insert(
 			array(
 				/***** Sector 1 *****/
 				array(
@@ -609,7 +609,7 @@ class BlocksTableSeeder extends Seeder {
 
 	public function down()
     {
-		DB::table('blocks')->delete();
+		DB::table('block')->delete();
     }
 
 }

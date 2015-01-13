@@ -14,5 +14,18 @@ class TipoMaterialRetirado extends \Eloquent {
 	 */
 	protected $table = 'tipo_material_retirado';
 	
+	/**
+	 * [$fillable description]
+	 * @var [type]
+	 */
 	protected $fillable = [];
+
+	/**
+	 * [materiales description]
+	 * @return [type] [description]
+	 */
+	public function materiales()
+    {
+        return $this->hasMany('MaterialRetirado');
+    }
 }

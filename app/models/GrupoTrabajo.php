@@ -13,4 +13,22 @@ class GrupoTrabajo extends \Eloquent {
 	 * @var string
 	 */
 	protected $table = 'grupo_trabajo';
+
+	/**
+	 * [trabajadores description]
+	 * @return [type] [description]
+	 */
+	public function trabajadores()
+    {
+        return $this->hasMany('Trabajador');
+    }
+
+    /**
+     * [hojasDiarias description]
+     * @return [type] [description]
+     */
+    public function hojasDiarias()
+    {
+        return $this->hasMany('HojaDiaria');
+    }
 }

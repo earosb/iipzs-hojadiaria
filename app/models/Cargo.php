@@ -14,4 +14,14 @@ class Cargo extends \Eloquent {
 	 * @var string
 	 */
 	protected $table = 'cargo';
+
+	/**
+	 * Describe la relación uno a muchos 
+	 * entre cargo y sus trabajadores
+	 * @return [type] [description]
+	 */
+	public function trabajadores()
+    {
+        return $this->hasMany('Trabajador');
+    }
 }

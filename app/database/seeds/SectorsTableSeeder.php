@@ -11,7 +11,7 @@ class SectorsTableSeeder extends Seeder {
 	{
 		$now = date('Y-m-d H:i:s');
                         
-		DB::table('sectors')->insert(
+		DB::table('sector')->insert(
 			array(
 				array(
                         'nombre' => 'Sector 1',
@@ -63,7 +63,7 @@ class SectorsTableSeeder extends Seeder {
 
 	public function down()
     {
-		DB::table('sectors')->delete();
+		DB::table('sector')->delete();
     }
 
 }

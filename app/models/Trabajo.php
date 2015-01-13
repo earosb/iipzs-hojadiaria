@@ -14,6 +14,44 @@ class Trabajo extends \Eloquent {
 	 */
 	protected $table = 'trabajo';
 
-
+	/**
+	 * [$fillable description]
+	 * @var [type]
+	 */
 	protected $fillable = [];
+
+	/**
+	 * [tipoMantenimiento description]
+	 * @return [type] [description]
+	 */
+	public function tipoMantenimiento()
+    {
+        return $this->belongsTo('TipoMantenimiento');
+    }
+
+    /**
+     * [trabajosEjecutados description]
+     * @return [type] [description]
+     */
+    public function trabajosEjecutados()
+    {
+        return $this->hasMany('TrabajoEjecutado');
+    }
+
+    /**
+     * [nombreOficial description]
+     * @return [type] [description]
+     */
+    public function alias()
+    {
+        return $this->belongsTo('Trabajo', 'id_padre');
+    }
+    /**
+     * [alias description]
+     * @return [type] [description]
+     */
+    public function nombreOficial()
+    {
+        return $this->hasMany('Trabajo', 'id_padre');
+    }
 }

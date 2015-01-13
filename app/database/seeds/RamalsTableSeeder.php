@@ -9,10 +9,10 @@ class RamalsTableSeeder extends Seeder {
 
 	public function run()
 	{
-		$sector_1 = DB::table('sectors')->select('id')->where('nombre', 'Sector 1')->first()->id;
+		$sector_1 = DB::table('sector')->select('id')->where('nombre', 'Sector 1')->first()->id;
 		$now = date('Y-m-d H:i:s');
                         
-		DB::table('ramals')->insert(
+		DB::table('ramal')->insert(
 			array(
 				array(
                         'nombre' => 'Coigue - Nacimiento',

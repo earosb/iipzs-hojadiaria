@@ -14,5 +14,18 @@ class TipoMantenimiento extends \Eloquent {
 	 */
 	protected $table = 'tipo_mantenimiento';
 
+	/**
+	 * [$fillable description]
+	 * @var [type]
+	 */
 	protected $fillable = [];
+
+	/**
+	 * [trabajos description]
+	 * @return [type] [description]
+	 */
+	public function trabajos()
+    {
+        return $this->hasMany('Trabajo');
+    }
 }

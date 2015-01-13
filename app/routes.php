@@ -15,13 +15,13 @@
 Route::post('/login', 'UserController@postLogin');
 Route::get('/logout', 'UserController@getLogout');
 
-Route::get('home', function(){return View::make('home');});
-
-Route::resource('trabajos', 'TrabajoEjecutadoController');
+Route::resource('t', 'TrabajoEjecutadoController');
+Route::resource('hd', 'HojaDiariaController');
 // Route::resource('trabajadors', 'TrabajadorsController');
-Route::resource('blocks', 'BlocksController');
+Route::resource('block', 'BlocksController');
 
-Route::get('/blocks/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
+Route::get('/block/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
+Route::get('/block/ajax-block-todo/{idBlock}', 'BlocksController@ajaxBlockTodo');
 
 Route::get('hola/{usuario}', function($usuario)
 {
