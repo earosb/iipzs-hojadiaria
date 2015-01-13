@@ -15,6 +15,7 @@ class CreateRamalsTable extends Migration {
 		Schema::create('ramals', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('nombre');
 			$table->integer('km_inicio');
 			$table->integer('km_termino');
 
