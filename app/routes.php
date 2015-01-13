@@ -17,7 +17,7 @@ Route::get('/logout', 'UserController@getLogout');
 
 Route::get('home', function(){return View::make('home');});
 
-Route::resource('trabajos', 'TrabajosController');
+Route::resource('trabajos', 'TrabajoEjecutadoController');
 // Route::resource('trabajadors', 'TrabajadorsController');
 Route::resource('blocks', 'BlocksController');
 

@@ -7,7 +7,8 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author earosb
  */
-class CreateHojaDiariasTable extends Migration {
+
+class CreateCargosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -16,15 +17,10 @@ class CreateHojaDiariasTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('hoja_diaria', function(Blueprint $table)
+		Schema::create('cargo', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->date('fecha');
-			$table->text('observaciones')->nullable();
-
-			$table->integer('id_grupo_trabajo')->unsigned()->nullable();
-			$table->foreign('id_grupo_trabajo')->references('id')->on('grupo_trabajo');
-			
+			$table->string('cargo',100);
 			$table->timestamps();
 		});
 	}
@@ -37,7 +33,7 @@ class CreateHojaDiariasTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('hoja_diaria');
+		Schema::drop('cargo');
 	}
 
 }

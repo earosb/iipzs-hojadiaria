@@ -3,7 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTipoTrabajoTable extends Migration {
+/**
+ *
+ * @author earosb
+ */
+
+class CreateTipoMaterialRetiradosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +17,12 @@ class CreateTipoTrabajoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tipo_trabajos', function(Blueprint $table)
+		Schema::create('tipo_material_retirado', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('codigo')->nullable();
 			$table->string('nombre');
-			$table->text('desc');
+			$table->string('clase')->nullable();
 			$table->timestamps();
 		});
 	}
@@ -29,7 +35,7 @@ class CreateTipoTrabajoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tipo_trabajos');
+		Schema::drop('tipo_material_retirado');
 	}
 
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
  * @author earosb
  */
 
-class CreateMaterialeTrabajoTable extends Migration {
+class CreateHojaDiariumMaterialTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -17,13 +17,13 @@ class CreateMaterialeTrabajoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('trabajos_materiales', function(Blueprint $table)
+		Schema::create('hoja_diaria_material', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('id_hoja_diaria')->unsigned()->index();
+			$table->foreign('id_hoja_diaria')->references('id')->on('hoja_diaria')->onDelete('cascade');
 			$table->integer('id_material')->unsigned()->index();
-			$table->foreign('id_material')->references('id')->on('materials')->onDelete('cascade');
-			$table->integer('id_trabajo')->unsigned()->index();
-			$table->foreign('id_trabajo')->references('id')->on('trabajos')->onDelete('cascade');
+			$table->foreign('id_material')->references('id')->on('material')->onDelete('cascade');
 			$table->timestamps();
 		});
 	}
@@ -36,7 +36,7 @@ class CreateMaterialeTrabajoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('trabajos_materiales');
+		Schema::drop('hoja_diaria_material');
 	}
 
 }

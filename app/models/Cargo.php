@@ -4,7 +4,8 @@
  *
  * @author earosb
  */
-class Trabajador extends \Eloquent {
+
+class Cargo extends \Eloquent {
 	protected $fillable = [];
 
 	/**
@@ -12,5 +13,5 @@ class Trabajador extends \Eloquent {
 	 *
 	 * @var string
 	 */
-	protected $table = 'trabajador';
+	protected $table = 'cargo';
 }

@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
+/**
+ *
+ * @author earosb
+ */
 class CreateDesviadorsTable extends Migration {
 
 	/**
@@ -12,17 +16,14 @@ class CreateDesviadorsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('desviadors', function(Blueprint $table)
+		Schema::create('desviador', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('nombre');
 			$table->integer('km_inicio');
 
-			$table->integer('id_block')
-				->unsigned();
-			$table->foreign('id_block')
-				->references('id')
-				->on('blocks');
+			$table->integer('id_block')->unsigned();
+			$table->foreign('id_block')->references('id')->on('block');
 				
 			$table->timestamps();
 		});
@@ -36,7 +37,7 @@ class CreateDesviadorsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('desviadors');
+		Schema::drop('desviador');
 	}
 
 }

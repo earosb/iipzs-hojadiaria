@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
+/**
+ *
+ * @author earosb
+ */
 class CreateRamalsTable extends Migration {
 
 	/**
@@ -12,18 +16,15 @@ class CreateRamalsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('ramals', function(Blueprint $table)
+		Schema::create('ramal', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('nombre');
 			$table->integer('km_inicio');
 			$table->integer('km_termino');
 
-			$table->integer('id_sector')
-				->unsigned();
-			$table->foreign('id_sector')
-				->references('id')
-				->on('sectors');
+			$table->integer('id_sector')->unsigned();
+			$table->foreign('id_sector')->references('id')->on('sector');
 				
 			$table->timestamps();
 		});
@@ -37,7 +38,7 @@ class CreateRamalsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('ramals');
+		Schema::drop('ramal');
 	}
 
 }

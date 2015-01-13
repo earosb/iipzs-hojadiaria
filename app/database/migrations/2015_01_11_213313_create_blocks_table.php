@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
+/**
+ *
+ * @author earosb
+ */
 class CreateBlocksTable extends Migration {
 
 	/**
@@ -12,7 +16,7 @@ class CreateBlocksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('blocks', function(Blueprint $table)
+		Schema::create('block', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('estacion');
@@ -20,11 +24,8 @@ class CreateBlocksTable extends Migration {
 			$table->integer('km_inicio');
 			$table->integer('km_termino');
 
-			$table->integer('id_sector')
-				->unsigned();
-			$table->foreign('id_sector')
-				->references('id')
-				->on('sectors');
+			$table->integer('id_sector')->unsigned();
+			$table->foreign('id_sector')->references('id')->on('sector');
 				
 			$table->timestamps();
 		});
@@ -38,7 +39,7 @@ class CreateBlocksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('blocks');
+		Schema::drop('block');
 	}
 
 }

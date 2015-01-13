@@ -4,15 +4,15 @@
  *
  * @author earosb
  */
-class HojaDiaria extends \Eloquent {
+
+class TipoMaterialRetirado extends \Eloquent {
 	
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
-	protected $table = 'hoja_diaria';
+	protected $table = 'tipo_material_retirado';
 	
-
 	protected $fillable = [];
 }

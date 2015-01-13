@@ -17,13 +17,14 @@ class CreateTipoMaterialsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tipo_materials', function(Blueprint $table)
+		Schema::create('tipo_material', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->string('codigo')->nullable();
 			$table->string('nombre');
 			$table->string('unidad',20);
-			$table->string('proveedor');
-			$table->string('clase',20);
+			$table->string('proveedor')->nullable();
+			$table->string('clase',20)->nullable();
 			$table->timestamps();
 		});
 	}
@@ -36,7 +37,7 @@ class CreateTipoMaterialsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tipo_materials');
+		Schema::drop('tipo_material');
 	}
 
 }

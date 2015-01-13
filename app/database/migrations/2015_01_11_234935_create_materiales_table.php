@@ -12,17 +12,15 @@ class CreateMaterialesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('materials', function(Blueprint $table)
+		Schema::create('material', function(Blueprint $table)
 		{
 			$table->increments('id');
+			$table->integer('cantidad');
 			
 			$table->integer('id_tipo_material')->unsigned();
-			$table->foreign('id_tipo_material')
-				->references('id')->on('tipo_materials')
-				->onDelete('cascade')
-				->onUpdate('cascade');
+			$table->foreign('id_tipo_material')->references('id')->on('tipo_material')
+				->onDelete('cascade')->onUpdate('cascade');
 
-			$table->integer('cantidad');
 			
 			$table->timestamps();
 		});
@@ -36,7 +34,7 @@ class CreateMaterialesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('materials');
+		Schema::drop('material');
 	}
 
 }

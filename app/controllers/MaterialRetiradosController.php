@@ -5,11 +5,11 @@
  * @author earosb
  */
 
-class TrabajosController extends \BaseController {
+class MaterialRetiradosController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
-	 * GET /trabajos
+	 * GET /materialretirados
 	 *
 	 * @return Response
 	 */
@@ -20,7 +20,7 @@ class TrabajosController extends \BaseController {
 
 	/**
 	 * Show the form for creating a new resource.
-	 * GET /trabajos/create
+	 * GET /materialretirados/create
 	 *
 	 * @return Response
 	 */
@@ -31,7 +31,7 @@ class TrabajosController extends \BaseController {
 
 	/**
 	 * Store a newly created resource in storage.
-	 * POST /trabajos
+	 * POST /materialretirados
 	 *
 	 * @return Response
 	 */
@@ -42,7 +42,7 @@ class TrabajosController extends \BaseController {
 
 	/**
 	 * Display the specified resource.
-	 * GET /trabajos/{id}
+	 * GET /materialretirados/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -54,7 +54,7 @@ class TrabajosController extends \BaseController {
 
 	/**
 	 * Show the form for editing the specified resource.
-	 * GET /trabajos/{id}/edit
+	 * GET /materialretirados/{id}/edit
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -66,7 +66,7 @@ class TrabajosController extends \BaseController {
 
 	/**
 	 * Update the specified resource in storage.
-	 * PUT /trabajos/{id}
+	 * PUT /materialretirados/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -78,7 +78,7 @@ class TrabajosController extends \BaseController {
 
 	/**
 	 * Remove the specified resource from storage.
-	 * DELETE /trabajos/{id}
+	 * DELETE /materialretirados/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response

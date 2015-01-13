@@ -1,6 +1,17 @@
 <?php
 
+/**
+ *
+ * @author earosb
+ */
 class Block extends \Eloquent {
+
+	/**
+	 * The database table used by the model.
+	 *
+	 * @var string
+	 */
+	protected $table = 'block';
 
 	// Add your validation rules here
 	public static $rules = [
