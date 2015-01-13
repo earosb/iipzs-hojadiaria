@@ -19,7 +19,9 @@ Route::get('home', function(){return View::make('home');});
 
 Route::resource('trabajos', 'TrabajosController');
 // Route::resource('trabajadors', 'TrabajadorsController');
-// Route::resource('blocks', 'BlocksController');
+Route::resource('blocks', 'BlocksController');
+
+Route::get('/blocks/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
 
 Route::get('hola/{usuario}', function($usuario)
 {

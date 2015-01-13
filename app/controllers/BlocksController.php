@@ -104,4 +104,16 @@ class BlocksController extends \BaseController {
 		return Redirect::route('blocks.index');
 	}
 
+	/**
+	 * Retorna blocks de un sector.
+	 *
+	 * @param  int  $idSector
+	 * @return Response
+	 */
+	public function ajaxBlocks($idSector)
+	{
+		$blocks = Block::where('id_sector', '=', $idSector)->get();
+		return Response::json($blocks);
+	}
+
 }

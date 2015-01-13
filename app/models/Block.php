@@ -7,7 +7,9 @@ class Block extends \Eloquent {
 		// 'title' => 'required'
 	];
 
-	// Don't forget to fill this array
-	protected $fillable = [];
+	// Cosas que se pueden modificar
+	protected $fillable = array('nombre', 'nro_bien', 'km_inicio', 'km_termino');
+	// Cosas que no se pueden modificar
+	protected $guarded = array('id', 'id_sector');
 
 }

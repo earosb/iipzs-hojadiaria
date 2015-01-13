@@ -21,7 +21,8 @@ class TrabajosController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('trabajos.create');
+		$sectores = Sector::all();
+		return View::make('trabajos.create')->with('sectores', $sectores);
 	}
 
 	/**

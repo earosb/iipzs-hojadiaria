@@ -9,62 +9,58 @@
 	{{ HTML::style('css/jquery.resizableColumns.css') }}
 	
 @stop
-
+{{-- 
 @section('alert')
 	<div class="alert alert-dismissable alert-success">
 	  <button type="button" class="close" data-dismiss="alert">×</button>
-	  <p>Best check yo self, you're not looking too good. Nulla vitae elit libero, a pharetra augue. Praesent commodo cursus magna, <a href="#" class="alert-link">vel scelerisque nisl consectetur et</a>.</p>
+	  <p>La hoja diaria fue ingresada correctamente!, <a href="#" class="alert-link">Ver</a>.</p>
 	</div>
 @stop
-
+ --}}
 @section('content')
 	<div class="row">
-        <form class="form-horizontal">
+        {{ Form::open(array('url' => 'trabajos/store', 'method' => 'post', 'class' => 'form-horizontal')) }}
 		  <fieldset>
 		    <legend>Nueva hoja diaria de trabajo     
 		    		<input type="text" placeholder="Ingrese Fecha" style="margin:15px;">
 		    </legend>
 
-		    {{-- Select sector  --}}
+		    {{-- Select sector
+		    ===================================================== --}}
 	    	<div class="form-group col-md-4">
-				<label class="control-label" for="selectsector">Sector</label>
+				{{ Form::label('selectsector', 'Sector', array('class' => 'control-label')) }}
 				<div class="controls">
-					<select class="selectpicker" data-style="btn-inverse" id="selectsector" name="selectsector" class="input-xlarge">
-						<option>San Rosendo - Victoria</option>
-						<option>Victoria - Temuco</option>
-						<option>Temuco - Mariquina</option>
-						<option>Mariquina - Osorno</option>
-						<option>Osorno - La Paloma</option>
+					<select class="selectpicker input-xlarge" data-style="btn-inverse" id="selectsector" name="selectsector">
+						<option value="empty">Seleccione un sector</option>
+						@foreach ($sectores as $sector)
+			              @if ($sector)
+			                <option value={{ $sector->id }}>
+			                	{{ $sector->nombre }}: 
+			                	{{ $sector->estacion_inicio }} - {{ $sector->estacion_termino }}
+		                	</option>
+			              @endif
+			            @endforeach
 					</select>
 				</div>
 	        </div>
-	        {{-- Select block  --}}
+
+	        {{-- Select block
+	        ===================================================== --}}
 	    	<div class="form-group col-md-4">
-				<label class="control-label" for="selectblock">Block</label>
+				{{ Form::label('selectblock', 'Block', array('class' => 'control-label')) }}
 				<div class="controls">
-					<select class="selectpicker" data-style="btn-inverse" id="selectblock" name="selectblock" class="input-xlarge">
-						<optgroup label="Blocks">
-						<option>San Rosendo - Laja</option>
-						<option>Laja - Diuqín</option>
-						<option>Diuqín - Millantú</option>
-						<option>Millantú - Santa Fe</option>
-						<option>Santa Fe - Coigue</option>
-						<optgroup label="Ramales">
-						<option>Coigue - Nacimiento</option>
+					<select class="selectpicker input-xlarge" data-style="btn-inverse" id="selectblock" name="selectblock">
+						<option value=""></option>
 					</select>
 				</div>
 	        </div>
-	        {{-- Select estación  --}}
+
+	        {{-- Div para imprimir pruebas
+	        ===================================================== --}}
 	    	<div class="form-group col-md-4">
-				<label class="control-label" for="selectestacion">Estación</label>
+				{{ Form::label('test', 'Test', array('class' => 'control-label')) }}
 				<div class="controls">
-					<select class="selectpicker" data-style="btn-inverse" id="selectestacion" name="selectestacion" class="input-xlarge">
-						<option>Seleccione</option>
-						<option>Victoria - Temuco</option>
-						<option>Temuco - Mariquina</option>
-						<option>Mariquina - Osorno</option>
-						<option>Osorno - La Paloma</option>
-					</select>
+					<p id="test" name="test"></p>
 				</div>
 	        </div>
 
@@ -130,9 +126,9 @@
 			  </table>
 	        </div>
 
-	        {{-- Tabla materiales
+	        {{-- Tabla materiales colocados
 			===================================================== --}}
-	        <div class="form-group col-md-4">
+	        <div class="form-group col-md-6">
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-table">
 			  	<thead>
 			  		<tr>
@@ -153,13 +149,33 @@
 			  </table>
 	        </div>
 
-	        <div class="form-group col-md-1">
-	        	{{-- forma mas chanta del mundo de tener las tablas separadas por un espacio --}}
+	        {{-- Tabla materiales retirados
+			===================================================== --}}
+	        <div class="form-group col-md-6 pull-right">
+			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-retirados-table">
+			  	<thead>
+			  		<tr>
+			  			<th data-resizable-column-id="1">Materiales Retirados</th>
+			  			<th data-resizable-column-id="2">Cantidad</th>
+			  		</tr>
+			  	</thead>
+			  	<tbody>
+			  		<tr>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  		</tr>
+			  		<tr>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  		</tr>
+			  	</tbody>
+			  </table>
 	        </div>
 
 	        {{-- Tabla Asistencia trabajadores
 			===================================================== --}}
-	        <div class="form-group col-md-7 ">
+	        <div class="form-group col-md-12 ">
+				<h3>Asistencia</h3>
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="asistencia-table">
 			  	<thead>
 			  		<tr>
@@ -211,7 +227,7 @@
 		        </div>
 	        </div>
 		  </fieldset>
-		</form>
+		{{ Form::close() }}
     </div>
 @stop
 
@@ -219,6 +235,7 @@
 	{{ HTML::script('js/bootstrap-select.min.js') }}
 	{{ HTML::script('js/store.min.js') }}
 	{{ HTML::script('js/jquery.resizableColumns.min.js') }}
+	{{ HTML::script('js/trabajos/create.js') }}
 
 	<script type="text/javascript">
 	    init()
