@@ -1,0 +1,6 @@
+.special {
+	font-style: italic;
+    font-weight: bold !important;
+    color:#bc0000 !important;
+    background:#000;
+}
