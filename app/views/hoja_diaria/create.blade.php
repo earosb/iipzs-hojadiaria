@@ -24,7 +24,7 @@
  
 @section('content')
 	<div class="row">
-        {{ Form::open(array('url' => 'trabajos/store', 'method' => 'post', 'class' => 'form-horizontal')) }}
+        {{ Form::open(array('url' => 'hd', 'method' => 'post', 'class' => 'form-horizontal')) }}
 		  <fieldset>
 		    <legend>Nueva hoja diaria de trabajo     
 		    		<input type="text" placeholder="Ingrese Fecha" style="margin:15px;">
@@ -55,6 +55,7 @@
 				{{ Form::label('selectblock', 'Block', array('class' => 'control-label')) }}
 				<div class="controls">
 					<select class="selectpicker" id="selectblock" name="selectblock" data-live-search="true" data-size="6">
+						{{-- <option></option> --}}
 						{{-- <option value=""></option> --}}
 					</select>
 				</div>
@@ -65,7 +66,7 @@
 	    	<div class="form-group col-md-4">
 				{{ Form::label('test', 'test', array('class' => 'control-label')) }}
 				<div class="controls">
-					<input class="span1" placeholder=".span1" type="text">
+					{{ Form::text('test', null, array('placeholder' => 'test', 'class' => 'form-control input-sm')) }}
 				</div>
 	        </div>
 
@@ -81,37 +82,29 @@
 			  			<th data-resizable-column-id="4">Km término</th>
 			  			<th data-resizable-column-id="5">Unidad</th>
 			  			<th data-resizable-column-id="6">Cantidad</th>
-			  			<th data-resizable-column-id="7">Comentarios</th>
+			  			<th data-resizable-column-id="7">Observaciones</th>
 			  		</tr>
 			  	</thead>
 			  	<tbody>
 			  		<tr>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><select class="selectpicker" data-style="btn-inverse" id="selectubicacion" name="selectubicacion" class="input-xlarge">
-								<option>Vía Principal</option>
-								<optgroup label="Desvíos">
-								<option>Local</option>
-								<option>Dv 101</option>
-								<option>Dv 103</option>
-								<optgroup label="Desviadores">
-								<option>DVR 101</option>
-								<option>DVR 102</option>
-								<option>DVR 103</option>
-								<optgroup label="Ramales">
-								<option>Coigue - Nacimiento</option>
+			  			<td>{{ Form::text('trabajo_realizado', null, array('placeholder' => 'Trabajo N°1', 'class' => 'form-control input-sm')) }}</td>
+			  			<td><select class="selectpicker" data-style="btn-inverse" id="selectubicacion" name="selectubicacion" data-live-search="true">
+								{{-- <option></option> --}}
+								{{-- <option value=""></option> --}}
 							</select></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+
+			  			<td>{{ Form::text('km_inicio', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
+			  			<td>{{ Form::text('km_termino', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
+			  			<td>{{ Form::text('unidad', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
+			  			<td>{{ Form::text('cantidad', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
+			  			<td>{{ Form::textarea('observaciones', null, ['size' => '20x2']) }}</td>
 			  		</tr>
 			  	</tbody>
 			  </table>
 	        </div>
 
 	        {{-- Tabla materiales colocados
-			===================================================== --}}
+			===================================================== 
 			<div class="form-group col-md-12">
 	        <div class="form-group col-md-6">
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-table">
@@ -126,16 +119,12 @@
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  		</tr>
-			  		<tr>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  		</tr>
 			  	</tbody>
 			  </table>
-	        </div>
+	        </div> --}}
 
 	        {{-- Tabla materiales retirados
-			===================================================== --}}
+			===================================================== 
 	        <div class="form-group col-md-6 pull-right">
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-retirados-table">
 			  	<thead>
@@ -149,17 +138,13 @@
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
 			  		</tr>
-			  		<tr>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  		</tr>
 			  	</tbody>
 			  </table>
 	        </div>
-	        </div>
+	        </div> --}}
 
 	        {{-- Tabla Asistencia trabajadores
-			===================================================== --}}
+			===================================================== 
 	        <div class="form-group col-md-12 " style="display:block;">
 				<h3>Asistencia</h3>
 			  <table class="table table-bordered table-striped" data-resizable-columns-id="asistencia-table">
@@ -202,14 +187,15 @@
 			  		</tr>
 			  	</tbody>
 			  </table>
-	        </div>
+	        </div>--}}
 
 			{{-- Botones
 			===================================================== --}}
 	        <div class="form-group col-md-12">
 	        	<div class="form-group col-md-4 pull-right">
 		        	<a href="#" class="btn btn-default ">Guardar y nuevo</a>
-					<a href="#" class="btn btn-success pull-right">Guardar</a>
+					{{-- Form::button('Guardar', array('type' => 'submit', 'class' => 'btn btn-success pull-right')) --}}
+					{{ Form::submit('Guardar') }}
 		        </div>
 	        </div>
 		  </fieldset>

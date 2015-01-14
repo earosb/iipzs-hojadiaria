@@ -26,7 +26,7 @@ class MaterialRetirado extends \Eloquent {
 	 */
 	public function hojasDiarias()
     {
-        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_material_retirado', 'id_material_retirado', 'id_hoja_diaria');
+        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_material_retirado', 'material_retirado_id', 'hoja_diaria_id');
     }
 
     /**

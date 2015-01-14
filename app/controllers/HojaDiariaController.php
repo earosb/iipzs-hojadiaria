@@ -4,7 +4,7 @@ class HojaDiariaController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
-	 * GET /hojadiarias
+	 * GET /hd
 	 *
 	 * @return Response
 	 */
@@ -15,7 +15,7 @@ class HojaDiariaController extends \BaseController {
 
 	/**
 	 * Show the form for creating a new resource.
-	 * GET /hojadiarias/create
+	 * GET /hd/create
 	 *
 	 * @return Response
 	 */
@@ -27,30 +27,31 @@ class HojaDiariaController extends \BaseController {
 
 	/**
 	 * Store a newly created resource in storage.
-	 * POST /hojadiarias
+	 * POST /hojadiaria
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-		//
+		$input = Input::all();
+		return $input;
 	}
 
 	/**
 	 * Display the specified resource.
-	 * GET /hojadiarias/{id}
+	 * GET /hd/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function show($id)
 	{
-		//
+		return 'id hoja diaria '.$id;
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
-	 * GET /hojadiarias/{id}/edit
+	 * GET /hd/{id}/edit
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -62,7 +63,7 @@ class HojaDiariaController extends \BaseController {
 
 	/**
 	 * Update the specified resource in storage.
-	 * PUT /hojadiarias/{id}
+	 * PUT /hd/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -74,7 +75,7 @@ class HojaDiariaController extends \BaseController {
 
 	/**
 	 * Remove the specified resource from storage.
-	 * DELETE /hojadiarias/{id}
+	 * DELETE /hd/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response

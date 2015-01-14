@@ -107,26 +107,36 @@ class BlocksController extends \BaseController {
 	/**
 	 * Retorna blocks de un sector.
 	 *
-	 * @param  int  $idSector
+	 * @param  int  $sectorId
 	 * @return Response
 	 */
-	public function ajaxBlocks($idSector)
+	public function ajaxBlocks($sectorId)
 	{
-		$blocks = Block::where('id_sector', '=', $idSector)->get();
-		return Response::json($blocks);
+		$blocks = Block::where('sector_id', '=', $sectorId)->get();
+		$ramales = Ramal::where('sector_id', '=', $sectorId)->get();
+		return Response::json(array('blocks' => $blocks, 'ramales' => $ramales));
+		// return Response::json($blocks);
 	}
 
 	/**
 	 * Retorna todo lo que hay dentro de un block.
-	 * desvios y desviadores
+	 * desvios y desviadores y datos del mismo block
 	 *
 	 * @param  int  $idBlock
 	 * @return Response
 	 */
-	public function ajaxBlocksTodo($idBlock)
+	public function ajaxBlockTodo($idBlock)
 	{
-		$blocks = Block::where('id_sector', '=', $idBlock)->get();
-		return Response::json($blocks);
+		$block = Block::find($idBlock);
+		$desvios = Block::find($idBlock)->desvios;
+		$desviadores = Block::find($idBlock)->desviadores;
+		return Response::json(
+			array(
+				'block' => $block,
+				'desvios' => $desvios, 
+				'desviadores' => $desviadores
+				)
+			);
 	}
 
 }

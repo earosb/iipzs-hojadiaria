@@ -26,7 +26,7 @@ class TrabajoEjecutado extends \Eloquent {
 	 */
 	public function hojasDiarias()
     {
-        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_trabajo_ejecutado', 'id_trabajo_ejecutado', 'id_hoja_diaria');
+        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_trabajo_ejecutado', 'trabajo_ejecutado_id', 'hoja_diaria_id');
     }
 
     /**

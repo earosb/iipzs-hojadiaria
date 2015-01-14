@@ -34,7 +34,7 @@ class HojaDiaria extends \Eloquent {
      */
     public function trabajosEjecutados()
     {
-        return $this->belongsToMany('TrabajoEjecutado', 'hoja_diaria_trabajo_ejecutado', 'id_hoja_diaria', 'id_trabajo_ejecutado');
+        return $this->belongsToMany('TrabajoEjecutado', 'hoja_diaria_trabajo_ejecutado', 'hoja_diaria_id', 'trabajo_ejecutado_id');
     }
 
     /**
@@ -43,7 +43,7 @@ class HojaDiaria extends \Eloquent {
      */
     public function materiales()
     {
-        return $this->belongsToMany('Material', 'hoja_diaria_material', 'id_hoja_diaria', 'id_material');
+        return $this->belongsToMany('Material', 'hoja_diaria_material', 'hoja_diaria_id', 'material_id');
     }
 
     /**
@@ -52,6 +52,6 @@ class HojaDiaria extends \Eloquent {
      */
     public function materialesRetirados()
     {
-        return $this->belongsToMany('MaterialRetirado', 'hoja_diaria_material_retirado', 'id_hoja_diaria', 'id_material_retirado');
+        return $this->belongsToMany('MaterialRetirado', 'hoja_diaria_material_retirado', 'hoja_diaria_id', 'material_retirado_id');
     }
 }

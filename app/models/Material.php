@@ -34,7 +34,7 @@ class Material extends \Eloquent {
 	 */
 	public function hojasDiarias()
     {
-        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_material', 'id_material', 'id_hoja_diaria');
+        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_material', 'material_id', 'hoja_diaria_id');
     }
 
     /**

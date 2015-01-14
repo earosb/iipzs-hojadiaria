@@ -11,23 +11,27 @@
 |
 */
 
-/* Admin de Usuarios */
+/**
+ * Admin de Usuarios
+ */
 Route::post('/login', 'UserController@postLogin');
 Route::get('/logout', 'UserController@getLogout');
 
-Route::resource('t', 'TrabajoEjecutadoController');
+/**
+ * Hola Diaria
+ */
 Route::resource('hd', 'HojaDiariaController');
-// Route::resource('trabajadors', 'TrabajadorsController');
-Route::resource('block', 'BlocksController');
 
+/**
+ * Blocks
+ */
+Route::resource('block', 'BlocksController');
 Route::get('/block/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
 Route::get('/block/ajax-block-todo/{idBlock}', 'BlocksController@ajaxBlockTodo');
 
-Route::get('hola/{usuario}', function($usuario)
-{
-    return "Hola $usuario";
-});
-
+/**
+ * Raíz
+ */
 Route::get('/', function(){return View::make('home');});
 //Route::get('/', 'UserController@getLogin');
 

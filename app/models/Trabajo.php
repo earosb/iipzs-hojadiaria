@@ -44,7 +44,7 @@ class Trabajo extends \Eloquent {
      */
     public function alias()
     {
-        return $this->belongsTo('Trabajo', 'id_padre');
+        return $this->belongsTo('Trabajo', 'padre_id');
     }
     /**
      * [alias description]
@@ -52,6 +52,6 @@ class Trabajo extends \Eloquent {
      */
     public function nombreOficial()
     {
-        return $this->hasMany('Trabajo', 'id_padre');
+        return $this->hasMany('Trabajo', 'padre_id');
     }
 }
