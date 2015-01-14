@@ -1,8 +1,5 @@
 <?php
 
-// Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
-
 /**
  *
  * @author earosb
@@ -12,14 +9,21 @@ class TipoMantenimientosTableSeeder extends Seeder {
 
 	public function run()
 	{
-		$faker = Faker::create();
-
-		foreach(range(1, 10) as $index)
-		{
-			TipoMantenimiento::create([
-
-			]);
-		}
+                $now = date('Y-m-d H:i:s');
+                
+		DB::table('tipo_mantenimiento')->insert(
+			array(
+				array(
+                        'nombre' => 'Mantenimiento menor',
+                        'created_at' => $now,
+                		'updated_at' => $now
+        		),
+        		array(
+                        'nombre' => 'Mantenimiento mayor',
+                        'created_at' => $now,
+                		'updated_at' => $now
+        		)
+		));
 	}
 
 }

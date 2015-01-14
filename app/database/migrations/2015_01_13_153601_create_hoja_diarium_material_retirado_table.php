@@ -20,10 +20,15 @@ class CreateHojaDiariumMaterialRetiradoTable extends Migration {
 		Schema::create('hoja_diaria_material_retirado', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('id_hoja_diaria')->unsigned()->index();
-			$table->foreign('id_hoja_diaria')->references('id')->on('hoja_diaria')->onDelete('cascade');
-			$table->integer('id_material_retirado')->unsigned()->index();
-			$table->foreign('id_material_retirado')->references('id')->on('material_retirado')->onDelete('cascade');
+			
+			$table->integer('hoja_diaria_id')->unsigned()->index();
+			$table->foreign('hoja_diaria_id')->references('id')->on('hoja_diaria')
+				->onDelete('cascade');
+			
+			$table->integer('material_retirado_id')->unsigned()->index();
+			$table->foreign('material_retirado_id')->references('id')->on('material_retirado')
+				->onDelete('cascade');
+			
 			$table->timestamps();
 		});
 	}

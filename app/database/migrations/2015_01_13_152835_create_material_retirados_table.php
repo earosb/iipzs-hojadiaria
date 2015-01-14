@@ -22,8 +22,8 @@ class CreateMaterialRetiradosTable extends Migration {
 			$table->increments('id');
 			$table->integer('cantidad');
 
-			$table->integer('id_tipo_material_retirado')->unsigned();
-			$table->foreign('id_tipo_material_retirado')->references('id')
+			$table->integer('tipo_material_retirado_id')->unsigned();
+			$table->foreign('tipo_material_retirado_id')->references('id')
 				->on('tipo_material_retirado');
 
 			$table->timestamps();

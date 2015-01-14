@@ -22,8 +22,8 @@ class CreateTrabajoEjecutadosTable extends Migration {
 			$table->increments('id');
 			$table->text('observaciones')->nullable();
 
-			$table->integer('id_trabajo')->unsigned();
-			$table->foreign('id_trabajo')->references('id')->on('trabajo');	
+			$table->integer('trabajo_id')->unsigned();
+			$table->foreign('trabajo_id')->references('id')->on('trabajo');	
 
 			$table->timestamps();
 		});

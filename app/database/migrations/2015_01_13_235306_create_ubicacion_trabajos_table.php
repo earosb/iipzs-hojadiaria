@@ -18,20 +18,20 @@ class CreateUbicacionTrabajosTable extends Migration {
 			$table->integer('km_inicio');
 			$table->integer('km_termino');
 			
-			$table->integer('id_trabajo_ejecutado')->unsigned();
-			$table->foreign('id_trabajo_ejecutado')->references('id')->on('trabajo_ejecutado')
+			$table->integer('trabajo_ejecutado_id')->unsigned();
+			$table->foreign('trabajo_ejecutado_id')->references('id')->on('trabajo_ejecutado')
 				->onDelete('cascade')->onUpdate('cascade');
 
-			$table->integer('id_block')->unsigned()->nullable();
-			$table->foreign('id_block')->references('id')->on('block')
+			$table->integer('block_id')->unsigned()->nullable();
+			$table->foreign('block_id')->references('id')->on('block')
 				->onDelete('cascade')->onUpdate('cascade');
 			
-			$table->integer('id_desviador')->unsigned()->nullable();
-			$table->foreign('id_desviador')->references('id')->on('desviador')
+			$table->integer('desviador_id')->unsigned()->nullable();
+			$table->foreign('desviador_id')->references('id')->on('desviador')
 				->onDelete('cascade')->onUpdate('cascade');
 			
-			$table->integer('id_desvio')->unsigned()->nullable();
-			$table->foreign('id_desvio')->references('id')->on('desvio')
+			$table->integer('desvio_id')->unsigned()->nullable();
+			$table->foreign('desvio_id')->references('id')->on('desvio')
 				->onDelete('cascade')->onUpdate('cascade');
 
 			$table->timestamps();

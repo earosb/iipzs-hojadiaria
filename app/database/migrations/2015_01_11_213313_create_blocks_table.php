@@ -24,8 +24,8 @@ class CreateBlocksTable extends Migration {
 			$table->integer('km_inicio');
 			$table->integer('km_termino');
 
-			$table->integer('id_sector')->unsigned();
-			$table->foreign('id_sector')->references('id')->on('sector');
+			$table->integer('sector_id')->unsigned();
+			$table->foreign('sector_id')->references('id')->on('sector');
 				
 			$table->timestamps();
 		});

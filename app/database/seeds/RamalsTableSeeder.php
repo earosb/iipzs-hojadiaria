@@ -18,7 +18,7 @@ class RamalsTableSeeder extends Seeder {
                         'nombre' => 'Coigue - Nacimiento',
                         'km_inicio' => '0',
                         'km_termino' => '5',
-                        'id_sector'	=>	$sector_1,
+                        'sector_id'	=>	$sector_1,
                         'created_at' => $now,
                 		'updated_at' => $now
         		)

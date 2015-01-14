@@ -23,11 +23,11 @@ class CreateTrabajosTable extends Migration {
 			$table->string('nombre');
 			$table->boolean('es_oficial');
 
-			$table->integer('id_tipo_mantenimiento')->unsigned();
-			$table->foreign('id_tipo_mantenimiento')->references('id')->on('tipo_mantenimiento');
+			$table->integer('tipo_mantenimiento_id')->unsigned();
+			$table->foreign('tipo_mantenimiento_id')->references('id')->on('tipo_mantenimiento');
 
-			$table->integer('id_padre')->unsigned()->nullable();
-			$table->foreign('id_padre')->references('id')->on('trabajo');
+			$table->integer('padre_id')->unsigned()->nullable();
+			$table->foreign('padre_id')->references('id')->on('trabajo');
 
 			$table->timestamps();
 		});

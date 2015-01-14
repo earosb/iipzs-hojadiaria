@@ -17,8 +17,8 @@ class CreateMaterialesTable extends Migration {
 			$table->increments('id');
 			$table->integer('cantidad');
 			
-			$table->integer('id_tipo_material')->unsigned();
-			$table->foreign('id_tipo_material')->references('id')->on('tipo_material')
+			$table->integer('tipo_material_id')->unsigned();
+			$table->foreign('tipo_material_id')->references('id')->on('tipo_material')
 				->onDelete('cascade')->onUpdate('cascade');
 
 			

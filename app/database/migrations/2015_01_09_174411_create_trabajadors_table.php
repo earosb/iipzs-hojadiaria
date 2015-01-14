@@ -20,11 +20,11 @@ class CreateTrabajadorsTable extends Migration {
 			$table->string('apellido_p',100);
 			$table->string('apellido_m',100);
 
-			$table->integer('id_cargo')->unsigned();
-			$table->foreign('id_cargo')->references('id')->on('cargo');			
+			$table->integer('cargo_id')->unsigned();
+			$table->foreign('cargo_id')->references('id')->on('cargo');			
 
-			$table->integer('id_grupo_trabajo')->unsigned();
-			$table->foreign('id_grupo_trabajo')->references('id')->on('grupo_trabajo');
+			$table->integer('grupo_trabajo_id')->unsigned();
+			$table->foreign('grupo_trabajo_id')->references('id')->on('grupo_trabajo');
 				
 			$table->timestamps();
 		});

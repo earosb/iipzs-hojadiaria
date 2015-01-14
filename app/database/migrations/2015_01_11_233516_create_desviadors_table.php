@@ -22,8 +22,8 @@ class CreateDesviadorsTable extends Migration {
 			$table->string('nombre');
 			$table->integer('km_inicio');
 
-			$table->integer('id_block')->unsigned();
-			$table->foreign('id_block')->references('id')->on('block');
+			$table->integer('block_id')->unsigned();
+			$table->foreign('block_id')->references('id')->on('block');
 				
 			$table->timestamps();
 		});
