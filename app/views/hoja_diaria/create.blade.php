@@ -36,7 +36,7 @@
 				{{ Form::label('selectsector', 'Sector', array('class' => 'control-label')) }}
 				<div class="controls">
 					<select class="selectpicker" id="selectsector" name="selectsector" data-size="6">
-						<option class="special" value="empty">Seleccione un sector</option>
+						<option value="empty"></option>
 						@foreach ($sectores as $sector)
 			              @if ($sector)
 			                <option value={{ $sector->id }}
@@ -62,62 +62,70 @@
 	        </div>
 
 	        {{-- test
-	        ===================================================== --}}
+	        ===================================================== 
 	    	<div class="form-group col-md-4">
 				{{ Form::label('test', 'test', array('class' => 'control-label')) }}
 				<div class="controls">
 					{{ Form::text('test', null, array('placeholder' => 'test', 'class' => 'form-control input-sm')) }}
 				</div>
-	        </div>
+	        </div>--}}
 
 			{{-- Tabla trabajos realizados
 			===================================================== --}}
 	        <div class="form-group col-md-12">
-			  <table class="table table-bordered table-striped" data-resizable-columns-id="trabajos-table">
+			  <table class="table table-bordered table-striped" id="tab_trabajados">
 			  	<thead>
 			  		<tr>
-			  			<th data-resizable-column-id="1">Trabajos Realizados</th>
-			  			<th data-resizable-column-id="2">Desvío / Desviador</th>
-			  			<th data-resizable-column-id="3">Km inicio</th>
-			  			<th data-resizable-column-id="4">Km término</th>
-			  			<th data-resizable-column-id="5">Unidad</th>
-			  			<th data-resizable-column-id="6">Cantidad</th>
-			  			<th data-resizable-column-id="7">Observaciones</th>
+			  			<th>Trabajos Realizados</th>
+			  			<th>Desvío / Desviador</th>
+			  			<th>Km inicio</th>
+			  			<th>Km término</th>
+			  			<th>Unidad</th>
+			  			<th>Cantidad</th>
+			  			<th>Observaciones</th>
+			  			<th class="text-center"><a id="add_row_trabajos" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a></th>
 			  		</tr>
 			  	</thead>
 			  	<tbody>
-			  		<tr>
-			  			<td>{{ Form::text('trabajo_realizado', null, array('placeholder' => 'Trabajo N°1', 'class' => 'form-control input-sm')) }}</td>
-			  			<td><select class="selectpicker" data-style="btn-inverse" id="selectubicacion" name="selectubicacion" data-live-search="true">
-								{{-- <option></option> --}}
-								{{-- <option value=""></option> --}}
-							</select></td>
+			  		<tr id='addr0' data-id="0" class="hidden" >
+			  			<td data-name="trabajo[">{{ Form::text('trabajo[0]', null, array('placeholder' => 'Trabajo N°1', 'class' => 'form-control')) }}</td>
 
-			  			<td>{{ Form::text('km_inicio', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
-			  			<td>{{ Form::text('km_termino', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
-			  			<td>{{ Form::text('unidad', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
-			  			<td>{{ Form::text('cantidad', null, array('placeholder' => '', 'class' => 'form-control input-sm')) }}</td>
-			  			<td>{{ Form::textarea('observaciones', null, ['size' => '20x2']) }}</td>
+						<td data-name="selectubicacion[">{{ Form::select('selectubicacion[0]', ['Seleccione Sector y Block'], null, [ 'class' => 'selectubicacion']) }}</td>
+			  			<td data-name="km_inicio[">{{ Form::text('km_inicio[0]', null, array('placeholder' => '', 'class' => 'form-control', 'size' => '1' ,'maxlength' => '6')) }}</td>
+			  			<td data-name="km_termino[">{{ Form::text('km_termino[0]', null, array('placeholder' => '', 'class' => 'form-control', 'size' => '1','maxlength' => '6' )) }}</td>
+			  			<td data-name="unidad[">{{ Form::text('unidad[0]', null, array('placeholder' => '', 'class' => 'form-control', 'size' => '1' )) }}</td>
+			  			<td data-name="cantidad[">{{ Form::text('cantidad[0]', null, array('placeholder' => '', 'class' => 'form-control', 'size' => '1' )) }}</td>
+			  			<td data-name="obs[">{{ Form::textarea('obs[0]', null, ['size' => '20x2']) }}</td>
+			  			<td class="text-center" data-name="del"><button nam"del0" class='btn btn-xs glyphicon glyphicon-remove row-remove'></button></td>
 			  		</tr>
 			  	</tbody>
 			  </table>
+			  
 	        </div>
 
 	        {{-- Tabla materiales colocados
 			===================================================== 
 			<div class="form-group col-md-12">
 	        <div class="form-group col-md-6">
-			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-table">
+			  <table class="table table-bordered table-striped" id="tab_material_colocado">
 			  	<thead>
 			  		<tr>
-			  			<th data-resizable-column-id="1">Materiales Colocados</th>
-			  			<th data-resizable-column-id="2">Cantidad</th>
+			  			<th >Materiales Colocados</th>
+			  			<th >Cantidad</th>
+			  			<th class="text-center"><a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a></th>
 			  		</tr>
 			  	</thead>
 			  	<tbody>
-			  		<tr>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  		<tr id='addrMatCol0' data-id="0" class="hidden">
+			  			<td data-name="matColNom">
+			  				{{ Form::text('matColNom0', null, array('class' => 'form-control', 'id' => 'matColNom0')) }}
+		  				</td>
+			  			<td data-name="matColNum">
+			  				{{ Form::text('matColNum0', null, array('class' => 'form-control', 'id' => 'matColNum0', 'size' => '4')) }}
+		  				</td>
+			  			<td class="text-center" data-name="delMatCol">
+			  				<button nam"delMatCol0" class='btn btn-xs glyphicon glyphicon-remove row-remove'></button>
+		  				</td>
 			  		</tr>
 			  	</tbody>
 			  </table>
@@ -126,17 +134,17 @@
 	        {{-- Tabla materiales retirados
 			===================================================== 
 	        <div class="form-group col-md-6 pull-right">
-			  <table class="table table-bordered table-striped" data-resizable-columns-id="materiales-retirados-table">
+			  <table class="table table-bordered table-striped table-sortable">
 			  	<thead>
 			  		<tr>
-			  			<th data-resizable-column-id="1">Materiales Retirados</th>
-			  			<th data-resizable-column-id="2">Cantidad</th>
+			  			<th >Materiales Retirados</th>
+			  			<th >Cantidad</th>
 			  		</tr>
 			  	</thead>
 			  	<tbody>
 			  		<tr>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
-			  			<td><input class="form-control input-sm" id="inputEmail" placeholder="" type="text"></td>
+			  			<td data-name="matRetNom">{{ Form::text('matRetNom0', null, array('class' => 'form-control input-sm')) }}</td>
+			  			<td data-name="matRetNum">{{ Form::text('matRetNum0', null, array('class' => 'form-control input-sm', 'size' => '4' )) }}</td>
 			  		</tr>
 			  	</tbody>
 			  </table>
@@ -195,7 +203,7 @@
 	        	<div class="form-group col-md-4 pull-right">
 		        	<a href="#" class="btn btn-default ">Guardar y nuevo</a>
 					{{-- Form::button('Guardar', array('type' => 'submit', 'class' => 'btn btn-success pull-right')) --}}
-					{{ Form::submit('Guardar') }}
+					{{ Form::submit('Guardar', array('class' => 'btn btn-success')) }}
 		        </div>
 	        </div>
 		  </fieldset>
@@ -225,4 +233,5 @@
 			});
 		});
 	</script>
+
 @stop

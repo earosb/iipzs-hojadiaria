@@ -34,6 +34,8 @@ class HojaDiariaController extends \BaseController {
 	public function store()
 	{
 		$input = Input::all();
+		$sector = Sector::find(Input::get('selectsector'));
+		$block = Block::find(Input::get('selectblock'));
 		return $input;
 	}
 
