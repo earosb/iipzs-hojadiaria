@@ -5,7 +5,7 @@
  * @author earosb
  */
 
-class RamalsTableSeeder extends Seeder {
+class RamalTableSeeder extends Seeder {
 
 	public function run()
 	{

@@ -5,11 +5,10 @@
  * @author earosb
  */
 
-class Material extends \Eloquent {
+class TipoMaterial extends \Eloquent {
 
 	/**
 	 * The database table used by the model.
-	 *
 	 * @var string
 	 */
 	protected $table = 'material';
@@ -29,21 +28,12 @@ class Material extends \Eloquent {
 	protected $fillable = [];
 
 	/**
-	 * [hojasDiarias description]
+	 * [trabajo description]
 	 * @return [type] [description]
 	 */
-	public function hojasDiarias()
+	public function trabajo()
     {
-        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_material', 'material_id', 'hoja_diaria_id');
-    }
-
-    /**
-     * [tipoMaterial description]
-     * @return [type] [description]
-     */
-    public function tipoMaterial()
-    {
-        return $this->belongsTo('Tipomaterial');
+        return $this->belongsTo('Trabajo');
     }
 
 }

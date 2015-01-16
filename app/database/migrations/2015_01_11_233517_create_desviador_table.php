@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author earosb
  */
-class CreateDesviosTable extends Migration {
+class CreateDesviadorTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -16,20 +16,15 @@ class CreateDesviosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('desvio', function(Blueprint $table)
+		Schema::create('desviador', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->string('nombre');
-
-			$table->integer('desviador_inicio_id')->unsigned()->nullable();
-			$table->foreign('desviador_inicio_id')->references('id')->on('desviador');
-
-			$table->integer('desviador_termino_id')->unsigned()->nullable();
-			$table->foreign('desviador_termino_id')->references('id')->on('desviador');
+			$table->integer('km_inicio');
 
 			$table->integer('block_id')->unsigned();
 			$table->foreign('block_id')->references('id')->on('block');
-			
+				
 			$table->timestamps();
 		});
 	}
@@ -42,7 +37,7 @@ class CreateDesviosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('desvio');
+		Schema::drop('desviador');
 	}
 
 }

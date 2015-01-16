@@ -5,7 +5,7 @@
  * @author earosb
  */
 
-class SectorsTableSeeder extends Seeder {
+class SectorTableSeeder extends Seeder {
 
 	public function run()
 	{

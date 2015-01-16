@@ -5,7 +5,7 @@
  * @author earosb
  */
 
-class BlocksTableSeeder extends Seeder {
+class BlockTableSeeder extends Seeder {
 
 
 	public function run()

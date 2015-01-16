@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
  * @author earosb
  */
 
-class CreateMaterialRetiradosTable extends Migration {
+class CreateMaterialRetiradoTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -20,11 +20,10 @@ class CreateMaterialRetiradosTable extends Migration {
 		Schema::create('material_retirado', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('cantidad');
-
-			$table->integer('tipo_material_retirado_id')->unsigned();
-			$table->foreign('tipo_material_retirado_id')->references('id')
-				->on('tipo_material_retirado');
+			$table->string('codigo')->nullable();
+			$table->string('nombre');
+			$table->string('clase');
+			$table->boolean('es_oficial');
 
 			$table->timestamps();
 		});

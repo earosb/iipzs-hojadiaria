@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
  * @author earosb
  */
 
-class CreateTrabajosTable extends Migration {
+class CreateTrabajoTable extends Migration {
 
 	/**
 	 * Run the migrations.

@@ -21,20 +21,11 @@ class MaterialRetirado extends \Eloquent {
 	protected $fillable = [];
 
 	/**
-	 * [hojasDiarias description]
+	 * [detalleMaterialRetirado description]
 	 * @return [type] [description]
 	 */
-	public function hojasDiarias()
+	public function detalleMaterialRetirado()
     {
-        return $this->belongsToMany('HojaDiaria', 'hoja_diaria_material_retirado', 'material_retirado_id', 'hoja_diaria_id');
-    }
-
-    /**
-     * [tipoMaterial description]
-     * @return [type] [description]
-     */
-    public function tipoMaterial()
-    {
-        return $this->belongsTo('TipoMaterialRetirado');
+        return $this->hasMany('DetalleMaterialRetirado');
     }
 }

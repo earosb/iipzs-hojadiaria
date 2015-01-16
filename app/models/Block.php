@@ -62,12 +62,12 @@ class Block extends \Eloquent {
     }
 
     /**
-     * [desvios description]
+     * [detalleHojaDiaria description]
      * @return [type] [description]
      */
-    public function ubicacionTrabajos()
+    public function detalleHojaDiaria()
     {
-        return $this->hasMany('UbicacionTrabajo');
+        return $this->hasMany('DetalleHojaDiaria');
     }
 
 }

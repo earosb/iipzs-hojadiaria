@@ -7,7 +7,7 @@
 	    {{-- HTML::style('css/bootstrap.cosmo.min.css') --}}
 	    {{ HTML::style('css/bootstrap.yeti.min.css') }}
 
-	    {{-- yield para agregar css de cada página --}}
+	    {{-- yield para agregar css en cada página --}}
 	    @yield('css')
 
 	</head>
@@ -70,7 +70,7 @@
 		{{ HTML::script('js/jquery-1.11.2.min.js') }}
 		{{ HTML::script('js/bootstrap.min.js') }}
 
-		{{-- yield para agregar scripts de cada página --}}
+		{{-- yield para agregar scripts en cada página --}}
 		@yield('js')
 
 	</body>

@@ -29,11 +29,11 @@ class Desvio extends \Eloquent {
     }
 
     /**
-     * [ubucacionTrabajos description]
+     * [detalleHojaDiaria description]
      * @return [type] [description]
      */
-    public function ubucacionTrabajos()
+    public function detalleHojaDiaria()
     {
-        return $this->hasMany('UbucacionTrabajo');
+        return $this->hasMany('DetalleHojaDiaria');
     }
 }

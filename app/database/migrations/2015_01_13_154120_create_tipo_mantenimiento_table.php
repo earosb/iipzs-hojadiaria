@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
  * @author earosb
  */
 
-class CreateGrupoTrabajosTable extends Migration {
+class CreateTipoMantenimientoTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -17,10 +17,10 @@ class CreateGrupoTrabajosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('grupo_trabajo', function(Blueprint $table)
+		Schema::create('tipo_mantenimiento', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('sector');
+			$table->string('nombre');
 			$table->timestamps();
 		});
 	}
@@ -33,7 +33,7 @@ class CreateGrupoTrabajosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('grupo_trabajo');
+		Schema::drop('tipo_mantenimiento');
 	}
 
 }

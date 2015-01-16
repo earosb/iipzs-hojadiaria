@@ -7,8 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author earosb
  */
-
-class CreateTrabajoEjecutadosTable extends Migration {
+class CreateBlockTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -17,14 +16,17 @@ class CreateTrabajoEjecutadosTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('trabajo_ejecutado', function(Blueprint $table)
+		Schema::create('block', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->text('observaciones')->nullable();
+			$table->string('estacion');
+			$table->string('nro_bien',10);
+			$table->integer('km_inicio');
+			$table->integer('km_termino');
 
-			$table->integer('trabajo_id')->unsigned();
-			$table->foreign('trabajo_id')->references('id')->on('trabajo');	
-
+			$table->integer('sector_id')->unsigned();
+			$table->foreign('sector_id')->references('id')->on('sector');
+				
 			$table->timestamps();
 		});
 	}
@@ -37,7 +39,7 @@ class CreateTrabajoEjecutadosTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('trabajo_ejecutado');
+		Schema::drop('block');
 	}
 
 }

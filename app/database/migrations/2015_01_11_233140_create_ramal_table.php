@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
  *
  * @author earosb
  */
-class CreateRamalsTable extends Migration {
+class CreateRamalTable extends Migration {
 
 	/**
 	 * Run the migrations.

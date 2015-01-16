@@ -33,13 +33,13 @@ class Trabajo extends \Eloquent {
      * [trabajosEjecutados description]
      * @return [type] [description]
      */
-    public function trabajosEjecutados()
+    public function detalleHojaDiaria()
     {
-        return $this->hasMany('TrabajoEjecutado');
+        return $this->hasMany('DetalleHojaDiaria');
     }
 
     /**
-     * [nombreOficial description]
+     * [alias description]
      * @return [type] [description]
      */
     public function alias()
@@ -47,7 +47,7 @@ class Trabajo extends \Eloquent {
         return $this->belongsTo('Trabajo', 'padre_id');
     }
     /**
-     * [alias description]
+     * [nombreOficial description]
      * @return [type] [description]
      */
     public function nombreOficial()

@@ -22,7 +22,23 @@ class HojaDiariaController extends \BaseController {
 	public function create()
 	{
 		$sectores = Sector::all();
-		return View::make('hoja_diaria.create')->with('sectores', $sectores);
+		$sectoresArray = array();
+		$sectoresArray[0] = '';
+		foreach ($sectores as $sector) {
+			$sectoresArray[$sector->id] = $sector->nombre;
+		}
+
+		$trabajos = array();
+		$trabajos[0] = 'Colocación de Balasto';
+		$trabajos[1] = 'Sustitución Aislada de Durmientes de Madera';
+		$trabajos[2] = 'Sustitución de Durmientes de Puentes';
+		$trabajos[3] = 'Sustitución de Durmientes de Desviadores';
+		$trabajos[4] = 'Reemplazo Continuo de Rieles';
+		$trabajos[5] = 'Sustitución Aislada de Rieles';
+		
+		return View::make('hoja_diaria.create')
+			->with('sectores', $sectoresArray)
+			->with('trabajos', $trabajos);
 	}
 
 	/**
@@ -34,9 +50,16 @@ class HojaDiariaController extends \BaseController {
 	public function store()
 	{
 		$input = Input::all();
+		$obj_php = json_encode($input);
 		$sector = Sector::find(Input::get('selectsector'));
 		$block = Block::find(Input::get('selectblock'));
-		return $input;
+
+		$hojaDiaria = new HojaDiaria;
+		$hojaDiaria->fecha = Input::get('fecha');
+		$hojaDiaria->observaciones = Input::get('observaciones');
+
+
+		return $hojaDiaria; 
 	}
 
 	/**

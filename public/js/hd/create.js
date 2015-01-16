@@ -1,5 +1,37 @@
 $(document).ready(function() {
   /**
+   * DatePicker basado en JQueryUI
+   */
+  
+  $.datepicker.regional['es'] = {
+    closeText: 'Cerrar',
+    prevText: '<Ant',
+    nextText: 'Sig>',
+    currentText: 'Hoy',
+    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+    dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+    weekHeader: 'Sm',
+    dateFormat: 'dd/mm/yy',
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: ''
+  };
+  $.datepicker.setDefaults($.datepicker.regional['es']);
+
+  $("#fecha").datepicker({
+    defaultDate: "-1m",
+    numberOfMonths: 2,
+    showAnim: "slideDown",
+    beforeShow: function(){    
+           $(".ui-datepicker").css('font-size', 12)
+    }
+  });
+
+  /**
    * Consulta ajax para obtener los blocks de un sector, los mete en el select
    * @param  {[type]} e) {e.preventDefault();  var sector_id [description]
    * @return {[type]}    [description]
@@ -59,13 +91,13 @@ $(document).ready(function() {
         /** DONE */
         $('.selectubicacion').empty();
 
-        $('.selectubicacion').append('<option value="' + data.block.id + '">' + data.block.estacion + '</option>');
+        $(".selectubicacion").append("<option value=" + "{'tipo':'block','id':" + data.block.id + "}" + ">" + data.block.estacion + "</option>");
 
         $.each(data.desvios, function(index, desvioObj) {
           if (index == 0) { // Esto no funciona
             $('.selectubicacion').append('<optgroup label="Desvíos">');
           };
-          $('.selectubicacion').append('<option value="' + desvioObj.id + '">' + desvioObj.nombre + '</option>');
+          $(".selectubicacion").append("<option value=" + "{'tipo':'desvio','id':" + desvioObj.id + "}" + ">" + desvioObj.nombre + "</option>");
           if (index == data.desvios.length - 1) { // Esto no funciona
             $('.selectubicacion').append('</optgroup>');
           };
@@ -75,7 +107,7 @@ $(document).ready(function() {
           if (index == 0) { // Esto no funciona
             $('.selectubicacion').append('<optgroup label="Desviadores">');
           };
-          $('.selectubicacion').append('<option value="' + desviadoresObj.id + '">' + desviadoresObj.nombre + '</option>');
+          $(".selectubicacion").append("<option value=" + "{'tipo':'desviador','id':" + desviadoresObj.id + "}" + ">" + desviadoresObj.nombre + "</option>");
         });
 
       });
@@ -236,5 +268,8 @@ $(document).ready(function() {
           $(".table-sortable thead").disableSelection();
 
           $("#add_row_matCol").trigger("click");
+
+          
+
 });
 
