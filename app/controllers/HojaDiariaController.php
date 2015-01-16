@@ -28,17 +28,15 @@ class HojaDiariaController extends \BaseController {
 			$sectoresArray[$sector->id] = $sector->nombre;
 		}
 
-		$trabajos = array();
-		$trabajos[0] = 'Colocación de Balasto';
-		$trabajos[1] = 'Sustitución Aislada de Durmientes de Madera';
-		$trabajos[2] = 'Sustitución de Durmientes de Puentes';
-		$trabajos[3] = 'Sustitución de Durmientes de Desviadores';
-		$trabajos[4] = 'Reemplazo Continuo de Rieles';
-		$trabajos[5] = 'Sustitución Aislada de Rieles';
-		
+		$trabajos = Trabajo::all();
+		$trabajosArray = array();
+		foreach ($trabajos as $trabajo) {
+			$trabajosArray[$trabajo->id] = $trabajo->nombre;
+		}
+				
 		return View::make('hoja_diaria.create')
 			->with('sectores', $sectoresArray)
-			->with('trabajos', $trabajos);
+			->with('trabajos', $trabajosArray);
 	}
 
 	/**
