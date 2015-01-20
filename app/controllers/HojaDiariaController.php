@@ -23,9 +23,14 @@ class HojaDiariaController extends \BaseController {
 	{
 		$sectores = Sector::all();
 		$sectoresArray = array();
-		$sectoresArray[0] = '';
 		foreach ($sectores as $sector) {
 			$sectoresArray[$sector->id] = $sector->nombre;
+		}
+
+		$blocks = Block::where('sector_id', '=', '1')->get();
+		$blocksArray = array();
+		foreach ($blocks as $block) {
+			$blocksArray[$block->id] = $block->estacion;
 		}
 
 		$trabajos = Trabajo::all();
@@ -36,6 +41,7 @@ class HojaDiariaController extends \BaseController {
 				
 		return View::make('hoja_diaria.create')
 			->with('sectores', $sectoresArray)
+			->with('blocks', $blocksArray)
 			->with('trabajos', $trabajosArray);
 	}
 

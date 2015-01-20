@@ -45,4 +45,13 @@ class HojaDiaria extends \Eloquent {
     {
         return $this->hasMany('DetalleHojaDiaria');
     }
+
+    /**
+     * [grupotrabajo description]
+     * @return [type] [description]
+     */
+    public function grupotrabajo()
+    {
+        return $this->belongsTo('GrupoTrabajo');
+    }
 }

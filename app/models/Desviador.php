@@ -17,7 +17,15 @@ class Desviador extends \Eloquent {
 	 * [$fillable description]
 	 * @var [type]
 	 */
-	protected $fillable = [];
+	protected $fillable = ['nombre', 'km_inicio', 'block_id'];
+
+	/**
+     * Add your validation rules here
+     * @var [type]
+     */
+	public static $rules = [
+
+	];
 
 	/**
 	 * Describe la relación entre block 

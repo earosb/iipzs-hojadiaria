@@ -30,6 +30,11 @@ Route::get('/block/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
 Route::get('/block/ajax-block-todo/{idBlock}', 'BlocksController@ajaxBlockTodo');
 
 /**
+ * Desviadores
+ */
+  Route::post('/desviador/ajax-create', 'DesviadorController@ajaxCreate');
+
+/**
  * Raíz
  */
 Route::get('/', function(){return View::make('home');});

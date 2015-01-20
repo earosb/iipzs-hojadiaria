@@ -1,6 +1,21 @@
-.special {
-	font-style: italic;
-    font-weight: bold !important;
-    color:#bc0000 !important;
-    background:#000;
+.myselect {
+	width: 220px;
+	position: relative;
+}
+ 
+select {
+	width: 100%;
+	background: #F3F3F3;
+	color: #585757;
+	padding: 5px;
+	font-size: 13px;
+	line-height: 100%;
+	border: 1px solid #C1C1C1;
+	border-radius: 0;
+	height: 30px;
+	-webkit-appearance: none;
+}
+ 
+option {
+	padding: 10px;
 }

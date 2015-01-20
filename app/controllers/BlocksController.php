@@ -114,8 +114,13 @@ class BlocksController extends \BaseController {
 	{
 		$blocks = Block::where('sector_id', '=', $sectorId)->get();
 		$ramales = Ramal::where('sector_id', '=', $sectorId)->get();
-		return Response::json(array('blocks' => $blocks, 'ramales' => $ramales));
-		// return Response::json($blocks);
+		
+		return Response::json(
+			array(
+				'blocks' => $blocks,
+				'ramales' => $ramales
+			)
+		);
 	}
 
 	/**
@@ -130,11 +135,14 @@ class BlocksController extends \BaseController {
 		$block = Block::find($idBlock);
 		$desvios = Block::find($idBlock)->desvios;
 		$desviadores = Block::find($idBlock)->desviadores;
+		$ramales = Block::find($idBlock)->ramales;
+		
 		return Response::json(
 			array(
-				'block' => $block,
-				'desvios' => $desvios, 
-				'desviadores' => $desviadores
+				'block'			=> $block,
+				'desvios'		=> $desvios, 
+				'desviadores'	=> $desviadores,
+				'ramales' 		=> $ramales
 				)
 			);
 	}
