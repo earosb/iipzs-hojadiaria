@@ -14,29 +14,56 @@
 /**
  * Admin de Usuarios
  */
-Route::post('/login', 'UserController@postLogin');
-Route::get('/logout', 'UserController@getLogout');
+Route::get('login', 'UserController@getLogin');
+
+Route::post('login', 'UserController@postLogin');
 
 /**
- * Hola Diaria
+ * Usuario logueado sin permisos especiales
  */
-Route::resource('hd', 'HojaDiariaController');
+Route::group(array('before' => 'auth'), function(){
+
+	Route::get('/', function(){return View::make('home');});
+
+	Route::get('logout', 'UserController@getLogout');
+	
+});
 
 /**
- * Blocks
+ * Usuario logueado con permisos para de admin
  */
-Route::resource('block', 'BlocksController');
-Route::get('/block/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
-Route::get('/block/ajax-block-todo/{idBlock}', 'BlocksController@ajaxBlockTodo');
+Route::group(array('before' => 'auth|tienePermisos:admin'), function(){
+
+	/**
+	 * Hola Diaria
+	 */
+	Route::resource('hd', 'HojaDiariaController');
+
+	/**
+	 * Block
+	 */
+	Route::resource('block', 'BlocksController');
+	Route::get('/block/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
+	Route::get('/block/ajax-block-todo/{idBlock}', 'BlocksController@ajaxBlockTodo');
+	
+	/**
+	* Desviador
+	*/
+	Route::post('/desviador/ajax-create', 'DesviadorController@ajaxCreate');
+	Route::get('/desviador/ajax-desviadores/{blockId}', 'DesviadorController@ajaxDesviadores');
+
+	/**
+	* Desvío
+	*/
+	Route::post('/desvio/ajax-create', 'DesvioController@ajaxCreate');
+
+
+});
 
 /**
- * Desviadores
+ * Errores
  */
-  Route::post('/desviador/ajax-create', 'DesviadorController@ajaxCreate');
-
-/**
- * Raíz
- */
-Route::get('/', function(){return View::make('home');});
-//Route::get('/', 'UserController@getLogin');
+App::missing(function($exception){
+	return Response::view('error.404');
+});
 

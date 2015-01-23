@@ -46,4 +46,22 @@ class Desviador extends \Eloquent {
         return $this->hasMany('DetalleHojaDiaria');
     }
 
+    /**
+     * [desvioNorte description]
+     * @return [type] [description]
+     */
+    public function desvioNorte()
+    {
+        return $this->belongsTo('Block');
+    }
+
+    /**
+     * [desvioSur description]
+     * @return [type] [description]
+     */
+    public function desvioSur()
+    {
+        return $this->belongsTo('Block');
+    }
+
 }

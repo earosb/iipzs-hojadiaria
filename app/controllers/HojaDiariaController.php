@@ -28,6 +28,7 @@ class HojaDiariaController extends \BaseController {
 		}
 
 		$blocks = Block::where('sector_id', '=', '1')->get();
+		//$ramal = Ramal::where('sector_id', '=', '1')->get();
 		$blocksArray = array();
 		foreach ($blocks as $block) {
 			$blocksArray[$block->id] = $block->estacion;

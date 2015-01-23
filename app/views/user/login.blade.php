@@ -25,23 +25,29 @@
 	<div class="row">
         <div class="col-md-12">
             <div class="well login-box">
-                <form action="{{URL::to('/login')}}" method="POST">
+                {{ Form::open(array('url' => 'login')) }}
                     <legend>{{ trans('form.signin'); }}</legend>
+                    @if($errors->has('login'))
+                        <div class="alert alert-dismissable alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <p><strong>{{ $errors->first('login', ':message') }}</strong></p>
+                        </div>
+                    @endif
                     <div class="form-group">
-                        <label for="username">{{ trans('form.username'); }}</label>
-                        <input value='' id="username" placeholder="Ingrese usuario" type="text" class="form-control" />
+                        {{ Form::label('username', trans('form.username')) }}
+                        {{ Form::text('username', '', array('class' => 'form-control', 'placeholder' => 'Ingrese usuario', 'type' => 'text')) }}
                     </div>
                     <div class="form-group">
-                        <label for="password">{{ trans('form.password'); }}</label>
-                        <input id="password" value='' placeholder="Ingrese contraseña" type="password" class="form-control" />
+                        {{ Form::label('password', trans('form.password')) }}
+                        {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Ingrese contraseña')) }}
+                    </div>
+                    <div class="form-group">
+                        {{ HTML::link('/', trans('form.password_lost')) }}
                     </div>
                     <div class="form-group text-center">
-                        <input type="submit" class="btn btn-success btn-login-submit" value="{{ trans('form.signin'); }}" />
+                        {{ Form::submit(trans('form.signin'), array('class'=>'btn btn-success btn-login-submit')) }}
                     </div>
-                    <div class="form-group">
-                        <a href="">{{ trans('form.password_lost'); }}</a>
-                    </div>
-                </form>
+                {{ Form::close() }}
             </div>
         </div>
     </div>

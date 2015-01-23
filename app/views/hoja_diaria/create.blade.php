@@ -1,27 +1,27 @@
 @extends('layout.landing')
+
 @section('title')
 Icil-icafal - Nueva hoja diaria de trabajo
 @stop
+
 @section('css')
 {{ HTML::style('css/hd/create.css') }}
 {{ HTML::style('//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css') }}
 @stop
-@section('alert')
-<div class="alert alert-dismissable alert-success" style="display:none;">
-	<button type="button" class="close" data-dismiss="alert">×</button>
-	<p>La hoja diaria fue ingresada correctamente!, <a href="#" class="alert-link">Ver</a>.</p>
-</div>
-<div id="msg_error" class="alert alert-dismissable alert-danger" style="display:none;">
-	<button type="button" class="close" data-dismiss="alert">×</button>
-	<strong>Error al obtener datos!</strong> Verifique su conexión a Internet.
-</div>
-@stop
+
 @section('content')
 <div class="row">
-	{{ Form::open(array('url' => 'hd', 'method' => 'post', 'class' => 'form-horizontal')) }}
+	{{ Form::open(array(
+		'url' 		=> 'hd', 
+		'method' 	=> 'post', 
+		'class' 	=> 'form-horizontal')) }}
 	<fieldset>
 		<legend>Nueva hoja diaria de trabajo
-			{{ Form::text('fecha', null, array('class' => 'input-sm', 'placeholder' => 'Ingrese Fecha', 'id' => 'fecha' , 'style' => 'margin:15px;')) }}
+			{{ Form::text('fecha', null, array(
+				'class'			=>'input-sm', 
+				'placeholder' 	=> 'Ingrese Fecha', 
+				'id' 			=> 'fecha' , 
+				'style' 		=> 'margin:15px;')) }}
 			<span class="glyphicon glyphicon-calendar"></span>
 			{{-- Botón "flotante"
 			===================================================== --}}
@@ -94,9 +94,9 @@ Icil-icafal - Nueva hoja diaria de trabajo
 						<td class="text-center" data-name="del"><button nam"del0" class='btn btn-xs glyphicon glyphicon-remove row-remove'></button></td>
 					</tr>
 				</tbody>
-			</table>
+			</table> 
 			{{-- Tabla materiales colocados
-			===================================================== --}}
+			===================================================== 
 			<div class="form-group col-md-12">
 				<div class="form-group col-md-6">
 					<table class="table table-bordered table-striped" id="tab_material_colocado">
@@ -121,9 +121,9 @@ Icil-icafal - Nueva hoja diaria de trabajo
 							</tr>
 						</tbody>
 					</table>
-				</div>
+				</div> --}}
 				{{-- Tabla materiales retirados
-				===================================================== --}}
+				===================================================== 
 				<div class="form-group col-md-6 pull-right">
 					<table class="table table-bordered table-striped table-sortable">
 						<thead>
@@ -140,21 +140,21 @@ Icil-icafal - Nueva hoja diaria de trabajo
 						</tbody>
 					</table>
 				</div>
-			</div>
+			</div> --}}
 			{{-- Textarea Observaciones
-			===================================================== --}}
+			===================================================== 
 			<div class="from-group col-md 6">
 				{{ Form::label('selectblock', 'Observaciones', array('class' => 'control-label')) }}
 				<div class="controls">
 					{{ Form::textarea('observaciones', null, ['size' => '40x3']) }}
 				</div>
-			</div>
+			</div>--}}
 		</div>
 		<legend></legend>
 		{{-- Botones
 		===================================================== --}}
 		<div class="col-md-4 pull-right">
-			<a href="#" class="btn btn-default ">Guardar y nuevo</a>
+			{{-- <a href="#" class="btn btn-default ">Guardar y nuevo</a> --}}
 			{{ Form::button('Guardar', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')) }}
 			{{-- Form::submit('Guardar', array('class' => 'btn btn-success')) --}}
 		</div>
@@ -185,7 +185,7 @@ Icil-icafal - Nueva hoja diaria de trabajo
 						{{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
 						<div class="col-sm-10">
 							{{ Form::text('nombre', null, array('placeholder' => 'Nombre Desviador', 'class' => 'form-control')) }}
-							<div id ="nombre_error"></div>
+							<div class="help-block" id ="nombre_error"></div>
 						</div>
 					</div>
 					{{-- Ubicación Desviador --}}
@@ -193,17 +193,17 @@ Icil-icafal - Nueva hoja diaria de trabajo
 						{{ Form::label('km_inicio', 'Ubicación', array('class' => 'col-sm-2 control-label')) }}
 						<div class="col-sm-10">
 							{{ Form::text('km_inicio', null, array('placeholder' => 'Kilómetro de ubicación', 'class' => 'form-control' )) }}
-							<div id ="km_inicio_error"></div>
+							<div class="help-block" id ="km_inicio_error"></div>
 						</div>
 					</div>
 					{{-- Sector Desviador --}}
 					<div id ="selectsectorDesviador_div" class="form-group">
 						{{ Form::label('selectsectorDesviador', 'Sector', array('class' => 'col-sm-2 control-label')) }}
-						<div class="col-sm-10">
-							<div class="form-group col-sm-10">
+						<div >
+							<div class="col-sm-10">
 								<div class="controls">
 									{{ Form::select('selectsectorDesviador', $sectores, null, [ 'class'=>'form-control', 'id'=>'selectsectorDesviador']) }}
-									<div id ="selectsectorDesviador_error"></div>
+									<div class="help-block" id ="selectsectorDesviador_error"></div>
 								</div>
 							</div>
 						</div>
@@ -211,11 +211,11 @@ Icil-icafal - Nueva hoja diaria de trabajo
 					{{-- Block Desviador --}}
 					<div id ="selectblockDesviador_div" class="form-group">
 						{{ Form::label('selectblockDesviador', 'Block', array('class' => 'col-sm-2 control-label')) }}
-						<div class="col-sm-10">
-							<div class="form-group col-sm-10">
+						<div >
+							<div class="col-sm-10">
 								<div class="controls">
 									{{ Form::select('selectblockDesviador', $blocks, null, [ 'class' => 'form-control', 'id'=>'selectblockDesviador']) }}
-									<div id ="selectblockDesviador_error"></div>
+									<div class="help-block" id ="selectblockDesviador_error"></div>
 								</div>
 							</div>
 						</div>
@@ -237,52 +237,83 @@ Icil-icafal - Nueva hoja diaria de trabajo
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="modalDesvioLabel">Nuevo Desviador</h4>
+				<h4 class="modal-title" id="modalDesviadorLabel">Nuevo Desvío</h4>
 			</div>
 			<div class="modal-body">
-				<form class="form-horizontal" role="form">
-					<fieldset>
-						{{-- Nombre Desviador --}}
-						<div class="form-group">
-							<label class="col-sm-2 control-label" for="textinput">Nombre</label>
-							<div class="col-sm-10">
-								<input type="text" placeholder="Nombre Desviador" class="form-control">
-							</div>
+				{{ Form::open(array(
+				'url'		=>	'/desvio/ajax-create',
+				'method'	=>	'post',
+				'id' 		=> 	'formModalDesvio',
+				'class' 	=> 	'form-horizontal')) }}
+				<fieldset>
+					{{-- Nombre Desvío --}}
+					<div id="nombre_div" class="form-group">
+						{{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
+						<div class="col-sm-10">
+							{{ Form::text('nombre', null, array('placeholder' => 'Nombre Desvío', 'class' => 'form-control')) }}
+							<div class="help-block" id ="nombre_error"></div>
 						</div>
-						{{-- Sector Desviador --}}
-						<div class="form-group">
-							{{ Form::label('selectsector', 'Sector', array('class' => 'col-sm-2 control-label')) }}
+					</div>
+					{{-- Sector Desvío --}}
+					<div id ="selectsectorDesvio_div" class="form-group">
+						{{ Form::label('selectsectorDesvio', 'Sector', array('class' => 'col-sm-2 control-label')) }}
+						<div >
 							<div class="col-sm-10">
-								<div class="form-group col-sm-10">
-									<div class="controls">
-										{{ Form::select('selectsector', $sectores, null, [ 'class'=>'form-control', 'id'=>'selectsector', 'data-size'=>'6']) }}
-									</div>
+								<div class="controls">
+									{{ Form::select('selectsectorDesvio', $sectores, null, [ 'class'=>'form-control', 'id'=>'selectsectorDesvio']) }}
+									<div class="help-block" id ="selectsectorDesvio_error"></div>
 								</div>
 							</div>
 						</div>
-						{{-- Block Desviador --}}
-						<div class="form-group">
-							{{ Form::label('selectblock', 'Block', array('class' => 'col-sm-2 control-label')) }}
+					</div>
+					{{-- Block Desvío --}}
+					<div id ="selectblockDesvio_div" class="form-group">
+						{{ Form::label('selectblockDesvio', 'Block', array('class' => 'col-sm-2 control-label')) }}
+						<div >
 							<div class="col-sm-10">
-								<div class="form-group col-sm-10">
-									<div class="controls">
-										{{ Form::select('selectblock', [''], null, [ 'class' => 'form-control', 'id'=>'selectblock', 'data-live-search'=>'true', 'data-size'=>'6']) }}
-									</div>
+								<div class="controls">
+									{{ Form::select('selectblockDesvio', $blocks, null, [ 'class' => 'form-control', 'id'=>'selectblockDesvio']) }}
+									<div class="help-block" id ="selectblockDesvio_error"></div>
 								</div>
 							</div>
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-							<button type="submit" class="btn btn-primary">Guardar</button>
+					</div>
+					{{-- Desviador Norte --}}
+					<div id ="selectdesvio_norte_div" class="form-group">
+						{{ Form::label('selectdesvio_norte', 'Desviador Norte', array('class' => 'col-sm-2 control-label')) }}
+						<div >
+							<div class="col-sm-10">
+								<div class="controls">
+									{{ Form::select('selectdesvio_norte', [], null, [ 'class' => 'form-control', 'id'=>'selectdesvio_norte', 'disabled']) }}
+									<div class="help-block" id ="selectdesvio_norte_error"></div>
+								</div>
+							</div>
 						</div>
-					</fieldset>
-				</form>
+					</div>
+					{{-- Desviador Sur --}}
+					<div id ="selectdesvio_sur_div" class="form-group">
+						{{ Form::label('selectdesvio_sur', 'Desviador Sur', array('class' => 'col-sm-2 control-label')) }}
+						<div >
+							<div class="col-sm-10">
+								<div class="controls">
+									{{ Form::select('selectdesvio_sur', [], null, [ 'class' => 'form-control', 'id'=>'selectdesvio_sur', 'disabled']) }}
+									<div class="help-block" id ="selectdesvio_sur_error"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+						{{Form::submit('Guardar', array('class'=>'btn btn-primary'))}}
+					</div>
+				</fieldset>
+				{{ Form::close() }}
 			</div>
 		</div>
 	</div>
 </div>
 {{-- Modal form TRABAJO
-===================================================== --}}
+===================================================== 
 <div class="modal fade" id="modalTrabajo" tabindex="-1" role="dialog" aria-labelledby="modalTrabajoLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -293,14 +324,12 @@ Icil-icafal - Nueva hoja diaria de trabajo
 			<div class="modal-body">
 				<form class="form-horizontal" role="form">
 					<fieldset>
-						{{-- Nombre Trabajo --}}
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="textinput">Nombre</label>
 							<div class="col-sm-10">
 								<input type="text" placeholder="Nombre Trabajo" class="form-control">
 							</div>
 						</div>
-						{{-- es_oficial Trabajo --}}
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="textinput">Oficial</label>
 							<div class="col-sm-10">
@@ -311,7 +340,6 @@ Icil-icafal - Nueva hoja diaria de trabajo
 								</div>
 							</div>
 						</div>
-						{{-- Tipo mantenimiento --}}
 						<div class="form-group">
 							<label class="col-sm-2 control-label">Tipo</label>
 							<div class="col-sm-10">
@@ -338,9 +366,9 @@ Icil-icafal - Nueva hoja diaria de trabajo
 			</div>
 		</div>
 	</div>
-</div>
+</div> --}}
 {{-- Modal form Material Colocado
-===================================================== --}}
+===================================================== 
 <div class="modal fade" id="modalMaterial" tabindex="-1" role="dialog" aria-labelledby="modalMaterialLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -351,14 +379,12 @@ Icil-icafal - Nueva hoja diaria de trabajo
 			<div class="modal-body">
 				<form class="form-horizontal" role="form">
 					<fieldset>
-						{{-- Nombre --}}
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="textinput">Nombre</label>
 							<div class="col-sm-10">
 								<input type="text" placeholder="Nombre Material" class="form-control">
 							</div>
 						</div>
-						{{-- Código y Proveedor --}}
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="textinput">Código</label>
 							<div class="col-sm-4">
@@ -369,7 +395,6 @@ Icil-icafal - Nueva hoja diaria de trabajo
 								<input type="text" placeholder="Proveedor del Material" class="form-control">
 							</div>
 						</div>
-						{{-- Unidad y Clase --}}
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="textinput">Unidad</label>
 							<div class="col-sm-4">
@@ -380,7 +405,6 @@ Icil-icafal - Nueva hoja diaria de trabajo
 								<input type="text" placeholder="Clase del Material" class="form-control">
 							</div>
 						</div>
-						{{-- es_oficial Material --}}
 						<div class="form-group">
 							<label class="col-sm-2 control-label" for="textinput">Oficial</label>
 							<div class="col-sm-10">
@@ -400,10 +424,11 @@ Icil-icafal - Nueva hoja diaria de trabajo
 			</div>
 		</div>
 	</div>
-</div>
+</div>--}}
 @stop
 @section('js')
+{{ HTML::script('//code.jquery.com/ui/1.11.2/jquery-ui.js') }}
 {{ HTML::script('js/hd/create.js') }}
 {{ HTML::script('js/hd/create-ajax.js') }}
-{{ HTML::script('//code.jquery.com/ui/1.11.2/jquery-ui.js') }}
+{{ HTML::script('js/hd/utils.js') }}
 @stop

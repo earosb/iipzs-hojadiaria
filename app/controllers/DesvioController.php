@@ -1,10 +1,10 @@
 <?php
 
-class DesviosController extends \BaseController {
+class DesvioController extends \BaseController {
 
 	/**
 	 * Display a listing of the resource.
-	 * GET /desvios
+	 * GET /desvio
 	 *
 	 * @return Response
 	 */
@@ -15,7 +15,7 @@ class DesviosController extends \BaseController {
 
 	/**
 	 * Show the form for creating a new resource.
-	 * GET /desvios/create
+	 * GET /desvio/create
 	 *
 	 * @return Response
 	 */
@@ -26,7 +26,7 @@ class DesviosController extends \BaseController {
 
 	/**
 	 * Store a newly created resource in storage.
-	 * POST /desvios
+	 * POST /desvio
 	 *
 	 * @return Response
 	 */
@@ -37,7 +37,7 @@ class DesviosController extends \BaseController {
 
 	/**
 	 * Display the specified resource.
-	 * GET /desvios/{id}
+	 * GET /desvio/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -49,7 +49,7 @@ class DesviosController extends \BaseController {
 
 	/**
 	 * Show the form for editing the specified resource.
-	 * GET /desvios/{id}/edit
+	 * GET /desvio/{id}/edit
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -61,7 +61,7 @@ class DesviosController extends \BaseController {
 
 	/**
 	 * Update the specified resource in storage.
-	 * PUT /desvios/{id}
+	 * PUT /desvio/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -73,7 +73,7 @@ class DesviosController extends \BaseController {
 
 	/**
 	 * Remove the specified resource from storage.
-	 * DELETE /desvios/{id}
+	 * DELETE /desvio/{id}
 	 *
 	 * @param  int  $id
 	 * @return Response
@@ -81,6 +81,15 @@ class DesviosController extends \BaseController {
 	public function destroy($id)
 	{
 		//
+	}
+
+	/**
+	 * [ajaxCreate description]
+	 * @return [type] [description]
+	 */
+	public function ajaxCreate()
+	{
+		return 'ajaxCreate';
 	}
 
 }

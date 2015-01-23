@@ -6,19 +6,22 @@
  */
 function ajaxBlocks(sector_id, select) {
   $.ajax({
+    type: 'get',
     url: '/block/ajax-blocks/' + sector_id
   }).error(function() {
     alert("Error al obtener los datos\n Por favor, verifique su conexión a Internet");
   }).done(function(data) {
     $(select).empty();
-    $(select).append('<option disabled selected> -- Seleccione un Block -- </option>');
+    $(select).append('<option disabled selected> Seleccione un Block </option>');
 
     $.each(data.blocks, function(index, blockObj) {
       $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
     });
 
     $.each(data.ramales, function(index, ramalObj) {
+      if (index == 0) {$(select).append('<optgroup label="Ramales">');};
       $(select).append('<option value="' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
+      if (index == data.blocks.length - 1) {$(select).append('</optgroup>');};
     });
   });
 }
@@ -36,6 +39,7 @@ $('#selectblock').on('change', function(e) {
     $('.selectubicacion').empty();
   } else {
     $.ajax({
+      type: 'get',
       url: '/block/ajax-block-todo/' + id_block
     }).error(function() {
       // ERROR
@@ -48,7 +52,7 @@ $('#selectblock').on('change', function(e) {
       $('.selectubicacion').append('</optgroup>');
 
       $.each(data.desvios, function(index, desvioObj) {
-        if (index == 0) { // Esto no funciona
+        if (index == 0) {
           $('.selectubicacion').append('<optgroup label="Desvíos">');
         };
         $(".selectubicacion").append("<option value=" + "{'tipo':'desvio','id':" + desvioObj.id + "}" + ">" + desvioObj.nombre + "</option>");
@@ -62,13 +66,6 @@ $('#selectblock').on('change', function(e) {
           $('.selectubicacion').append('<optgroup label="Desviadores">');
         };
         $(".selectubicacion").append("<option value=" + "{'tipo':'desviador','id':" + desviadoresObj.id + "}" + ">" + desviadoresObj.nombre + "</option>");
-      });
-
-      $.each(data.ramales, function(index, ramalObj) {
-        if (index == 0) { // Esto no funciona
-          $('.selectubicacion').append('<optgroup label="Ramales">');
-        };
-        $(".selectubicacion").append("<option value=" + "{'tipo':'ramal','id':" + ramalObj.id + "}" + ">" + ramalObj.nombre + "</option>");
       });
     });
   };
@@ -93,18 +90,21 @@ $("#formModalDesviador").submit(function(e) {
     alert("Error al enviar datos\n Por favor verifique su conexión a Internet");
   }).done(function(data) {
     if (data.fail) {
-      //var errores = '';
-
+      $('#formModalDesviador .form-group').removeClass('required has-error');
+      $('#formModalDesviador .help-block').empty();
       $.each(data.errors, function( index, value ) {
-        $('#modalDesviador #'+index+'_div').removeClass('required has-error')
         var errorDiv = '#'+index+'_error';
         $(errorDiv).addClass('required');
-        $(errorDiv).empty().append(value);
+        $(errorDiv).empty();
+        $.each(value, function(index, val) {
+           $(errorDiv).append('<p>'+val+'</p>');
+        });
         $('#modalDesviador #'+index+'_div').addClass('required has-error')
       });
     } else {
         $('#modalDesviador').modal('hide');
         $('#selectblock').trigger('change');
+        document.getElementById("formModalDesviador").reset();
     };
   });
 

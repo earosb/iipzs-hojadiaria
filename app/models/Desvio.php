@@ -36,4 +36,22 @@ class Desvio extends \Eloquent {
     {
         return $this->hasMany('DetalleHojaDiaria');
     }
+
+    /**
+     * [desviadorNorte description]
+     * @return [type] [description]
+     */
+    public function desviadorNorte()
+    {
+        return $this->hasOne('Desviador');
+    }
+
+    /**
+     * [desviadorSur description]
+     * @return [type] [description]
+     */
+    public function desviadorSur()
+    {
+        return $this->hasOne('Desviador');
+    }
 }

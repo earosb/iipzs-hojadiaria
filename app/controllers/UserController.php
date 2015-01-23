@@ -12,7 +12,7 @@ class UserController extends BaseController {
     {
         //checkea si el usuario esta logueado
         if (\Sentry::check()){
-            echo "usuario logueado";
+            // echo "usuario logueado";
             return View::make("home");
         }else{
             return View::make("user.login");
@@ -26,9 +26,6 @@ class UserController extends BaseController {
      */
     public function postLogin()
     {
-        try
-        {
-
             $username = Input::get('username');
             $password = Input::get('password');
 
@@ -37,51 +34,45 @@ class UserController extends BaseController {
                 'username'	=> $username,
                 'password'	=> $password
             );
-
-            // Autentifica al usuario
-            /*
-                para mantener al usuario autentificado de manera
-                permanente se usa authenticateAndRemember
-
-                sacado de 
-                https://cartalyst.com/manual/sentry#example
-            */
+        try
+        {
             $usuario = Sentry::authenticate($cmredenciales, false);
+            
+            if($usuario)
+            {
+                return Redirect::to('/');
+            }
         }
         catch (Cartalyst\Sentry\Users\LoginRequiredException $e)
         {
-            echo 'Nombre de usuario requerido.';
+            return Redirect::to('login')->withErrors(array('login' => 'Nombre de usuario requerido.'));
         }
         catch (Cartalyst\Sentry\Users\PasswordRequiredException $e)
         {
-            echo 'La Contraseña es requerida.';
+            return Redirect::to('login')->withErrors(array('login' => 'La Contraseña es requerida.'));
         }
         catch (Cartalyst\Sentry\Users\WrongPasswordException $e)
         {
-            echo 'Contraseña incorrecta, intentelo nuevamente.';
+            return Redirect::to('login')->withErrors(array('login' => 'Contraseña incorrecta, intentelo nuevamente.'));
         }
         catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
         {
-            echo 'Usuario no encontrado.';
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario no encontrado.'));
         }
         catch (Cartalyst\Sentry\Users\UserNotActivatedException $e)
         {
-            echo 'Usuario no activado.';
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario no activado.'));
         }
 
         // The following is only required if the throttling is enabled
         catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e)
         {
-            echo 'Usuario suspendido.';
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario suspendido.'));
         }
         catch (Cartalyst\Sentry\Throttling\UserBannedException $e)
         {
-            echo 'Usuario Baneado.';
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario Baneado.'));
         }
-
-   
-
-        echo "FIN";
 
     }
 

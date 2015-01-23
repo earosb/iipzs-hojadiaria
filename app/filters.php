@@ -9,7 +9,7 @@
 | which may be used to do any work before or after a request into your
 | application. Here you may also register your custom route filters.
 |
-*/
+
 
 App::before(function($request)
 {
@@ -21,6 +21,48 @@ App::after(function($request, $response)
 {
 	//
 });
+*/
+
+/**
+ * Sentry Filter
+ */
+
+Route::filter('auth', function(){
+
+	if (!Sentry::check()) return Redirect::guest('login');
+
+});
+
+/**
+ * Tiene permisos
+ * @var [type]
+ */
+Route::filter('tienePermisos', function($route, $request, $userPermission = null)
+{
+    if (Route::currentRouteNamed('putUser') && Sentry::getUser()->id == Request::segment(3) ||
+        Route::currentRouteNamed('showUser') && Sentry::getUser()->id == Request::segment(3))
+    {
+    }
+    else
+    {
+        if($userPermission === null)
+        {
+            $permissions = Config::get('syntara::permissions');
+            $permission = $permissions[Route::current()->getName()];
+        }
+        else
+        {
+            $permission = $userPermission;
+        }
+
+        if(!Sentry::getUser()->hasAccess($permission))
+        {
+            //return Redirect::route('/');
+            return Response::view('error.404');
+        }
+    }
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +73,7 @@ App::after(function($request, $response)
 | session is logged into this application. The "basic" filter easily
 | integrates HTTP Basic authentication for quick, simple checking.
 |
-*/
+
 
 Route::filter('auth', function()
 {
@@ -49,7 +91,7 @@ Route::filter('auth', function()
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();
-});
+});	*/
 
 /*
 |--------------------------------------------------------------------------
@@ -60,13 +102,12 @@ Route::filter('auth.basic', function()
 | it simply checks that the current user is not logged in. A redirect
 | response will be issued if they are, which you may freely change.
 |
-*/
+
 
 Route::filter('guest', function()
 {
 	if (Auth::check()) return Redirect::to('/');
-});
-
+});	*/
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter

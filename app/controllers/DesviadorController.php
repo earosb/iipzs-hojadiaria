@@ -58,5 +58,21 @@ class DesviadorController extends \BaseController {
 	    }
 	}
 
+	/**
+	 * [ajaxDesviadores description]
+	 * @param  [type] $blockId [description]
+	 * @return [type]          [description]
+	 */
+	public function ajaxDesviadores($blockId)
+	{
+		$desviadores = Desviador::where('block_id', '=', $blockId)->get();
+		
+		return Response::json(
+			array(
+				'desviadores' => $desviadores,
+			)
+		);
+	}
+
 
 }
