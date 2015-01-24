@@ -107,5 +107,14 @@ $("#formModalDesviador").submit(function(e) {
         document.getElementById("formModalDesviador").reset();
     };
   });
+});
 
+/**
+ * 
+ */
+$('#selectubicacion[1]').on('change', function(event) {
+  event.preventDefault();
+  /* Act on the event */
+  var id = e.target.value;
+  console.log('select move!');
 });

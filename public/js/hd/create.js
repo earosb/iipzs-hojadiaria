@@ -10,7 +10,7 @@ $(document).ready(function() {
   $('#modalDesvio').on('shown.bs.modal', function(){
     //document.getElementById("selectdesvio_norte").disabled = true;
     //document.getElementById("selectdesvio_sur").disabled = true;
-    console.log('CACA');
+    
   });
   $('#modalTrabajo').on('shown.bs.modal');
   $('#modalMaterial').on('shown.bs.modal');

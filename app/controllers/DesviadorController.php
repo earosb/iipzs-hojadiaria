@@ -8,7 +8,7 @@ class DesviadorController extends \BaseController {
 	 */
 	public function ajaxCreate()
 	{
-	    $inputData = array(
+	    $input = array(
 	      '_token'					=>	Input::get('_token'),
 	      'nombre'					=>  Input::get('nombre'),
 	      'km_inicio'  				=>  Input::get('km_inicio'),
@@ -18,15 +18,15 @@ class DesviadorController extends \BaseController {
 	    /**
 	     * Valida que el block sea mayor que cero antes de sonsultar si existe
 	     */
-	    if ($inputData['selectblockDesviador'] <= 0) {
+	    if ($input['selectblockDesviador'] <= 0) {
 	    	return Response::json(array(
 	            'fail'		=> true,
 	            'errors'	=> array(
-	            	'selectblockDesviador'	=>	array('Debe seleccionar un Block'))
+            	'selectblockDesviador'	=>	array('Debe seleccionar un Block'))
 	        ));
 	    }
 
-	    $block = Block::find($inputData['selectblockDesviador']);
+	    $block = Block::findOrFail($input['selectblockDesviador']);
 
 	    $rules = array(
 	        'nombre'      			=>  'required',
@@ -35,7 +35,7 @@ class DesviadorController extends \BaseController {
 	        'selectblockDesviador'	=>  'required|numeric',
 	    );
 
-	    $validator = Validator::make($inputData, $rules);
+	    $validator = Validator::make($input, $rules);
 
 	    if ($validator->fails()) {
 	    	return Response::json(array(
@@ -46,9 +46,9 @@ class DesviadorController extends \BaseController {
 	    	// Crea el obj y lo guarda
 	    	$desviador = new Desviador;
 
-	    	$desviador->nombre		=	$inputData['nombre'];
-	    	$desviador->km_inicio	=	$inputData['km_inicio'];
-	    	$desviador->block_id 	=	$inputData['selectblockDesviador'];
+	    	$desviador->nombre		=	$input['nombre'];
+	    	$desviador->km_inicio	=	$input['km_inicio'];
+	    	$desviador->block_id 	=	$input['selectblockDesviador'];
 
 	    	$desviador->save();
 

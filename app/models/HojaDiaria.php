@@ -12,7 +12,7 @@ class HojaDiaria extends \Eloquent {
 	 * @var string
 	 */
 	protected $table = 'hoja_diaria';
-	
+
 	/**
 	 * [$fillable description]
 	 * @var [type]

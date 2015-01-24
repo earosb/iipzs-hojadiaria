@@ -39,11 +39,17 @@ class HojaDiariaController extends \BaseController {
 		foreach ($trabajos as $trabajo) {
 			$trabajosArray[$trabajo->id] = $trabajo->nombre;
 		}
+
+		$grupos = GrupoTrabajo::all();
+		foreach ($grupos as $grupo) {
+			$gruposArray[$grupo->id] = $grupo->base;
+		}
 				
 		return View::make('hoja_diaria.create')
 			->with('sectores', $sectoresArray)
 			->with('blocks', $blocksArray)
-			->with('trabajos', $trabajosArray);
+			->with('trabajos', $trabajosArray)
+			->with('grupos', $gruposArray);
 	}
 
 	/**
@@ -54,17 +60,58 @@ class HojaDiariaController extends \BaseController {
 	 */
 	public function store()
 	{
-		$input = Input::all();
-		$obj_php = json_encode($input);
-		$sector = Sector::find(Input::get('selectsector'));
-		$block = Block::find(Input::get('selectblock'));
+		$input = array(
+			'_token'	=>	Input::get('_token'),
+			'fecha'		=> 	Input::get('fecha'),
+			'obs'		=>	Input::get('obs'),
 
-		$hojaDiaria = new HojaDiaria;
-		$hojaDiaria->fecha = Input::get('fecha');
-		$hojaDiaria->observaciones = Input::get('observaciones');
+			'selectsector'	=>	Input::get('selectsector'),
+			'selectblock'	=>	Input::get('selectblock'),
+			'selectgrupos'	=>	Input::get('selectgrupos'),
 
+			'selecttrabajo'		=>	Input::get('selecttrabajo'),
+			'selectubicacion'	=>	Input::get('selectubicacion'),
+			'km_inicio'			=>	Input::get('km_inicio'),
+			'km_termino'		=>	Input::get('km_termino'),
+			'unidad'			=>	Input::get('unidad'),
+			'cantidad'			=>	Input::get('cantidad'),
+		);
+		/**
+		 * Elimina los datos nulos el input oculto del formulario
+		 */
+		unset($input['selecttrabajo'][0]);
+		unset($input['selectubicacion'][0]);
+		unset($input['km_inicio'][0]);
+		unset($input['km_termino'][0]);
+		unset($input['unidad'][0]);
+		unset($input['cantidad'][0]);
 
-		return $hojaDiaria; 
+		$sector = Sector::findOrFail(Input::get('selectsector'));
+		$block = Block::findOrFail(Input::get('selectblock'));
+
+		$hoja = new HojaDiaria;
+		$hoja->fecha = $input['fecha'];
+		$hoja->observaciones = $input['obs'];
+
+		$rules = array(
+            'fecha'			=>	'required|date_format:d/m/Y|before:"now +1 day"',
+            'selectsector'	=>	'required|exists:sector,id',
+            'selectblock'	=>	'required|exists:block,id,sector_id,'.$input['selectsector'],
+            'selectgrupos'	=>	'required|exists:grupo_trabajo,id',
+            'selecttrabajo'	=>	'required|exists:trabajo,id',
+            
+        );
+
+		$validator = Validator::make($input, $rules);
+
+		if ($validator->fails()) {
+			return Response::json(array(
+	            'fail' => true,
+	            'errors' => $validator->messages()
+	        ));
+		}
+
+		return $input; 
 	}
 
 	/**
@@ -76,7 +123,7 @@ class HojaDiariaController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		return 'id hoja diaria '.$id;
+		return 'show id hoja diaria '.$id;
 	}
 
 	/**
