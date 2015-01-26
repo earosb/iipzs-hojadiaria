@@ -43,7 +43,7 @@ class DesviadorController extends \BaseController {
 	            'errors' => $validator->messages()
 	        ));
 	    } else {
-	    	// Crea el obj y lo guarda
+	    	// Crea el obj Desviador y lo guarda
 	    	$desviador = new Desviador;
 
 	    	$desviador->nombre		=	$input['nombre'];

@@ -447,4 +447,5 @@ Icil-icafal - Nueva hoja diaria de trabajo
 {{ HTML::script('js/hd/create/calendar.js') }}
 {{ HTML::script('js/hd/create/table.js') }}
 {{ HTML::script('js/hd/create/formHojaDiaria.js') }}
+{{ HTML::script('js/hd/create/formModalDesviador.js') }}
 @stop

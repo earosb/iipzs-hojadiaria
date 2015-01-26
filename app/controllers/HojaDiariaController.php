@@ -61,6 +61,9 @@ class HojaDiariaController extends \BaseController {
 	 */
 	public function store()
 	{
+		/**
+		 * Validación de fecha, obs, selectsector, selectblock y selectgrupos son válidos
+		 */
 		$input = array(
 			'_token'	=>	Input::get('_token'),
 			'fecha'		=> 	Input::get('fecha'),
@@ -71,8 +74,6 @@ class HojaDiariaController extends \BaseController {
 			'selectgrupos'	=>	Input::get('selectgrupos')
 		);
 
-		$sector = Sector::findOrFail(Input::get('selectsector'));
-		$block = Block::findOrFail(Input::get('selectblock'));
 
 		$rules = array(
             'fecha'			=>	'required|date_format:d/m/Y|before:"now +1 day"',
@@ -85,10 +86,13 @@ class HojaDiariaController extends \BaseController {
 
 		if ($validator->fails()) {
 			return Response::json(array(
-	            'fail' => true,
-	            'errors' => $validator->messages()
+	            'fail'		=>	true,
+	            'errors'	=>	$validator->messages()
 	        ));
 		}
+		/**
+		 * Validación de los trabajos
+		 */
 		$trabajos = array(
 			'selecttrabajo'		=>	Input::get('selecttrabajo'),
 			'selectubicacion'	=>	Input::get('selectubicacion'),
@@ -107,7 +111,38 @@ class HojaDiariaController extends \BaseController {
 		unset($trabajos['unidad']			[0]);
 		unset($trabajos['cantidad']			[0]);
 
-		return array($input, $trabajos); 
+		$rules = null;
+
+		foreach ($trabajos['selectubicacion'] as $key) {
+
+			$tipo = $key['tipo'];
+
+			switch ($tipo) {
+				case 'block':
+					echo "i es una manzana";
+					break;
+				case 'desviador':
+					echo "i es una barra";
+					break;
+				case 'desvio':
+					echo "i es un pastel";
+					break;
+				default:
+					echo "i no es igual a 0, 1 ni 2";
+			}
+
+			$block 		= new Block;
+			$desvio 	= new Desvio;
+			$desviador 	= new Desviador;
+
+			//$rules += 'selecttrabajo'[$key] = 'required|exists:trabajo,id',
+		}
+
+		return array(
+			'fail'		=>	false,
+			'data'		=>	$input,
+			'trabajos'	=>	$trabajos
+		);
 	}
 
 	/**
