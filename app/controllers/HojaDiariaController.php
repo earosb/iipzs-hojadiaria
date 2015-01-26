@@ -54,6 +54,7 @@ class HojaDiariaController extends \BaseController {
 
 	/**
 	 * Store a newly created resource in storage.
+	 * El formulario se valida en dos partes!
 	 * POST /hojadiaria
 	 *
 	 * @return Response
@@ -67,39 +68,17 @@ class HojaDiariaController extends \BaseController {
 
 			'selectsector'	=>	Input::get('selectsector'),
 			'selectblock'	=>	Input::get('selectblock'),
-			'selectgrupos'	=>	Input::get('selectgrupos'),
-
-			'selecttrabajo'		=>	Input::get('selecttrabajo'),
-			'selectubicacion'	=>	Input::get('selectubicacion'),
-			'km_inicio'			=>	Input::get('km_inicio'),
-			'km_termino'		=>	Input::get('km_termino'),
-			'unidad'			=>	Input::get('unidad'),
-			'cantidad'			=>	Input::get('cantidad'),
+			'selectgrupos'	=>	Input::get('selectgrupos')
 		);
-		/**
-		 * Elimina los datos nulos el input oculto del formulario
-		 */
-		unset($input['selecttrabajo'][0]);
-		unset($input['selectubicacion'][0]);
-		unset($input['km_inicio'][0]);
-		unset($input['km_termino'][0]);
-		unset($input['unidad'][0]);
-		unset($input['cantidad'][0]);
 
 		$sector = Sector::findOrFail(Input::get('selectsector'));
 		$block = Block::findOrFail(Input::get('selectblock'));
-
-		$hoja = new HojaDiaria;
-		$hoja->fecha = $input['fecha'];
-		$hoja->observaciones = $input['obs'];
 
 		$rules = array(
             'fecha'			=>	'required|date_format:d/m/Y|before:"now +1 day"',
             'selectsector'	=>	'required|exists:sector,id',
             'selectblock'	=>	'required|exists:block,id,sector_id,'.$input['selectsector'],
             'selectgrupos'	=>	'required|exists:grupo_trabajo,id',
-            'selecttrabajo'	=>	'required|exists:trabajo,id',
-            
         );
 
 		$validator = Validator::make($input, $rules);
@@ -110,8 +89,25 @@ class HojaDiariaController extends \BaseController {
 	            'errors' => $validator->messages()
 	        ));
 		}
+		$trabajos = array(
+			'selecttrabajo'		=>	Input::get('selecttrabajo'),
+			'selectubicacion'	=>	Input::get('selectubicacion'),
+			'km_inicio'			=>	Input::get('km_inicio'),
+			'km_termino'		=>	Input::get('km_termino'),
+			'unidad'			=>	Input::get('unidad'),
+			'cantidad'			=>	Input::get('cantidad')
+		);
+		/**
+		 * Elimina los datos nulos el input oculto del formulario
+		 */
+		unset($trabajos['selecttrabajo']	[0]);
+		unset($trabajos['selectubicacion']	[0]);
+		unset($trabajos['km_inicio']		[0]);
+		unset($trabajos['km_termino']		[0]);
+		unset($trabajos['unidad']			[0]);
+		unset($trabajos['cantidad']			[0]);
 
-		return $input; 
+		return array($input, $trabajos); 
 	}
 
 	/**

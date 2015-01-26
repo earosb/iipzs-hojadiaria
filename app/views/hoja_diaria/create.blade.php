@@ -11,15 +11,15 @@ Icil-icafal - Nueva hoja diaria de trabajo
 	{{ Form::open(array(
 	'url' 		=> 'hd',
 	'method' 	=> 'post',
+	'id'		=>	'formHojaDiaria',
 	'class' 	=> 'form-horizontal')) }}
 	<fieldset>
-		<legend>Nueva hoja diaria de trabajo
-			{{ Form::text('fecha', null, array(
-			'class'			=>'input-sm',
-			'placeholder' 	=> 'Ingrese Fecha',
-			'id' 			=> 'fecha' ,
-			'style' 		=> 'margin:15px;')) }}
-			<span class="glyphicon glyphicon-calendar"></span>
+		<legend style="float:left;">Nueva hoja diaria de trabajo
+			<div class="form-group" id="fecha_div">
+				{{ Form::text('fecha', null, ['class'=>'input-sm', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha', 'style'=>'margin:15px;']) }}
+				<span class="glyphicon glyphicon-calendar"></span>
+				<div class="help-block" id ="fecha_error"></div>
+			</div>
 			{{-- Botón "flotante"
 			===================================================== --}}
 			<div class="btn-group pull-right">
@@ -41,26 +41,29 @@ Icil-icafal - Nueva hoja diaria de trabajo
 		</legend>
 		{{-- Select sector
 		===================================================== --}}
-		<div class="form-group col-md-4">
+		<div id="selectsector_div" class="form-group col-md-4">
 			{{ Form::label('selectsector', 'Sector', array('class' => 'control-label')) }}
 			<div class="controls">
-				{{ Form::select('selectsector', $sectores, null, [ 'class'=>'myselect', 'id'=>'selectsector']) }}
+				{{ Form::select('selectsector', $sectores, null, ['class'=>'myselect', 'id'=>'selectsector']) }}
+				<div class="help-block" id ="selectsector_error"></div>
 			</div>
 		</div>
 		{{-- Select block
 		===================================================== --}}
-		<div class="form-group col-md-4">
+		<div id="selectblock_div" class="form-group col-md-4">
 			{{ Form::label('selectblock', 'Block', array('class' => 'control-label')) }}
 			<div class="controls">
 				{{ Form::select('selectblock', $blocks, null, [ 'class' => 'myselect', 'id'=>'selectblock' ]) }}
+				<div class="help-block" id ="selectblock_error"></div>
 			</div>
 		</div>
 		{{-- Grupo Vía
 		===================================================== --}}
-		<div class="form-group col-md-4">
+		<div id="selectgrupos_div" class="form-group col-md-4">
 			{{ Form::label('selectgrupos', 'Grupo Vía', array('class' => 'control-label')) }}
 			<div class="controls">
 				{{ Form::select('selectgrupos', $grupos, null, [ 'class' => 'myselect', 'id'=>'selectgrupos' ]) }}
+				<div class="help-block" id ="selectgrupos_error"></div>
 			</div>
 		</div>
 		{{-- Tabla trabajos realizados
@@ -166,8 +169,8 @@ Icil-icafal - Nueva hoja diaria de trabajo
 	===================================================== --}}
 	<div class="col-md-4 pull-right">
 		{{-- <a href="#" class="btn btn-default ">Guardar y nuevo</a> --}}
-		{{ Form::button('Guardar', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')) }}
-		{{-- Form::submit('Guardar', array('class' => 'btn btn-success')) --}}
+		{{-- Form::button('Guardar', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')) --}}
+		{{ Form::submit('Guardar', array('class' => 'btn btn-primary pull-right')) }}
 	</div>
 	
 </fieldset>
@@ -439,7 +442,9 @@ Icil-icafal - Nueva hoja diaria de trabajo
 @stop
 @section('js')
 {{ HTML::script('//code.jquery.com/ui/1.11.2/jquery-ui.js') }}
-{{ HTML::script('js/hd/create.js') }}
-{{ HTML::script('js/hd/create-ajax.js') }}
-{{ HTML::script('js/hd/utils.js') }}
+{{ HTML::script('js/hd/create/create.js') }}
+{{ HTML::script('js/hd/create/ajax.js') }}
+{{ HTML::script('js/hd/create/calendar.js') }}
+{{ HTML::script('js/hd/create/table.js') }}
+{{ HTML::script('js/hd/create/formHojaDiaria.js') }}
 @stop
