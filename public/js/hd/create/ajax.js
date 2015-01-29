@@ -15,19 +15,23 @@ function ajaxBlocks(sector_id, select) {
     $(select).append('<option disabled selected> Seleccione un Block </option>');
 
     $.each(data.blocks, function(index, blockObj) {
-      $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
+      if (index < data.blocks.length - 1) {
+        $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion +' - '+data.blocks[index+1].estacion +'</option>');
+      } else {
+        $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
+      }
     });
 
     $.each(data.ramales, function(index, ramalObj) {
-      if (index == 0) {$(select).append('<optgroup label="Ramales">');};
+      if (index === 0) {$(select).append('<optgroup label="Ramales">');}
       $(select).append('<option value="' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
-      if (index == data.blocks.length - 1) {$(select).append('</optgroup>');};
+      if (index === data.blocks.length - 1) {$(select).append('</optgroup>');}
     });
   });
 }
 
 /**
- * Consulta ajax para obtener lo que hay en un block (desvios, desviadores, etc), los mete en el select
+ * Consulta ajax para obtener lo que hay en un block (desvios, desviadores, etc), los mete en el selectubicacion[0]
  * @param {integer} block_id id del block
  * @return {[type]}    [description]
  */
@@ -47,26 +51,35 @@ $('#selectblock').on('change', function(e) {
     }).done(function(data) {
       /** DONE */
       $('.selectubicacion').empty();
+      $('.selectubicacion').append('<option selected="selected" disabled="disabled"> Seleccione vía </option>');
       $('.selectubicacion').append('<optgroup label="Vía Principal">');
-      $(".selectubicacion").append("<option value=" + "{'tipo':'block','id':" + data.block.id + "}" + ">" + data.block.estacion + "</option>");
+      //$(".selectubicacion").append("<option value=" + "{'tipo':'block','id':" + data.block.id + "}" + ">" + data.block.estacion + "</option>");
+      $(".selectubicacion").append('<option value=' + '{"tipo":"block","id":"' + data.block.id + '"}' + '>' + data.block.estacion + '</option>');
       $('.selectubicacion').append('</optgroup>');
 
       $.each(data.desvios, function(index, desvioObj) {
-        if (index == 0) {
+        if (index === 0) {
           $('.selectubicacion').append('<optgroup label="Desvíos">');
-        };
-        $(".selectubicacion").append("<option value=" + "{'tipo':'desvio','id':" + desvioObj.id + "}" + ">" + desvioObj.nombre + "</option>");
+        }
+        $(".selectubicacion").append("<option value=" + "{'tipo':'desvio','id':'" + desvioObj.id + "'}" + ">" + desvioObj.nombre + "</option>");
         if (index == data.desvios.length - 1) { // Esto no funciona
           $('.selectubicacion').append('</optgroup>');
-        };
+        }
       });
 
       $.each(data.desviadores, function(index, desviadoresObj) {
-        if (index == 0) { // Esto no funciona
+        if (index === 0) { // Esto no funciona
           $('.selectubicacion').append('<optgroup label="Desviadores">');
-        };
+        }
         $(".selectubicacion").append("<option value=" + "{'tipo':'desviador','id':" + desviadoresObj.id + "}" + ">" + desviadoresObj.nombre + "</option>");
       });
     });
-  };
+  }
 });
+
+function cargarKilometros(obj){ // enviar el obj completo al servidor con ajax y pico con el error
+  console.log(obj);
+  var json = JSON.parse(obj);
+  //console.log(json['tipo']);
+  console.log(json.tipo);
+}

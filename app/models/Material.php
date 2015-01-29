@@ -5,7 +5,7 @@
  * @author earosb
  */
 
-class TipoMaterial extends \Eloquent {
+class Material extends \Eloquent {
 
 	/**
 	 * The database table used by the model.

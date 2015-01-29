@@ -26,12 +26,12 @@ $("#formModalDesviador").submit(function(e) {
         $.each(value, function(index, val) {
            $(errorDiv).append('<p>'+val+'</p>');
         });
-        $('#modalDesviador #'+index+'_div').addClass('required has-error')
+        $('#modalDesviador #'+index+'_div').addClass('required has-error');
       });
     } else {
         $('#modalDesviador').modal('hide');
         $('#selectblock').trigger('change');
         document.getElementById("formModalDesviador").reset();
-    };
+    }
   });
 });

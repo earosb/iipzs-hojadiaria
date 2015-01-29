@@ -1,16 +1,11 @@
 $(document).ready(function() {
 /**
- * Gatilla un cambio en selectblock para forzar ajax
- */
-  $('#selectblock').trigger('change');
-/**
  * Launch modals
  */
   $('#modalDesviador').on('shown.bs.modal');
   $('#modalDesvio').on('shown.bs.modal', function(){
     //document.getElementById("selectdesvio_norte").disabled = true;
     //document.getElementById("selectdesvio_sur").disabled = true;
-    
   });
   $('#modalTrabajo').on('shown.bs.modal');
   $('#modalMaterial').on('shown.bs.modal');
@@ -35,12 +30,12 @@ $(document).ready(function() {
       $('.selectubicacion').empty();
       $('.selectubicacion').append('<option disabled selected> Seleccione Sector y Block </option>');
 
-        ajaxBlocks(sector_id, '#selectblock');
+      ajaxBlocks(sector_id, '#selectblock');
 
   });
 
 /**
- * Carga los blocks en 
+ * Carga los blocks en modal desvío
  */
   $('#selectsectorDesvio').on('change', function(e) {
     e.preventDefault();
@@ -49,8 +44,22 @@ $(document).ready(function() {
     $('#selectblockDesvio').empty();
 
     ajaxBlocks(sector_id, '#selectblockDesvio');
-
   });
 
-});
+/**
+ * Carga el rango de kilomentrajes de la ubicación en input [kn_inicio][km_termino]
+ 
+  $('.selectubicacion').on('change', function(e) {
+    e.preventDefault();
+    var name = this.name;
+    var op = e.target.value;
+    console.log('name ' + name);
+    console.log('val' + $(this).val());
+    console.log('option ' + op);
+  });*/
 
+ 
+
+ 
+
+});

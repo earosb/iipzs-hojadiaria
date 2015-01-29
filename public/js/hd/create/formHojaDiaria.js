@@ -26,7 +26,7 @@ $('#formHojaDiaria').submit(function(e) {
       });
     } else {
         // todo bene
-        console.log(data); 
+        console.log(data);
     }
   });
 });
