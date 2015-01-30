@@ -89,5 +89,5 @@ $("#add_row_trabajos").trigger("click");
  */
 function llamarAjax(id) {
   var x = document.getElementById("selectubicacion[" + id + "]");
-  cargarKilometros(x.value);
+  cargarKilometros(id);
 }

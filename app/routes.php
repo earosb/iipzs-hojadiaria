@@ -42,9 +42,10 @@ Route::group(array('before' => 'auth|tienePermisos:admin'), function(){
 	/**
 	 * Block
 	 */
-	Route::resource('block', 'BlocksController');
-	Route::get('/block/ajax-blocks/{idSector}', 'BlocksController@ajaxBlocks');
-	Route::get('/block/ajax-block-todo/{idBlock}', 'BlocksController@ajaxBlockTodo');
+	Route::resource('block', 'BlockController');
+	Route::get('/block/ajax-blocks/{idSector}', 'BlockController@ajaxBlocks');
+	Route::get('/block/ajax-block-todo/{idBlock}', 'BlockController@ajaxBlockTodo');
+	Route::get('/block/ajax-get-limites/{data}', 'BlockController@ajaxGetLimites');
 	
 	/**
 	* Desviador

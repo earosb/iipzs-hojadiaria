@@ -1,9 +1,9 @@
 <?php
 
-class BlocksController extends \BaseController {
+class BlockController extends \BaseController {
 
 	/**
-	 * Display a listing of blocks
+	 * Display a listing of block
 	 *
 	 * @return Response
 	 */
@@ -11,7 +11,7 @@ class BlocksController extends \BaseController {
 	{
 		$blocks = Block::all();
 
-		return View::make('blocks.index', compact('blocks'));
+		return View::make('block.index', compact('block'));
 	}
 
 	/**
@@ -21,7 +21,7 @@ class BlocksController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('blocks.create');
+		return View::make('block.create');
 	}
 
 	/**
@@ -40,7 +40,7 @@ class BlocksController extends \BaseController {
 
 		Block::create($data);
 
-		return Redirect::route('blocks.index');
+		return Redirect::route('block.index');
 	}
 
 	/**
@@ -53,7 +53,7 @@ class BlocksController extends \BaseController {
 	{
 		$block = Block::findOrFail($id);
 
-		return View::make('blocks.show', compact('block'));
+		return View::make('block.show', compact('block'));
 	}
 
 	/**
@@ -66,7 +66,7 @@ class BlocksController extends \BaseController {
 	{
 		$block = Block::find($id);
 
-		return View::make('blocks.edit', compact('block'));
+		return View::make('block.edit', compact('block'));
 	}
 
 	/**
@@ -88,7 +88,7 @@ class BlocksController extends \BaseController {
 
 		$block->update($data);
 
-		return Redirect::route('blocks.index');
+		return Redirect::route('block.index');
 	}
 
 	/**
@@ -101,7 +101,7 @@ class BlocksController extends \BaseController {
 	{
 		Block::destroy($id);
 
-		return Redirect::route('blocks.index');
+		return Redirect::route('block.index');
 	}
 
 	/**
@@ -145,6 +145,47 @@ class BlocksController extends \BaseController {
 				'ramales' 		=> $ramales
 				)
 			);
+	}
+
+	/**
+	 * [ajaxGetLimites description]
+	 * @return [type] [description]
+	 */
+	public function ajaxGetLimites($data)
+	{
+		// explode() simil de función split()
+		list($tipo, $id) = explode('-', $data);
+
+		switch ($tipo) {
+			case 'block':
+				$block = Block::find($id);
+				return Response::json(array(
+					'tipo' => 'block',
+					'km_inicio' =>	$block->km_inicio,
+					'km_termino' => $block->km_termino
+					));
+				break;
+			case 'desvio':
+				$desvio = Desvio::find($id);
+				return Response::json(array(
+					'tipo' => 'desvio',
+					'km_inicio' =>	$desvio->block->km_inicio,
+					'km_termino' => $desvio->block->km_termino
+					));
+				break;
+			case 'desviador':
+				$desviador = Desviador::find($id);
+				return Response::json(array(
+					'tipo' => 'desviador',
+					'km_inicio' =>	$desviador->block->km_inicio,
+					));
+				break;
+			
+			default:
+				return "tipo ".$tipo." id ".$id;
+				break;
+		}
+
 	}
 
 }

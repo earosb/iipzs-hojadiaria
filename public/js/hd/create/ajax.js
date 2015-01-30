@@ -16,16 +16,20 @@ function ajaxBlocks(sector_id, select) {
 
     $.each(data.blocks, function(index, blockObj) {
       if (index < data.blocks.length - 1) {
-        $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion +' - '+data.blocks[index+1].estacion +'</option>');
+        $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + ' - ' + data.blocks[index + 1].estacion + '</option>');
       } else {
         $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
       }
     });
 
     $.each(data.ramales, function(index, ramalObj) {
-      if (index === 0) {$(select).append('<optgroup label="Ramales">');}
+      if (index === 0) {
+        $(select).append('<optgroup label="Ramales">');
+      }
       $(select).append('<option value="' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
-      if (index === data.blocks.length - 1) {$(select).append('</optgroup>');}
+      if (index === data.blocks.length - 1) {
+        $(select).append('</optgroup>');
+      }
     });
   });
 }
@@ -43,8 +47,8 @@ $('#selectblock').on('change', function(e) {
     $('.selectubicacion').empty();
   } else {
     $.ajax({
-      type: 'get',
-      url: '/block/ajax-block-todo/' + id_block
+      url: '/block/ajax-block-todo/' + id_block,
+      type: 'GET'
     }).error(function() {
       // ERROR
       alert("Error al obtener los datos\n Por favor verifique su conexión a Internet");
@@ -54,14 +58,15 @@ $('#selectblock').on('change', function(e) {
       $('.selectubicacion').append('<option selected="selected" disabled="disabled"> Seleccione vía </option>');
       $('.selectubicacion').append('<optgroup label="Vía Principal">');
       //$(".selectubicacion").append("<option value=" + "{'tipo':'block','id':" + data.block.id + "}" + ">" + data.block.estacion + "</option>");
-      $(".selectubicacion").append('<option value=' + '{"tipo":"block","id":"' + data.block.id + '"}' + '>' + data.block.estacion + '</option>');
+      $(".selectubicacion").append('<option value=' + 'block-' + data.block.id + '>' + data.block.estacion + '</option>');
       $('.selectubicacion').append('</optgroup>');
 
       $.each(data.desvios, function(index, desvioObj) {
         if (index === 0) {
           $('.selectubicacion').append('<optgroup label="Desvíos">');
         }
-        $(".selectubicacion").append("<option value=" + "{'tipo':'desvio','id':'" + desvioObj.id + "'}" + ">" + desvioObj.nombre + "</option>");
+
+        $(".selectubicacion").append('<option value=' + 'desvio-' + desvioObj.id + '>' + desvioObj.nombre + '</option>');
         if (index == data.desvios.length - 1) { // Esto no funciona
           $('.selectubicacion').append('</optgroup>');
         }
@@ -71,15 +76,45 @@ $('#selectblock').on('change', function(e) {
         if (index === 0) { // Esto no funciona
           $('.selectubicacion').append('<optgroup label="Desviadores">');
         }
-        $(".selectubicacion").append("<option value=" + "{'tipo':'desviador','id':" + desviadoresObj.id + "}" + ">" + desviadoresObj.nombre + "</option>");
+        $(".selectubicacion").append('<option value=' + 'desviador-' + desviadoresObj.id + '>' + desviadoresObj.nombre + '</option>');
       });
+
     });
   }
 });
 
-function cargarKilometros(obj){ // enviar el obj completo al servidor con ajax y pico con el error
-  console.log(obj);
-  var json = JSON.parse(obj);
-  //console.log(json['tipo']);
-  console.log(json.tipo);
+function cargarKilometros(id) {
+  var obj = document.getElementById("selectubicacion[" + id + "]");
+
+  $.ajax({
+      url: '/block/ajax-get-limites/' + obj.value,
+      type: 'get'
+    })
+    .error(function() {
+      alert("Error al obtener los datos\n Por favor verifique su conexión a Internet");
+    })
+    .done(function(data) {
+      switch (data.tipo) {
+        case 'block':
+          var km_inicio = document.getElementById("km_inicio[" + id + "]");
+          km_inicio.setAttribute("placeholder", data.km_inicio);
+          var km_termino = document.getElementById("km_termino[" + id + "]");
+          km_termino.setAttribute("placeholder", data.km_termino);
+          break;
+        case 'desvio':
+          var km_inicio = document.getElementById("km_inicio[" + id + "]");
+          km_inicio.setAttribute("placeholder", data.km_inicio);
+          var km_termino = document.getElementById("km_termino[" + id + "]");
+          km_termino.setAttribute("placeholder", data.km_termino);
+          break;
+        case 'desviador':
+          var km_inicio = document.getElementById("km_inicio[" + id + "]");
+          km_inicio.setAttribute("placeholder", data.km_inicio);
+          var km_termino = document.getElementById("km_termino[" + id + "]");
+          km_termino.setAttribute("placeholder", '');
+          break;
+      }
+
+    });
+
 }

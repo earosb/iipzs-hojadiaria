@@ -15,11 +15,6 @@ Icil-icafal - Nueva hoja diaria de trabajo
 	'class' 	=> 	'form-horizontal')) }}
 	<fieldset>
 		<legend>Nueva hoja diaria de trabajo
-			<div id="fecha_div" style="margin:15px;">
-				{{ Form::text('fecha', null, ['class'=>'input-sm', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha']) }}
-				<span class="glyphicon glyphicon-calendar"></span>
-				<div class="help-block" id ="fecha_error"></div>
-			</div>
 			{{-- Botón "flotante"
 			===================================================== --}}
 			<div class="btn-group pull-right">
@@ -39,6 +34,13 @@ Icil-icafal - Nueva hoja diaria de trabajo
 				</ul>
 			</div>
 		</legend>
+		<div class="col-md-12">
+			<div id="fecha_div">
+				{{ Form::text('fecha', null, ['class'=>'input-sm', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha']) }}
+				<span class="glyphicon glyphicon-calendar"></span>
+				<div class="help-block" id ="fecha_error"></div>
+			</div>
+		</div>
 		<div class="col-md-12">
 			{{-- Select sector
 			===================================================== --}}
