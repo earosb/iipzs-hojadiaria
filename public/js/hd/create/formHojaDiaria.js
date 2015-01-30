@@ -4,6 +4,7 @@ $('#formHojaDiaria').submit(function(e) {
   var $form = $(this),
     data = $form.serialize(),
     url = $form.attr("action");
+
   $.ajax({
     url: url,
     type: 'post',
@@ -26,7 +27,10 @@ $('#formHojaDiaria').submit(function(e) {
       });
     } else {
         // todo bene
+        $('#formHojaDiaria .form-group').removeClass('required has-error');
+        $('#formHojaDiaria .help-block').empty();
         console.log(data);
     }
   });
+
 });

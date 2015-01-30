@@ -37,10 +37,16 @@ class HojaDiariaController extends \BaseController {
 
         $grupos = GrupoTrabajo::all(array('id','base'));
 
+        $materialesAll = Material::all(array('id','nombre'));
+        foreach ($materialesAll as $material) {
+            $materiales[$material->id] = $material->nombre;
+        }
+
         return View::make('hoja_diaria.create')
             ->with('sectores', $sectores)
             ->with('trabajos', $trabajosArray)
-            ->with('grupos', $grupos);
+            ->with('grupos', $grupos)
+            ->with('materiales', $materiales);
     }
 
     /**
@@ -55,6 +61,7 @@ class HojaDiariaController extends \BaseController {
         /**
         * Validación de fecha, obs, selectsector, selectblock y selectgrupos son válidos
         */
+       return Input::All();
         $input = array(
             '_token' =>	Input::get('_token'),
             'fecha'  => Input::get('fecha'),
@@ -92,7 +99,7 @@ class HojaDiariaController extends \BaseController {
             'cantidad'        =>	Input::get('cantidad')
         );
         /**
-        * Elimina los datos nulos el input oculto del formulario
+        * Elimina los datos nulos el input oculto en el formulario
         */
         unset($trabajos['selecttrabajo'][0]);
         unset($trabajos['selectubicacion'][0]);
@@ -101,15 +108,17 @@ class HojaDiariaController extends \BaseController {
         unset($trabajos['unidad'][0]);
         unset($trabajos['cantidad'][0]);
 
-        $rules = null;
+        foreach ($trabajos['selectubicacion'] as $value) {
+            list($tipo, $id) = explode('-', $value);
+        }
 
-
-
-        return array(
-            'fail'     =>	false,
-            'data'     =>	$input,
-            'trabajos' =>	$trabajos
+        $rules = array(
+            'selectubicacion' =>   'required|exists:sector,id',
+            'selectblock'  =>   'required|exists:block,id,sector_id,'.$input['selectsector'],
+            'selectgrupos' =>   'required|exists:grupo_trabajo,id',
         );
+        return Input::All();
+        
     }
 
     /**

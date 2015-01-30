@@ -45,21 +45,5 @@ $(document).ready(function() {
 
     ajaxBlocks(sector_id, '#selectblockDesvio');
   });
-
-/**
- * Carga el rango de kilomentrajes de la ubicación en input [kn_inicio][km_termino]
- 
-  $('.selectubicacion').on('change', function(e) {
-    e.preventDefault();
-    var name = this.name;
-    var op = e.target.value;
-    console.log('name ' + name);
-    console.log('val' + $(this).val());
-    console.log('option ' + op);
-  });*/
-
- 
-
- 
-
+  
 });

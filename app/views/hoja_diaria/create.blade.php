@@ -98,70 +98,72 @@ Icil-icafal - Nueva hoja diaria de trabajo
 				</thead>
 				<tbody>
 					<tr id='addr0' data-id="0" class="hidden">
-						<td data-name="selecttrabajo[">
-							{{ Form::select('selecttrabajo[0]', $trabajos, null, [ 'class'=>'form-control selecttrabajo']) }}
+						<td data-name="trabajoRealizado" data-tipo="trabajo">
+							{{ Form::select('trabajoRealizado[0][trabajo]', $trabajos, null, [ 'class'=>'form-control selecttrabajo']) }}
 						</td>
-						<td data-name="selectubicacion[">
-							{{ Form::select('selectubicacion[0]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
+						<td data-name="trabajoRealizado" data-tipo="ubicacion" data-ubicacion="true">
+							{{ Form::select('trabajoRealizado[0][ubicacion]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
 						</td>
-						<td data-name="km_inicio[">
-							{{ Form::text('km_inicio[0]', null, array('placeholder' => '', 'class' => 'form-control' ,'maxlength' => '7')) }}
+						<td data-name="trabajoRealizado" data-tipo="km_inicio">
+							{{ Form::text('trabajoRealizado[0][km_inicio]', null, array('placeholder' => '', 'class' => 'form-control' ,'maxlength' => '7')) }}
 						</td>
-						<td data-name="km_termino[">
-							{{ Form::text('km_termino[0]', null, array('placeholder' => '', 'class' => 'form-control','maxlength' => '7' )) }}
+						<td data-name="trabajoRealizado" data-tipo="km_termino">
+							{{ Form::text('trabajoRealizado[0][km_termino]', null, array('placeholder' => '', 'class' => 'form-control','maxlength' => '7' )) }}
 						</td>
-						<td data-name="cantidad[">
-							{{ Form::text('cantidad[0]', null, array('placeholder' => '', 'class' => 'form-control' )) }}
+						<td data-name="trabajoRealizado" data-tipo="cantidad">
+							{{ Form::text('trabajoRealizado[0][cantidad]', null, array('placeholder' => '', 'class' => 'form-control' )) }}
 						</td>
 					</tr>
 				</tbody>
 			</table>
 			{{-- Tabla materiales colocados
-			=====================================================
+			===================================================== --}}
 			<div class="form-group col-md-12">
 				<div class="form-group col-md-6">
 					<table class="table table-bordered table-striped" id="tab_material_colocado">
 						<thead>
 							<tr>
 								<th >Materiales Colocados</th>
-								<th >Cantidad</th>
+								<th class="tdkilometro">Cantidad</th>
 								<th class="text-center"><a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a></th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr id='addrMatCol0' data-id="0" class="hidden">
-								<td data-name="matColNom">
-									{{ Form::text('matColNom0', null, array('class' => 'form-control', 'id' => 'matColNom0')) }}
+								<td data-name="matCol" data-tipo="id">
+									{{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control']) }}
 								</td>
-								<td data-name="matColNum">
-									{{ Form::text('matColNum0', null, array('class' => 'form-control', 'id' => 'matColNum0', 'size' => '4')) }}
+								<td data-name="matCol" data-tipo="cant">
+									{{ Form::text('matCol[0][cant]', null, array('class' => 'form-control', 'id' => 'matColNum0', 'size' => '4')) }}
 								</td>
-								<td class="text-center" data-name="delMatCol">
-									<button nam"delMatCol0" class='btn btn-xs glyphicon glyphicon-remove row-remove'></button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div> --}}
-				{{-- Tabla materiales retirados
-				=====================================================
-				<div class="form-group col-md-6 pull-right">
-					<table class="table table-bordered table-striped table-sortable">
-						<thead>
-							<tr>
-								<th >Materiales Retirados</th>
-								<th >Cantidad</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td data-name="matRetNom">{{ Form::text('matRetNom0', null, array('class' => 'form-control input-sm')) }}</td>
-								<td data-name="matRetNum">{{ Form::text('matRetNum0', null, array('class' => 'form-control input-sm', 'size' => '4' )) }}</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
-			</div> --}}
+{{-- Tabla materiales retirados
+===================================================== --}}
+<div class="form-group col-md-6">
+<table class="table table-bordered table-striped" id="tab_material_retirado">
+<thead>
+	<tr>
+		<th >Materiales Retirados</th>
+		<th class="tdkilometro">Cantidad</th>
+		<th class="text-center"><a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a></th>
+	</tr>
+</thead>
+<tbody>
+	<tr id='addrMatRet0' data-id="0" class="hidden">
+		<td data-name="matRet" data-tipo="id">
+			{{ Form::text('matRet[0][id]', null, array('class' => 'form-control input-sm')) }}
+		</td>
+		<td data-name="matRet" data-tipo="cant">
+			{{ Form::text('matRet[0][cant]', null, array('class' => 'form-control input-sm', 'size' => '4' )) }}
+		</td>
+	</tr>
+</tbody>
+</table>
+</div>
+			</div>
 			{{-- Textarea Observaciones
 			===================================================== --}}
 			<div class="col-md-6">
