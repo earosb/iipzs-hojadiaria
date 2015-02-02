@@ -84,7 +84,7 @@ $('#selectblock').on('change', function(e) {
 });
 
 function cargarKilometros(id) {
-  var obj = document.getElementById("trabajoRealizado[" + id + "][ubicacion]");
+  var obj = document.getElementById("trabajos[" + id + "][ubicacion]");
 
   $.ajax({
       url: '/block/ajax-get-limites/' + obj.value,
@@ -96,23 +96,23 @@ function cargarKilometros(id) {
     .done(function(data) {
       switch (data.tipo) {
         case 'block':
-          var km_inicio = document.getElementById("trabajoRealizado[" + id + "][km_inicio]");
+          var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
           km_inicio.setAttribute("placeholder", data.km_inicio);
-          var km_termino = document.getElementById("trabajoRealizado[" + id + "][km_termino]");
+          var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
           km_termino.removeAttribute("disabled");
           km_termino.setAttribute("placeholder", data.km_termino);
           break;
         case 'desvio':
-          var km_inicio = document.getElementById("trabajoRealizado[" + id + "][km_inicio]");
+          var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
           km_inicio.setAttribute("placeholder", data.km_inicio);
-          var km_termino = document.getElementById("trabajoRealizado[" + id + "][km_termino]");
+          var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
           km_termino.removeAttribute("disabled");
           km_termino.setAttribute("placeholder", data.km_termino);
           break;
         case 'desviador':
-          var km_inicio = document.getElementById("trabajoRealizado[" + id + "][km_inicio]");
+          var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
           km_inicio.setAttribute("placeholder", data.km_inicio);
-          var km_termino = document.getElementById("trabajoRealizado[" + id + "][km_termino]");
+          var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
           km_termino.setAttribute("disabled", 'disabled');
           break;
       }

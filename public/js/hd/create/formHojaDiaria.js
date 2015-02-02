@@ -4,14 +4,15 @@ $('#formHojaDiaria').submit(function(e) {
   var $form = $(this),
     data = $form.serialize(),
     url = $form.attr("action");
-
+    console.log(url);
+    console.log(data);
   $.ajax({
     url: url,
     type: 'post',
     dataType: 'json',
     data: data
   }).fail(function() {
-    alert("Error al enviar datos\n Por favor verifique su conexión a Internet");
+    alert("Error al enviar datos\nPor favor verifique su conexión a Internet");
   }).done(function(data) {
     if (data.fail) {
       $('#formHojaDiaria .form-group').removeClass('required has-error');

@@ -42,11 +42,17 @@ class HojaDiariaController extends \BaseController {
             $materiales[$material->id] = $material->nombre;
         }
 
+        $matRetAll = MaterialRetirado::all(array('id', 'nombre'));
+        foreach ($matRetAll as $matRet) {
+            $matRetirados[$matRet->id] = $matRet->nombre;
+        }
+
         return View::make('hoja_diaria.create')
             ->with('sectores', $sectores)
             ->with('trabajos', $trabajosArray)
             ->with('grupos', $grupos)
-            ->with('materiales', $materiales);
+            ->with('materiales', $materiales)
+            ->with('materialesRet', $matRetirados);
     }
 
     /**
@@ -59,65 +65,84 @@ class HojaDiariaController extends \BaseController {
     public function store()
     {
         /**
-        * Validación de fecha, obs, selectsector, selectblock y selectgrupos son válidos
+        * Validación de fecha, obs, selectsector, selectblock y selectgrupos
         */
-       return Input::All();
         $input = array(
-            '_token' =>	Input::get('_token'),
+            '_token' => Input::get('_token'),
             'fecha'  => Input::get('fecha'),
-            'obs'    =>	Input::get('obs'),
-
-            'selectsector' =>	Input::get('selectsector'),
-            'selectblock'  =>	Input::get('selectblock'),
-            'selectgrupos' =>	Input::get('selectgrupos')
+            'obs'    => Input::get('obs'),
+            'selectsector' =>   Input::get('selectsector'),
+            'selectblock'  =>   Input::get('selectblock'),
+            'selectgrupos' =>   Input::get('selectgrupos'),
         );
 
         $rules = array(
-            'fecha'        =>	'required|date_format:d/m/Y|before:"now +1 day"',
-            'selectsector' =>	'required|exists:sector,id',
-            'selectblock'  =>	'required|exists:block,id,sector_id,'.$input['selectsector'],
-            'selectgrupos' =>	'required|exists:grupo_trabajo,id',
+            'fecha'        =>   'required|date_format:d/m/Y|before:"now +1 day"',
+            'selectsector' =>   'required|exists:sector,id',
+            'selectblock'  =>   'required|exists:block,id,sector_id,'.$input['selectsector'],
+            'selectgrupos' =>   'required|exists:grupo_trabajo,id'
         );
 
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
             return Response::json(array(
-                'fail'   =>	true,
-                'errors' =>	$validator->messages()
+                'fail'   => true,
+                'errors' => $validator->messages()
             ));
         }
-        /**
-        * Validación de los trabajos
-        */
-        $trabajos = array(
-            'selecttrabajo'   =>	Input::get('selecttrabajo'),
-            'selectubicacion' =>	Input::get('selectubicacion'),
-            'km_inicio'       =>	Input::get('km_inicio'),
-            'km_termino'      =>	Input::get('km_termino'),
-            'unidad'          =>	Input::get('unidad'),
-            'cantidad'        =>	Input::get('cantidad')
-        );
+
+        $trabajos = Input::get('trabajos');
+        $matCol = Input::get('matCol');
+        $matRet = Input::get('matRet');
+
         /**
         * Elimina los datos nulos el input oculto en el formulario
         */
-        unset($trabajos['selecttrabajo'][0]);
-        unset($trabajos['selectubicacion'][0]);
-        unset($trabajos['km_inicio'][0]);
-        unset($trabajos['km_termino'][0]);
-        unset($trabajos['unidad'][0]);
-        unset($trabajos['cantidad'][0]);
+        unset($trabajos[0]);
+        unset($matCol[0]);
+        unset($matRet[0]);
 
-        foreach ($trabajos['selectubicacion'] as $value) {
-            list($tipo, $id) = explode('-', $value);
+        /**
+        * Validación de los trabajos
+        */
+/*        $rulesTrabajos = array(
+            'cantidad'  =>    'required|exists:sector,id',
+            'trabajo'   =>    'required|exists:sector,id',
+            'ubicacion' =>    'required|exists:sector,id',
+            'km_inicio' =>    'required|exists:sector,id',
+            'km_termino' =>   'required|exists:sector,id',
+            'cantidad'   =>   'required|exists:sector,id',
+        );
+
+        $validator = Validator::make($trabajos, $rulesTrabajos);
+
+        if (!$validator->fails()) {
+            return Response::json(array(
+                'fail'   => true,
+                'errors' => $validator->messages()
+            ));
+        }
+*/
+        /**
+         * Validación materiales colocados
+         */
+        $rulesMatCol = array(
+            'id'  =>    'required|exists:material,id',
+            'cant'  =>  'required|numeric'
+        );
+        $validatorMatCol = Validator::make($matCol, $rulesMatCol);
+        return $validatorMatCol;
+
+        if ($validatorMatCol->fails()) {
+            return Response::json(array(
+                'fail'   => true,
+                'errors' => $validatorMatCol->messages()
+            ));
         }
 
-        $rules = array(
-            'selectubicacion' =>   'required|exists:sector,id',
-            'selectblock'  =>   'required|exists:block,id,sector_id,'.$input['selectsector'],
-            'selectgrupos' =>   'required|exists:grupo_trabajo,id',
-        );
-        return Input::All();
+
+        return 'Todo bene';
         
     }
 
