@@ -15,11 +15,8 @@
 - <https://github.com/jquery/jquery>
 - <https://github.com/twbs/bootstrap>
 - <http://bootswatch.com/cosmo/>
-
-- <https://github.com/silviomoreto/bootstrap-select>
-- <https://github.com/marcuswestin/store.js/>
-- <https://github.com/dobtco/jquery-resizable-columns>
-- <https://github.com/moment/moment>
+- <http://bootswatch.com/yeti/>
+- <http://jqueryui.com/>
 
 
 ## Laravel PHP Framework
