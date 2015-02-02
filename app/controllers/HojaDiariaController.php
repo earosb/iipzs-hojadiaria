@@ -65,24 +65,65 @@ class HojaDiariaController extends \BaseController {
     public function store()
     {
         /**
-        * Validación de fecha, obs, selectsector, selectblock y selectgrupos
+        * extrae todos los campos excepto los ocultos en el formulario
         */
-        $input = array(
-            '_token' => Input::get('_token'),
-            'fecha'  => Input::get('fecha'),
-            'obs'    => Input::get('obs'),
-            'selectsector' =>   Input::get('selectsector'),
-            'selectblock'  =>   Input::get('selectblock'),
-            'selectgrupos' =>   Input::get('selectgrupos'),
-        );
-
+        $input = Input::except('trabajos.0','matCol.0','matRet.0');
+        /**
+         * reglas de validación
+         * @var array
+         */
         $rules = array(
             'fecha'        =>   'required|date_format:d/m/Y|before:"now +1 day"',
             'selectsector' =>   'required|exists:sector,id',
             'selectblock'  =>   'required|exists:block,id,sector_id,'.$input['selectsector'],
-            'selectgrupos' =>   'required|exists:grupo_trabajo,id'
+            'selectgrupos' =>   'required|exists:grupo_trabajo,id',
         );
-
+        /**
+         * agrega reglas de validación si es que existen campos
+         * @var [type]
+         */
+        foreach ($input['trabajos'] as $key => $value) {
+            // explode() simil de función split()
+            list($tipo, $id) = explode('-', $value['ubicacion']);
+            switch ($tipo) {
+                case 'block':
+                    $block = Block::find($id);
+                    $min = $block->km_inicio;
+                    $max = $block->km_termino;
+                    $rules['trabajos.'.$key.'.km_inicio'] = 'required|numeric|between:'.$min.','.$max;
+                    $rules['trabajos.'.$key.'.km_termino'] = 'required|numeric|between:'.$min.','.$max;
+                    break;
+                case 'desvio':
+                    $desvio = Desvio::find($id);
+                    $min = $desvio->block->km_inicio;
+                    $max = $desvio->block->km_termino;
+                    $rules['trabajos.'.$key.'.km_inicio'] = 'required|numeric|between:'.$min.','.$max;
+                    break;
+                case 'desviador':
+                    $desviador = Desviador::find($id);
+                    $min = $desviador->km_inicio;
+                    $max = $desviador->block->km_termino;
+                    $rules['trabajos.'.$key.'.km_inicio'] = 'required|numeric|between:'.$min.','.$max;
+                    $rules['trabajos.'.$key.'.km_termino'] = 'required|numeric|between:'.$min.','.$max;
+                    break;
+            }
+            $rules['trabajos.'.$key.'.trabajo'] = 'required|exists:trabajo,id';
+            $rules['trabajos.'.$key.'.ubicacion'] = 'required';//|exists:'.$tipo.','.$id;
+            $rules['trabajos.'.$key.'.cantidad'] = 'required|numeric';
+            
+        }
+        foreach ($input['matCol'] as $key => $value) {
+            $rules['matCol.'.$key.'.id'] = 'required|exists:material,id';
+            $rules['matCol.'.$key.'.cant'] = 'required|numeric';
+        }
+        foreach ($input['matRet'] as $key => $value) {
+            $rules['matRet.'.$key.'.id'] = 'required|exists:material_retirado,id';
+            $rules['matRet.'.$key.'.cant'] = 'required|numeric';
+        }
+        /**
+         * lleva la validación acabo
+         * @var [type]
+         */
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
@@ -92,57 +133,12 @@ class HojaDiariaController extends \BaseController {
             ));
         }
 
-        $trabajos = Input::get('trabajos');
-        $matCol = Input::get('matCol');
-        $matRet = Input::get('matRet');
-
-        /**
-        * Elimina los datos nulos el input oculto en el formulario
-        */
-        unset($trabajos[0]);
-        unset($matCol[0]);
-        unset($matRet[0]);
-
-        /**
-        * Validación de los trabajos
-        */
-/*        $rulesTrabajos = array(
-            'cantidad'  =>    'required|exists:sector,id',
-            'trabajo'   =>    'required|exists:sector,id',
-            'ubicacion' =>    'required|exists:sector,id',
-            'km_inicio' =>    'required|exists:sector,id',
-            'km_termino' =>   'required|exists:sector,id',
-            'cantidad'   =>   'required|exists:sector,id',
-        );
-
-        $validator = Validator::make($trabajos, $rulesTrabajos);
-
-        if (!$validator->fails()) {
-            return Response::json(array(
-                'fail'   => true,
-                'errors' => $validator->messages()
-            ));
-        }
-*/
-        /**
-         * Validación materiales colocados
-         */
-        $rulesMatCol = array(
-            'id'  =>    'required|exists:material,id',
-            'cant'  =>  'required|numeric'
-        );
-        $validatorMatCol = Validator::make($matCol, $rulesMatCol);
-        return $validatorMatCol;
-
-        if ($validatorMatCol->fails()) {
-            return Response::json(array(
-                'fail'   => true,
-                'errors' => $validatorMatCol->messages()
-            ));
-        }
-
-
-        return 'Todo bene';
+        return Response::json(array(
+                'fail'   => false,
+                'input'  => $input,
+                'rules'  => $rules,
+                'validator'  => $validator,
+        ));
         
     }
 
