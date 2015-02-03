@@ -35,6 +35,8 @@ $("#add_row_trabajos").on("click", function() {
       var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
       c.attr("name", $(cur_td).data("name") + "["+newid+"]["+ $(cur_td).data("tipo")+"]");
       c.attr("id", $(cur_td).data("name") + "["+newid+"]["+ $(cur_td).data("tipo")+"]");
+      td.attr("id", $(cur_td).data("name") + "."+newid+"."+ $(cur_td).data("tipo"));
+      td.attr("name", $(cur_td).data("name") + "."+newid+"."+ $(cur_td).data("tipo"));
       if ($(cur_td).data("ubicacion")) c.attr("onchange", "llamarAjax(" + newid + ")");
       
       c.appendTo($(td));
@@ -100,6 +102,8 @@ $("#add_row_matCol").on("click", function() {
       var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
       c.attr("name", $(cur_td).data("name") + "["+newid+"]["+ $(cur_td).data("tipo")+"]");
       c.attr("id", $(cur_td).data("name") + "["+newid+"]["+ $(cur_td).data("tipo")+"]");
+      td.attr("id", $(cur_td).data("name") + "."+newid+"."+ $(cur_td).data("tipo"));
+      td.attr("name", $(cur_td).data("name") + "."+newid+"."+ $(cur_td).data("tipo"));
       c.appendTo($(td));
       td.appendTo($(tr));
     } else {
@@ -163,7 +167,8 @@ $("#add_row_matRet").on("click", function() {
       var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
       c.attr("name", $(cur_td).data("name") + "["+newid+"]["+ $(cur_td).data("tipo")+"]");
       c.attr("id", $(cur_td).data("name") + "["+newid+"]["+ $(cur_td).data("tipo")+"]");
-      //c.attr("id", $(cur_td).data("name") + "[]["+newid+"][" + $(cur_td).data("tipo")+"]");
+      td.attr("id", $(cur_td).data("name") + "."+newid+"."+ $(cur_td).data("tipo"));
+      td.attr("name", $(cur_td).data("name") + "."+newid+"."+ $(cur_td).data("tipo"));
       c.appendTo($(td));
       td.appendTo($(tr));
     } else {
