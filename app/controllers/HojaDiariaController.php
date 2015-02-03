@@ -110,7 +110,7 @@ class HojaDiariaController extends \BaseController {
             $rules['trabajos.'.$key.'.trabajo'] = 'required|exists:trabajo,id';
             $rules['trabajos.'.$key.'.ubicacion'] = 'required';//|exists:'.$tipo.','.$id;
             $rules['trabajos.'.$key.'.cantidad'] = 'required|numeric';
-            
+
         }
         foreach ($input['matCol'] as $key => $value) {
             $rules['matCol.'.$key.'.id'] = 'required|exists:material,id';

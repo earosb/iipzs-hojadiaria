@@ -3,8 +3,8 @@
 Icil-icafal - Nueva hoja diaria de trabajo
 @stop
 @section('css')
+{{ HTML::style('css/jquery-ui.min.css') }}
 {{ HTML::style('css/hd/create.min.css') }}
-{{ HTML::style('//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css') }}
 @stop
 @section('content')
 <div class="row">
@@ -462,7 +462,7 @@ Icil-icafal - Nueva hoja diaria de trabajo
 </div>--}}
 @stop
 @section('js')
-{{ HTML::script('//code.jquery.com/ui/1.11.2/jquery-ui.js') }}
+{{ HTML::script('js/jquery-ui.min.js') }}
 {{ HTML::script('js/hd/create/calendar.min.js') }}
 {{ HTML::script('js/hd/create/table.js') }}
 {{ HTML::script('js/hd/create/create.js') }}
