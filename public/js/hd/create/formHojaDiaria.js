@@ -19,10 +19,13 @@ $('#formHojaDiaria').submit(function(e) {
       $.each(data.errors, function( index, value ) {
         if (index.substring(0, 8) == 'trabajos') {
           document.getElementById(index).setAttribute("class", "form-group required has-error");
+          alertify.error("Se encontraron errores en Trabajos Realizados");
         }else if(index.substring(0, 6) == 'matCol'){
           document.getElementById(index).setAttribute("class", "form-group required has-error");
+          alertify.error("Se encontraron errores en Materiales Colocados");
         }else if(index.substring(0, 6) == 'matRet'){
           document.getElementById(index).setAttribute("class", "form-group required has-error");
+          alertify.error("Se encontraron errores en Materiales Retirados");
         }else{
           var errorDiv = '#'+index+'_error';
           $(errorDiv).addClass('required');
@@ -35,8 +38,11 @@ $('#formHojaDiaria').submit(function(e) {
       });
     } else {
         // todo bene
+        alertify.log("Hoja Diaria guardada con éxito");
         $('#formHojaDiaria .form-group').removeClass('required has-error');
         $('#formHojaDiaria .help-block').empty();
+        document.getElementById("formHojaDiaria").reset();
+        console.log(data);
     }
   });
 

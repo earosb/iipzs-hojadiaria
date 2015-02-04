@@ -1,43 +1,35 @@
 <?php
 
-class HojaDiariaController extends \BaseController {
+use Carbon\Carbon;
+
+class HojaDiariaController extends \BaseController
+{
 
     /**
-    * Display a listing of the resource.
-    * GET /hd
-    *
-    * @return Response
-    */
-    public function index()
-    {
-        //
-    }
-
-    /**
-    * Show the form for creating a new resource.
-    * GET /hd/create
-    *
-    * @return Response
-    */
+     * Show the form for creating a new resource.
+     * GET /hd/create
+     *
+     * @return Response
+     */
     public function create()
     {
-        $sectores = Sector::all(array('id','nombre'));
+        $sectores = Sector::all(array('id', 'nombre'));
 
         $trabajos = Trabajo::all();
         $trabajosArray = array();
         foreach ($trabajos as $trabajo) {
             if (!$trabajo->materiales() != null) { //   ESTO NO FUNCIONA :(
                 foreach ($trabajo->materiales as $material) {
-                    $trabajosArray[$trabajo->id] = $trabajo->nombre." [".$material->unidad."]";
+                    $trabajosArray[$trabajo->id] = $trabajo->nombre . " [" . $material->unidad . "]";
                 }
-            }else{
+            } else {
                 $trabajosArray[$trabajo->id] = $trabajo->nombre;
             }
         }
 
-        $grupos = GrupoTrabajo::all(array('id','base'));
+        $grupos = GrupoTrabajo::all(array('id', 'base'));
 
-        $materialesAll = Material::all(array('id','nombre'));
+        $materialesAll = Material::all(array('id', 'nombre'));
         foreach ($materialesAll as $material) {
             $materiales[$material->id] = $material->nombre;
         }
@@ -56,27 +48,38 @@ class HojaDiariaController extends \BaseController {
     }
 
     /**
-    * Store a newly created resource in storage.
-    * El formulario se valida en dos partes!
-    * POST /hojadiaria
-    *
-    * @return Response
-    */
+     * Display a listing of the resource.
+     * GET /hd
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     * El formulario se valida en dos partes!
+     * POST /hojadiaria
+     *
+     * @return Response
+     */
     public function store()
     {
         /**
-        * extrae todos los campos excepto los ocultos en el formulario
-        */
-        $input = Input::except('trabajos.0','matCol.0','matRet.0');
+         * extrae todos los campos excepto los ocultos en el formulario
+         */
+        $input = Input::except('trabajos.0', 'matCol.0', 'matRet.0');
         /**
          * reglas de validación
          * @var array
          */
         $rules = array(
-            'fecha'        =>   'required|date_format:d/m/Y|before:"now +1 day"',
-            'selectsector' =>   'required|exists:sector,id',
-            'selectblock'  =>   'required|exists:block,id,sector_id,'.$input['selectsector'],
-            'selectgrupos' =>   'required|exists:grupo_trabajo,id',
+            'fecha' => 'required|date_format:d/m/Y|before:"now +1 day"',
+            'selectsector' => 'required|exists:sector,id',
+            'selectblock' => 'required|exists:block,id,sector_id,' . $input['selectsector'],
+            'selectgrupos' => 'required|exists:grupo_trabajo,id',
         );
         /**
          * agrega reglas de validación si es que existen campos
@@ -90,35 +93,35 @@ class HojaDiariaController extends \BaseController {
                     $block = Block::find($id);
                     $min = $block->km_inicio;
                     $max = $block->km_termino;
-                    $rules['trabajos.'.$key.'.km_inicio'] = 'required|numeric|between:'.$min.','.$max;
-                    $rules['trabajos.'.$key.'.km_termino'] = 'required|numeric|between:'.$min.','.$max;
+                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . $min . ',' . $max;
+                    $rules['trabajos.' . $key . '.km_termino'] = 'required|numeric|between:' . $min . ',' . $max;
                     break;
                 case 'desvio':
                     $desvio = Desvio::find($id);
                     $min = $desvio->block->km_inicio;
                     $max = $desvio->block->km_termino;
-                    $rules['trabajos.'.$key.'.km_inicio'] = 'required|numeric|between:'.$min.','.$max;
+                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . $min . ',' . $max;
                     break;
                 case 'desviador':
                     $desviador = Desviador::find($id);
                     $min = $desviador->km_inicio;
                     $max = $desviador->block->km_termino;
-                    $rules['trabajos.'.$key.'.km_inicio'] = 'required|numeric|between:'.$min.','.$max;
-                    $rules['trabajos.'.$key.'.km_termino'] = 'required|numeric|between:'.$min.','.$max;
+                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . $min . ',' . $max;
+                    $rules['trabajos.' . $key . '.km_termino'] = 'required|numeric|between:' . $min . ',' . $max;
                     break;
             }
-            $rules['trabajos.'.$key.'.trabajo'] = 'required|exists:trabajo,id';
-            $rules['trabajos.'.$key.'.ubicacion'] = 'required';//|exists:'.$tipo.','.$id;
-            $rules['trabajos.'.$key.'.cantidad'] = 'required|numeric';
+            $rules['trabajos.' . $key . '.trabajo'] = 'required|exists:trabajo,id';
+            $rules['trabajos.' . $key . '.ubicacion'] = 'required';//|exists:'.$tipo.','.$id;
+            $rules['trabajos.' . $key . '.cantidad'] = 'required|numeric';
 
         }
         foreach ($input['matCol'] as $key => $value) {
-            $rules['matCol.'.$key.'.id'] = 'required|exists:material,id';
-            $rules['matCol.'.$key.'.cant'] = 'required|numeric';
+            $rules['matCol.' . $key . '.id'] = 'required|exists:material,id';
+            $rules['matCol.' . $key . '.cant'] = 'required|numeric';
         }
         foreach ($input['matRet'] as $key => $value) {
-            $rules['matRet.'.$key.'.id'] = 'required|exists:material_retirado,id';
-            $rules['matRet.'.$key.'.cant'] = 'required|numeric';
+            $rules['matRet.' . $key . '.id'] = 'required|exists:material_retirado,id';
+            $rules['matRet.' . $key . '.cant'] = 'required|numeric';
         }
         /**
          * lleva la validación acabo
@@ -128,63 +131,83 @@ class HojaDiariaController extends \BaseController {
 
         if ($validator->fails()) {
             return Response::json(array(
-                'fail'   => true,
+                'fail' => true,
                 'errors' => $validator->messages()
             ));
         }
 
+        /**
+         * Sin errores, listo para guardar
+         */
+        $dateFlag = Carbon::parse($input['fecha']);
+        $hojaDiaria = new HojaDiaria;
+        $hojaDiaria->fecha = $dateFlag->toDateString();
+        $hojaDiaria->observaciones = $input['obs'];
+        $hojaDiaria->grupo_via_id = $input['selectgrupos'];
+        $hojaDiaria->save();
+
+        foreach ($input['matRet'] as $key => $value) {
+            $matRet = MaterialRetirado::find($value['id']);
+            $detMatRet = new DetalleMaterialRetirado;
+            $detMatRet->cantidad    =   $value['cant'];
+            $detMatRet->material_retirado_id   =   $matRet->id;
+            $detMatRet->hoja_diaria_id  =   $hojaDiaria->id;
+            $detMatRet->save();
+        }
+
         return Response::json(array(
-                'fail'   => false,
-                'input'  => $input,
-                'rules'  => $rules,
-                'validator'  => $validator,
+            'fail' => false,
+            'input' => $input,
+            'hojaDiaria' => $hojaDiaria,
+            'detMatRet' => $detMatRet,
         ));
-        
+
     }
 
     /**
-    * Display the specified resource.
-    * GET /hd/{id}
-    *
-    * @param  int  $id
-    * @return Response
-    */
+     * Display the specified resource.
+     * GET /hd/{id}
+     *
+     * @param  int $id
+     * @return Response
+     */
     public function show($id)
     {
-        return 'show id hoja diaria '.$id;
+        $dt = Carbon::parse('04-02-2015');
+        return $dt->toDateString();
     }
 
     /**
-    * Show the form for editing the specified resource.
-    * GET /hd/{id}/edit
-    *
-    * @param  int  $id
-    * @return Response
-    */
+     * Show the form for editing the specified resource.
+     * GET /hd/{id}/edit
+     *
+     * @param  int $id
+     * @return Response
+     */
     public function edit($id)
     {
         //
     }
 
     /**
-    * Update the specified resource in storage.
-    * PUT /hd/{id}
-    *
-    * @param  int  $id
-    * @return Response
-    */
+     * Update the specified resource in storage.
+     * PUT /hd/{id}
+     *
+     * @param  int $id
+     * @return Response
+     */
     public function update($id)
     {
         //
     }
 
     /**
-    * Remove the specified resource from storage.
-    * DELETE /hd/{id}
-    *
-    * @param  int  $id
-    * @return Response
-    */
+     * Remove the specified resource from storage.
+     * DELETE /hd/{id}
+     *
+     * @param  int $id
+     * @return Response
+     */
     public function destroy($id)
     {
         //
