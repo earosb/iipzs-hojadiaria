@@ -149,7 +149,7 @@ class BlockController extends \BaseController {
 
 	/**
 	 * [ajaxGetLimites description]
-	 * @return [type] [description]
+	 * @return json
 	 */
 	public function ajaxGetLimites($data)
 	{
@@ -186,6 +186,35 @@ class BlockController extends \BaseController {
 				break;
 		}
 
+	}
+
+	/**
+	 * Retorna los desviadores existentes en el block
+	 * GET /block/{id}/desviadores
+	 * @param $id
+	 * @return json
+	 */
+	public function getDesviadores($id)
+	{
+		try{
+			$desviadores = Block::find($id)->desviadores;
+			if($desviadores->isEmpty()){
+				return Response::json(array(
+					'error' => true,
+					'msg' => 'El Block seleccionado no posee Desviadores',
+				));
+			}
+			return Response::json(array(
+				'error' => false,
+				'desviadores' => $desviadores,
+			));
+		}
+		catch (\Exception $e){
+			return Response::json(array(
+				'error' => true,
+				'msg'	=>	'Block no encontrado. Por favor, verifique su conexión a Internet'
+			));
+		}
 	}
 
 }

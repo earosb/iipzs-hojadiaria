@@ -79,18 +79,20 @@
 			</div>
 			@yield('content')
 		</div>
-		{{-- Modals
-		===================================================== --}}
-		@yield('modals')
 		{{-- Footer
 		===================================================== --}}
 		<div class="footer">
 			@yield('footer')
 		</div>
+		{{-- Archivos js --}}
 		{{ HTML::script('js/jquery-1.11.2.min.js') }}
 		{{ HTML::script('js/bootstrap.min.js') }}
 		{{ HTML::script('js/alertify.min.js') }}
+
 		{{-- yield para agregar scripts en cada página --}}
 		@yield('js')
+
+		{{-- Modals --}}
+		@yield('modals')
 	</body>
 </html>

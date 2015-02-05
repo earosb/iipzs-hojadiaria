@@ -3,12 +3,10 @@ $(document).ready(function() {
  * Launch modals
  */
   $('#modalDesviador').on('shown.bs.modal');
-  $('#modalDesvio').on('shown.bs.modal', function(){
-    //document.getElementById("selectdesvio_norte").disabled = true;
-    //document.getElementById("selectdesvio_sur").disabled = true;
-  });
+  $('#modalDesvio').on('shown.bs.modal');
   $('#modalTrabajo').on('shown.bs.modal');
-  $('#modalMaterial').on('shown.bs.modal');
+  $('#modalMaterialCol').on('shown.bs.modal');
+  $('#modalMaterialRet').on('shown.bs.modal');
 
 /**
  * Carga los blocks en modal Form Desviador
@@ -32,18 +30,6 @@ $(document).ready(function() {
 
       ajaxBlocks(sector_id, '#selectblock');
 
-  });
-
-/**
- * Carga los blocks en modal desvío
- */
-  $('#selectsectorDesvio').on('change', function(e) {
-    e.preventDefault();
-    var sector_id = e.target.value;
-    console.log(sector_id);
-    $('#selectblockDesvio').empty();
-
-    ajaxBlocks(sector_id, '#selectblockDesvio');
   });
   
 });

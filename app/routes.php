@@ -21,50 +21,59 @@ Route::post('login', 'UserController@postLogin');
 /**
  * Usuario logueado sin permisos especiales
  */
-Route::group(array('before' => 'auth'), function(){
+Route::group(array('before' => 'auth'), function () {
 
-	Route::get('/', function(){return View::make('home');});
+    Route::get('/', function () {
+        return View::make('home');
+    });
 
-	Route::get('logout', 'UserController@getLogout');
-	
+    Route::get('logout', 'UserController@getLogout');
+
 });
 
 /**
  * Usuario logueado con permisos para de admin
  */
-Route::group(array('before' => 'auth|tienePermisos:admin'), function(){
+Route::group(array('before' => 'auth|tienePermisos:admin'), function () {
 
-	/**
-	 * Hola Diaria
-	 */
-	Route::resource('hd', 'HojaDiariaController');
+    /**
+     * Hola Diaria
+     */
+    Route::resource('hd', 'HojaDiariaController');
 
-	/**
-	 * Block
-	 */
-	Route::resource('block', 'BlockController');
-	Route::get('/block/ajax-blocks/{idSector}', 'BlockController@ajaxBlocks');
-	Route::get('/block/ajax-block-todo/{idBlock}', 'BlockController@ajaxBlockTodo');
-	Route::get('/block/ajax-get-limites/{data}', 'BlockController@ajaxGetLimites');
-	
-	/**
-	* Desviador
-	*/
-	Route::post('/desviador/ajax-create', 'DesviadorController@ajaxCreate');
-	Route::get('/desviador/ajax-desviadores/{blockId}', 'DesviadorController@ajaxDesviadores');
+    /**
+     * Block
+     */
+    Route::resource('block', 'BlockController');
+    Route::get('/block/ajax-blocks/{idSector}', 'BlockController@ajaxBlocks');
+    Route::get('/block/ajax-block-todo/{idBlock}', 'BlockController@ajaxBlockTodo');
+    Route::get('/block/ajax-get-limites/{data}', 'BlockController@ajaxGetLimites');
+    Route::get('/block/{id}/desviadores', 'BlockController@getDesviadores');
 
-	/**
-	* Desvío
-	*/
-	Route::post('/desvio/ajax-create', 'DesvioController@ajaxCreate');
+    /**
+     * Desviador
+     */
+    Route::post('/desviador/ajax-create', 'DesviadorController@ajaxCreate');
+    Route::get('/desviador/ajax-desviadores/{blockId}', 'DesviadorController@ajaxDesviadores');
+    Route::get('/desviador/get-desviadores-sur/{id}', 'DesviadorController@getDesviadoresSur');
 
+    /**
+     * Desvío
+     */
+    Route::resource('desvio', 'DesvioController');
+
+    /**
+     * Material Retirado
+     */
+    Route::resource('material-retirado', 'MaterialRetiradoController');
+    Route::get('material-retirado/ajax-list', 'MaterialRetiradoController@ajaxList');
 
 });
 
 /**
  * Errores
  */
-App::missing(function($exception){
-	return Response::view('error.404');
+App::missing(function ($exception) {
+    return Response::view('error.404');
 });
 
