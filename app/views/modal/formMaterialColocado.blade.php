@@ -17,52 +17,72 @@
                 <h4 class="modal-title" id="modalMaterialColLabel">Nuevo Material</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                {{ Form::open(array(
+                'url'		=>	'/material-colocado',
+                'method'	=>	'post',
+                'id' 		=> 	'formMaterialColocado',
+                'class' 	=> 	'form-horizontal')) }}
                     <fieldset>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="textinput">Nombre</label>
-
+                        {{-- Nombre del material --}}
+                        <div id="nombre_div" class="form-group">
+                            {{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
                             <div class="col-sm-10">
-                                <input type="text" placeholder="Nombre Material" class="form-control">
+                                {{ Form::text('nombre', null, array('placeholder' => 'Nombre Material', 'class' => 'form-control')) }}
+                                <div class="help-block" id ="nombre_error"></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="textinput">Código</label>
-
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="Código del Material" class="form-control">
+                            {{-- Código del material --}}
+                            <div id="codigo_div">
+                                {{ Form::label('codigo', 'Código', array('class' => 'col-sm-2 control-label')) }}
+                                <div class="col-sm-4">
+                                    {{ Form::text('codigo', null, array('placeholder' => 'Códio del Material', 'class' => 'form-control')) }}
+                                    <div class="help-block" id ="codigo_error"></div>
+                                </div>
                             </div>
-                            <label class="col-sm-2 control-label" for="textinput">Proveedor</label>
 
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="Proveedor del Material" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="textinput">Unidad</label>
-
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="Unidad del Material" class="form-control">
-                            </div>
-                            <label class="col-sm-2 control-label" for="textinput">Clase</label>
-
-                            <div class="col-sm-4">
-                                <input type="text" placeholder="Clase del Material" class="form-control">
+                            {{-- Proveedor del material --}}
+                            <div id="proveedor_div">
+                                {{ Form::label('proveedor', 'Proveedor', array('class' => 'col-sm-2 control-label')) }}
+                                <div class="col-sm-4">
+                                    {{ Form::text('proveedor', null, array('placeholder' => 'Proveedor del Material', 'class' => 'form-control')) }}
+                                    <div class="help-block" id ="proveedor_error"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label" for="textinput">Oficial</label>
+                            {{-- Unidad del material --}}
+                            <div id="unidad_div">
+                                {{ Form::label('unidad', 'Unidad', array('class' => 'col-sm-2 control-label')) }}
+                                <div class="col-sm-4">
+                                    {{ Form::text('unidad', null, array('placeholder' => 'Unidad del Material', 'class' => 'form-control')) }}
+                                    <div class="help-block" id ="unidad_error"></div>
+                                </div>
+                            </div>
 
+                            {{-- Clase del material --}}
+                            <div id="clase_div">
+                                {{ Form::label('clase', 'Clase', array('class' => 'col-sm-2 control-label')) }}
+                                <div class="col-sm-4">
+                                    {{ Form::text('clase', null, array('placeholder' => 'Clase del Material', 'class' => 'form-control')) }}
+                                    <div class="help-block" id ="clase_error"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Checkbox esOficial --}}
+                        <div id="es_oficial_div" class="form-group">
+                            {{ Form::label('es_oficial', 'Oficial', array('class' => 'col-sm-2 control-label')) }}
                             <div class="col-sm-10">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox"><abbr
-                                                title="Quiere decir que será incluido en el Form 2-3-4">¿Qué es
-                                            esto?</abbr>
+                                        {{ Form::checkbox('es_oficial', 'true'); }}
+                                        <abbr title="Quiere decir que será incluido en el Form 2-3-4">¿Qué es esto?</abbr>
                                     </label>
                                 </div>
                             </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>

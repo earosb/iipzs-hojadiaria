@@ -21,7 +21,7 @@ class CreateDetalleHojaDiariaTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('km_inicio');
-			$table->integer('km_termino');
+			$table->integer('km_termino')->nullable();
 			$table->integer('cantidad');
 
 			$table->integer('trabajo_id')->unsigned();

@@ -54,12 +54,4 @@ class Trabajo extends \Eloquent {
     {
         return $this->hasMany('Trabajo', 'padre_id');
     }
-    /**
-     * [material description]
-     * @return [type] [description]
-     */
-    public function materiales()
-    {
-        return $this->hasMany('Material');
-    }
 }

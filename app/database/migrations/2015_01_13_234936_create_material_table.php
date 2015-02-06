@@ -27,9 +27,6 @@ class CreateMaterialTable extends Migration {
 			$table->string('proveedor')->nullable();
 			$table->string('clase',20)->nullable();
 
-			$table->integer('trabajo_id')->unsigned()->nullable();
-			$table->foreign('trabajo_id')->references('id')->on('trabajo');
-
 			$table->timestamps();
 		});
 	}

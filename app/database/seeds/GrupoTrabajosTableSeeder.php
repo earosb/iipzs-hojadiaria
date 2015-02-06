@@ -1,8 +1,5 @@
 <?php
 
-// Composer: "fzaninotto/faker": "v1.3.0"
-use Faker\Factory as Faker;
-
 /**
  *
  * @author earosb
@@ -12,14 +9,26 @@ class GrupoTrabajosTableSeeder extends Seeder {
 
 	public function run()
 	{
-		$faker = Faker::create();
-
-		foreach(range(1, 10) as $index)
-		{
-			GrupoTrabajo::create([
-
-			]);
-		}
+		$now = date('Y-m-d H:i:s');
+                
+		DB::table('grupo_trabajo')->insert(
+			array(
+				array(
+                    'base' => 'Reinaco',
+                    'created_at' => $now,
+            		'updated_at' => $now
+	    		),
+	    		array(
+                    'base' => 'Lautaro',
+                    'created_at' => $now,
+            		'updated_at' => $now
+	    		),
+	    		array(
+                    'base' => 'Temuco',
+                    'created_at' => $now,
+            		'updated_at' => $now
+	    		),
+		));
 	}
 
 }

@@ -19,6 +19,21 @@ class Desvio extends \Eloquent {
 	 */
 	protected $fillable = [];
 
+    /**
+     * @var array con reglas de validación
+     */
+    protected $rules = array(
+        'nombre' => 'required',
+        'selectsectorDesvio' => 'required|numeric|exists:sector,id',
+        'selectblockDesvio' => 'required|numeric|exists:block,id',
+        'selectdesviador_norte' => 'numeric|exists:desviador,id',
+        'selectdesviador_sur' => 'numeric|exists:desviador,id',
+    );
+
+    public function getRules(){
+        return $this->rules;
+    }
+
 	/**
 	 * [sector description]
 	 * @return [type] [description]

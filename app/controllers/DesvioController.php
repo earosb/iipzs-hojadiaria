@@ -42,15 +42,9 @@ class DesvioController extends \BaseController
             'selectdesviador_sur' => Input::get('selectdesviador_sur'),
         );
 
-        $rules = array(
-            'nombre' => 'required',
-            'selectsectorDesvio' => 'required|numeric|exists:sector,id',
-            'selectblockDesvio' => 'required|numeric|exists:block,id',
-            'selectdesviador_norte' => 'numeric|exists:desviador,id',
-            'selectdesviador_sur' => 'numeric|exists:desviador,id',
-        );
+        $desvio = new Desvio();
 
-        $validator = Validator::make($input, $rules);
+        $validator = Validator::make($input, $desvio->getRules());
 
         if ($validator->fails()) {
             return Response::json(array(
@@ -58,8 +52,6 @@ class DesvioController extends \BaseController
                 'msg' => $validator->messages()
             ));
         }else{
-            $desvio = new Desvio();
-
             $desvio->nombre = $input['nombre'];
             $desvio->block_id = $input['selectblockDesvio'];
             if($input['selectdesviador_norte'])

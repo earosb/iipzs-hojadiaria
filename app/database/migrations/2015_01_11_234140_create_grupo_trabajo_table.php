@@ -24,12 +24,6 @@ class CreateGrupoTrabajoTable extends Migration {
 			$table->timestamps();
 		});
 
-		Schema::table('hoja_diaria', function(Blueprint $table)
-		{
-			$table->dropColumn('grupo_via');
-			$table->integer('grupo_via_id')->unsigned();
-			$table->foreign('grupo_via_id')->references('id')->on('grupo_trabajo');
-		});
 	}
 
 

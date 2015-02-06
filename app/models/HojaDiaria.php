@@ -20,15 +20,6 @@ class HojaDiaria extends \Eloquent {
 	protected $fillable = [];
 
     /**
-     * [materiales description]
-     * @return [type] [description]
-     */
-    public function materialesRetirados()
-    {
-        return $this->belongsToMany('MaterialRetirado', 'hoja_diaria_material_retirado', 'hoja_diaria_id', 'material_retirado_id');
-    }
-
-    /**
      * [detalleMaterialRetirado description]
      * @return [type] [description]
      */
@@ -50,8 +41,16 @@ class HojaDiaria extends \Eloquent {
      * [grupotrabajo description]
      * @return [type] [description]
      */
-    public function grupotrabajo()
+    public function grupoTrabajo()
     {
-        return $this->belongsTo('GrupoTrabajo');
+        return $this->belongsTo('GrupoTrabajo', 'grupo_via_id',  'id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function detalleMaterialColocado()
+    {
+        return $this->hasMany('DetalleMaterialColocado');
     }
 }

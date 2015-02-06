@@ -38,7 +38,7 @@ $('#formHojaDiaria').submit(function(e) {
          });
       } else {
          // todo bene
-         alertify.log("Hoja Diaria guardada con éxito");
+         alertify.log("Hoja Diaria creada con éxito");
          $('#formHojaDiaria .form-group').removeClass('required has-error');
          $('#formHojaDiaria .help-block').empty();
          document.getElementById("formHojaDiaria").reset();

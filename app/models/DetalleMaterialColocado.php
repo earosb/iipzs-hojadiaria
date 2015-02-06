@@ -5,17 +5,17 @@
  * @author earosb
  */
 
-class Material extends \Eloquent {
+class DetalleMaterialColocado extends \Eloquent {
 
 	/**
 	 * The database table used by the model.
+	 *
 	 * @var string
 	 */
-	protected $table = 'material';
-	
+	protected $table = 'detalle_material_colocado';
+
 	/**
 	 * Add your validation rules here
-	 * @var [type]
 	 */
 	public static $rules = [
 		// 'title' => 'required'
@@ -23,16 +23,23 @@ class Material extends \Eloquent {
 
 	/**
 	 * Don't forget to fill this array
-	 * @var [type]
 	 */
 	protected $fillable = [];
 
 	/**
 	 * @return mixed
 	 */
-	public function detalleMaterialColocado()
+	public function material()
 	{
-		return $this->hasMany('DetalleMaterialColocado');
+		return $this->belongsTo('Material');
 	}
 
+	/**
+	 * @return mixed
+	 */
+	public function hojaDiaria()
+	{
+		return $this->belongsTo('HojaDiaria');
+	}
+	
 }
