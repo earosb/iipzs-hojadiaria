@@ -12,35 +12,11 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalHojaDiariaLabel">Nuevo Desviador</h4>
+                <h4 class="modal-title" id="modalHojaDiariaLabel">Detalle Hoja Diaria</h4>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered table-striped" id="tbl_trabajados">
-                    <thead>
-                        <tr></tr>
-                    </thead>
-                    <tbody>
-                        <tr></tr>
-                    </tbody>
-                </table>
-                <table class="table table-bordered table-striped" id="tbl_matCol">
-                    <thead>
-                    <tr></tr>
-                    </thead>
-                    <tbody>
-                    <tr></tr>
-                    </tbody>
-                </table>
-                <table class="table table-bordered table-striped" id="tbl_matRet">
-                    <thead>
-                    <tr></tr>
-                    </thead>
-                    <tbody>
-                    <tr></tr>
-                    </tbody>
-                </table>
-                <div id="obs">
-                </div>
+
+                {{--<div id="div_detalle"></div>--}}
 
             </div>
         </div>

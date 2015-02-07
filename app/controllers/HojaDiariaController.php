@@ -133,7 +133,7 @@ class HojaDiariaController extends \BaseController
         /**
          * Sin errores, listo para guardar
          */
-        $dateFlag = Carbon::parse($input['fecha']);
+        $dateFlag = Carbon::createFromFormat('d/m/Y', $input['fecha']);
 
         $hojaDiaria = new HojaDiaria();
         $hojaDiaria->fecha = $dateFlag->toDateString();
@@ -143,6 +143,8 @@ class HojaDiariaController extends \BaseController
         $hojaDiaria->save();
 
         foreach ($input['trabajos'] as $key => $value) {
+            list($tipo, $id) = explode('-', $value['ubicacion']);
+//            log($tipo);
             $trabajo = Trabajo::find($value['trabajo']);
 
             $detHojaDiaria = new DetalleHojaDiaria();
@@ -198,10 +200,7 @@ class HojaDiariaController extends \BaseController
         return Response::json(
             array(
                 'fail'       => false,
-                'input'      => $input,
-                'hojaDiaria' => $hojaDiaria,
-                'detMatCol'  => $detMatCol,
-                'detMatRet'  => $detMatRet,
+                'input'      => $input
             ));
 
     }
@@ -225,7 +224,7 @@ class HojaDiariaController extends \BaseController
                 ));
         }
 
-        $hojaDiaria->grupoTrabajo();
+        $hojaDiaria->grupoTrabajo;
 
         $hojaDiaria->detalleMaterialRetirado;
         foreach ($hojaDiaria->detalleMaterialRetirado as $materialRet) {
@@ -238,15 +237,17 @@ class HojaDiariaController extends \BaseController
         }
 
         $hojaDiaria->detalleHojaDiaria;
-        foreach ($hojaDiaria->detalleHojaDiaria as $trabajo)
-        {
+        foreach ($hojaDiaria->detalleHojaDiaria as $trabajo) {
             $trabajo->trabajo;
+            $trabajo->block;
+            $trabajo->desvio;
+            $trabajo->desviador;
         }
 
         return Response::json(
             array(
-                'error'         => false,
-                'hojaDiaria'    => $hojaDiaria,
+                'error'      => false,
+                'hojaDiaria' => $hojaDiaria,
             ));
 
     }
@@ -284,7 +285,23 @@ class HojaDiariaController extends \BaseController
      */
     public function destroy($id)
     {
-        //
+        try {
+            $hojaDiaria = HojaDiaria::find($id);
+
+            $hojaDiaria->detalleHojaDiaria()->forceDelete();
+            $hojaDiaria->detalleMaterialColocado()->forceDelete();
+            $hojaDiaria->detalleMaterialRetirado()->forceDelete();
+            $hojaDiaria->forceDelete();
+
+            return Response::json(array('error' => false,));
+
+        } catch (\Exception $e) {
+            return Response::json(
+                array(
+                    'error' => true,
+                    'msg'   => 'Ocurrió un error al intentar eliminar la hoja diaria',
+                ));
+        }
     }
 
 }
