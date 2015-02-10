@@ -8,11 +8,10 @@ function verHojaDiaria(id) {
         url: '/hd/' + id,
         type: 'GET'
     }).success(function (data) {
-        console.log(data);
         escribirDetalle(data);
         //$('#modalHojaDiaria').modal('show');
     }).error(function () {
-        console.log("error");
+        alert("Error al descargar datos\nPor favor verifique su conexión a Internet");
     });
 }
 

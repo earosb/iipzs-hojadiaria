@@ -21,6 +21,7 @@ class CreateTrabajoTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nombre');
+			$table->float('valor');
 			$table->boolean('es_oficial');
 
 			$table->integer('tipo_mantenimiento_id')->unsigned();

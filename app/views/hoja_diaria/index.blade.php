@@ -5,19 +5,19 @@
 @stop
 
 @section('content')
-    <div class="col-xs-12 col-md-6">
-    <legend>Histórico Hojas Diarias</legend>
+    <div class="col-xs-12 col-md-6 col-lg-4">
+        <legend>Histórico Hojas Diarias</legend>
         <table class="table table-bordered table-striped" id="tab_trabajados">
             <thead>
             <tr>
                 <th>Fecha</th>
                 <th>Ingresada el</th>
                 <th>Última edición</th>
-                <th class="text-center">Opciones</th>
+                <th class="text-center">Ver</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($hojas as $hoja)
+            @forelse($hojas as $hoja)
                 <tr>
                     <td>
                         {{ $hoja->fecha }}
@@ -29,16 +29,16 @@
                     <td class="text-center">
                         <a class="glyphicon glyphicon-eye-open" title="Ver" href="#"
                            onclick="verHojaDiaria({{ $hoja->id }});return false;"></a>
-                        <a class="glyphicon glyphicon-download-alt" title="Descargar como PDF" href="#" onclick=""></a>
-                        <a class="glyphicon glyphicon-print" title="Imprimir" href="#" onclick=""></a>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <h4>No existen registros</h4>
+            @endforelse
             </tbody>
         </table>
     </div>
 
-    <div id="div_detalle" class="col-xs-12 col-md-6"></div>
+    <div id="div_detalle" class="col-xs-12 col-md-6 col-lg-8"></div>
 
 @stop
 

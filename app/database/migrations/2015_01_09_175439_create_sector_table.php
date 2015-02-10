@@ -3,6 +3,10 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
+/**
+ *
+ * @author earosb
+ */
 class CreateSectorTable extends Migration {
 
 	/**

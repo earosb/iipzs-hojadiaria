@@ -21,8 +21,8 @@ class CreateHojaDiariaTable extends Migration {
 			$table->increments('id');
 			$table->date('fecha');
 			
-			$table->integer('grupo_via_id')->unsigned();
-			$table->foreign('grupo_via_id')->references('id')->on('grupo_trabajo');
+			$table->integer('grupo_trabajo_id')->unsigned();
+			$table->foreign('grupo_trabajo_id')->references('id')->on('grupo_trabajo');
 
 			$table->text('observaciones')->nullable();
 			

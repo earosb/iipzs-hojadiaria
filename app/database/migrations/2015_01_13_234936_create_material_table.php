@@ -20,8 +20,8 @@ class CreateMaterialTable extends Migration {
 		Schema::create('material', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('codigo')->nullable();
 			$table->string('nombre');
+			$table->float('valor');
 			$table->boolean('es_oficial');
 			$table->string('unidad',20);
 			$table->string('proveedor')->nullable();

@@ -20,7 +20,6 @@ class CreateMaterialRetiradoTable extends Migration {
 		Schema::create('material_retirado', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('codigo')->nullable();
 			$table->string('nombre');
 			$table->string('clase');
 			$table->boolean('es_oficial');

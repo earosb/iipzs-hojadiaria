@@ -15,10 +15,14 @@ class HojaDiariaController extends \BaseController
     {
         $sectores = Sector::all(array('id', 'nombre'));
 
-        $trabajosCollection = Trabajo::all(array('id', 'nombre'));
-        $trabajos = array();
-        foreach ($trabajosCollection as $trabajo) {
-            $trabajos[$trabajo->id] = $trabajo->nombre;
+        $tipoMantenimiento = TipoMantenimiento::All(array('id','nombre'));
+        foreach ($tipoMantenimiento as $tMat) {
+            $tMat->trabajos;
+        }
+
+        $trabajos = Trabajo::all(array('id', 'nombre','tipo_mantenimiento_id'));
+        foreach ($trabajos as $trabajo) {
+            $trabajo->tipoMantenimiento;
         }
 
         $grupos = GrupoTrabajo::all(array('id', 'base'));
@@ -38,7 +42,8 @@ class HojaDiariaController extends \BaseController
             ->with('trabajos', $trabajos)
             ->with('grupos', $grupos)
             ->with('materiales', $materiales)
-            ->with('materialesRet', $matRetirados);
+            ->with('materialesRet', $matRetirados)
+            ->with('tipoMantenimiento', $tipoMantenimiento);
     }
 
     /**
@@ -138,7 +143,7 @@ class HojaDiariaController extends \BaseController
         $hojaDiaria = new HojaDiaria();
         $hojaDiaria->fecha = $dateFlag->toDateString();
         $hojaDiaria->observaciones = $input['obs'];
-        $hojaDiaria->grupo_via_id = $input['selectgrupos'];
+        $hojaDiaria->grupo_trabajo_id = $input['selectgrupos'];
 
         $hojaDiaria->save();
 
