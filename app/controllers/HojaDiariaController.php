@@ -15,12 +15,12 @@ class HojaDiariaController extends \BaseController
     {
         $sectores = Sector::all(array('id', 'nombre'));
 
-        $tipoMantenimiento = TipoMantenimiento::All(array('id','nombre'));
+        $tipoMantenimiento = TipoMantenimiento::All(array('id', 'nombre'));
         foreach ($tipoMantenimiento as $tMat) {
             $tMat->trabajos;
         }
 
-        $trabajos = Trabajo::all(array('id', 'nombre','tipo_mantenimiento_id'));
+        $trabajos = Trabajo::all(array('id', 'nombre', 'tipo_mantenimiento_id'));
         foreach ($trabajos as $trabajo) {
             $trabajo->tipoMantenimiento;
         }
@@ -185,6 +185,7 @@ class HojaDiariaController extends \BaseController
 
             $detMatCol = new DetalleMaterialColocado();
             $detMatCol->cantidad = $value['cant'];
+            $detMatCol->reempleo = (array_key_exists('reempleo', $value)) ? true : false;
             $detMatCol->material_id = $material->id;
             $detMatCol->hoja_diaria_id = $hojaDiaria->id;
 
@@ -204,8 +205,8 @@ class HojaDiariaController extends \BaseController
 
         return Response::json(
             array(
-                'fail'       => false,
-                'input'      => $input
+                'fail'  => false,
+                'input' => $input
             ));
 
     }

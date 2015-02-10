@@ -43,7 +43,7 @@ class HojaDiaria extends \Eloquent {
      */
     public function grupoTrabajo()
     {
-        return $this->belongsTo('GrupoTrabajo', 'grupo_via_id',  'id');
+        return $this->belongsTo('GrupoTrabajo');
     }
 
     /**

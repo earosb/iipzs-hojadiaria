@@ -45,7 +45,3 @@
 @section('js')
     {{ HTML::script('js/hd/index.js') }}
 @endsection
-
-@section('modals')
-    @include('modal.viewHojaDiaria')
-@stop

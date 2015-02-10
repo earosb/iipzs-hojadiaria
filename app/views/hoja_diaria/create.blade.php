@@ -114,7 +114,9 @@
                                 @foreach($tipoMantenimiento as $tMat)
                                     <optgroup label="{{ $tMat->nombre }}">
                                         @foreach($tMat->trabajos as $trabajo)
-                                            <option value="{{ $trabajo->id }}">{{ $trabajo->nombre }}</option>
+                                            <option value="{{ $trabajo->id }}">{{ $trabajo->nombre }}
+                                                [{{ $trabajo->unidad }}]
+                                            </option>
                                         @endforeach
                                     </optgroup>
                                 @endforeach
@@ -144,9 +146,10 @@
                         <thead>
                         <tr>
                             <th>Materiales Colocados</th>
+                            <th>Reempleo</th>
                             <th class="tdkilometro">Cantidad</th>
-                            <th class="text-center"><a id="add_row_matCol"
-                                                       class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
+                            <th class="text-center">
+                                <a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                             </th>
                         </tr>
                         </thead>
@@ -154,6 +157,9 @@
                         <tr id='addrMatCol0' data-id="0" class="hidden">
                             <td data-name="matCol" data-tipo="id">
                                 {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control']) }}
+                            </td>
+                            <td data-name="matCol" data-tipo="reempleo">
+                                {{ Form::checkbox('matCol[0][reempleo]') }}
                             </td>
                             <td data-name="matCol" data-tipo="cant">
                                 {{ Form::text('matCol[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}
