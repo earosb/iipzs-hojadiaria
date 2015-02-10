@@ -21,6 +21,7 @@ class CreateTrabajoTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nombre');
+			$table->string('unidad',10);
 			$table->float('valor');
 			$table->boolean('es_oficial');
 
