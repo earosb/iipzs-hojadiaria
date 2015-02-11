@@ -15,7 +15,6 @@
  * Admin de Usuarios
  */
 Route::get('login', 'UserController@getLogin');
-
 Route::post('login', 'UserController@postLogin');
 
 /**
@@ -32,9 +31,9 @@ Route::group(array('before' => 'auth'), function () {
 });
 
 /**
- * Usuario logueado con permisos para de admin
+ * Usuario logueado con permiso hoja-diaria
  */
-Route::group(array('before' => 'auth|tienePermisos:admin'), function () {
+Route::group(array('before' => 'auth|permiso:hoja-diaria'), function () {
 
     /**
      * Hoja Diaria
@@ -44,7 +43,6 @@ Route::group(array('before' => 'auth|tienePermisos:admin'), function () {
     /**
      * Block
      */
-    Route::resource('block', 'BlockController');
     Route::get('/block/ajax-blocks/{idSector}', 'BlockController@ajaxBlocks');
     Route::get('/block/ajax-block-todo/{idBlock}', 'BlockController@ajaxBlockTodo');
     Route::get('/block/ajax-get-limites/{data}', 'BlockController@ajaxGetLimites');
@@ -60,23 +58,23 @@ Route::group(array('before' => 'auth|tienePermisos:admin'), function () {
     /**
      * Desvío
      */
-    Route::resource('desvio', 'DesvioController');
+    Route::post('desvio', 'DesvioController@store');
 
     /**
      * Material Retirado
      */
-    Route::resource('material-retirado', 'MaterialRetiradoController');
+    Route::post('material-retirado', 'MaterialRetiradoController@store');
     Route::get('material-retirado/ajax-list', 'MaterialRetiradoController@ajaxList');
 
     /**
      * Material Colocado
      */
-    Route::resource('material-colocado', 'MaterialController');
+    Route::post('material-colocado', 'MaterialController@store');
 
     /**
      * Trabajos
      */
-    Route::resource('trabajo', 'TrabajoController');
+    Route::post('trabajo', 'TrabajoController@store');
 
 });
 

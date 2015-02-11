@@ -27,7 +27,7 @@
     @if(Sentry::check())
         <div class="navbar-collapse collapse navbar-responsive-collapse">
             <ul class="nav navbar-nav">
-                @if (Sentry::getUser()->hasAccess(['admin']))
+                @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hoja Diaria <b class="caret"></b></a>
                         <ul class="dropdown-menu">
@@ -36,12 +36,12 @@
                         </ul>
                     </li>
                 @endif
-                @if (Sentry::getUser()->hasAccess(['admin']))
+                @if (Sentry::getUser()->hasAccess(['consultas']))
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Consultas <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="#">Consultar Trabajos</a></li>
-                            @if (Sentry::getUser()->hasAccess(['admin']))
+                            @if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))
                                 <li><a href="#">Consultas Avanzadas</a></li>
                             @endif
                         </ul>

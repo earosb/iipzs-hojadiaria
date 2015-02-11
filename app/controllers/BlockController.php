@@ -9,9 +9,7 @@ class BlockController extends \BaseController {
 	 */
 	public function index()
 	{
-		$blocks = Block::all();
-
-		return View::make('block.index', compact('block'));
+		//
 	}
 
 	/**
@@ -21,26 +19,26 @@ class BlockController extends \BaseController {
 	 */
 	public function create()
 	{
-		return View::make('block.create');
+		//
 	}
 
 	/**
 	 * Store a newly created block in storage.
-	 *
+	 * POST /block
 	 * @return Response
 	 */
 	public function store()
 	{
-		$validator = Validator::make($data = Input::all(), Block::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		Block::create($data);
-
-		return Redirect::route('block.index');
+//		$validator = Validator::make($data = Input::all(), Block::$rules);
+//
+//		if ($validator->fails())
+//		{
+//			return Redirect::back()->withErrors($validator)->withInput();
+//		}
+//
+//		Block::create($data);
+//
+//		return Redirect::route('block.index');
 	}
 
 	/**
@@ -51,9 +49,9 @@ class BlockController extends \BaseController {
 	 */
 	public function show($id)
 	{
-		$block = Block::findOrFail($id);
-
-		return View::make('block.show', compact('block'));
+//		$block = Block::findOrFail($id);
+//
+//		return View::make('block.show', compact('block'));
 	}
 
 	/**
@@ -64,9 +62,9 @@ class BlockController extends \BaseController {
 	 */
 	public function edit($id)
 	{
-		$block = Block::find($id);
-
-		return View::make('block.edit', compact('block'));
+//		$block = Block::find($id);
+//
+//		return View::make('block.edit', compact('block'));
 	}
 
 	/**
@@ -77,18 +75,18 @@ class BlockController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$block = Block::findOrFail($id);
-
-		$validator = Validator::make($data = Input::all(), Block::$rules);
-
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
-
-		$block->update($data);
-
-		return Redirect::route('block.index');
+//		$block = Block::findOrFail($id);
+//
+//		$validator = Validator::make($data = Input::all(), Block::$rules);
+//
+//		if ($validator->fails())
+//		{
+//			return Redirect::back()->withErrors($validator)->withInput();
+//		}
+//
+//		$block->update($data);
+//
+//		return Redirect::route('block.index');
 	}
 
 	/**
@@ -99,9 +97,9 @@ class BlockController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		Block::destroy($id);
-
-		return Redirect::route('block.index');
+//		Block::destroy($id);
+//
+//		return Redirect::route('block.index');
 	}
 
 	/**
@@ -114,7 +112,7 @@ class BlockController extends \BaseController {
 	{
 		$blocks = Block::where('sector_id', '=', $sectorId)->get();
 		$ramales = Ramal::where('sector_id', '=', $sectorId)->get();
-		
+
 		return Response::json(
 			array(
 				'blocks' => $blocks,
@@ -139,7 +137,7 @@ class BlockController extends \BaseController {
 		return Response::json(
 			array(
 				'block'			=> $block,
-				'desvios'		=> $desvios, 
+				'desvios'		=> $desvios,
 				'desviadores'	=> $desviadores,
 				)
 			);
@@ -178,7 +176,7 @@ class BlockController extends \BaseController {
 					'km_inicio' =>	$desviador->block->km_inicio,
 					));
 				break;
-			
+
 			default:
 				return "tipo ".$tipo." id ".$id;
 				break;

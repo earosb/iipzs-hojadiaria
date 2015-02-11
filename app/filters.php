@@ -37,7 +37,7 @@ Route::filter('auth', function(){
  * Tiene permisos
  * @var [type]
  */
-Route::filter('tienePermisos', function($route, $request, $userPermission = null)
+Route::filter('permiso', function($route, $request, $userPermission = null)
 {
     if (Route::currentRouteNamed('putUser') && Sentry::getUser()->id == Request::segment(3) ||
         Route::currentRouteNamed('showUser') && Sentry::getUser()->id == Request::segment(3))

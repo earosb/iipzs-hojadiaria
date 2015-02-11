@@ -71,9 +71,7 @@ class MaterialController extends \BaseController
      */
     public function show($id)
     {
-        $material = Material::findOrFail($id);
-
-        return View::make('materials.show', compact('material'));
+        //
     }
 
     /**
@@ -84,9 +82,7 @@ class MaterialController extends \BaseController
      */
     public function edit($id)
     {
-        $material = Material::find($id);
-
-        return View::make('materials.edit', compact('material'));
+        //
     }
 
     /**
@@ -97,17 +93,7 @@ class MaterialController extends \BaseController
      */
     public function update($id)
     {
-        $material = Material::findOrFail($id);
-
-        $validator = Validator::make($data = Input::all(), Material::$rules);
-
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
-
-        $material->update($data);
-
-        return Redirect::route('materials.index');
+        //
     }
 
     /**
@@ -118,9 +104,7 @@ class MaterialController extends \BaseController
      */
     public function destroy($id)
     {
-        Material::destroy($id);
-
-        return Redirect::route('materials.index');
+        //
     }
 
 }

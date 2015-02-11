@@ -16,7 +16,8 @@ function verHojaDiaria(id) {
 }
 
 function editarHojaDiaria(id) {
-    console.log('editar() ID ' + id);
+    alertify.log("Función editar no disponible");
+    //console.log('editar() ID ' + id);
 }
 function borrarHojaDiaria(id) {
     setTimeout( function ( ) {
