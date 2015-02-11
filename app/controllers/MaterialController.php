@@ -52,7 +52,7 @@ class MaterialController extends \BaseController
         $material->unidad = $input['unidad'];
         $material->proveedor = $input['proveedor'];
         $material->clase = $input['clase'];
-        $material->es_oficial = (array_key_exists('reempleo', $input)) ? true : false;
+        $material->es_oficial = ($input['es_oficial'] != null) ? true : false;
 
         $material->save();
 
