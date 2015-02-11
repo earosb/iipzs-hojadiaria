@@ -6,8 +6,7 @@
     <title>
         @yield('title')
     </title>
-    {{-- HTML::style('css/bootstrap.cosmo.min.css') --}}
-    {{ HTML::style('css/bootstrap.yeti.min.css') }}
+    {{ HTML::style('//maxcdn.bootstrapcdn.com/bootswatch/3.3.2/yeti/bootstrap.min.css') }}
     {{ HTML::style('css/alertify.core.css') }}
     {{ HTML::style('css/alertify.default.css') }}
     {{-- yield para agregar css en cada página --}}
@@ -94,8 +93,8 @@
     @yield('footer')
 </div>
 {{-- Archivos js --}}
-{{ HTML::script('js/jquery-1.11.2.min.js') }}
-{{ HTML::script('js/bootstrap.min.js') }}
+{{ HTML::script('//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js') }}
+{{ HTML::script('//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js') }}
 {{ HTML::script('js/alertify.min.js') }}
 
 {{-- yield para agregar scripts en cada página --}}

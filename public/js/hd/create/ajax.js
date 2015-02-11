@@ -12,7 +12,7 @@ function ajaxBlocks(sector_id, select) {
         alert("Error al obtener los datos\n Por favor, verifique su conexión a Internet");
     }).done(function (data) {
         $(select).empty();
-        $(select).append('<option disabled selected> Seleccione un Block </option>');
+        $(select).append('<option disabled selected> Seleccione un Block o Ramal </option>');
 
         $.each(data.blocks, function (index, blockObj) {
             if (index < data.blocks.length - 1) {
@@ -23,12 +23,11 @@ function ajaxBlocks(sector_id, select) {
         });
 
         $.each(data.ramales, function (index, ramalObj) {
-            if (index === 0) {
-                $(select).append('<optgroup label="Ramales">');
-            }
-            $(select).append('<option value="' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
-            if (index === data.blocks.length - 1) {
-                $(select).append('</optgroup>');
+            var optGroup = $('<optgroup label="Ramales"></optgroup>');
+            var option = $('<option value="ramal-' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
+            optGroup.append(option);
+            if (index === data.ramales.length - 1) {
+                $(select).append(optGroup);
             }
         });
     });

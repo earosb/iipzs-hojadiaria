@@ -135,14 +135,12 @@ class BlockController extends \BaseController {
 		$block = Block::find($idBlock);
 		$desvios = Block::find($idBlock)->desvios;
 		$desviadores = Block::find($idBlock)->desviadores;
-		$ramales = Block::find($idBlock)->ramales;
-		
+
 		return Response::json(
 			array(
 				'block'			=> $block,
 				'desvios'		=> $desvios, 
 				'desviadores'	=> $desviadores,
-				'ramales' 		=> $ramales
 				)
 			);
 	}

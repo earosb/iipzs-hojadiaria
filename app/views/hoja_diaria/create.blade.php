@@ -3,45 +3,43 @@
     Icil-icafal - Nueva hoja diaria de trabajo
 @stop
 @section('css')
-    {{ HTML::style('css/jquery-ui.min.css') }}
+    {{ HTML::style('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css') }}
     {{ HTML::style('css/hd/create.min.css') }}
 @stop
 @section('content')
     <div class="row">
+        {{-- Botón "flotante"
+        ===================================================== --}}
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default dropdown-toggle glyphicon glyphicon-cog"
+                    data-toggle="dropdown" aria-expanded="false">
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Ubicaciones</li>
+                <li><a data-toggle="modal" data-target="#modalDesviador" href="#">Nuevo Desviador</a></li>
+                <li><a data-toggle="modal" data-target="#modalDesvio" href="#">Nuevo Desvío</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Trabajos</li>
+                <li><a data-toggle="modal" data-target="#modalTrabajo" href="#">Nuevo Trabajo</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Materiales</li>
+                <li><a data-toggle="modal" data-target="#modalMaterialCol" href="#">Nuevo Material Colocado</a>
+                </li>
+                <li><a data-toggle="modal" data-target="#modalMaterialRet" href="#">Nuevo Material Retirado</a>
+                </li>
+            </ul>
+        </div>
         {{ Form::open(array(
         'url' 		=>	'hd',
         'method' 	=>	'post',
         'id'		=>	'formHojaDiaria',
         'class' 	=> 	'form-horizontal')) }}
         <fieldset>
-            <legend>Nueva hoja diaria de trabajo
-                {{-- Botón "flotante"
-                ===================================================== --}}
-                <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default dropdown-toggle glyphicon glyphicon-cog"
-                            data-toggle="dropdown" aria-expanded="false">
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li class="dropdown-header">Ubicaciones</li>
-                        <li><a data-toggle="modal" data-target="#modalDesviador" href="#">Nuevo Desviador</a></li>
-                        <li><a data-toggle="modal" data-target="#modalDesvio" href="#">Nuevo Desvío</a></li>
-                        <li class="divider"></li>
-                        <li class="dropdown-header">Trabajos</li>
-                        <li><a data-toggle="modal" data-target="#modalTrabajo" href="#">Nuevo Trabajo</a></li>
-                        <li class="divider"></li>
-                        <li class="dropdown-header">Materiales</li>
-                        <li><a data-toggle="modal" data-target="#modalMaterialCol" href="#">Nuevo Material Colocado</a>
-                        </li>
-                        <li><a data-toggle="modal" data-target="#modalMaterialRet" href="#">Nuevo Material Retirado</a>
-                        </li>
-                    </ul>
-                </div>
-            </legend>
             <div class="col-md-12">
+                <legend>Nueva hoja diaria de trabajo</legend>
                 <div id="fecha_div">
                     {{ Form::text('fecha', null, ['class'=>'input-sm', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha']) }}
                     <span class="glyphicon glyphicon-calendar"></span>
-
                     <div class="help-block" id="fecha_error"></div>
                 </div>
             </div>
@@ -215,7 +213,7 @@
 @stop
 
 @section('js')
-    {{ HTML::script('js/jquery-ui.min.js') }}
+    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js') }}
     {{ HTML::script('js/hd/create/calendar.min.js') }}
     {{ HTML::script('js/hd/create/table.js') }}
     {{ HTML::script('js/hd/create/create.js') }}

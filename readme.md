@@ -12,7 +12,6 @@
 
 - <https://github.com/jquery/jquery>
 - <https://github.com/twbs/bootstrap>
-- <http://bootswatch.com/cosmo/>
 - <http://bootswatch.com/yeti/>
 - <http://jqueryui.com/>
 - <https://github.com/fabien-d/alertify.js>
