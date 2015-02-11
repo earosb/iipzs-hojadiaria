@@ -37,7 +37,7 @@ Route::group(array('before' => 'auth'), function () {
 Route::group(array('before' => 'auth|tienePermisos:admin'), function () {
 
     /**
-     * Hola Diaria
+     * Hoja Diaria
      */
     Route::resource('hd', 'HojaDiariaController');
 
@@ -67,6 +67,11 @@ Route::group(array('before' => 'auth|tienePermisos:admin'), function () {
      */
     Route::resource('material-retirado', 'MaterialRetiradoController');
     Route::get('material-retirado/ajax-list', 'MaterialRetiradoController@ajaxList');
+
+    /**
+     * Material Colocado
+     */
+    Route::resource('material-colocado', 'MaterialController');
 
 });
 

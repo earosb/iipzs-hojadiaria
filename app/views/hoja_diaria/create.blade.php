@@ -156,7 +156,7 @@
                         <tbody>
                         <tr id='addrMatCol0' data-id="0" class="hidden">
                             <td data-name="matCol" data-tipo="id">
-                                {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control']) }}
+                                {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
                             </td>
                             <td data-name="matCol" data-tipo="reempleo">
                                 {{ Form::checkbox('matCol[0][reempleo]') }}
@@ -176,8 +176,8 @@
                         <tr>
                             <th>Materiales Retirados</th>
                             <th class="tdkilometro">Cantidad</th>
-                            <th class="text-center"><a id="add_row_matRet"
-                                                       class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
+                            <th class="text-center">
+                                <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                             </th>
                         </tr>
                         </thead>

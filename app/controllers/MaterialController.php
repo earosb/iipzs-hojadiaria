@@ -4,109 +4,123 @@
  *
  * @author earosb
  */
+class MaterialController extends \BaseController
+{
 
-class MaterialController extends \BaseController {
+    /**
+     * Display a listing of materials
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        //
+    }
 
-	/**
-	 * Display a listing of materials
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		$materials = Material::all();
+    /**
+     * Show the form for creating a new material
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        //
+    }
 
-		return View::make('materials.index', compact('materials'));
-	}
+    /**
+     * Store a newly created material in storage.
+     * POST /material-colocado
+     * @return Response
+     */
+    public function store()
+    {
+        $input = Input::except('_token');
 
-	/**
-	 * Show the form for creating a new material
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		return View::make('materials.create');
-	}
 
-	/**
-	 * Store a newly created material in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$validator = Validator::make($data = Input::all(), Material::$rules);
+        $validator = Validator::make($input, Material::$rules);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        if ($validator->fails()) {
+            return Response::json(array(
+                                      'error' => true,
+                                      'msg'   => $validator->messages()
+                                  ));
+        }
+        $material = new Material();
 
-		Material::create($data);
+        $material->nombre = $input['nombre'];
+        $material->valor = $input['valor'];
+        $material->unidad = $input['unidad'];
+        $material->proveedor = $input['proveedor'];
+        $material->clase = $input['clase'];
+        $material->es_oficial = (array_key_exists('reempleo', $input)) ? true : false;
 
-		return Redirect::route('materials.index');
-	}
+        $material->save();
 
-	/**
-	 * Display the specified material.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$material = Material::findOrFail($id);
+        return Response::json(array(
+                                  'error'       => false,
+                                  'nuevoMatCol' => $material,
+                                  'msg'         => 'Nuevo Material creado con éxito'
+                              ));
+    }
 
-		return View::make('materials.show', compact('material'));
-	}
+    /**
+     * Display the specified material.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function show($id)
+    {
+        $material = Material::findOrFail($id);
 
-	/**
-	 * Show the form for editing the specified material.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		$material = Material::find($id);
+        return View::make('materials.show', compact('material'));
+    }
 
-		return View::make('materials.edit', compact('material'));
-	}
+    /**
+     * Show the form for editing the specified material.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $material = Material::find($id);
 
-	/**
-	 * Update the specified material in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		$material = Material::findOrFail($id);
+        return View::make('materials.edit', compact('material'));
+    }
 
-		$validator = Validator::make($data = Input::all(), Material::$rules);
+    /**
+     * Update the specified material in storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function update($id)
+    {
+        $material = Material::findOrFail($id);
 
-		if ($validator->fails())
-		{
-			return Redirect::back()->withErrors($validator)->withInput();
-		}
+        $validator = Validator::make($data = Input::all(), Material::$rules);
 
-		$material->update($data);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-		return Redirect::route('materials.index');
-	}
+        $material->update($data);
 
-	/**
-	 * Remove the specified material from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		Material::destroy($id);
+        return Redirect::route('materials.index');
+    }
 
-		return Redirect::route('materials.index');
-	}
+    /**
+     * Remove the specified material from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        Material::destroy($id);
+
+        return Redirect::route('materials.index');
+    }
 
 }
