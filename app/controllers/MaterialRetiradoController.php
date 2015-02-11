@@ -41,14 +41,14 @@ class MaterialRetiradoController extends \BaseController {
 			'_token' => Input::get('_token'),
 			'nombre' => Input::get('nombre'),
 			'clase' => Input::get('clase'),
-			'codigo' => Input::get('codigo'),
+			//'codigo' => Input::get('codigo'),
 			'es_oficial' => Input::get('es_oficial'),
 		);
 
 		$rules = array(
 			'nombre' => 'required',
 			'clase' => 'required',
-			'codigo' => 'required',
+			//'codigo' => 'required',
 		);
 
 		$validator = Validator::make($input, $rules);
@@ -61,7 +61,7 @@ class MaterialRetiradoController extends \BaseController {
 		}else{
 			$matRet = new MaterialRetirado();
 
-			$matRet->codigo = $input['codigo'];
+			//$matRet->codigo = $input['codigo'];
 			$matRet->nombre = $input['nombre'];
 			$matRet->clase = $input['clase'];
 			if($input['es_oficial'])
