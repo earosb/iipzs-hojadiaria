@@ -73,6 +73,11 @@ Route::group(array('before' => 'auth|tienePermisos:admin'), function () {
      */
     Route::resource('material-colocado', 'MaterialController');
 
+    /**
+     * Trabajos
+     */
+    Route::resource('trabajo', 'TrabajoController');
+
 });
 
 /**

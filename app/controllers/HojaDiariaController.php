@@ -20,10 +20,10 @@ class HojaDiariaController extends \BaseController
             $tMat->trabajos;
         }
 
-        $trabajos = Trabajo::all(array('id', 'nombre', 'tipo_mantenimiento_id'));
-        foreach ($trabajos as $trabajo) {
-            $trabajo->tipoMantenimiento;
-        }
+//        $trabajos = Trabajo::all(array('id', 'nombre', 'tipo_mantenimiento_id'));
+//        foreach ($trabajos as $trabajo) {
+//            $trabajo->tipoMantenimiento;
+//        }
 
         $grupos = GrupoTrabajo::all(array('id', 'base'));
 
@@ -39,7 +39,7 @@ class HojaDiariaController extends \BaseController
 
         return View::make('hoja_diaria.create')
             ->with('sectores', $sectores)
-            ->with('trabajos', $trabajos)
+//            ->with('trabajos', $trabajos)
             ->with('grupos', $grupos)
             ->with('materiales', $materiales)
             ->with('materialesRet', $matRetirados)

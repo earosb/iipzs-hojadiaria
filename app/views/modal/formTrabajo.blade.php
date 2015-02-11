@@ -17,54 +17,97 @@
                 <h4 class="modal-title" id="modalTrabajoLabel">Nuevo Trabajo</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="textinput">Nombre</label>
+                {{ Form::open(array(
+                'url'		=>	'/trabajo',
+                'method'	=>	'post',
+                'id' 		=> 	'formTrabajo',
+                'class' 	=> 	'form-horizontal')) }}
+                <fieldset>
+                    {{-- Nombre --}}
+                    <div id="nombre_div" class="form-group">
+                        {{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-9">
+                            {{ Form::text('nombre', null, array('placeholder' => 'Nombre Trabajo', 'class' => 'form-control')) }}
+                            <div class="help-block" id="nombre_error"></div>
+                        </div>
+                    </div>
 
-                            <div class="col-sm-10">
-                                <input type="text" placeholder="Nombre Trabajo" class="form-control">
+                    {{-- Trabajo Padre --}}
+                    <div id="padre_div" class="form-group">
+                        {{ Form::label('padre', 'Trabajo Asociado', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-9">
+                            <select name="padre" class="form-control">
+                                <option selected="selected" value="none">Ninguno</option>
+                                @foreach($tipoMantenimiento as $tMat)
+                                    <optgroup label="{{ $tMat->nombre }}">
+                                        @foreach($tMat->trabajos as $trabajo)
+                                            <option value="{{ $trabajo->id }}">{{ $trabajo->nombre }}
+                                                [{{ $trabajo->unidad }}]
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
+                            </select>
+                            <div class="help-block" id="padre_error"></div>
+                        </div>
+                    </div>
+
+                    {{-- Valor --}}
+                    <div id="valor_div" class="form-group">
+                        {{ Form::label('valor', 'Valor Unitario (UF)', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-9">
+                            {{ Form::text('valor', null, array('placeholder' => 'Valor del Trabajo', 'class' => 'form-control')) }}
+                            <div class="help-block" id="valor_error"></div>
+                        </div>
+                    </div>
+
+                    {{-- Unidad --}}
+                    <div id="unidad_div" class="form-group">
+                        {{ Form::label('unidad', 'Unidad de Medida', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-9">
+                            {{ Form::text('unidad', null, array('placeholder' => 'm3, nro, mlv, etc.', 'class' => 'form-control')) }}
+                            <div class="help-block" id="unidad_error"></div>
+                        </div>
+                    </div>
+
+                    {{-- Checkbox esOficial --}}
+                    <div id="es_oficial_div" class="form-group">
+                        {{ Form::label('es_oficial', 'Oficial', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-9">
+                            <div class="checkbox">
+                                <label>
+                                    {{ Form::checkbox('es_oficial', 'true') }}
+                                    <abbr title="Quiere decir que será incluido en el Form 2-3-4">¿Qué es esto?</abbr>
+                                </label>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" for="textinput">Oficial</label>
-
-                            <div class="col-sm-10">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox"><abbr
-                                                title="Quiere decir que será incluido en el Form 2-3-4">¿Qué es
-                                            esto?</abbr>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Tipo</label>
-
-                            <div class="col-sm-10">
+                    </div>
+                    {{-- Radio tipo mantenimiento --}}
+                    <div id="tMat" class="form-group">
+                        <label class="col-sm-3 control-label">Mantenimiento</label>
+                        <div class="col-sm-9">
+                            @foreach($tipoMantenimiento as $tMat)
                                 <div class="radio">
                                     <label>
-                                        <input name="optionsRadios" id="optionsRadios1" value="option1" checked=""
+                                        <input name="tMat" id="tMat{{ $tMat->id }}" value="{{ $tMat->id }}" checked=""
                                                type="radio">
-                                        Mantenimiento menor
+                                        {{ $tMat->nombre }}
                                     </label>
                                 </div>
-                                <div class="radio">
-                                    <label>
-                                        <input name="optionsRadios" id="optionsRadios2" value="option2" type="radio">
-                                        Mantenimiento mayor
-                                    </label>
-                                </div>
-                            </div>
+                            @endforeach
+                            <div class="help-block" id="tMat_error"></div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                        </div>
-                    </fieldset>
-                </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        {{ Form::submit('Guardar', array('class'=>'btn btn-primary')) }}
+                    </div>
+                </fieldset>
+                {{ Form::close() }}
             </div>
         </div>
     </div>
 </div>
+
+{{ HTML::script('js/hd/modal/formTrabajo.js') }}
