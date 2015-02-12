@@ -8,7 +8,8 @@
 		"laravel/framework": "4.2.*",
 		"mrjuliuss/syntara": "1.2.*",
 		"barryvdh/laravel-debugbar": "~1.8",
-		"nesbot/Carbon": "*"
+		"nesbot/Carbon": "*",
+        "fitztrev/laravel-html-minify": "1.*"
 	},
 	"require-dev": {
 	    "way/generators": "~2.0"

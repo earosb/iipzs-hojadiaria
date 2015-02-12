@@ -125,6 +125,7 @@ return array(
     	'Mrjuliuss\Syntara\SyntaraServiceProvider',
     	'Way\Generators\GeneratorsServiceProvider',
     	'Barryvdh\Debugbar\ServiceProvider',
+		'Fitztrev\LaravelHtmlMinify\LaravelHtmlMinifyServiceProvider',
 
 	),
 
