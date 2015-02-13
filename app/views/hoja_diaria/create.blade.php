@@ -1,6 +1,6 @@
 @extends('layout.landing')
 @section('title')
-    Icil-icafal - Nueva hoja diaria de trabajo
+    Nueva hoja diaria de trabajo
 @stop
 @section('css')
     {{ HTML::style('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css') }}
@@ -30,18 +30,19 @@
             </ul>
         </div>
         {{ Form::open(array(
-        'url' 		=>	'hd',
-        'method' 	=>	'post',
-        'id'		=>	'formHojaDiaria',
-        'class' 	=> 	'form-horizontal')) }}
+            'url' 		=>	'hd',
+            'method' 	=>	'post',
+            'id'		=>	'formHojaDiaria',
+            'class' 	=> 	'form-horizontal')) }}
         <fieldset>
-            <div class="col-md-12">
+            <div class="col-md-3">
                 <legend>Nueva hoja diaria de trabajo</legend>
-                <div id="fecha_div">
-                    {{ Form::text('fecha', null, ['class'=>'input-sm', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha']) }}
-                    <span class="glyphicon glyphicon-calendar"></span>
-                    <div class="help-block" id="fecha_error"></div>
+                <div class="input-group" id="fecha_div">
+                    {{ Form::text('fecha', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha', 'required' => 'required']) }}
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
+                <div class="help-block" id="fecha_error"></div>
+
             </div>
             <div class="col-md-12">
                 {{-- Select sector
@@ -124,13 +125,16 @@
                             {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
-                            {{ Form::text('trabajos[0][km_inicio]', null, array('placeholder' => '', 'class' => 'form-control' ,'maxlength' => '7')) }}
+                            {{--{{ Form::text('trabajos[0][km_inicio]', null, array('placeholder' => '', 'class' => 'form-control' ,'maxlength' => '7')) }}--}}
+                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control', 'required' => 'required')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
-                            {{ Form::text('trabajos[0][km_termino]', null, array('placeholder' => '', 'class' => 'form-control','maxlength' => '7' )) }}
+                            {{--{{ Form::text('trabajos[0][km_termino]', null, array('placeholder' => '', 'class' => 'form-control','maxlength' => '7')) }}--}}
+                            {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control', 'required' => 'required')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
-                            {{ Form::text('trabajos[0][cantidad]', null, array('placeholder' => '', 'class' => 'form-control' )) }}
+                            {{--{{ Form::text('trabajos[0][cantidad]', null, array('placeholder' => '', 'class' => 'form-control')) }}--}}
+                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'required' => 'required')) }}
                         </td>
                     </tr>
                     </tbody>
@@ -160,7 +164,8 @@
                                 {{ Form::checkbox('matCol[0][reempleo]') }}
                             </td>
                             <td data-name="matCol" data-tipo="cant">
-                                {{ Form::text('matCol[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}
+                                {{--{{ Form::text('matCol[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}--}}
+                                {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'required' => 'required')) }}
                             </td>
                         </tr>
                         </tbody>
@@ -185,7 +190,8 @@
                                 {{ Form::select('matRet[0][id]', $materialesRet, null, [ 'class'=>'form-control matRet']) }}
                             </td>
                             <td data-name="matRet" data-tipo="cant">
-                                {{ Form::text('matRet[0][cant]', null, array('class' => 'form-control', 'size' => '4' )) }}
+                                {{--{{ Form::text('matRet[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}--}}
+                                {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'required' => 'required')) }}
                             </td>
                         </tr>
                         </tbody>
@@ -214,7 +220,7 @@
 
 @section('js')
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js') }}
-    {{ HTML::script('js/hd/create/calendar.min.js') }}
+    {{ HTML::script('js/calendar/calendar.min.js') }}
     {{ HTML::script('js/hd/create/table.js') }}
     {{ HTML::script('js/hd/create/create.js') }}
     {{ HTML::script('js/hd/create/ajax.js') }}

@@ -35,11 +35,11 @@
                     @endif
                     <div class="form-group">
                         {{ Form::label('username', trans('form.username')) }}
-                        {{ Form::text('username', '', array('class' => 'form-control', 'placeholder' => 'Ingrese usuario', 'type' => 'text')) }}
+                        {{ Form::text('username', '', array('class' => 'form-control', 'placeholder' => 'Ingrese usuario', 'required' => 'required')) }}
                     </div>
                     <div class="form-group">
                         {{ Form::label('password', trans('form.password')) }}
-                        {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Ingrese contraseña')) }}
+                        {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Ingrese contraseña', 'required' => 'required')) }}
                     </div>
                     <div class="form-group">
                         {{ HTML::link('/', trans('form.password_lost')) }}

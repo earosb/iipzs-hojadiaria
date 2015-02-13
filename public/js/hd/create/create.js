@@ -31,5 +31,17 @@ $(document).ready(function() {
       ajaxBlocks(sector_id, '#selectblock');
 
   });
+
+  /**
+   * Lanza calendario
+   */
+  $("#fecha").datepicker({
+    defaultDate: "-1m",
+    numberOfMonths: 2,
+    showAnim: "slideDown",
+    beforeShow: function() {
+      $(".ui-datepicker").css('font-size', 12)
+    }
+  });
   
 });

@@ -20,12 +20,12 @@
   };
   $.datepicker.setDefaults($.datepicker.regional['es']);
 
-  $("#fecha").datepicker({
-    defaultDate: "-1m",
-    numberOfMonths: 2,
-    showAnim: "slideDown",
-    beforeShow: function() {
-      $(".ui-datepicker").css('font-size', 12)
-    }
-  });
+  //$("#fecha").datepicker({
+  //  defaultDate: "-1m",
+  //  numberOfMonths: 2,
+  //  showAnim: "slideDown",
+  //  beforeShow: function() {
+  //    $(".ui-datepicker").css('font-size', 12)
+  //  }
+  //});
 

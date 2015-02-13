@@ -110,7 +110,9 @@ class BlockController extends \BaseController {
 	 */
 	public function ajaxBlocks($sectorId)
 	{
-		$blocks = Block::where('sector_id', '=', $sectorId)->get();
+		$blocks = Block::where('sector_id', '=', $sectorId)
+			->join('sector', 'block.sector_id', '=', 'sector.id')
+			->get(array('block.id', 'block.estacion', 'block.km_inicio', 'block.km_termino', 'block.sector_id', 'sector.km_inicio as sector_km_inicio', 'sector.km_termino as sector_km_termino'));
 		$ramales = Ramal::where('sector_id', '=', $sectorId)->get();
 
 		return Response::json(

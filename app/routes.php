@@ -79,6 +79,16 @@ Route::group(array('before' => 'auth|permiso:hoja-diaria'), function () {
 });
 
 /**
+ * Usuario logueado con permisos para consultas
+ */
+Route::group(array('before' => 'auth|permiso:consultas'), function () {
+    Route::get('s/param', 'ConsultasController@param');
+    Route::get('s', 'ConsultasController@index');
+    Route::get('/block/ajax-blocks/{idSector}', 'BlockController@ajaxBlocks');
+    Route::get('/block/ajax-get-limites/{data}', 'BlockController@ajaxGetLimites');
+});
+
+/**
  * Errores
  */
 App::missing(function ($exception) {

@@ -1,7 +1,7 @@
 @extends('layout.landing')
 
 @section('title')
-    Histórico hoja diaria de trabajo | Icil-icafal
+    Histórico hoja diaria de trabajo
 @stop
 
 @section('content')
@@ -20,12 +20,14 @@
             @forelse($hojas as $hoja)
                 <tr>
                     <td>
-                        {{ $hoja->fecha }}
+                        {{ Carbon\Carbon::parse($hoja->fecha)->format('d-m-Y') }}
                     </td>
                     <td>
-                        {{ $hoja->created_at  }}
+                        {{ Carbon\Carbon::parse($hoja->created_at)->format('d-m-Y H:i:s') }}
                     </td>
-                    <td>{{ $hoja->updated_at }}</td>
+                    <td>
+                        {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
+                    </td>
                     <td class="text-center">
                         <a class="glyphicon glyphicon-eye-open" title="Ver" href="#"
                            onclick="verHojaDiaria({{ $hoja->id }});return false;"></a>

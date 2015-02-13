@@ -90,27 +90,37 @@ function cargarKilometros(id) {
         type: 'get'
     })
         .error(function () {
-            alert("Error al obtener los datos\n Por favor verifique su conexión a Internet");
+            alert("Error al obtener los datos\nPor favor verifique su conexión a Internet");
         })
         .done(function (data) {
             switch (data.tipo) {
                 case 'block':
                     var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                     km_inicio.setAttribute("placeholder", data.km_inicio);
+                    km_inicio.setAttribute("min", data.km_inicio);
+                    km_inicio.setAttribute("max", data.km_termino);
                     var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
                     km_termino.removeAttribute("disabled");
                     km_termino.setAttribute("placeholder", data.km_termino);
+                    km_termino.setAttribute("min", data.km_inicio);
+                    km_termino.setAttribute("max", data.km_termino);
                     break;
                 case 'desvio':
                     var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                     km_inicio.setAttribute("placeholder", data.km_inicio);
+                    km_inicio.setAttribute("min", data.km_inicio);
+                    km_inicio.setAttribute("max", data.km_termino);
                     var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
                     km_termino.removeAttribute("disabled");
                     km_termino.setAttribute("placeholder", data.km_termino);
+                    km_termino.setAttribute("min", data.km_inicio);
+                    km_termino.setAttribute("max", data.km_termino);
                     break;
                 case 'desviador':
                     var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                     km_inicio.setAttribute("placeholder", data.km_inicio);
+                    km_inicio.setAttribute("min", data.km_inicio);
+                    km_inicio.setAttribute("max", data.km_termino);
                     var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
                     km_termino.setAttribute("disabled", 'disabled');
                     break;

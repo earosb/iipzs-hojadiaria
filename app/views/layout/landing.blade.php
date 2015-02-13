@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>
-        @yield('title')
+        @yield('title') - Icil-icafal
     </title>
     {{ HTML::style('//maxcdn.bootstrapcdn.com/bootswatch/3.3.2/yeti/bootstrap.min.css') }}
     {{ HTML::style('css/alertify.core.css') }}
@@ -23,6 +23,9 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="{{ URL::to('/') }}">Icafal App</a>
+        {{--<a class="navbar-brand" href="#">--}}
+            {{--<img alt="Brand" src="{{ URL::to('/') }}/logo/logo.svg">--}}
+        {{--</a>--}}
     </div>
     @if(Sentry::check())
         <div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -40,7 +43,7 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Consultas <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Consultar Trabajos</a></li>
+                            <li><a href="{{ URL::to('/s/param') }}">Consultar Trabajos</a></li>
                             @if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))
                                 <li><a href="#">Consultas Avanzadas</a></li>
                             @endif

@@ -20,22 +20,22 @@ function editarHojaDiaria(id) {
     //console.log('editar() ID ' + id);
 }
 function borrarHojaDiaria(id) {
-    setTimeout( function ( ) {
-        if (confirm("¿Borrar Hoja Diaria?") == true) {
+    setTimeout(function () {
+        if ( confirm("¿Borrar Hoja Diaria?") == true ) {
             $.ajax({
                 url: '/hd/' + id,
                 type: 'DELETE'
             }).success(function (data) {
-                if(data.error){
+                if ( data.error ) {
                     alert(data.msg);
-                }else{
+                } else {
                     window.location.reload();
                 }
             }).error(function () {
                 console.log("error");
             });
         }
-    }, 3000 );
+    }, 3000);
 
 }
 
@@ -89,7 +89,7 @@ function escribirDetalle(data) {
 
         tbl_tbjs_tr.append("<th>#</th>");
         tbl_tbjs_tr.append("<th>Trabajo</th>");
-        tbl_tbjs_tr.append("<th>Block: "+data.hojaDiaria.detalle_hoja_diaria[0].block.estacion+"</th>");
+        tbl_tbjs_tr.append("<th>Block: " + data.hojaDiaria.detalle_hoja_diaria[0].block.estacion + "</th>");
         //tbl_tbjs_tr.append("<th>Vía/Desvio/Desviador</th>");
         tbl_tbjs_tr.append("<th>Km Inicio</th>");
         tbl_tbjs_tr.append("<th>Km Termino</th>");
@@ -110,13 +110,13 @@ function escribirDetalle(data) {
             tbl_tbjs_tr.append("<td>" + value.trabajo.nombre + "</td>");
             //tbl_tbjs_tr.append("<td>" + value.block.estacion + "</td>");
 
-            if( value['desvio'] != null ){
+            if ( value['desvio'] != null ) {
                 tbl_tbjs_tr.append("<td>" + value.desvio.nombre + "</td>");
             }
-            else if( value['desviador'] != null ){
+            else if ( value['desviador'] != null ) {
                 tbl_tbjs_tr.append("<td>" + value.desviador.nombre + "</td>");
             }
-            else{
+            else {
                 tbl_tbjs_tr.append("<td> Vía Principal</td>");
             }
 
@@ -151,7 +151,7 @@ function escribirDetalle(data) {
 
         $.each(data.hojaDiaria.detalle_material_colocado, function (index, value) {
             var tbl_tr = $("<tr></tr>");
-            var reempleo = value.reempleo === '1' ? 'Si':'No';
+            var reempleo = value.reempleo === '1' ? 'Si' : 'No';
 
             tbl_tr.append("<td>" + (index + 1) + "</td>");
             tbl_tr.append("<td>" + value.material.nombre + "</td>");
