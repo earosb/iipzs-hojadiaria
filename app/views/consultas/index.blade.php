@@ -97,7 +97,6 @@
                         {{ Form::number('km_termino', 1066000, array('step' => '100', 'max' => '1066000', 'class' => 'form-control', 'required' => 'required')) }}
                     </div>
                     <p class="text-danger">{{ $errors->first('km_termino') }}</p>
-
                 </div>
             </div>
 

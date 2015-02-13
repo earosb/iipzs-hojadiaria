@@ -79,7 +79,7 @@ class TrabajoController extends \BaseController
         return Response::json(array(
                                   'error'   => false,
                                   'trabajo' => $trabajo,
-                                  'msg'     => 'Nuevo Material Retirado creado con éxito'
+                                  'msg'     => 'Nuevo Trabajo creado con éxito'
                               ));
     }
 

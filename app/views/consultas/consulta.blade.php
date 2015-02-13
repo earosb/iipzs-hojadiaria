@@ -98,7 +98,7 @@
                     <th>#</th>
                     <th>Nombre</th>
                     <th>Cantidad [u]</th>
-                    <th>Reempleo</th>
+                    <th>Clase</th>
                 </tr>
                 </thead>
                 <tbody>
