@@ -16,6 +16,8 @@
 - <http://bootswatch.com/yeti/>
 - <http://jqueryui.com/>
 - <https://github.com/fabien-d/alertify.js>
+- <https://datatables.net/>
+- <https://github.com/flatlogic/awesome-bootstrap-checkbox>
 
 
 ## Laravel PHP Framework
