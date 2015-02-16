@@ -126,15 +126,15 @@
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
                             {{--{{ Form::text('trabajos[0][km_inicio]', null, array('placeholder' => '', 'class' => 'form-control' ,'maxlength' => '7')) }}--}}
-                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control', 'required' => 'required')) }}
+                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
                             {{--{{ Form::text('trabajos[0][km_termino]', null, array('placeholder' => '', 'class' => 'form-control','maxlength' => '7')) }}--}}
-                            {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control', 'required' => 'required')) }}
+                            {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
                             {{--{{ Form::text('trabajos[0][cantidad]', null, array('placeholder' => '', 'class' => 'form-control')) }}--}}
-                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'required' => 'required')) }}
+                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0')) }}
                         </td>
                     </tr>
                     </tbody>
@@ -161,11 +161,11 @@
                                 {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
                             </td>
                             <td data-name="matCol" data-tipo="reempleo">
-                                {{ Form::checkbox('matCol[0][reempleo]') }}
+                                {{ Form::checkbox('matCol[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
                             </td>
                             <td data-name="matCol" data-tipo="cant">
                                 {{--{{ Form::text('matCol[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}--}}
-                                {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'required' => 'required')) }}
+                                {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0')) }}
                             </td>
                         </tr>
                         </tbody>
@@ -191,7 +191,7 @@
                             </td>
                             <td data-name="matRet" data-tipo="cant">
                                 {{--{{ Form::text('matRet[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}--}}
-                                {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'required' => 'required')) }}
+                                {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0')) }}
                             </td>
                         </tr>
                         </tbody>

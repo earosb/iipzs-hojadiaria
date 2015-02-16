@@ -13,6 +13,7 @@
 
 @section('css')
     {{ HTML::style('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css') }}
+    {{ HTML::style('css/awesome-bootstrap-checkbox.min.css') }}
 @stop
 
 @section('content')
@@ -70,7 +71,7 @@
                     {{ Form::label('block', 'Block', array('class' => 'control-label')) }}
                     <div class="controls">
                         <select name="block" id="block" class="form-control">
-                            <option selected="selected" disabled="disabled"> Seleccione Block o Ramal</option>
+                            <option selected="selected" disabled="disabled"> Seleccione Block</option>
                         </select>
                     </div>
                     <p class="text-danger">{{ $errors->first('block') }}</p>
@@ -99,15 +100,61 @@
                     <p class="text-danger">{{ $errors->first('km_termino') }}</p>
                 </div>
             </div>
-
-            {{-- Boton --}}
-            <div class="col-xs-12 col-md-6">
-                {{ Form::submit('Buscar', array('class' => 'btn btn-primary pull-right')) }}
-            </div>
-
-            {{ Form::close() }}
-
+            {{-- Opciones Avanzadas --}}
+            @if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+                <div class="col-md-12">
+                    {{-- Grupo Vía --}}
+                    <div class="col-xs-12 col-md-3">
+                        {{ Form::label('grupo_via', 'Grupo Vía', array('class' => 'control-label')) }}
+                        <div class="controls">
+                            <select name="grupo_via" id="grupo_via" class="form-control">
+                                <option selected="selected" value="all"> Todos</option>
+                                @foreach($grupos as $grupo)
+                                    <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <p class="text-danger">{{ $errors->first('grupo_via') }}</p>
+                    </div>
+                    {{-- Checkboxes tipo de vía --}}
+                    <div class="col-xs-12 col-md-3">
+                        <div>
+                            {{ Form::label('tipo_via[]', 'Tipo de Vía') }}
+                        </div>
+                        <div class="checkbox checkbox-primary checkbox-inline">
+                            {{ Form::checkbox('tipo_via[0]', 'true', true, array('id' => 'tipo_via[0]', 'disabled' => 'disabled')) }}
+                            <label for="tipo_via[0]"> Vía Principal </label>
+                        </div>
+                        <div class="checkbox checkbox-primary checkbox-inline">
+                            {{ Form::checkbox('tipo_via[1]', 'true', true, array('id' => 'tipo_via[1]', 'disabled' => 'disabled')) }}
+                            <label for="tipo_via[1]"> Desvíos </label>
+                        </div>
+                        <div class="checkbox checkbox-primary checkbox-inline">
+                            {{ Form::checkbox('tipo_via[2]', 'true', true, array('id' => 'tipo_via[2]', 'disabled' => 'disabled')) }}
+                            <label for="tipo_via[2]"> Desviadores </label>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
+
+        {{-- Botones --}}
+        <div class="col-xs-12 col-md-6">
+            <div class="pull-right">
+                @if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+                    <div class="btn-group">
+                        {{ Form::button('Resumido', array('type' => 'submit', 'name' => 'action', 'value' => 'resumido', 'class' => 'btn btn-primary')) }}
+                    </div>
+                @endif
+                <div class="btn-group">
+                    {{ Form::button('Detallado', array('type' => 'submit', 'name' => 'action', 'value' => 'detallado', 'class' => 'btn btn-primary')) }}
+                </div>
+            </div>
+        </div>
+
+        {{ Form::close() }}
+
+    </div>
     </div>
 @stop
 

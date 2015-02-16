@@ -44,9 +44,9 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Consultas <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/s/param') }}">Consultar Trabajos</a></li>
-                            @if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))
-                                <li><a href="#">Consultas Avanzadas</a></li>
-                            @endif
+                            {{--@if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))--}}
+                                {{--<li><a href="#">Consultas Avanzadas</a></li>--}}
+                            {{--@endif--}}
                         </ul>
                     </li>
                 @endif

@@ -15,21 +15,17 @@ function ajaxBlocks(sector_id, select) {
         $(select).append('<option disabled selected> Seleccione un Block o Ramal </option>');
 
         $.each(data.blocks, function (index, blockObj) {
-            if (index < data.blocks.length - 1) {
-                $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + ' - ' + data.blocks[index + 1].estacion + '</option>');
-            } else {
-                $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
-            }
+            $(select).append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
         });
 
-        $.each(data.ramales, function (index, ramalObj) {
-            var optGroup = $('<optgroup label="Ramales"></optgroup>');
-            var option = $('<option value="ramal-' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
-            optGroup.append(option);
-            if (index === data.ramales.length - 1) {
-                $(select).append(optGroup);
-            }
-        });
+        /*$.each(data.ramales, function (index, ramalObj) {
+         var optGroup = $('<optgroup label="Ramales"></optgroup>');
+         var option = $('<option value="ramal-' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
+         optGroup.append(option);
+         if ( index === data.ramales.length - 1 ) {
+         $(select).append(optGroup);
+         }
+         });*/
     });
 }
 
@@ -42,7 +38,7 @@ $('#selectblock').on('change', function (e) {
     e.preventDefault();
     var id_block = e.target.value;
 
-    if (id_block == 'empty') {
+    if ( id_block == 'empty' ) {
         $('.selectubicacion').empty();
     } else {
         $.ajax({
@@ -61,18 +57,18 @@ $('#selectblock').on('change', function (e) {
             $('.selectubicacion').append('</optgroup>');
 
             $.each(data.desvios, function (index, desvioObj) {
-                if (index === 0) {
+                if ( index === 0 ) {
                     $('.selectubicacion').append('<optgroup label="Desvíos">');
                 }
 
                 $(".selectubicacion").append('<option value=' + 'desvio-' + desvioObj.id + '>' + desvioObj.nombre + '</option>');
-                if (index == data.desvios.length - 1) { // Esto no funciona
+                if ( index == data.desvios.length - 1 ) { // Esto no funciona
                     $('.selectubicacion').append('</optgroup>');
                 }
             });
 
             $.each(data.desviadores, function (index, desviadoresObj) {
-                if (index === 0) { // Esto no funciona
+                if ( index === 0 ) { // Esto no funciona
                     $('.selectubicacion').append('<optgroup label="Desviadores">');
                 }
                 $(".selectubicacion").append('<option value=' + 'desviador-' + desviadoresObj.id + '>' + desviadoresObj.nombre + '</option>');
@@ -93,7 +89,7 @@ function cargarKilometros(id) {
             alert("Error al obtener los datos\nPor favor verifique su conexión a Internet");
         })
         .done(function (data) {
-            switch (data.tipo) {
+            switch ( data.tipo ) {
                 case 'block':
                     var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                     km_inicio.setAttribute("placeholder", data.km_inicio);
@@ -125,7 +121,5 @@ function cargarKilometros(id) {
                     km_termino.setAttribute("disabled", 'disabled');
                     break;
             }
-
         });
-
 }

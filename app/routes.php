@@ -94,4 +94,3 @@ Route::group(array('before' => 'auth|permiso:consultas'), function () {
 App::missing(function ($exception) {
     return Response::view('error.404');
 });
-

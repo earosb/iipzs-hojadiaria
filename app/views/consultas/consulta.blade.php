@@ -11,6 +11,8 @@
     Resultado Consulta
 @stop
 @section('css')
+    {{--{{ HTML::style('//cdn.datatables.net/1.10.5/css/jquery.dataTables.css') }}--}}
+    {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
     <style type="text/css">
         @media print {
             .breadcrumb {
@@ -43,24 +45,24 @@
 
                 <p>Desde el {{ Request::get('desde') }} Hasta el {{ Request::get('hasta') }}</p>
             </div>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped display">
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>Fecha</th>
                     <th>Block</th>
                     <th>Km Inicio</th>
                     <th>Km Término</th>
                     <th>Trabajo</th>
-                    <th>Cantidad [Uni]</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    @if(Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+                        <th>Grupo Vía</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($trabajos as $index => $trabajo)
+                @forelse($trabajos as $trabajo)
                     <tr>
-                        <td>
-                            {{ $index + 1}}
-                        </td>
                         <td>
                             {{ Carbon\Carbon::parse($trabajo->fecha)->format('d/m/Y') }}
                         </td>
@@ -78,10 +80,15 @@
                         </td>
                         <td>
                             {{ $trabajo->cantidad }}
-                            <b class="pull-right" style="margin-right: 15%">
-                                [{{ $trabajo->unidad }}]
-                            </b>
                         </td>
+                        <td>
+                            {{ $trabajo->unidad }}
+                        </td>
+                        @if(Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+                            <td>
+                                {{ $trabajo->base }}
+                            </td>
+                        @endif
                     </tr>
                 @empty
                     <p><strong>No existen registros</strong></p>
@@ -92,32 +99,32 @@
 
         <div class="col-xs-12 col-md-12">
             <legend>Materiales Colocados</legend>
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped display">
                 <thead>
                 <tr>
-                    <th>#</th>
                     <th>Nombre</th>
-                    <th>Cantidad [u]</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
                     <th>Clase</th>
                 </tr>
                 </thead>
                 <tbody>
-                @forelse($materiales as $index => $material)
+                @forelse($materiales as $material)
                     <tr>
-                        <td>
-                            {{ $index + 1}}
-                        </td>
                         <td>
                             {{ $material->nombre }}
                         </td>
                         <td>
-                            {{ $material->cantidad }} [{{ $material->unidad }}]
+                            {{ $material->cantidad }}
+                        </td>
+                        <td>
+                            {{ $material->unidad }}
                         </td>
                         <td>
                             @if($material->reempleo == '1') Reempleo
                             @else Nuevo
                             @endif
-
+                            {{--{{ $material->reempleo }}--}}
                         </td>
                     </tr>
                 @empty
@@ -126,8 +133,30 @@
                 </tbody>
             </table>
         </div>
-        <div class="well hidden">
-            {{ $materiales }}
+        <div>
+            <p>{{ $materiales }}</p>
+
+            <p>{{ $matReempleo }}</p>
         </div>
     </div>
 @stop
+
+
+@section('js')
+    {{ HTML::script('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js') }}
+    {{ HTML::script('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js') }}
+    <script>
+        $(document).ready(function () {
+            $('table.display').DataTable({
+                paging: false,
+                ordering: true,
+                info: false,
+                stateSave: false,
+                filter: false,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/f2c75b7247b/i18n/Spanish.json"
+                }
+            });
+        });
+    </script>
+@endsection

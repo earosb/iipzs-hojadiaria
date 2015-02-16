@@ -2,7 +2,7 @@
  * Created by earosb on 12-02-15.
  */
 
-$(document).ready(function() {
+$(document).ready(function () {
     /**
      * Lanza calendarios
      */
@@ -10,7 +10,7 @@ $(document).ready(function() {
         defaultDate: "-2m",
         numberOfMonths: 2,
         showAnim: "slideDown",
-        beforeShow: function() {
+        beforeShow: function () {
             $(".ui-datepicker").css('font-size', 12)
         }
     });
@@ -18,14 +18,14 @@ $(document).ready(function() {
         defaultDate: "-1m",
         numberOfMonths: 2,
         showAnim: "slideDown",
-        beforeShow: function() {
+        beforeShow: function () {
             $(".ui-datepicker").css('font-size', 12)
         }
     });
     /**
      * Carga los blocks en select
      */
-    $('#sector').on('change', function(e) {
+    $('#sector').on('change', function (e) {
         e.preventDefault();
         var sector_id = e.target.value;
 
@@ -33,7 +33,7 @@ $(document).ready(function() {
         $('.selectubicacion').empty();
         $('.selectubicacion').append('<option disabled selected> Seleccione Sector y Block </option>');
 
-        if (sector_id === 'all') {
+        if ( sector_id === 'all' ) {
             $('#block').empty();
             $('#block').append('<option disabled selected> Seleccione Block o Ramal </option>');
             var km_inicio = document.getElementById('km_inicio');
@@ -52,14 +52,12 @@ $(document).ready(function() {
             alert("Error al obtener los datos\nPor favor, verifique su conexión a Internet");
         }).done(function (data) {
             $('#block').empty();
-            $('#block').append('<option disabled selected> Seleccione Block o Ramal </option>');
+            $('#block').append('<option disabled selected> Seleccione Block </option>');
 
             $.each(data.blocks, function (index, blockObj) {
-                if (index < data.blocks.length - 1) {
-                    $('#block').append('<option value="' + blockObj.id + '">' + blockObj.estacion + ' - ' + data.blocks[index + 1].estacion + '</option>');
-                } else {
-                    $('#block').append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
-                }
+
+                $('#block').append('<option value="' + blockObj.id + '">' + blockObj.estacion + '</option>');
+
                 var km_inicio = document.getElementById('km_inicio');
                 var km_termino = document.getElementById('km_termino');
                 km_inicio.value = blockObj.sector_km_inicio;
@@ -68,14 +66,6 @@ $(document).ready(function() {
                 km_termino.setAttribute("max", blockObj.sector_km_termino);
             });
 
-            $.each(data.ramales, function (index, ramalObj) {
-                var optGroup = $('<optgroup label="Ramales"></optgroup>');
-                var option = $('<option value="ramal-' + ramalObj.id + '">' + ramalObj.nombre + '</option>');
-                optGroup.append(option);
-                if (index === data.ramales.length - 1) {
-                    $('#block').append(optGroup);
-                }
-            });
         });
 
     });
@@ -83,7 +73,7 @@ $(document).ready(function() {
     /**
      * Carga los límites del block
      */
-    $('#block').on('change', function(e) {
+    $('#block').on('change', function (e) {
         e.preventDefault();
         var block_id = e.target.value;
 
@@ -95,7 +85,7 @@ $(document).ready(function() {
                 alert("Error al obtener los datos\nPor favor verifique su conexión a Internet");
             })
             .done(function (data) {
-                switch (data.tipo) {
+                switch ( data.tipo ) {
                     case 'block':
                         var km_inicio = document.getElementById('km_inicio');
                         var km_termino = document.getElementById('km_termino');

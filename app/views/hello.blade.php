@@ -1,7 +1,7 @@
 @extends('layout.landing')
 
 @section('title')
-    Icil-icafal - Hello
+    Bienvenido
 @stop
 
 @section('alert')
