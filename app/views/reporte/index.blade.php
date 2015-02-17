@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-xs-12 col-md-12">
             {{ Form::open(array(
-                'url' 		=>	's',
+                'url' 		=>	'r',
                 'method' 	=>	'get',
                 'id'		=>	'formParam',
                 'class' 	=> 	'form-horizontal')) }}
@@ -141,13 +141,13 @@
         {{-- Botones --}}
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
-                @if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+                {{--@if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))--}}
                     <div class="btn-group">
-                        {{ Form::button('Resumido', array('type' => 'submit', 'name' => 'action', 'value' => 'resumido', 'class' => 'btn btn-primary')) }}
+                        {{ Form::button('Reporte Resumido', array('type' => 'submit', 'name' => 'action', 'value' => 'resumido', 'class' => 'btn btn-primary')) }}
                     </div>
-                @endif
+                {{--@endif--}}
                 <div class="btn-group">
-                    {{ Form::button('Detallado', array('type' => 'submit', 'name' => 'action', 'value' => 'detallado', 'class' => 'btn btn-primary')) }}
+                    {{ Form::button('Reporte Detallado', array('type' => 'submit', 'name' => 'action', 'value' => 'detallado', 'class' => 'btn btn-primary')) }}
                 </div>
             </div>
         </div>
