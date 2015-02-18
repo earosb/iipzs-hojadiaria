@@ -89,6 +89,12 @@ function cargarKilometros(id) {
             alert("Error al obtener los datos\nPor favor verifique su conexión a Internet");
         })
         .done(function (data) {
+            document.getElementById("trabajos[0][km_inicio]").setAttribute("placeholder", data.km_inicio);
+            document.getElementById("trabajos[0][km_inicio]").setAttribute("min", data.km_termino);
+            document.getElementById("trabajos[0][km_inicio]").setAttribute("max", data.km_termino);
+            document.getElementById("trabajos[0][km_termino]").setAttribute("placeholder", data.km_termino);
+            document.getElementById("trabajos[0][km_termino]").setAttribute("min", data.km_inicio);
+            document.getElementById("trabajos[0][km_termino]").setAttribute("max", data.km_termino);
             switch ( data.tipo ) {
                 case 'block':
                     var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
