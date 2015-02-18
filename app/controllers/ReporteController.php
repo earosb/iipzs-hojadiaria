@@ -32,27 +32,23 @@ class ReporteController extends \BaseController
      */
     public function index()
     {
-        $input = array(
-            'desde'      => Input::get('desde'),
-            'hasta'      => Input::get('hasta'),
-            'km_inicio'  => Input::get('km_inicio'),
-            'km_termino' => Input::get('km_termino'),
-            'action'     => Input::get('action'),
-        );
+        $input = Input::all();
+
         $rules = array(
-            'desde'      => 'required|date_format:d/m/Y|before:' . $input['hasta'],
-            'hasta'      => 'required|date_format:d/m/Y|before:"now +1 day',
-            'km_inicio'  => 'required|numeric',
-            'km_termino' => 'required|numeric',
-            'action'     => 'required'
+            'fecha_desde' => 'required|date_format:d/m/Y|before:' . $input['fecha_hasta'],
+            'fecha_hasta' => 'required|date_format:d/m/Y|before:"now +1 day',
+            'km_inicio'   => 'required|numeric',
+            'km_termino'  => 'required|numeric',
+            'action'      => 'required'
         );
+
         $validator = Validator::make($input, $rules);
         if ($validator->fails()) {
-            return Redirect::to('s/param')->withInput()->withErrors($validator->messages());
+            return Redirect::to('r/param')->withInput()->withErrors($validator->messages());
         }
 
-        $desde = Carbon::createFromFormat('d/m/Y H', $input['desde'] . '00');
-        $hasta = Carbon::createFromFormat('d/m/Y H:i:s', $input['hasta'] . '23:59:59');
+        $desde = Carbon::createFromFormat('d/m/Y H', $input['fecha_desde'] . '00');
+        $hasta = Carbon::createFromFormat('d/m/Y H:i:s', $input['fecha_hasta'] . '23:59:59');
 
         $km_inicio = $input['km_inicio'];
         $km_termino = $input['km_termino'];
@@ -105,7 +101,7 @@ class ReporteController extends \BaseController
             }
         }
 
-        /*
+        /**
          * Consulta agrupada de materiales colocados marcados como nuevos
          */
         $materiales['nuevo'] = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
@@ -130,7 +126,7 @@ class ReporteController extends \BaseController
             ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
             ->groupBy('material.nombre')
             ->get();
-        /*
+        /**
          * Consulta agrupada de materiales retirados de la vía
          * Si es que tiene permisos
          */
@@ -144,7 +140,7 @@ class ReporteController extends \BaseController
                 ->select('material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
                 ->groupBy('material_retirado.nombre')
                 ->get();
-        }else{
+        } else {
             $materialesRetirados = null;
         }
 
@@ -158,80 +154,9 @@ class ReporteController extends \BaseController
                 ->with('trabajos', $trabajos)
                 ->with('materiales', $materiales)
                 ->with('materialesRetirados', $materialesRetirados);
-        } else{
+        } else {
             return Response::view('error.404');
         }
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     * GET /reporte/create
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     * POST /reporte
-     *
-     * @return Response
-     */
-    public function store()
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     * GET /reporte/{id}
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * GET /reporte/{id}/edit
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * PUT /reporte/{id}
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update($id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * DELETE /reporte/{id}
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 
 }

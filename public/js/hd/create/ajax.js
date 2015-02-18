@@ -90,7 +90,7 @@ function cargarKilometros(id) {
         })
         .done(function (data) {
             document.getElementById("trabajos[0][km_inicio]").setAttribute("placeholder", data.km_inicio);
-            document.getElementById("trabajos[0][km_inicio]").setAttribute("min", data.km_termino);
+            document.getElementById("trabajos[0][km_inicio]").setAttribute("min", data.km_inicio);
             document.getElementById("trabajos[0][km_inicio]").setAttribute("max", data.km_termino);
             document.getElementById("trabajos[0][km_termino]").setAttribute("placeholder", data.km_termino);
             document.getElementById("trabajos[0][km_termino]").setAttribute("min", data.km_inicio);

@@ -125,12 +125,15 @@
                             {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
-                            {{ Form::number('trabajos[0][km_inicio]', null, array('class' => 'form-control', 'min' => '0', 'max' => '0', 'id' => 'trabajos[0][km_inicio]')) }}
+                            {{--{{ Form::text('trabajos[0][km_inicio]', null, array('placeholder' => '', 'class' => 'form-control' ,'maxlength' => '7')) }}--}}
+                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
-                            {{ Form::number('trabajos[0][km_termino]', null, array('class' => 'form-control', 'min' => '0', 'max' => '0', 'id' => 'trabajos[0][km_termino]')) }}
+                            {{--{{ Form::text('trabajos[0][km_termino]', null, array('placeholder' => '', 'class' => 'form-control','maxlength' => '7')) }}--}}
+                            {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
+                            {{--{{ Form::text('trabajos[0][cantidad]', null, array('placeholder' => '', 'class' => 'form-control')) }}--}}
                             {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0')) }}
                         </td>
                     </tr>

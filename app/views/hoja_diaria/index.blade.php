@@ -4,8 +4,23 @@
     Histórico hoja diaria de trabajo
 @stop
 
+@section('css')
+    {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
+    <style type="text/css">
+        @media print {
+            #div_historico {
+                display: none;
+            }
+
+            .btn-group {
+                display: none;
+            }
+        }
+    </style>
+@endsection
+
 @section('content')
-    <div class="col-xs-12 col-md-6 col-lg-4">
+    <div class="col-xs-12 col-md-6 col-lg-4" id="div_historico">
         <legend>Histórico Hojas Diarias</legend>
         <table class="table table-bordered table-striped" id="tab_trabajados">
             <thead>
@@ -46,4 +61,21 @@
 
 @section('js')
     {{ HTML::script('js/hd/index.js') }}
+    {{ HTML::script('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js') }}
+    {{ HTML::script('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js') }}
+    <script>
+        $(document).ready(function () {
+            $("#tab_trabajados").DataTable({
+                paging: true,
+                lengthChange: false,
+                ordering: false,
+                info: false,
+                stateSave: false,
+                filter: false,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/f2c75b7247b/i18n/Spanish.json"
+                }
+            });
+        });
+    </script>
 @endsection

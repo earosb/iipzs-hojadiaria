@@ -41,41 +41,48 @@ function borrarHojaDiaria(id) {
 
 function escribirDetalle(data) {
     if ( data.error ) {
-        document.getElementById('dt_legend').innerHTML = data.msg;
+        alertify.log(data.msg);
         return;
     }
 
     var div = $("#div_detalle");
     div.empty();
 
-    var legend = $("<legend></legend>");
+    //var date = new Date(data.hojaDiaria.fecha);
+    //var myDate = Date.prototype.toLocaleDateString();
 
     var title = $("<h4></h4>", {
         html: "Grupo: <b>" + data.hojaDiaria.grupo_trabajo.base + "</b>" + " Fecha: <b>" + data.hojaDiaria.fecha + "</b>"
     });
     var btn_div = $("<div></div>", {
-        class: "pull-right"
+        class: "btn-group pull-right"
     });
 
     var btn_borrar = $("<a></a>", {
-        class: "glyphicon glyphicon-trash",
+        class: "btn btn-default glyphicon glyphicon-trash",
         title: "Borrar",
         href: "#",
         onClick: "borrarHojaDiaria( " + data.hojaDiaria.id + " );return false;"
     });
     var btn_editar = $("<a></a>", {
-        class: "glyphicon glyphicon-pencil",
+        class: "btn btn-default glyphicon glyphicon-pencil",
         title: "Editar",
         href: "#",
         onClick: "editarHojaDiaria( " + data.hojaDiaria.id + " );return false;"
     });
+    var btn_imprimir = $("<a></a>", {
+        class: "btn btn-default glyphicon glyphicon-print",
+        title: "Imprimir",
+        href: "javascript:window.print();"
+    });
 
+    btn_div.append(btn_imprimir);
     btn_div.append(btn_editar);
     btn_div.append(btn_borrar);
-    legend.append(btn_div);
-    legend.append(title);
 
-    div.append(legend);
+    div.append(btn_div);
+    div.append(title);
+    div.append("<legend></legend>");
 
     /**
      * Tabla de trabajos realizados

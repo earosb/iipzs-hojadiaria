@@ -29,22 +29,22 @@
 
                 {{-- Fecha Inicio --}}
                 <div class="col-md-3">
-                    {{ Form::label('desde', 'Desde', array('class' => 'control-label')) }}
-                    <div class="input-group" id="desde_div">
-                        {{ Form::text('desde', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'desde', 'required' => 'required']) }}
+                    {{ Form::label('fecha_desde', 'Desde', array('class' => 'control-label')) }}
+                    <div class="input-group" id="fecha_desde_div">
+                        {{ Form::text('fecha_desde', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha_desde', 'required' => 'required']) }}
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
-                    <p class="text-danger">{{ $errors->first('desde') }}</p>
+                    <p class="text-danger">{{ $errors->first('fecha_desde') }}</p>
                 </div>
 
                 {{-- Fecha termino --}}
                 <div class="col-md-3">
-                    {{ Form::label('hasta', 'Hasta', array('class' => 'control-label')) }}
-                    <div class="input-group" id="hasta_div">
-                        {{ Form::text('hasta', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'hasta', 'required' => 'required']) }}
+                    {{ Form::label('fecha_hasta', 'Hasta', array('class' => 'control-label')) }}
+                    <div class="input-group" id="fecha_hasta_div">
+                        {{ Form::text('fecha_hasta', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha_hasta', 'required' => 'required']) }}
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
-                    <p class="text-danger">{{ $errors->first('hasta') }}</p>
+                    <p class="text-danger">{{ $errors->first('fecha_hasta') }}</p>
                 </div>
 
             </div>

@@ -230,6 +230,8 @@ class HojaDiariaController extends \BaseController
                 ));
         }
 
+        $hojaDiaria->fecha = Carbon::parse($hojaDiaria->fecha)->format('d-m-Y');
+
         $hojaDiaria->grupoTrabajo;
 
         $hojaDiaria->detalleMaterialRetirado;

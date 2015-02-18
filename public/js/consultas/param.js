@@ -6,7 +6,7 @@ $(document).ready(function () {
     /**
      * Lanza calendarios
      */
-    $("#desde").datepicker({
+    $("#fecha_desde").datepicker({
         defaultDate: "-2m",
         numberOfMonths: 2,
         showAnim: "slideDown",
@@ -14,7 +14,7 @@ $(document).ready(function () {
             $(".ui-datepicker").css('font-size', 12)
         }
     });
-    $("#hasta").datepicker({
+    $("#fecha_hasta").datepicker({
         defaultDate: "-1m",
         numberOfMonths: 2,
         showAnim: "slideDown",
