@@ -48,12 +48,10 @@ function escribirDetalle(data) {
     var div = $("#div_detalle");
     div.empty();
 
-    //var date = new Date(data.hojaDiaria.fecha);
-    //var myDate = Date.prototype.toLocaleDateString();
-
     var title = $("<h4></h4>", {
         html: "Grupo: <b>" + data.hojaDiaria.grupo_trabajo.base + "</b>" + " Fecha: <b>" + data.hojaDiaria.fecha + "</b>"
     });
+
     var btn_div = $("<div></div>", {
         class: "btn-group pull-right"
     });
@@ -64,12 +62,14 @@ function escribirDetalle(data) {
         href: "#",
         onClick: "borrarHojaDiaria( " + data.hojaDiaria.id + " );return false;"
     });
+
     var btn_editar = $("<a></a>", {
         class: "btn btn-default glyphicon glyphicon-pencil",
         title: "Editar",
         href: "#",
         onClick: "editarHojaDiaria( " + data.hojaDiaria.id + " );return false;"
     });
+
     var btn_imprimir = $("<a></a>", {
         class: "btn btn-default glyphicon glyphicon-print",
         title: "Imprimir",
@@ -132,6 +132,7 @@ function escribirDetalle(data) {
             tbl_tbjs_tr.append("<td>" + value.cantidad + "</td>");
             tbl_tbjs_tbody.append(tbl_tbjs_tr);
         });
+
         tbl_trabajos.append(tbl_tbjs_tbody);
     }
 
@@ -167,6 +168,7 @@ function escribirDetalle(data) {
             tbl_tr.append("<td>" + value.material.unidad + "</td>");
             tbl_tbody.append(tbl_tr);
         });
+
         tbl_matCol.append(tbl_tbody);
         div.append("<h4>Materiales Colocados</h4>");
         div.append(tbl_matCol);
@@ -198,6 +200,7 @@ function escribirDetalle(data) {
             tbl_tr.append("<td>" + value.cantidad + "</td>");
             tbl_tbody.append(tbl_tr);
         });
+
         tbl_matCol.append(tbl_tbody);
         div.append("<h4>Materiales Retirados</h4>");
         div.append(tbl_matCol);

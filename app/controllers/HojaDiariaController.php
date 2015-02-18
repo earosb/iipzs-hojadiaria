@@ -130,8 +130,8 @@ class HojaDiariaController extends \BaseController
         if ($validator->fails()) {
             return Response::json(
                 array(
-                    'fail'   => true,
-                    'errors' => $validator->messages()
+                    'error' => true,
+                    'msg'   => $validator->messages()
                 ));
         }
 
@@ -205,8 +205,8 @@ class HojaDiariaController extends \BaseController
 
         return Response::json(
             array(
-                'fail'  => false,
-                'input' => $input
+                'error' => false,
+                'msg'   => 'Hoja Diaria creada con éxito'
             ));
 
     }

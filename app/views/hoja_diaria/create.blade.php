@@ -66,7 +66,7 @@
                     {{ Form::label('selectblock', 'Block', array('class' => 'control-label')) }}
                     <div class="controls">
                         <select name="selectblock" id="selectblock" class="myselect">
-                            <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
+                            <option selected="selected" disabled="disabled" value="null"> Seleccione un Sector</option>
                         </select>
 
                         <div class="help-block" id="selectblock_error"></div>
@@ -125,15 +125,12 @@
                             {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
-                            {{--{{ Form::text('trabajos[0][km_inicio]', null, array('placeholder' => '', 'class' => 'form-control' ,'maxlength' => '7')) }}--}}
-                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control')) }}
+                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
-                            {{--{{ Form::text('trabajos[0][km_termino]', null, array('placeholder' => '', 'class' => 'form-control','maxlength' => '7')) }}--}}
-                            {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control')) }}
+                            {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
-                            {{--{{ Form::text('trabajos[0][cantidad]', null, array('placeholder' => '', 'class' => 'form-control')) }}--}}
                             {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0')) }}
                         </td>
                     </tr>
@@ -164,7 +161,6 @@
                                 {{ Form::checkbox('matCol[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
                             </td>
                             <td data-name="matCol" data-tipo="cant">
-                                {{--{{ Form::text('matCol[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}--}}
                                 {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0')) }}
                             </td>
                         </tr>
@@ -190,7 +186,6 @@
                                 {{ Form::select('matRet[0][id]', $materialesRet, null, [ 'class'=>'form-control matRet']) }}
                             </td>
                             <td data-name="matRet" data-tipo="cant">
-                                {{--{{ Form::text('matRet[0][cant]', null, array('class' => 'form-control', 'size' => '4')) }}--}}
                                 {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0')) }}
                             </td>
                         </tr>
@@ -209,8 +204,6 @@
             {{-- Botones
             ===================================================== --}}
             <div class="col-xs-12 col-md-12">
-                {{-- <a href="#" class="btn btn-default ">Guardar y nuevo</a> --}}
-                {{-- Form::button('Guardar', array('type' => 'submit', 'class' => 'btn btn-primary pull-right')) --}}
                 {{ Form::submit('Guardar', array('class' => 'btn btn-primary pull-right')) }}
             </div>
         </fieldset>

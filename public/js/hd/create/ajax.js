@@ -9,7 +9,7 @@ function ajaxBlocks(sector_id, select) {
         type: 'get',
         url: '/block/ajax-blocks/' + sector_id
     }).error(function () {
-        alert("Error al obtener los datos\n Por favor, verifique su conexión a Internet");
+        alert("Error al obtener los datos\nPor favor, verifique su conexión a Internet");
     }).done(function (data) {
         $(select).empty();
         $(select).append('<option disabled selected> Seleccione un Block o Ramal </option>');
@@ -38,7 +38,7 @@ $('#selectblock').on('change', function (e) {
     e.preventDefault();
     var id_block = e.target.value;
 
-    if ( id_block == 'empty' ) {
+    if ( id_block == 'empty' || id_block == 'null' ) {
         $('.selectubicacion').empty();
     } else {
         $.ajax({
@@ -46,32 +46,36 @@ $('#selectblock').on('change', function (e) {
             type: 'GET'
         }).error(function () {
             // ERROR
-            alert("Error al obtener los datos\n Por favor verifique su conexión a Internet");
+            alert("Error al obtener los datos\nPor favor verifique su conexión a Internet");
         }).done(function (data) {
             /** DONE */
-            $('.selectubicacion').empty();
-            $('.selectubicacion').append('<option selected="selected" disabled="disabled"> Seleccione vía </option>');
-            $('.selectubicacion').append('<optgroup label="Vía Principal">');
-            //$(".selectubicacion").append("<option value=" + "{'tipo':'block','id':" + data.block.id + "}" + ">" + data.block.estacion + "</option>");
-            $(".selectubicacion").append('<option value=' + 'block-' + data.block.id + '>' + data.block.estacion + '</option>');
-            $('.selectubicacion').append('</optgroup>');
+            var selectUbicacion = $('.selectubicacion');
+            selectUbicacion.empty();
+            selectUbicacion.append('<option selected="selected" disabled="disabled"> Seleccione vía </option>');
+            selectUbicacion.append('<optgroup label="Vía Principal">');
+            selectUbicacion.append('<option value=' + 'block-' + data.block.id + '>' + data.block.estacion + '</option>');
+            selectUbicacion.append('</optgroup>');
+
+            var kmInicio = $('.km-inicio');
+            var kmTermino = $('.km-termino');
+            kmInicio.removeAttr('placeholder');
+            kmInicio.removeAttr('min');
+            kmInicio.removeAttr('max');
+            kmTermino.removeAttr('placeholder');
+            kmTermino.removeAttr('min');
+            kmTermino.removeAttr('max');
 
             $.each(data.desvios, function (index, desvioObj) {
-                if ( index === 0 ) {
-                    $('.selectubicacion').append('<optgroup label="Desvíos">');
-                }
-
-                $(".selectubicacion").append('<option value=' + 'desvio-' + desvioObj.id + '>' + desvioObj.nombre + '</option>');
+                if ( index === 0 ) selectUbicacion.append('<optgroup label="Desvíos">');
+                selectUbicacion.append('<option value=' + 'desvio-' + desvioObj.id + '>' + desvioObj.nombre + '</option>');
                 if ( index == data.desvios.length - 1 ) { // Esto no funciona
-                    $('.selectubicacion').append('</optgroup>');
+                    selectUbicacion.append('</optgroup>');
                 }
             });
 
             $.each(data.desviadores, function (index, desviadoresObj) {
-                if ( index === 0 ) { // Esto no funciona
-                    $('.selectubicacion').append('<optgroup label="Desviadores">');
-                }
-                $(".selectubicacion").append('<option value=' + 'desviador-' + desviadoresObj.id + '>' + desviadoresObj.nombre + '</option>');
+                if ( index === 0 ) selectUbicacion.append('<optgroup label="Desviadores">');
+                selectUbicacion.append('<option value=' + 'desviador-' + desviadoresObj.id + '>' + desviadoresObj.nombre + '</option>');
             });
 
         });
@@ -95,35 +99,43 @@ function cargarKilometros(id) {
             document.getElementById("trabajos[0][km_termino]").setAttribute("placeholder", data.km_termino);
             document.getElementById("trabajos[0][km_termino]").setAttribute("min", data.km_inicio);
             document.getElementById("trabajos[0][km_termino]").setAttribute("max", data.km_termino);
+
+            if ( data.error() ) {
+                alertify.log(data.msg);
+                return;
+            }
+
+            var km_inicio;
+            var km_termino;
             switch ( data.tipo ) {
                 case 'block':
-                    var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
+                    km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                     km_inicio.setAttribute("placeholder", data.km_inicio);
                     km_inicio.setAttribute("min", data.km_inicio);
                     km_inicio.setAttribute("max", data.km_termino);
-                    var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
+                    km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
                     km_termino.removeAttribute("disabled");
                     km_termino.setAttribute("placeholder", data.km_termino);
                     km_termino.setAttribute("min", data.km_inicio);
                     km_termino.setAttribute("max", data.km_termino);
                     break;
                 case 'desvio':
-                    var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
+                    km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                     km_inicio.setAttribute("placeholder", data.km_inicio);
                     km_inicio.setAttribute("min", data.km_inicio);
                     km_inicio.setAttribute("max", data.km_termino);
-                    var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
+                    km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
                     km_termino.removeAttribute("disabled");
                     km_termino.setAttribute("placeholder", data.km_termino);
                     km_termino.setAttribute("min", data.km_inicio);
                     km_termino.setAttribute("max", data.km_termino);
                     break;
                 case 'desviador':
-                    var km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
+                    km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                     km_inicio.setAttribute("placeholder", data.km_inicio);
                     km_inicio.setAttribute("min", data.km_inicio);
                     km_inicio.setAttribute("max", data.km_termino);
-                    var km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
+                    km_termino = document.getElementById("trabajos[" + id + "][km_termino]");
                     km_termino.setAttribute("disabled", 'disabled');
                     break;
             }

@@ -17,10 +17,13 @@ $("#formModalDesviador").submit(function (e) {
     }).error(function () {
         alert("Error al enviar datos\nPor favor verifique su conexión a Internet");
     }).done(function (data) {
-        if (data.fail) {
-            $('#formModalDesviador .form-group').removeClass('required has-error');
-            $('#formModalDesviador .help-block').empty();
-            $.each(data.errors, function (index, value) {
+        if ( data.error ) {
+            var form = $('#formModalDesviador');
+            var formGroup = form.find('.form-group');
+            var helpBlock = form.find('.help-block');
+            formGroup.removeClass('required has-error');
+            helpBlock.empty();
+            $.each(data.msg, function (index, value) {
                 var errorDiv = '#' + index + '_error';
                 $(errorDiv).addClass('required');
                 $(errorDiv).empty();
@@ -30,9 +33,15 @@ $("#formModalDesviador").submit(function (e) {
                 $('#modalDesviador #' + index + '_div').addClass('required has-error');
             });
         } else {
-            $('#modalDesviador').modal('hide');
+            var modal = $('#modalDesviador');
             $('#selectblock').trigger('change');
+            modal.modal('hide');
             document.getElementById("formModalDesviador").reset();
+            var modalFormGroup = modal.find('.form-group');
+            var modalHelpBlock = modal.find('.help-block');
+            modalFormGroup.removeClass('required has-error');
+            modalHelpBlock.empty();
+            alertify.log(data.msg);
         }
     });
 });

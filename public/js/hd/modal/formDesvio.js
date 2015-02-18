@@ -5,7 +5,7 @@
 /**
  * Carga los blocks en modal desvío
  */
-$('#selectsectorDesvio').on('change', function(e) {
+$('#selectsectorDesvio').on('change', function (e) {
     e.preventDefault();
     var sector_id = e.target.value;
     $('#selectblockDesvio').empty();
@@ -15,7 +15,7 @@ $('#selectsectorDesvio').on('change', function(e) {
 /**
  * Carga el desviador norte modal desvío
  */
-$('#selectblockDesvio').on('change', function(e){
+$('#selectblockDesvio').on('change', function (e) {
     e.preventDefault();
     var id = e.target.value;
     $.ajax({
@@ -24,21 +24,26 @@ $('#selectblockDesvio').on('change', function(e){
     }).error(function () {
         alert("Error al obtener los datos\nPor favor, verifique su conexión a Internet");
     }).done(function (data) {
-        $('#formModalDesvio .form-group').removeClass('required has-error');
-        $('#formModalDesvio .help-block').empty();
-        if(data.error){
+        var form = $('#formModalDesvio');
+        var formGroup = form.find('.form-group');
+        var helpBlock = form.find('.help-block');
+        formGroup.removeClass('required has-error');
+        helpBlock.empty();
+        var selectDesviadorNorte = $('#selectdesviador_norte');
+        var selectDesviadorSur = $('#selectdesviador_sur');
+        if ( data.error ) {
             $('#selectblockDesvio_error').append('<p class="text-warning">' + data.msg + '</p>');
-            $('#selectdesviador_norte').empty();
-            $('#selectdesviador_norte').prop("disabled", true);
-            $('#selectdesviador_sur').empty();
-            $('#selectdesviador_sur').prop("disabled", true);
+            selectDesviadorNorte.empty();
+            selectDesviadorNorte.prop("disabled", true);
+            selectDesviadorSur.empty();
+            selectDesviadorSur.prop("disabled", true);
         }
-        else{
-            $('#selectdesviador_norte').empty();
-            $('#selectdesviador_norte').prop("disabled", false);
-            $('#selectdesviador_norte').append('<option disabled selected> Seleccione un Desviador </option>');
+        else {
+            selectDesviadorNorte.empty();
+            selectDesviadorNorte.prop("disabled", false);
+            selectDesviadorNorte.append('<option disabled selected> Seleccione un Desviador </option>');
             $.each(data.desviadores, function (index, value) {
-                $('#selectdesviador_norte').append('<option value="' + value.id + '">' + value.nombre + '  [Km inicio: '+ value.km_inicio +']' +'</option>');
+                selectDesviadorNorte.append('<option value="' + value.id + '">' + value.nombre + '  [Km inicio: ' + value.km_inicio + ']' + '</option>');
             });
         }
     });
@@ -47,7 +52,7 @@ $('#selectblockDesvio').on('change', function(e){
 /**
  * Carga los desviadores al Sur del seleccionado como norte
  */
-$("#selectdesviador_norte").on('change', function(e){
+$("#selectdesviador_norte").on('change', function (e) {
     e.preventDefault();
     var id = e.target.value;
     $.ajax({
@@ -56,19 +61,23 @@ $("#selectdesviador_norte").on('change', function(e){
     }).error(function () {
         alert("Error al obtener los datos\nPor favor, verifique su conexión a Internet");
     }).done(function (data) {
-        $('#formModalDesvio .form-group').removeClass('required has-error');
-        $('#formModalDesvio .help-block').empty();
-        if(data.error){
+        var form = $('#formModalDesvio');
+        var formGroup = form.find('.form-group');
+        var helpBlock = form.find('.help-block');
+        formGroup.removeClass('required has-error');
+        helpBlock.empty();
+        var selectDesviadorSur = $('#selectdesviador_sur');
+        if ( data.error ) {
             $('#selectdesviador_norte_error').append('<p class="text-warning">' + data.msg + '</p>');
-            $('#selectdesviador_sur').empty();
-            $('#selectdesviador_sur').prop("disabled", true);
+            selectDesviadorSur.empty();
+            selectDesviadorSur.prop("disabled", true);
         }
-        else{
-            $('#selectdesviador_sur').empty();
-            $('#selectdesviador_sur').prop("disabled", false);
-            $('#selectdesviador_sur').append('<option disabled selected> Seleccione un Desviador </option>');
+        else {
+            selectDesviadorSur.empty();
+            selectDesviadorSur.prop("disabled", false);
+            selectDesviadorSur.append('<option disabled selected> Seleccione un Desviador </option>');
             $.each(data.desviadores, function (index, value) {
-                $('#selectdesviador_sur').append('<option value="' + value.id + '">' + value.nombre + '  [Km inicio: '+ value.km_inicio +']' +'</option>');
+                selectDesviadorSur.append('<option value="' + value.id + '">' + value.nombre + '  [Km inicio: ' + value.km_inicio + ']' + '</option>');
             });
         }
     });
@@ -77,7 +86,7 @@ $("#selectdesviador_norte").on('change', function(e){
 /**
  *
  */
-$("#formModalDesvio").submit(function(e) {
+$("#formModalDesvio").submit(function (e) {
     e.preventDefault();
     var $form = $(this),
         data = $form.serialize(),
@@ -87,12 +96,15 @@ $("#formModalDesvio").submit(function(e) {
         url: url,
         type: method,
         data: data
-    }).error(function() {
+    }).error(function () {
         alert("Error al enviar datos\nPor favor verifique su conexión a Internet");
-    }).done(function(data) {
-        if (data.error) {
-            $('#formModalDesvio .form-group').removeClass('required has-error');
-            $('#formModalDesvio .help-block').empty();
+    }).done(function (data) {
+        if ( data.error ) {
+            var form = $('#formModalDesvio');
+            var formGroup = form.find('.form-group');
+            var helpBlock = form.find('.help-block');
+            formGroup.removeClass('required has-error');
+            helpBlock.empty();
             $.each(data.msg, function (index, value) {
                 var errorDiv = '#formModalDesvio #' + index + '_error';
                 $(errorDiv).addClass('required');
@@ -103,11 +115,14 @@ $("#formModalDesvio").submit(function(e) {
                 $('#modalDesvio #' + index + '_div').addClass('required has-error');
             });
         } else {
+            var modal = $('#modalDesvio');
             $('#selectblock').trigger('change');
-            $('#modalDesvio').modal('hide');
+            modal.modal('hide');
             document.getElementById("formModalDesvio").reset();
-            $('#formModalDesvio .form-group').removeClass('required has-error');
-            $('#formModalDesvio .help-block').empty();
+            var modalFormGroup = modal.find('.form-group');
+            var modalHelpBlock = modal.find('.help-block');
+            modalFormGroup.removeClass('required has-error');
+            modalHelpBlock.empty();
             alertify.log(data.msg);
         }
     });

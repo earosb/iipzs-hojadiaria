@@ -19,9 +19,12 @@ $("#formMaterialColocado").submit(function (e) {
     }).error(function () {
         alert("Error al enviar datos\nPor favor verifique su conexión a Internet");
     }).done(function (data) {
-        if (data.error) {
-            $('#formMaterialColocado .form-group').removeClass('required has-error');
-            $('#formMaterialColocado .help-block').empty();
+        if ( data.error ) {
+            var form = $('#formMaterialColocado');
+            var formGroup = form.find('.form-group');
+            var helpBlock = form.find('.help-block');
+            formGroup.removeClass('required has-error');
+            helpBlock.empty();
             $.each(data.msg, function (index, value) {
                 var errorDiv = '#formMaterialColocado #' + index + '_error';
                 $(errorDiv).addClass('required');
@@ -32,10 +35,13 @@ $("#formMaterialColocado").submit(function (e) {
                 $('#modalMaterialCol #' + index + '_div').addClass('required has-error');
             });
         } else {
-            $('#modalMaterialCol').modal('hide');
+            var modal = $('#modalMaterialCol');
+            modal.modal('hide');
             document.getElementById("formMaterialColocado").reset();
-            $('#modalMaterialCol .form-group').removeClass('required has-error');
-            $('#modalMaterialCol .help-block').empty();
+            var modalFormGroup = modal.find('.form-group');
+            var modalHelpBlock = modal.find('.help-block');
+            modalFormGroup.removeClass('required has-error');
+            modalHelpBlock.empty();
             alertify.log(data.msg);
             $('.matCol').append('<option value="' + data.nuevoMatCol.id + '">' + data.nuevoMatCol.nombre + '</option>');
         }

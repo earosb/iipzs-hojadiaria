@@ -10,39 +10,39 @@ class DesviadorController extends \BaseController
     public function ajaxCreate()
     {
         $input = array(
-            '_token' => Input::get('_token'),
-            'nombre' => Input::get('nombre'),
-            'km_inicio' => Input::get('km_inicio'),
+            '_token'                => Input::get('_token'),
+            'nombre'                => Input::get('nombre'),
+            'km_inicio'             => Input::get('km_inicio'),
             'selectsectorDesviador' => Input::get('selectsectorDesviador'),
-            'selectblockDesviador' => Input::get('selectblockDesviador'),
+            'selectblockDesviador'  => Input::get('selectblockDesviador'),
         );
         /**
          * Valida que el block sea mayor que cero antes de sonsultar si existe
          */
         if ($input['selectblockDesviador'] <= 0) {
             return Response::json(array(
-                'fail' => true,
-                'errors' => array(
-                    'selectblockDesviador' => array('Debe seleccionar un Block'))
-            ));
+                                      'fail'   => true,
+                                      'errors' => array(
+                                          'selectblockDesviador' => array('Debe seleccionar un Block'))
+                                  ));
         }
 
         $block = Block::findOrFail($input['selectblockDesviador']);
 
         $rules = array(
-            'nombre' => 'required',
-            'km_inicio' => 'required|numeric|between:' . $block->km_inicio . ',' . $block->km_termino,
+            'nombre'                => 'required',
+            'km_inicio'             => 'required|numeric|between:' . $block->km_inicio . ',' . $block->km_termino,
             'selectsectorDesviador' => 'required|numeric',
-            'selectblockDesviador' => 'required|numeric',
+            'selectblockDesviador'  => 'required|numeric',
         );
 
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
             return Response::json(array(
-                'fail' => true,
-                'errors' => $validator->messages()
-            ));
+                                      'error'   => true,
+                                      'msg' => $validator->messages()
+                                  ));
         } else {
             // Crea el obj Desviador y lo guarda
             $desviador = new Desviador;
@@ -54,8 +54,9 @@ class DesviadorController extends \BaseController
             $desviador->save();
 
             return Response::json(array(
-                'fail' => false,
-            ));
+                                      'error' => false,
+                                      'msg'   => 'Nuevo Desviador creado con éxito'
+                                  ));
         }
     }
 
@@ -63,45 +64,46 @@ class DesviadorController extends \BaseController
      * [ajaxDesviadores description]
      * @param  [type] $blockId [description]
      * @return [type]          [description]
-
-    public function ajaxDesviadores($blockId)
-    {
-        $desviadores = Desviador::where('block_id', '=', $blockId)->get();
-
-        return Response::json(
-            array(
-                'fail' => false,
-                'desviadores' => $desviadores,
-            )
-        );
-    }
-    */
+     *
+     * public function ajaxDesviadores($blockId)
+     * {
+     * $desviadores = Desviador::where('block_id', '=', $blockId)->get();
+     *
+     * return Response::json(
+     * array(
+     * 'fail' => false,
+     * 'desviadores' => $desviadores,
+     * )
+     * );
+     * }
+     */
 
     /**
      * retorna los desviadores al sur
      * @param $idNorte
      */
-    public function getDesviadoresSur($idNorte){
-        try{
+    public function getDesviadoresSur($idNorte)
+    {
+        try {
             $norte = Desviador::find($idNorte);
             $desviadores = Desviador::where('block_id', '=', $norte->block_id)
-                    ->where('km_inicio', '>', $norte->km_inicio)
-                    ->get();
-            if($desviadores->isEmpty()){
+                ->where('km_inicio', '>', $norte->km_inicio)
+                ->get();
+            if ($desviadores->isEmpty()) {
                 return Response::json(array(
-                    'error' => true,
-                    'msg' => 'El Desviador seleccionado no tiene Desviadores hacia el Sur'
-                ));
+                                          'error' => true,
+                                          'msg'   => 'El Desviador seleccionado no tiene Desviadores hacia el Sur'
+                                      ));
             }
             return Response::json(array(
-                'error' => false,
-                'desviadores'   =>  $desviadores
-            ));
-        }catch (\Exception $e){
+                                      'error'       => false,
+                                      'desviadores' => $desviadores
+                                  ));
+        } catch (\Exception $e) {
             return Response::json(array(
-                'error' => true,
-                'msg'   =>  'Desviador no encontrado'
-            ));
+                                      'error' => true,
+                                      'msg'   => 'Desviador no encontrado'
+                                  ));
         }
 
     }
