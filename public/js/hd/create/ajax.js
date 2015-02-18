@@ -100,7 +100,7 @@ function cargarKilometros(id) {
             document.getElementById("trabajos[0][km_termino]").setAttribute("min", data.km_inicio);
             document.getElementById("trabajos[0][km_termino]").setAttribute("max", data.km_termino);
 
-            if ( data.error() ) {
+            if ( data.error ) {
                 alertify.log(data.msg);
                 return;
             }

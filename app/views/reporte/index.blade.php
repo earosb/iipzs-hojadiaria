@@ -107,7 +107,7 @@
                     <div class="col-xs-12 col-md-3">
                         {{ Form::label('grupo_via', 'Grupo Vía', array('class' => 'control-label')) }}
                         <div class="controls">
-                            <select name="grupo_via" id="grupo_via" class="form-control">
+                            <select name="grupo_via" id="grupo_via" class="form-control" disabled="disabled">
                                 <option selected="selected" value="all"> Todos</option>
                                 @foreach($grupos as $grupo)
                                     <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>

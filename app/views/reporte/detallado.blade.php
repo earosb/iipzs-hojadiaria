@@ -51,7 +51,7 @@
                     <th>Trabajo</th>
                     <th>Cantidad</th>
                     <th>Unidad</th>
-                    @if(Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+                    @if(Sentry::getUser()->hasAccess(['reporte-avanzado']))
                         <th>Grupo Vía</th>
                     @endif
                 </tr>
@@ -80,7 +80,7 @@
                         <td>
                             {{ $trabajo->unidad }}
                         </td>
-                        @if(Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+                        @if(Sentry::getUser()->hasAccess(['reporte-avanzado']))
                             <td>
                                 {{ $trabajo->base }}
                             </td>

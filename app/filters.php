@@ -57,7 +57,6 @@ Route::filter('permiso', function($route, $request, $userPermission = null)
 
         if(!Sentry::getUser()->hasAccess($permission))
         {
-            //return Redirect::route('/');
             return Response::view('error.404');
         }
     }

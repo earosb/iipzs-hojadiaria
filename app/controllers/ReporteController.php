@@ -130,7 +130,7 @@ class ReporteController extends \BaseController
          * Consulta agrupada de materiales retirados de la vía
          * Si es que tiene permisos
          */
-        if (Sentry::getUser()->hasAccess(['consultas-avanzadas'])) {
+        if (Sentry::getUser()->hasAccess(['reporte-avanzado'])) {
             $materialesRetirados = HojaDiaria
                 ::join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
                 ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')

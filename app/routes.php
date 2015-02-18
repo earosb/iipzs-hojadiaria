@@ -81,7 +81,7 @@ Route::group(array('before' => 'auth|permiso:hoja-diaria'), function () {
 /**
  * Usuario logueado con permisos para consultas
  */
-Route::group(array('before' => 'auth|permiso:consultas'), function () {
+Route::group(array('before' => 'auth|permiso:reporte'), function () {
     /**
      * Rutas para generar reportes
      */
