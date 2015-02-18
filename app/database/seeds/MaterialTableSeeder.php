@@ -19,7 +19,6 @@ class MaterialTableSeeder extends Seeder {
                                         'es_oficial' => '1',
                                         'unidad' => 'm3',
                                         'proveedor' => 'PZS',
-                                        'clase' => 'N',
                                         'created_at' => $now,
                                         'updated_at' => $now
                                 ),
@@ -29,7 +28,6 @@ class MaterialTableSeeder extends Seeder {
                                         'es_oficial' => '1',
                                         'unidad' => 'nro',
                                         'proveedor' => 'PZS',
-                                        'clase' => 'N',
                                         'created_at' => $now,
                                         'updated_at' => $now
                                 ),
@@ -39,7 +37,6 @@ class MaterialTableSeeder extends Seeder {
                                         'es_oficial' => '1',
                                         'unidad' => 'nro',
                                         'proveedor' => 'PZS',
-                                        'clase' => 'N',
                                         'created_at' => $now,
                                         'updated_at' => $now
                                 ),
@@ -49,7 +46,6 @@ class MaterialTableSeeder extends Seeder {
                                         'es_oficial' => '1',
                                         'unidad' => 'nro',
                                         'proveedor' => 'PZS',
-                                        'clase' => 'N',
                                         'created_at' => $now,
                                         'updated_at' => $now
                                 ),

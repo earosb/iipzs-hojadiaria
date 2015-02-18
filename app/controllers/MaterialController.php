@@ -51,8 +51,7 @@ class MaterialController extends \BaseController
         $material->valor = $input['valor'];
         $material->unidad = $input['unidad'];
         $material->proveedor = $input['proveedor'];
-        $material->clase = $input['clase'];
-        $material->es_oficial = ($input['es_oficial'] != null) ? true : false;
+        $material->es_oficial = ( isset($input['es_oficial']) ) ? true : false;
 
         $material->save();
 

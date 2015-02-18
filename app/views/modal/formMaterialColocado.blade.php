@@ -31,14 +31,6 @@
                             <div class="help-block" id="nombre_error"></div>
                         </div>
                     </div>
-                        {{-- Código del material --}}
-                        {{--<div id="codigo_div" class="form-group">--}}
-                        {{--{{ Form::label('codigo', 'Código', array('class' => 'col-sm-2 control-label')) }}--}}
-                        {{--<div class="col-sm-4">--}}
-                        {{--{{ Form::text('codigo', null, array('placeholder' => 'Códio del Material', 'class' => 'form-control')) }}--}}
-                        {{--<div class="help-block" id ="codigo_error"></div>--}}
-                        {{--</div>--}}
-                        {{--</div>--}}
 
                         {{-- Valor del material --}}
                         <div id="valor_div" class="form-group">
@@ -63,15 +55,6 @@
                             <div class="col-sm-6">
                                 {{ Form::text('unidad', null, array('placeholder' => 'Unidad', 'class' => 'form-control')) }}
                                 <div class="help-block" id="unidad_error"></div>
-                            </div>
-                        </div>
-
-                        {{-- Clase del material --}}
-                        <div id="clase_div" class="form-group">
-                            {{ Form::label('clase', 'Clase', array('class' => 'col-sm-3 control-label')) }}
-                            <div class="col-sm-6">
-                                {{ Form::text('clase', null, array('placeholder' => 'Clase', 'class' => 'form-control')) }}
-                                <div class="help-block" id="clase_error"></div>
                             </div>
                         </div>
 

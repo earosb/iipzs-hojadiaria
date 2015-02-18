@@ -25,7 +25,6 @@ class CreateMaterialTable extends Migration {
 			$table->boolean('es_oficial');
 			$table->string('unidad',10);
 			$table->string('proveedor')->nullable();
-			$table->string('clase',10)->nullable();
 
 			$table->timestamps();
 		});

@@ -22,7 +22,6 @@ class Material extends \Eloquent
         'valor'     => 'required|numeric',
         'proveedor' => 'required',
         'unidad'    => 'required',
-        'clase'     => 'required',
     ];
 
     /**
