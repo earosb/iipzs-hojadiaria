@@ -1,7 +1,7 @@
 @extends('layout.landing')
 
 @section('title')
-    Icil-icafal - Hello
+    Bienvenido
 @stop
 
 @section('alert')
@@ -14,12 +14,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <h2>Bienvenido</h2>
-
-            <p>Bienvenido al sistema de gestión bla bla bla de <strong>Icil Icafal Proyecto Zona Sur S.A.</strong>.
-            </p>
-
-            <p>Usted podrá ver... descripción de la aplicación.</p>
+            <h2>Bienvenido a Icil Icafal Proyecto Zona Sur S.A.</h2>
         </div>
     </div>
 @stop

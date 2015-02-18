@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>
-        @yield('title') - Icil-icafal
+        @yield('title') - Icil Icafal PZS S.A.
     </title>
     {{ HTML::style('//maxcdn.bootstrapcdn.com/bootswatch/3.3.2/yeti/bootstrap.min.css') }}
     {{ HTML::style('css/alertify.core.css') }}
     {{ HTML::style('css/alertify.default.css') }}
+    {{ HTML::style('css/landing.css') }}
 
     {{-- yield para agregar css en cada página --}}
     @yield('css')
@@ -85,5 +86,14 @@
 
 {{-- Modals --}}
 @yield('modals')
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A. Todos los Derechos Reservados.
+        Contacto a <a href="mailto:earosb@icafal.cl" target="_top">earosb@icafal.cl</a></p>
+        {{-- <a href="mailto:earosb@icafal.cl?Subject=Hello%20again" target="_top">earosb@icafal.cl</a> --}}
+    </div>
+</footer>
+
 </body>
 </html>
