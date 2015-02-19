@@ -213,3 +213,10 @@ function escribirDetalle(data) {
 
     //$('#modalHojaDiaria').modal('show');
 }
+/**
+ * Seleccionar td tabla histórico
+ */
+$("#tab_trabajados tr").click(function () {
+    $(this).addClass("success").siblings().removeClass("success");
+    verHojaDiaria($(this).data("id"));
+});

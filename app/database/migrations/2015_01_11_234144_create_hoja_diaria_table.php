@@ -25,6 +25,8 @@ class CreateHojaDiariaTable extends Migration {
 			$table->foreign('grupo_trabajo_id')->references('id')->on('grupo_trabajo');
 
 			$table->text('observaciones')->nullable();
+
+            $table->integer('user_id')->unsigned();
 			
 			$table->timestamps();
 		});

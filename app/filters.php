@@ -25,41 +25,40 @@ App::after(function($request, $response)
 
 /**
  * Sentry Filter
+ * Filtro básico de autentificación,
+ * sólo para saber si el usuario está logueado
+ * @return Redirect si no está logueado al login
  */
 
-Route::filter('auth', function(){
+Route::filter('auth', function () {
 
-	if (!Sentry::check()) return Redirect::guest('login');
+    if ( !Sentry::check() )
+        return Redirect::guest('login');
 
 });
 
 /**
- * Tiene permisos
- * @var [type]
+ * Filtro de permisos
+ * Verifica que un usuario tiene un permiso
+ * @param $route
+ * @param $request
+ * @param $value string permiso
+ * @return View 404
  */
-Route::filter('permiso', function($route, $request, $userPermission = null)
-{
-    if (Route::currentRouteNamed('putUser') && Sentry::getUser()->id == Request::segment(3) ||
-        Route::currentRouteNamed('showUser') && Sentry::getUser()->id == Request::segment(3))
-    {
-    }
-    else
-    {
-        if($userPermission === null)
-        {
-            $permissions = Config::get('syntara::permissions');
-            $permission = $permissions[Route::current()->getName()];
-        }
-        else
-        {
-            $permission = $userPermission;
-        }
+Route::filter('hasAccess', function ($route, $request, $value) {
 
-        if(!Sentry::getUser()->hasAccess($permission))
-        {
+    try {
+        $user = Sentry::getUser();
+
+        if ( !$user->hasAccess($value) ) {
+            //return Redirect::route('error.404')->withErrors(array( Lang::get('user.noaccess') ));
             return Response::view('error.404');
         }
+    } catch ( Cartalyst\Sentry\Users\UserNotFoundException $e ) {
+        //return Redirect::route('error.404')->withErrors(array( Lang::get('user.notfound') ));
+        return Response::view('error.404');
     }
+
 });
 
 
@@ -118,10 +117,8 @@ Route::filter('guest', function()
 |
 */
 
-Route::filter('csrf', function()
-{
-	if (Session::token() !== Input::get('_token'))
-	{
-		throw new Illuminate\Session\TokenMismatchException;
-	}
+Route::filter('csrf', function () {
+    if ( Session::token() !== Input::get('_token') ) {
+        throw new Illuminate\Session\TokenMismatchException;
+    }
 });

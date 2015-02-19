@@ -22,23 +22,27 @@
 @section('content')
     <div class="col-xs-12 col-md-6 col-lg-4" id="div_historico">
         <legend>Histórico Hojas Diarias</legend>
-        <table class="table table-bordered table-striped" id="tab_trabajados">
+        <table class="table table-bordered table-hover" id="tab_trabajados">
             <thead>
             <tr>
                 <th>Fecha</th>
                 <th>Ingresada el</th>
+                <th>Ingresada por</th>
                 <th>Última edición</th>
                 <th class="text-center">Ver</th>
             </tr>
             </thead>
             <tbody>
             @forelse($hojas as $hoja)
-                <tr>
+                <tr data-id="{{ $hoja->id }}">
                     <td>
                         {{ Carbon\Carbon::parse($hoja->fecha)->format('d-m-Y') }}
                     </td>
                     <td>
                         {{ Carbon\Carbon::parse($hoja->created_at)->format('d-m-Y H:i:s') }}
+                    </td>
+                    <td>
+                        {{ $hoja->username }}
                     </td>
                     <td>
                         {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}

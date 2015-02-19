@@ -1,15 +1,13 @@
 <?php
 
-class BlockController extends \BaseController
-{
+class BlockController extends \BaseController {
 
     /**
      * Display a listing of block
      *
      * @return Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -18,8 +16,7 @@ class BlockController extends \BaseController
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -28,18 +25,17 @@ class BlockController extends \BaseController
      * POST /block
      * @return Response
      */
-    public function store()
-    {
-//		$validator = Validator::make($data = Input::all(), Block::$rules);
-//
-//		if ($validator->fails())
-//		{
-//			return Redirect::back()->withErrors($validator)->withInput();
-//		}
-//
-//		Block::create($data);
-//
-//		return Redirect::route('block.index');
+    public function store() {
+        //		$validator = Validator::make($data = Input::all(), Block::$rules);
+        //
+        //		if ($validator->fails())
+        //		{
+        //			return Redirect::back()->withErrors($validator)->withInput();
+        //		}
+        //
+        //		Block::create($data);
+        //
+        //		return Redirect::route('block.index');
     }
 
     /**
@@ -48,11 +44,10 @@ class BlockController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
-//		$block = Block::findOrFail($id);
-//
-//		return View::make('block.show', compact('block'));
+    public function show($id) {
+        //		$block = Block::findOrFail($id);
+        //
+        //		return View::make('block.show', compact('block'));
     }
 
     /**
@@ -61,11 +56,10 @@ class BlockController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
-    {
-//		$block = Block::find($id);
-//
-//		return View::make('block.edit', compact('block'));
+    public function edit($id) {
+        //		$block = Block::find($id);
+        //
+        //		return View::make('block.edit', compact('block'));
     }
 
     /**
@@ -74,20 +68,19 @@ class BlockController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
-    {
-//		$block = Block::findOrFail($id);
-//
-//		$validator = Validator::make($data = Input::all(), Block::$rules);
-//
-//		if ($validator->fails())
-//		{
-//			return Redirect::back()->withErrors($validator)->withInput();
-//		}
-//
-//		$block->update($data);
-//
-//		return Redirect::route('block.index');
+    public function update($id) {
+        //		$block = Block::findOrFail($id);
+        //
+        //		$validator = Validator::make($data = Input::all(), Block::$rules);
+        //
+        //		if ($validator->fails())
+        //		{
+        //			return Redirect::back()->withErrors($validator)->withInput();
+        //		}
+        //
+        //		$block->update($data);
+        //
+        //		return Redirect::route('block.index');
     }
 
     /**
@@ -96,11 +89,10 @@ class BlockController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
-//		Block::destroy($id);
-//
-//		return Redirect::route('block.index');
+    public function destroy($id) {
+        //		Block::destroy($id);
+        //
+        //		return Redirect::route('block.index');
     }
 
     /**
@@ -109,17 +101,18 @@ class BlockController extends \BaseController
      * @param  int $sectorId
      * @return Response
      */
-    public function ajaxBlocks($sectorId)
-    {
+    public function ajaxBlocks($sectorId) {
         $blocks  = Block::where('sector_id', '=', $sectorId)
             ->join('sector', 'block.sector_id', '=', 'sector.id')
             ->get(array( 'block.id', 'block.estacion', 'block.km_inicio', 'block.km_termino', 'block.sector_id', 'sector.km_inicio as sector_km_inicio', 'sector.km_termino as sector_km_termino' ));
-        $ramales = Ramal::where('sector_id', '=', $sectorId)->get();
+
+        //$ramales = Ramal::where('sector_id', '=', $sectorId)->get();
 
         return Response::json(
             array(
+                'error'   => false,
                 'blocks'  => $blocks,
-                'ramales' => $ramales
+                //'ramales' => $ramales
             )
         );
     }
@@ -131,8 +124,7 @@ class BlockController extends \BaseController
      * @param  int $idBlock
      * @return Response
      */
-    public function ajaxBlockTodo($idBlock)
-    {
+    public function ajaxBlockTodo($idBlock) {
         $block       = Block::find($idBlock);
         $desvios     = Block::find($idBlock)->desvios;
         $desviadores = Block::find($idBlock)->desviadores;
@@ -150,8 +142,7 @@ class BlockController extends \BaseController
      * [ajaxGetLimites description]
      * @return json
      */
-    public function ajaxGetLimites($data)
-    {
+    public function ajaxGetLimites($data) {
         // explode() simil de función split()
         list($tipo, $id) = explode('-', $data);
 
@@ -199,8 +190,7 @@ class BlockController extends \BaseController
      * @param $id
      * @return json
      */
-    public function getDesviadores($id)
-    {
+    public function getDesviadores($id) {
         try {
             $desviadores = Block::find($id)->desviadores;
             if ( $desviadores->isEmpty() ) {

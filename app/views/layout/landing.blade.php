@@ -9,7 +9,7 @@
     {{ HTML::style('//maxcdn.bootstrapcdn.com/bootswatch/3.3.2/yeti/bootstrap.min.css') }}
     {{ HTML::style('css/alertify.core.css') }}
     {{ HTML::style('css/alertify.default.css') }}
-    {{ HTML::style('css/landing.css') }}
+    {{ HTML::style('css/landing.min.css') }}
 
     {{-- yield para agregar css en cada página --}}
     @yield('css')
@@ -44,9 +44,9 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/r/param') }}">Consultar Trabajos</a></li>
                             @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
-                                <li class="divider"></li>
-                                <li class="dropdown-header">Para descargar</li>
-                                <li><a href="#">Formulario 2 - 3 - 4</a></li>
+                                {{--<li class="divider"></li>--}}
+                                {{--<li class="dropdown-header">Para descargar</li>--}}
+                                {{--<li><a href="#">Formulario 2 - 3 - 4</a></li>--}}
                             @endif
                         </ul>
                     </li>
@@ -87,13 +87,15 @@
 {{-- Modals --}}
 @yield('modals')
 
-<footer class="footer">
-    <div class="container">
-        <p class="text-muted">Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A. Todos los Derechos Reservados.
-        Contacto a <a href="mailto:earosb@icafal.cl" target="_top">earosb@icafal.cl</a></p>
-        {{-- <a href="mailto:earosb@icafal.cl?Subject=Hello%20again" target="_top">earosb@icafal.cl</a> --}}
-    </div>
-</footer>
+@if(Sentry::check())
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A. Todos los Derechos Reservados.</p>
+            {{-- <p class="text-muted">Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A. Todos los Derechos Reservados.
+                Contacto a <a href="mailto:earosb@icafal.cl" target="_top">earosb@icafal.cl</a></p> --}}
+        </div>
+    </footer>
+@endif
 
 </body>
 </html>

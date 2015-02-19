@@ -30,12 +30,14 @@ $(document).ready(function () {
         var sector_id = e.target.value;
 
         $('#selectblock').empty();
-        $('.selectubicacion').empty();
-        $('.selectubicacion').append('<option disabled selected> Seleccione Sector y Block </option>');
+        var ubicacion = $('.selectubicacion');
+        ubicacion.empty();
+        ubicacion.append('<option disabled selected> Seleccione Sector y Block </option>');
 
+        var block = $('#block');
         if ( sector_id === 'all' ) {
-            $('#block').empty();
-            $('#block').append('<option disabled selected> Seleccione Block o Ramal </option>');
+            block.empty();
+            block.append('<option disabled selected> Seleccione Block o Ramal </option>');
             var km_inicio = document.getElementById('km_inicio');
             var km_termino = document.getElementById('km_termino');
             km_inicio.value = '498800';
@@ -47,12 +49,12 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'get',
-            url: '/block/ajax-blocks/' + sector_id
+            url: '/r/block/ajax-blocks/' + sector_id
         }).error(function () {
             alert("Error al obtener los datos\nPor favor, verifique su conexión a Internet");
         }).done(function (data) {
-            $('#block').empty();
-            $('#block').append('<option disabled selected> Seleccione Block </option>');
+            block.empty();
+            block.append('<option disabled selected> Seleccione Block </option>');
 
             $.each(data.blocks, function (index, blockObj) {
 
@@ -78,7 +80,7 @@ $(document).ready(function () {
         var block_id = e.target.value;
 
         $.ajax({
-            url: '/block/ajax-get-limites/block-' + block_id,
+            url: '/r/block/ajax-get-limites/block-' + block_id,
             type: 'get'
         })
             .error(function () {

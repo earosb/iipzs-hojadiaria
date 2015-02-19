@@ -22,10 +22,10 @@ class CreateDetalleMaterialRetiradoTable extends Migration {
 			$table->increments('id');
 			$table->integer('cantidad');
 			
-			$table->integer('hoja_diaria_id')->unsigned()->index();
+			$table->integer('hoja_diaria_id')->unsigned();
 			$table->foreign('hoja_diaria_id')->references('id')->on('hoja_diaria');
 			
-			$table->integer('material_retirado_id')->unsigned()->index();
+			$table->integer('material_retirado_id')->unsigned();
 			$table->foreign('material_retirado_id')->references('id')->on('material_retirado');
 			
 			$table->timestamps();

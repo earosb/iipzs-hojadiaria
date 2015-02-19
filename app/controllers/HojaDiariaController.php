@@ -13,10 +13,10 @@ class HojaDiariaController extends \BaseController
      */
     public function create()
     {
-        $sectores = Sector::all(array('id', 'nombre'));
+        $sectores = Sector::all(array( 'id', 'nombre' ));
 
-        $tipoMantenimiento = TipoMantenimiento::All(array('id', 'nombre'));
-        foreach ($tipoMantenimiento as $tMat) {
+        $tipoMantenimiento = TipoMantenimiento::All(array( 'id', 'nombre' ));
+        foreach ( $tipoMantenimiento as $tMat ) {
             $tMat->trabajos;
         }
 
@@ -25,21 +25,21 @@ class HojaDiariaController extends \BaseController
 //            $trabajo->tipoMantenimiento;
 //        }
 
-        $grupos = GrupoTrabajo::all(array('id', 'base'));
+        $grupos = GrupoTrabajo::all(array( 'id', 'base' ));
 
-        $materialesCollection = Material::all(array('id', 'nombre'));
-        foreach ($materialesCollection as $material) {
-            $materiales[$material->id] = $material->nombre;
+        $materialesCollection = Material::all(array( 'id', 'nombre' ));
+        foreach ( $materialesCollection as $material ) {
+            $materiales[ $material->id ] = $material->nombre;
         }
 
-        $matRetCollection = MaterialRetirado::all(array('id', 'nombre'));
-        foreach ($matRetCollection as $matRet) {
-            $matRetirados[$matRet->id] = $matRet->nombre;
+        $matRetCollection = MaterialRetirado::all(array( 'id', 'nombre' ));
+        foreach ( $matRetCollection as $matRet ) {
+            $matRetirados[ $matRet->id ] = $matRet->nombre;
         }
 
         return View::make('hoja_diaria.create')
             ->with('sectores', $sectores)
-//            ->with('trabajos', $trabajos)
+            //->with('trabajos', $trabajos)
             ->with('grupos', $grupos)
             ->with('materiales', $materiales)
             ->with('materialesRet', $matRetirados)
@@ -54,7 +54,11 @@ class HojaDiariaController extends \BaseController
      */
     public function index()
     {
-        $hojasCollection = HojaDiaria::all();
+        //$hojasCollection = HojaDiaria::all();
+        $hojasCollection = HojaDiaria::join('users', 'hoja_diaria.user_id', '=', 'users.id')
+            ->orderBy('hoja_diaria.fecha')
+            ->get(array('hoja_diaria.id', 'hoja_diaria.fecha', 'hoja_diaria.created_at', 'hoja_diaria.updated_at', 'users.username'));
+
 
         return View::make('hoja_diaria.index')
             ->with('hojas', $hojasCollection);
@@ -80,46 +84,49 @@ class HojaDiariaController extends \BaseController
         $rules = array(
             'fecha'        => 'required|date_format:d/m/Y|before:"now +1 day"',
             'selectsector' => 'required|exists:sector,id',
-            'selectblock'  => 'required|exists:block,id,sector_id,' . $input['selectsector'],
+            'selectblock'  => 'required|exists:block,id,sector_id,' . $input[ 'selectsector' ],
             'selectgrupos' => 'required|exists:grupo_trabajo,id',
         );
         /**
          * agrega reglas de validación si es que existen campos
          * @var [type]
          */
-        foreach ($input['trabajos'] as $key => $value) {
+        foreach ( $input[ 'trabajos' ] as $key => $value ) {
             // explode() simil de función split()
-            list($tipo, $id) = explode('-', $value['ubicacion']);
-            switch ($tipo) {
+            list($tipo, $id) = explode('-', $value[ 'ubicacion' ]);
+            switch ( $tipo ) {
                 case 'block':
-                    $block = Block::find($id);
-                    $min = $block->km_inicio;
-                    $max = $block->km_termino;
-                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . $min . ',' . $max;
-                    $rules['trabajos.' . $key . '.km_termino'] = 'required|numeric|between:' . $min . ',' . $max;
+                    $block                                       = Block::find($id);
+                    $min                                         = $block->km_inicio;
+                    $max                                         = $block->km_termino;
+                    $rules[ 'trabajos.' . $key . '.km_inicio' ]  = 'required|numeric|between:' . $min . ',' . $value[ 'km_termino' ];
+                    $rules[ 'trabajos.' . $key . '.km_termino' ] = 'required|numeric|between:' . $value[ 'km_inicio' ] . ',' . $max;
                     break;
                 case 'desvio':
-                    $desvio = Desvio::find($id);
-                    $min = $desvio->block->km_inicio;
-                    $max = $desvio->block->km_termino;
-                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . $min . ',' . $max;
+                    $desvio                                     = Desvio::find($id);
+                    $min                                        = $desvio->block->km_inicio;
+                    $max                                        = $desvio->block->km_termino;
+                    $rules[ 'trabajos.' . $key . '.km_inicio' ] = 'required|numeric|between:' . $min . ',' . $max;
                     break;
                 case 'desviador':
-                    //$rules['trabajos.' . $key . '.ubicacion'] = 'required|exists:desviador,'.$id;
+                    $desviador = Desviador::find($id);
+                    $min       = $desviador->km_inicio;
+                    // Rango de 100 mts a cada lado por si las moscas los viejos ponen datos malos, en teoría debería ser un km exacto
+                    $rules[ 'trabajos.' . $key . '.km_inicio' ] = 'required|numeric|between:' . ($min - 100) . ',' . ($min + 100);
                     break;
             }
-            $rules['trabajos.' . $key . '.ubicacion'] = 'required';
-            $rules['trabajos.' . $key . '.trabajo'] = 'required|exists:trabajo,id';
-            $rules['trabajos.' . $key . '.cantidad'] = 'required|numeric';
+            $rules[ 'trabajos.' . $key . '.ubicacion' ] = 'required';
+            $rules[ 'trabajos.' . $key . '.trabajo' ]   = 'required|exists:trabajo,id';
+            $rules[ 'trabajos.' . $key . '.cantidad' ]  = 'required|numeric|min:0';
 
         }
-        foreach ($input['matCol'] as $key => $value) {
-            $rules['matCol.' . $key . '.id'] = 'required|exists:material,id';
-            $rules['matCol.' . $key . '.cant'] = 'required|numeric';
+        foreach ( $input[ 'matCol' ] as $key => $value ) {
+            $rules[ 'matCol.' . $key . '.id' ]   = 'required|exists:material,id';
+            $rules[ 'matCol.' . $key . '.cant' ] = 'required|numeric|min:0';
         }
-        foreach ($input['matRet'] as $key => $value) {
-            $rules['matRet.' . $key . '.id'] = 'required|exists:material_retirado,id';
-            $rules['matRet.' . $key . '.cant'] = 'required|numeric';
+        foreach ( $input[ 'matRet' ] as $key => $value ) {
+            $rules[ 'matRet.' . $key . '.id' ]   = 'required|exists:material_retirado,id';
+            $rules[ 'matRet.' . $key . '.cant' ] = 'required|numeric|min:0';
         }
         /**
          * lleva la validación acabo
@@ -127,7 +134,7 @@ class HojaDiariaController extends \BaseController
          */
         $validator = Validator::make($input, $rules);
 
-        if ($validator->fails()) {
+        if ( $validator->fails() ) {
             return Response::json(
                 array(
                     'error' => true,
@@ -138,67 +145,68 @@ class HojaDiariaController extends \BaseController
         /**
          * Sin errores, listo para guardar
          */
-        $dateFlag = Carbon::createFromFormat('d/m/Y', $input['fecha']);
+        $dateFlag = Carbon::createFromFormat('d/m/Y', $input[ 'fecha' ]);
 
-        $hojaDiaria = new HojaDiaria();
-        $hojaDiaria->fecha = $dateFlag->toDateString();
-        $hojaDiaria->observaciones = $input['obs'];
-        $hojaDiaria->grupo_trabajo_id = $input['selectgrupos'];
+        $hojaDiaria                   = new HojaDiaria();
+        $hojaDiaria->fecha            = $dateFlag->toDateString();
+        $hojaDiaria->observaciones    = $input[ 'obs' ];
+        $hojaDiaria->grupo_trabajo_id = $input[ 'selectgrupos' ];
+        $hojaDiaria->user_id = Sentry::getUser()->id;
 
         $hojaDiaria->save();
 
-        foreach ($input['trabajos'] as $key => $value) {
-            list($tipo, $id) = explode('-', $value['ubicacion']);
+        foreach ( $input[ 'trabajos' ] as $key => $value ) {
+            list($tipo, $id) = explode('-', $value[ 'ubicacion' ]);
 //            log($tipo);
-            $trabajo = Trabajo::find($value['trabajo']);
+            $trabajo = Trabajo::find($value[ 'trabajo' ]);
 
-            $detHojaDiaria = new DetalleHojaDiaria();
-            $detHojaDiaria->trabajo_id = $trabajo->id;
-            $detHojaDiaria->cantidad = $value['cantidad'];
+            $detHojaDiaria                 = new DetalleHojaDiaria();
+            $detHojaDiaria->trabajo_id     = $trabajo->id;
+            $detHojaDiaria->cantidad       = $value[ 'cantidad' ];
             $detHojaDiaria->hoja_diaria_id = $hojaDiaria->id;
-            switch ($tipo) {
+            switch ( $tipo ) {
                 case 'block':
-                    $block = Block::find($id);
-                    $detHojaDiaria->block_id = $block->id;
-                    $detHojaDiaria->km_inicio = $value['km_inicio'];
-                    $detHojaDiaria->km_termino = $value['km_termino'];
+                    $block                     = Block::find($id);
+                    $detHojaDiaria->block_id   = $block->id;
+                    $detHojaDiaria->km_inicio  = $value[ 'km_inicio' ];
+                    $detHojaDiaria->km_termino = $value[ 'km_termino' ];
                     break;
                 case 'desvio':
-                    $desvio = Desvio::find($id);
-                    $detHojaDiaria->block_id = $desvio->block->id;
-                    $detHojaDiaria->desvio_id = $desvio->id;
-                    $detHojaDiaria->km_inicio = $value['km_inicio'];
-                    $detHojaDiaria->km_termino = $value['km_termino'];
+                    $desvio                    = Desvio::find($id);
+                    $detHojaDiaria->block_id   = $desvio->block->id;
+                    $detHojaDiaria->desvio_id  = $desvio->id;
+                    $detHojaDiaria->km_inicio  = $value[ 'km_inicio' ];
+                    $detHojaDiaria->km_termino = $value[ 'km_termino' ];
                     break;
                 case 'desviador':
-                    $desviador = Desviador::find($id);
-                    $detHojaDiaria->block_id = $desviador->block->id;
+                    $desviador                   = Desviador::find($id);
+                    $detHojaDiaria->block_id     = $desviador->block->id;
                     $detHojaDiaria->desviador_id = $desviador->id;
-                    $detHojaDiaria->km_inicio = $desviador->km_inicio;
+                    $detHojaDiaria->km_inicio    = $desviador->km_inicio;
                     break;
             }
             $detHojaDiaria->save();
         }
 
-        foreach ($input['matCol'] as $key => $value) {
-            $material = Material::find($value['id']);
+        foreach ( $input[ 'matCol' ] as $key => $value ) {
+            $material = Material::find($value[ 'id' ]);
 
-            $detMatCol = new DetalleMaterialColocado();
-            $detMatCol->cantidad = $value['cant'];
-            $detMatCol->reempleo = (array_key_exists('reempleo', $value)) ? true : false;
-            $detMatCol->material_id = $material->id;
+            $detMatCol                 = new DetalleMaterialColocado();
+            $detMatCol->cantidad       = $value[ 'cant' ];
+            $detMatCol->reempleo       = (array_key_exists('reempleo', $value)) ? true : false;
+            $detMatCol->material_id    = $material->id;
             $detMatCol->hoja_diaria_id = $hojaDiaria->id;
 
             $detMatCol->save();
         }
 
-        foreach ($input['matRet'] as $key => $value) {
-            $matRet = MaterialRetirado::find($value['id']);
+        foreach ( $input[ 'matRet' ] as $key => $value ) {
+            $matRet = MaterialRetirado::find($value[ 'id' ]);
 
-            $detMatRet = new DetalleMaterialRetirado();
-            $detMatRet->cantidad = $value['cant'];
+            $detMatRet                       = new DetalleMaterialRetirado();
+            $detMatRet->cantidad             = $value[ 'cant' ];
             $detMatRet->material_retirado_id = $matRet->id;
-            $detMatRet->hoja_diaria_id = $hojaDiaria->id;
+            $detMatRet->hoja_diaria_id       = $hojaDiaria->id;
 
             $detMatRet->save();
         }
@@ -222,7 +230,7 @@ class HojaDiariaController extends \BaseController
     {
         try {
             $hojaDiaria = HojaDiaria::find($id);
-        } catch (\Exception $e) {
+        } catch ( \Exception $e ) {
             return Response::json(
                 array(
                     'error' => true,
@@ -235,17 +243,17 @@ class HojaDiariaController extends \BaseController
         $hojaDiaria->grupoTrabajo;
 
         $hojaDiaria->detalleMaterialRetirado;
-        foreach ($hojaDiaria->detalleMaterialRetirado as $materialRet) {
+        foreach ( $hojaDiaria->detalleMaterialRetirado as $materialRet ) {
             $materialRet->materialRetirado;
         }
 
         $hojaDiaria->detalleMaterialColocado;
-        foreach ($hojaDiaria->detalleMaterialColocado as $materialCol) {
+        foreach ( $hojaDiaria->detalleMaterialColocado as $materialCol ) {
             $materialCol->material;
         }
 
         $hojaDiaria->detalleHojaDiaria;
-        foreach ($hojaDiaria->detalleHojaDiaria as $trabajo) {
+        foreach ( $hojaDiaria->detalleHojaDiaria as $trabajo ) {
             $trabajo->trabajo;
             $trabajo->block;
             $trabajo->desvio;
@@ -301,9 +309,9 @@ class HojaDiariaController extends \BaseController
             $hojaDiaria->detalleMaterialRetirado()->forceDelete();
             $hojaDiaria->forceDelete();
 
-            return Response::json(array('error' => false,));
+            return Response::json(array( 'error' => false, ));
 
-        } catch (\Exception $e) {
+        } catch ( \Exception $e ) {
             return Response::json(
                 array(
                     'error' => true,

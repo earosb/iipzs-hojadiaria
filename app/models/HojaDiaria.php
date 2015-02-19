@@ -4,24 +4,22 @@
  *
  * @author earosb
  */
-class HojaDiaria extends \Eloquent {
-	
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'hoja_diaria';
-
-	/**
-	 * [$fillable description]
-	 * @var [type]
-	 */
-	protected $fillable = [];
+class HojaDiaria extends \Eloquent
+{
 
     /**
-     * [detalleMaterialRetirado description]
-     * @return [type] [description]
+     * The database table used by the model.
+     * @var string
+     */
+    protected $table = 'hoja_diaria';
+
+    /**
+     * @var array
+     */
+    protected $fillable = [ ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function detalleMaterialRetirado()
     {
@@ -29,8 +27,7 @@ class HojaDiaria extends \Eloquent {
     }
 
     /**
-     * [detalleHojaDiaria description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function detalleHojaDiaria()
     {
@@ -38,8 +35,7 @@ class HojaDiaria extends \Eloquent {
     }
 
     /**
-     * [grupotrabajo description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function grupoTrabajo()
     {
@@ -47,10 +43,18 @@ class HojaDiaria extends \Eloquent {
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function detalleMaterialColocado()
     {
         return $this->hasMany('DetalleMaterialColocado');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creador()
+    {
+        return $this->belongsTo('User');
     }
 }

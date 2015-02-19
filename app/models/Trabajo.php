@@ -4,54 +4,53 @@
  *
  * @author earosb
  */
-
 class Trabajo extends \Eloquent {
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'trabajo';
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'trabajo';
 
-	/**
-	 * [$fillable description]
-	 * @var [type]
-	 */
-	protected $fillable = [];
+    /**
+     * [$fillable description]
+     * @var [type]
+     */
+    protected $fillable = [ ];
 
-	/**
-	 * [tipoMantenimiento description]
-	 * @return [type] [description]
-	 */
-	public function tipoMantenimiento()
-    {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tipoMantenimiento() {
         return $this->belongsTo('TipoMantenimiento');
     }
 
     /**
-     * [trabajosEjecutados description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function detalleHojaDiaria()
-    {
+    public function detalleHojaDiaria() {
         return $this->hasMany('DetalleHojaDiaria');
     }
 
     /**
-     * [alias description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function alias()
-    {
+    public function alias() {
         return $this->belongsTo('Trabajo', 'padre_id');
     }
+
     /**
-     * [nombreOficial description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function nombreOficial()
-    {
+    public function nombreOficial() {
         return $this->hasMany('Trabajo', 'padre_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function trabajoMaterial() {
+        return $this->hasMany('TrabajoMaterial');
     }
 }

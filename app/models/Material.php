@@ -4,9 +4,16 @@
  *
  * @author earosb
  */
-class Material extends \Eloquent
-{
+class Material extends \Eloquent {
 
+    /**
+     * Add your validation rules here
+     * @var [type]
+     */
+    public static $rules = [ 'nombre'    => 'required',
+                             'valor'     => 'required|numeric',
+                             'proveedor' => 'required',
+                             'unidad'    => 'required', ];
     /**
      * The database table used by the model.
      * @var string
@@ -14,28 +21,22 @@ class Material extends \Eloquent
     protected $table = 'material';
 
     /**
-     * Add your validation rules here
-     * @var [type]
-     */
-    public static $rules = [
-        'nombre'    => 'required',
-        'valor'     => 'required|numeric',
-        'proveedor' => 'required',
-        'unidad'    => 'required',
-    ];
-
-    /**
-     * Don't forget to fill this array
-     * @var [type]
+     * @var array
      */
     protected $fillable = [];
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function detalleMaterialColocado()
-    {
+    public function detalleMaterialColocado() {
         return $this->hasMany('DetalleMaterialColocado');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function trabajoMaterial() {
+        return $this->hasMany('TrabajoMaterial');
     }
 
 }
