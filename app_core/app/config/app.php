@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://icafal.app',
+	'url' => 'http://icilicafalpzs.local',
 
 	/*
 	|--------------------------------------------------------------------------

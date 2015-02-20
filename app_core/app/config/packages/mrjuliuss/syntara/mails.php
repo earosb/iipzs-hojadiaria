@@ -5,13 +5,13 @@ return array(
     /**
      * contact name
      */
-    'contact' => 'Eduardo Aros',
+    'contact' => 'Syntara',
 
     /**
      * Admin mail
      * use for mails
      */
-    'email' => 'earosb@icafal.cl',
+    'email' => 'mail@localhost',
 
     /**
      * View for user activation email

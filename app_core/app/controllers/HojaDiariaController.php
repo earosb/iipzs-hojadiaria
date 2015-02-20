@@ -28,11 +28,13 @@ class HojaDiariaController extends \BaseController
         $grupos = GrupoTrabajo::all(array( 'id', 'base' ));
 
         $materialesCollection = Material::all(array( 'id', 'nombre' ));
+        $materiales = array();
         foreach ( $materialesCollection as $material ) {
             $materiales[ $material->id ] = $material->nombre;
         }
 
         $matRetCollection = MaterialRetirado::all(array( 'id', 'nombre' ));
+        $matRetirados = array();
         foreach ( $matRetCollection as $matRet ) {
             $matRetirados[ $matRet->id ] = $matRet->nombre;
         }
