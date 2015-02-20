@@ -39,9 +39,6 @@ class CreateDetalleHojaDiariaTable extends Migration {
 			$table->integer('desvio_id')->unsigned()->nullable();
 			$table->foreign('desvio_id')->references('id')->on('desvio');
 
-			$table->integer('ramal_id')->unsigned()->nullable();
-			$table->foreign('ramal_id')->references('id')->on('ramal');
-
 			$table->timestamps();
 		});
 	}

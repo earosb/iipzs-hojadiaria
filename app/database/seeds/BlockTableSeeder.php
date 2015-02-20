@@ -16,6 +16,7 @@ class BlockTableSeeder extends Seeder
         $sector_3 = DB::table('sector')->select('id')->where('nombre', 'Sector 3')->first()->id;
         $sector_4 = DB::table('sector')->select('id')->where('nombre', 'Sector 4')->first()->id;
         $sector_5 = DB::table('sector')->select('id')->where('nombre', 'Sector 5')->first()->id;
+        $ramal = DB::table('sector')->select('id')->where('nombre', 'Ramal Coigue - Nacimiento')->first()->id;
 
         $now = date('Y-m-d H:i:s');
 
@@ -591,6 +592,16 @@ class BlockTableSeeder extends Seeder
                     'km_inicio'  => '1059000',
                     'km_termino' => '1066000',
                     'sector_id'  => $sector_5,
+                    'created_at' => $now,
+                    'updated_at' => $now
+                ),
+                /***** Ramal *****/
+                array(
+                    'estacion'   => 'Coigüe - Nacimiento',
+                    'nro_bien'   => '0000-0',
+                    'km_inicio'  => '0',
+                    'km_termino' => '520000',
+                    'sector_id'  => $ramal,
                     'created_at' => $now,
                     'updated_at' => $now
                 ),

@@ -23,23 +23,12 @@ class Sector extends \Eloquent {
 	 */
 	protected $fillable = [];
 
-	/**
-	 * Describe la relación uno a muchos 
-	 * entre Sector y sus blocks
-	 * @return [type] [description]
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
 	public function blocks()
     {
         return $this->hasMany('Block');
-    }
-
-    /**
-     * [ramales description]
-     * @return [type] [description]
-     */
-    public function ramales()
-    {
-        return $this->hasMany('Ramal');
     }
 
 

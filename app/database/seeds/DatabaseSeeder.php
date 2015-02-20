@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call('SectorTableSeeder');
         $this->call('BlockTableSeeder');
-        $this->call('RamalTableSeeder');
         $this->call('TipoMantenimientoTableSeeder');
         $this->call('MaterialRetiradoTableSeeder');
         $this->call('TrabajoTableSeeder');

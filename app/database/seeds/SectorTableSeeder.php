@@ -58,6 +58,15 @@ class SectorTableSeeder extends Seeder
                     'created_at'       => $now,
                     'updated_at'       => $now
                 ),
+                array(
+                    'nombre'           => 'Ramal Coigue - Nacimiento',
+                    'estacion_inicio'  => 'Coigue',
+                    'estacion_termino' => 'Nacimiento',
+                    'km_inicio'        => '0',
+                    'km_termino'       => '520000',
+                    'created_at'       => $now,
+                    'updated_at'       => $now
+                ),
             ));
     }
 
