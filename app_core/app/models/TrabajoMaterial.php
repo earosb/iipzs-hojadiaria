@@ -16,7 +16,7 @@ class TrabajoMaterial extends \Eloquent {
     /**
      * Don't forget to fill this array
      */
-    protected $fillable = [ 'id' ];
+    protected $fillable = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

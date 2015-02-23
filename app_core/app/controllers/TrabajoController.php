@@ -4,8 +4,7 @@
  *
  * @author earosb
  */
-class TrabajoController extends \BaseController
-{
+class TrabajoController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -13,9 +12,17 @@ class TrabajoController extends \BaseController
      *
      * @return Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+            ->join('trabajo_material', 'trabajo.id', '=', 'trabajo_material.trabajo_id')
+            ->join('material', 'trabajo_material.material_id', '=', 'material.id')
+            ->groupBy('trabajo.nombre')
+            ->select(array( 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'tipo_mantenimiento.nombre as tipo_mantencion', 'material.nombre as ide' ))
+            ->get();
+
+//            ->get(array( 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'tipo_mantenimiento.nombre as tipo_mantencion', 'trabajo_material.id as ide' ));
+
+        return View::make('trabajo.index', compact('trabajos'));
     }
 
     /**
@@ -24,8 +31,7 @@ class TrabajoController extends \BaseController
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -35,8 +41,7 @@ class TrabajoController extends \BaseController
      *
      * @return Response
      */
-    public function store()
-    {
+    public function store() {
         $input = array(
             '_token'     => Input::get('_token'),
             'nombre'     => Input::get('nombre'),
@@ -49,7 +54,7 @@ class TrabajoController extends \BaseController
 
         $rules = array(
             'nombre' => 'required',
-            'padre'  => ($input['padre'] != 'none') ? 'required|exists:trabajo,id' : 'required',
+            'padre'  => ($input[ 'padre' ] != 'none') ? 'required|exists:trabajo,id' : 'required',
             'valor'  => 'required|numeric',
             'unidad' => 'required',
             'tMat'   => 'required|exists:tipo_mantenimiento,id',
@@ -57,7 +62,7 @@ class TrabajoController extends \BaseController
 
         $validator = Validator::make($input, $rules);
 
-        if ($validator->fails()) {
+        if ( $validator->fails() ) {
             return Response::json(
                 array(
                     'error' => true,
@@ -67,12 +72,12 @@ class TrabajoController extends \BaseController
 
         $trabajo = new Trabajo();
 
-        $trabajo->nombre = $input['nombre'];
-        $trabajo->valor = $input['valor'];
-        $trabajo->unidad = $input['unidad'];
-        $trabajo->es_oficial = ($input['es_oficial'] != null) ? true : false;
-        $trabajo->tipo_mantenimiento_id = $input['tMat'];
-        $trabajo->padre_id = ($input['padre'] != 'none') ? $input['padre'] : null;
+        $trabajo->nombre                = $input[ 'nombre' ];
+        $trabajo->valor                 = $input[ 'valor' ];
+        $trabajo->unidad                = $input[ 'unidad' ];
+        $trabajo->es_oficial            = ($input[ 'es_oficial' ] != null) ? true : false;
+        $trabajo->tipo_mantenimiento_id = $input[ 'tMat' ];
+        $trabajo->padre_id              = ($input[ 'padre' ] != 'none') ? $input[ 'padre' ] : null;
 
         $trabajo->save();
 
@@ -90,8 +95,7 @@ class TrabajoController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -102,8 +106,7 @@ class TrabajoController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -114,8 +117,7 @@ class TrabajoController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
-    {
+    public function update($id) {
         //
     }
 
@@ -126,8 +128,7 @@ class TrabajoController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 

@@ -51,16 +51,20 @@
                         </ul>
                     </li>
                 @endif
-                    @if (Sentry::getUser()->hasAccess(['mantencion']))
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Mantención <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ URL::to('/m/sector') }}">Vías</a></li>
-                                <li><a href="{{ URL::to('/m/trabajo') }}">Trabajos</a></li>
-                                <li><a href="{{ URL::to('/m/material') }}">Materiales</a></li>
-                            </ul>
-                        </li>
-                    @endif
+                @if (Sentry::getUser()->hasAccess(['mantencion']))
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Mantención <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ URL::to('/m/sector') }}">Vías</a></li>
+                            {{--<li><a href="{{ URL::to('/m/trabajo') }}">Trabajos</a></li>--}}
+                            {{--<li><a href="{{ URL::to('/m/material') }}">Materiales</a></li>--}}
+                            @if(Sentry::getUser()->hasAccess(['Admin']))
+                                {{--<li class="divider"></li>--}}
+{{--                                <li><a href="{{ URL::to('/dashboard') }}">Usuarios</a></li>--}}
+                            @endif
+                        </ul>
+                    </li>
+                @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
