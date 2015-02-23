@@ -53,11 +53,11 @@
                 @endif
                     @if (Sentry::getUser()->hasAccess(['mantencion']))
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Reportes <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Mantención <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ URL::to('/m/param') }}">Vías</a></li>
-                                <li><a href="{{ URL::to('/m/param') }}">Trabajos</a></li>
-                                <li><a href="{{ URL::to('/m/param') }}">Materiales</a></li>
+                                <li><a href="{{ URL::to('/m/sector') }}">Vías</a></li>
+                                <li><a href="{{ URL::to('/m/trabajo') }}">Trabajos</a></li>
+                                <li><a href="{{ URL::to('/m/material') }}">Materiales</a></li>
                             </ul>
                         </li>
                     @endif

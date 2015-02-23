@@ -3,14 +3,14 @@
 class SectorController extends \BaseController {
 
     /**
-     * Display a listing of sectors
+     * Display a listing of sector
      *
      * @return Response
      */
     public function index() {
-        $sectors = Sector::all();
+        $sectores = Sector::all();
 
-        return View::make('sectors.index', compact('sectors'));
+        return View::make('sector.index', compact('sectores'));
     }
 
     /**
@@ -19,7 +19,7 @@ class SectorController extends \BaseController {
      * @return Response
      */
     public function create() {
-        return View::make('sectors.create');
+        return View::make('sector.create');
     }
 
     /**
@@ -28,27 +28,16 @@ class SectorController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $validator = Validator::make($data = Input::all(), Sector::$rules);
+        $input = Input::all();
+        $validator = Validator::make($input, Sector::$rules);
 
         if ( $validator->fails() ) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        Sector::create($data);
+        Sector::create($input);
 
-        return Redirect::route('sectors.index');
-    }
-
-    /**
-     * Display the specified sector.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id) {
-        $sector = Sector::findOrFail($id);
-
-        return View::make('sectors.show', compact('sector'));
+        return Redirect::route('m.sector.index');
     }
 
     /**
@@ -58,9 +47,9 @@ class SectorController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        $sector = Sector::find($id);
+        $sector = Sector::findOrFail($id);
 
-        return View::make('sectors.edit', compact('sector'));
+        return View::make('sector.edit', compact('sector'));
     }
 
     /**
@@ -70,17 +59,23 @@ class SectorController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        $sector = Sector::findOrFail($id);
-
-        $validator = Validator::make($data = Input::all(), Sector::$rules);
+        $sector    = Sector::findOrFail($id);
+        $input     = Input::all();
+        $validator = Validator::make($input, Sector::$rules);
 
         if ( $validator->fails() ) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        $sector->update($data);
+        $sector->nombre           = $input[ 'nombre' ];
+        $sector->estacion_inicio  = $input[ 'estacion_inicio' ];
+        $sector->estacion_termino = $input[ 'estacion_termino' ];
+        $sector->km_inicio        = $input[ 'km_inicio' ];
+        $sector->km_termino       = $input[ 'km_termino' ];
 
-        return Redirect::route('sectors.index');
+        $sector->save();
+
+        return Redirect::route('m.sector.index');
     }
 
     /**
@@ -92,7 +87,20 @@ class SectorController extends \BaseController {
     public function destroy($id) {
         Sector::destroy($id);
 
-        return Redirect::route('sectors.index');
+        return Redirect::route('sector.index');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\View\View
+     */
+    public function blocks($id) {
+
+        $blocks = Block::where('sector_id', '=', $id)
+            ->join('sector', 'block.sector_id', '=', 'sector.id')
+            ->get(array( 'block.id', 'block.nro_bien', 'block.estacion', 'block.km_inicio', 'block.km_termino', 'block.sector_id', 'sector.nombre as sector_nombre' ));
+
+        return View::make('block.index', compact('blocks'));
     }
 
 }

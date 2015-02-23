@@ -57,9 +57,9 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //		$block = Block::find($id);
-        //
-        //		return View::make('block.edit', compact('block'));
+        $block = Block::find($id);
+
+        return View::make('block.edit', compact('block'));
     }
 
     /**
@@ -102,7 +102,7 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function ajaxBlocks($sectorId) {
-        $blocks  = Block::where('sector_id', '=', $sectorId)
+        $blocks = Block::where('sector_id', '=', $sectorId)
             ->join('sector', 'block.sector_id', '=', 'sector.id')
             ->get(array( 'block.id', 'block.estacion', 'block.km_inicio', 'block.km_termino', 'block.sector_id', 'sector.km_inicio as sector_km_inicio', 'sector.km_termino as sector_km_termino' ));
 
@@ -110,8 +110,8 @@ class BlockController extends \BaseController {
 
         return Response::json(
             array(
-                'error'   => false,
-                'blocks'  => $blocks,
+                'error'  => false,
+                'blocks' => $blocks,
                 //'ramales' => $ramales
             )
         );

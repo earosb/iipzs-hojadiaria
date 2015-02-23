@@ -91,6 +91,25 @@ Route::group(array( 'before' => 'auth' ), function () {
         Route::get('r/block/ajax-get-limites/{data}', 'BlockController@ajaxGetLimites');
     });
 
+    /**
+     * Usuario logueado con permisos para mantención de datos
+     */
+    Route::group(array( 'before' => 'hasAccess:mantencion' ), function () {
+        /**
+         * Rutas para CRUD vías/trabajos/materiales
+         */
+        Route::resource('/m/sector', 'SectorController');
+        Route::resource('/m/sector/{id}/blocks', 'SectorController@blocks');
+
+        Route::resource('/m/block', 'BlockController');
+//        Route::resource('/m/block/{id}/edit', 'BlockController@blocks');
+//        Route::resource('/m/block/{id}/vias', 'BlockController@blocks');
+
+        Route::resource('/m/trabajo', 'TrabajoController');
+        Route::resource('/m/material', 'MaterialController');
+
+    });
+
 });
 
 /**
