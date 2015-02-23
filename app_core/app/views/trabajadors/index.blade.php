@@ -1,1 +1,0 @@
-/home/earosb/web/icafalApp/app/views/trabajadors/index.blade.php

@@ -20,11 +20,6 @@ class HojaDiariaController extends \BaseController
             $tMat->trabajos;
         }
 
-//        $trabajos = Trabajo::all(array('id', 'nombre', 'tipo_mantenimiento_id'));
-//        foreach ($trabajos as $trabajo) {
-//            $trabajo->tipoMantenimiento;
-//        }
-
         $grupos = GrupoTrabajo::all(array( 'id', 'base' ));
 
         $materialesCollection = Material::all(array( 'id', 'nombre' ));
