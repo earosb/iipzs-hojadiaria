@@ -1,8 +1,8 @@
 {{--
  * Created by PhpStorm.
  * User: earosb
- * Date: 12-02-15
- * Time: 14:11
+ * Date: 23-02-15
+ * Time: 18:48
 --}}
 
 @extends('layout.landing')
@@ -45,7 +45,7 @@
                             {{ $block->sector_nombre }}
                         </td>
                         <td class="text-center">
-                            <a class="glyphicon glyphicon-list-alt" href="{{ URL::to('/m/block/'.$block->id.'/vias') }}"></a>
+                            <a class="glyphicon glyphicon-list-alt" href="{{ URL::to('/m/block/'.$block->id) }}"></a>
                             <a class="glyphicon glyphicon-pencil" href="{{ URL::to('/m/block/'.$block->id.'/edit') }}"></a>
                         </td>
                     </tr>

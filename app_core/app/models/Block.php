@@ -6,67 +6,59 @@
  */
 class Block extends \Eloquent {
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'block';
-
-	/**
+    /**
      * Add your validation rules here
      * @var [type]
      */
-	public static $rules = [
-		// 'title' => 'required'
-	];
-
-	/**
+    public static $rules = [
+        'estacion'   => 'required',
+        'nro_bien'   => 'required',
+        'km_inicio'  => 'required|numeric|min:0',
+        'km_termino' => 'required|numeric|min:0',
+    ];
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'block';
+    /**
      * Cosas que se pueden modificar
      * @var array
      */
-	protected $fillable = array('nombre', 'nro_bien', 'km_inicio', 'km_termino');
-	
+    protected $fillable = array( 'estacion', 'nro_bien', 'km_inicio', 'km_termino' );
+
     /**
      * Cosas que no se pueden modificar
      * @var array
      */
-	protected $guarded = array('id');
+    protected $guarded = array( 'id' );
 
-	/**
-	 * Describe la relación entre block 
-	 * y su sector
-	 * @return [type] [description]
-	 */
-	public function sector()
-    {
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sector() {
         return $this->belongsTo('Sector');
     }
 
     /**
-     * [desviadores description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-	public function desviadores()
-    {
+    public function desviadores() {
         return $this->hasMany('Desviador');
     }
 
     /**
-     * [desvios description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function desvios()
-    {
+    public function desvios() {
         return $this->hasMany('Desvio');
     }
 
     /**
-     * [detalleHojaDiaria description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function detalleHojaDiaria()
-    {
+    public function detalleHojaDiaria() {
         return $this->hasMany('DetalleHojaDiaria');
     }
 

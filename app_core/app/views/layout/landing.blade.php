@@ -24,7 +24,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ URL::to('/') }}">Icafal App</a>
+        <a class="navbar-brand" href="{{ URL::to('/') }}">Icil-Icafal-PZS</a>
     </div>
     @if(Sentry::check())
         <div class="navbar-collapse collapse navbar-responsive-collapse">

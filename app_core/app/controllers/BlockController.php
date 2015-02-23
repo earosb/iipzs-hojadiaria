@@ -8,7 +8,9 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //
+        $blocks = Block::all();
+
+        return View::make('block.index', compact('blocks'));
     }
 
     /**
@@ -17,7 +19,7 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //
+        return View::make('block.create');
     }
 
     /**
@@ -45,9 +47,9 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        //		$block = Block::findOrFail($id);
-        //
-        //		return View::make('block.show', compact('block'));
+        $block = Block::findOrFail($id);
+
+        return View::make('block.show', compact('block'));
     }
 
     /**
@@ -69,18 +71,23 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        //		$block = Block::findOrFail($id);
-        //
-        //		$validator = Validator::make($data = Input::all(), Block::$rules);
-        //
-        //		if ($validator->fails())
-        //		{
-        //			return Redirect::back()->withErrors($validator)->withInput();
-        //		}
-        //
-        //		$block->update($data);
-        //
-        //		return Redirect::route('block.index');
+        $block = Block::findOrFail($id);
+        $input = Input::all();
+
+        $validator = Validator::make($input, Block::$rules);
+
+        if ( $validator->fails() ) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        $block->estacion   = $input[ 'estacion' ];
+        $block->nro_bien   = $input[ 'nro_bien' ];
+        $block->km_inicio  = $input[ 'km_inicio' ];
+        $block->km_termino = $input[ 'km_termino' ];
+
+        $block->save();
+
+        return Redirect::route('m.sector.'.$block->sector_id.'.blocks');
     }
 
     /**

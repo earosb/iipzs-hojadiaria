@@ -101,7 +101,7 @@
                 </div>
             </div>
             {{-- Opciones Avanzadas --}}
-            @if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))
+            @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
                 <div class="col-md-12">
                     {{-- Grupo Vía --}}
                     <div class="col-xs-12 col-md-3">
