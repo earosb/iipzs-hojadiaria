@@ -15,9 +15,10 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <legend>{{ $sector->nombre }}
-                <div class="btn-group pull-right">
-                    <button id="btn_eliminar" name="btn_eliminar" class="btn btn-danger">Eliminar</button>
-                </div>
+                {{--<div class="btn-group pull-right">--}}
+                    {{--<button id="btn_eliminar" name="btn_eliminar" class="btn btn-danger">Eliminar</button>--}}
+                    <a id="dlt" onclick="destroy()" class="glyphicon glyphicon-trash pull-right"></a>
+                {{--</div>--}}
             </legend>
             {{ Form::open(array(
                 'url'		=>	'/m/sector/'.$sector->id,
@@ -85,8 +86,7 @@
                     <label class="col-sm-2 control-label"></label>
 
                     <div class="col-sm-10">
-                        {{--<button id="btn_eliminar" name="btn_eliminar" class="btn btn-danger">Eliminar</button>--}}
-                        <button id="btn_guardar" name="btn_guardar" class="btn btn-success pull-right">Guardar</button>
+                        {{ Form::submit('Guardar', array('class' => 'btn btn-success pull-right')) }}
                     </div>
                 </div>
 
@@ -96,17 +96,22 @@
         </div>
     </div>
     <script>
-        $('#btn_eliminar').on( "click", function() {
-            $.ajax({
-                type: 'delete',
-                url: '/m/sector/' + "{{ $sector->id }}"
-            }).error(function () {
-                alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
-            }).done(function (data) {
-                if (data.error) alert("Se produjo un problema el intentar eliminar el Sector {{ $sector->nombre }}");
+        function destroy(){
+            if ( confirm("¿Desea borrar el sector?") == true ) {
+                if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")){
+                    $.ajax({
+                        type: 'delete',
+                        url: '/m/sector/' + "{{ $sector->id }}"
+                    }).error(function () {
+                        alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
+                    }).done(function (data) {
+                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Sector {{ $sector->nombre }}");
 
-                window.location.replace("{{ URL::to('/m/sector') }}");
-            });
-        });
+                        window.location.replace("{{ URL::to('/m/sector') }}");
+                    });
+                }
+            }
+        };
+
     </script>
 @stop

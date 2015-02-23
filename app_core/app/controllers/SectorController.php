@@ -28,7 +28,7 @@ class SectorController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $input = Input::all();
+        $input     = Input::all();
         $validator = Validator::make($input, Sector::$rules);
 
         if ( $validator->fails() ) {
@@ -87,7 +87,10 @@ class SectorController extends \BaseController {
     public function destroy($id) {
         Sector::destroy($id);
 
-        return Redirect::route('sector.index');
+        //return Redirect::route('sector.index');
+        return Response::json(array(
+                                  'error' => false
+                              ));
     }
 
     /**
