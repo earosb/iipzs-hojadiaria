@@ -74,7 +74,7 @@
                 <label class="col-sm-2 control-label" for="password_confirmation">Corfirmar contraseña</label>
 
                 <div class="col-sm-10">
-                    <input id="password_confirmation" name="password_confirmation" placeholder="Corfirmar contraseña" class="form-control" type="password" required="required">
+                    <input id="password_confirmation" name="password_confirmation" placeholder="Corfirmar Contraseña" class="form-control" type="password" required="required">
 
                     <p class="text-danger">{{ $errors->first('password_confirmation') }}</p>
                 </div>
