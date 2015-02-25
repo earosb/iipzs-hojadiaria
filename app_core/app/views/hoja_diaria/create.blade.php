@@ -96,9 +96,9 @@
                     <tr>
                         <th>Trabajos Ejecutados</th>
                         <th>Desvío / Desviador</th>
-                        <th class="tdkilometro">Km inicio</th>
-                        <th class="tdkilometro">Km término</th>
-                        <th class="tdkilometro">Cantidad</th>
+                        <th class="col-md-1">Km inicio</th>
+                        <th class="col-md-1">Km término</th>
+                        <th class="col-md-1">Cantidad</th>
                         <th class="text-center">
                             <a id="add_row_trabajos" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                         </th>
@@ -173,8 +173,8 @@
                     <table class="table table-bordered table-striped" id="tab_material_retirado">
                         <thead>
                         <tr>
-                            <th>Materiales Retirados</th>
-                            <th class="tdkilometro">Cantidad</th>
+                            <th class="">Materiales Retirados</th>
+                            <th class="col-md-2">Cantidad</th>
                             <th class="text-center">
                                 <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                             </th>

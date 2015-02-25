@@ -15,71 +15,9 @@
     @yield('css')
 </head>
 <body>
-{{-- Navbar
-===================================================== --}}
-<div class="navbar navbar-default">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="{{ URL::to('/') }}">Icil-Icafal-PZS</a>
-    </div>
-    @if(Sentry::check())
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
-            <ul class="nav navbar-nav">
-                @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hoja Diaria <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ URL::to('/hd/create') }}">Ingresar Hoja Diaria</a></li>
-                            <li><a href="{{ URL::to('/hd') }}">Histórico</a></li>
-                        </ul>
-                    </li>
-                @endif
-                @if (Sentry::getUser()->hasAccess(['reporte']))
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Reportes <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ URL::to('/r/param') }}">Consultar Trabajos</a></li>
-                            @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
-                                {{--<li class="divider"></li>--}}
-                                {{--<li class="dropdown-header">Para descargar</li>--}}
-                                {{--<li><a href="#">Formulario 2 - 3 - 4</a></li>--}}
-                            @endif
-                        </ul>
-                    </li>
-                @endif
-                @if (Sentry::getUser()->hasAccess(['mantencion']))
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Mantención <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="{{ URL::to('/m/sector') }}">Vías</a></li>
-                            {{--<li><a href="{{ URL::to('/m/trabajo') }}">Trabajos</a></li>--}}
-                            {{--<li><a href="{{ URL::to('/m/material') }}">Materiales</a></li>--}}
-                            @if(Sentry::getUser()->hasAccess(['Admin']))
-                                {{--<li class="divider"></li>--}}
-{{--                                <li><a href="{{ URL::to('/dashboard') }}">Usuarios</a></li>--}}
-                            @endif
-                        </ul>
-                    </li>
-                @endif
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Sentry::getUser()->first_name }} <b
-                                class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Modificar datos</a></li>
-                        <li class="divider"></li>
-                        <li><a href="{{ URL::to('logout') }}">Salir</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    @endif
-</div>
+
+@include('layout.navbar')
+
 {{-- Container
 ===================================================== --}}
 <div class="container-fluid">

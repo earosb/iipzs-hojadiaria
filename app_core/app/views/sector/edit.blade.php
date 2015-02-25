@@ -15,10 +15,7 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <legend>{{ $sector->nombre }}
-                {{--<div class="btn-group pull-right">--}}
-                    {{--<button id="btn_eliminar" name="btn_eliminar" class="btn btn-danger">Eliminar</button>--}}
-                    <a id="dlt" onclick="destroy()" class="glyphicon glyphicon-trash pull-right"></a>
-                {{--</div>--}}
+                    <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
             </legend>
             {{ Form::open(array(
                 'url'		=>	'/m/sector/'.$sector->id,

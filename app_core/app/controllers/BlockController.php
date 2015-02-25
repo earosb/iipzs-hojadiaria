@@ -19,7 +19,8 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function create() {
-        return View::make('block.create');
+        $sectores = Sector::all(array( 'id', 'nombre' ));
+        return View::make('block.create', compact('sectores'));
     }
 
     /**
@@ -28,16 +29,16 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function store() {
-        //		$validator = Validator::make($data = Input::all(), Block::$rules);
-        //
-        //		if ($validator->fails())
-        //		{
-        //			return Redirect::back()->withErrors($validator)->withInput();
-        //		}
-        //
-        //		Block::create($data);
-        //
-        //		return Redirect::route('block.index');
+        $input     = Input::all();
+        $validator = Validator::make($input, Block::$rules);
+
+        if ( $validator->fails() ) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        Block::create($input);
+        //$route = 'm.sector.' . $input[ 'sector_id' ] . '.blocks';
+        return Redirect::route('m.sector');
     }
 
     /**
@@ -48,8 +49,10 @@ class BlockController extends \BaseController {
      */
     public function show($id) {
         $block = Block::findOrFail($id);
-
-        return View::make('block.show', compact('block'));
+        $desvios     = Block::find($id)->desvios;
+        $desviadores = Block::find($id)->desviadores;
+        $sectores = $block->sector;
+        return View::make('block.show', compact('block', 'desvios', 'desviadores', 'sectores'));
     }
 
     /**
@@ -87,7 +90,7 @@ class BlockController extends \BaseController {
 
         $block->save();
 
-        return Redirect::route('m.sector.'.$block->sector_id.'.blocks');
+        return Redirect::route('m.sector.' . $block->sector_id . '.blocks');
     }
 
     /**
@@ -97,9 +100,12 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        //		Block::destroy($id);
-        //
-        //		return Redirect::route('block.index');
+        Block::destroy($id);
+
+        //return Redirect::route('m.sector');
+        return Response::json(array(
+                                  'error' => false
+                              ));
     }
 
     /**

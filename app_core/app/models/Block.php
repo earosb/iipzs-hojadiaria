@@ -11,8 +11,9 @@ class Block extends \Eloquent {
      * @var [type]
      */
     public static $rules = [
+        'sector_id'  => 'required|exists:sector,id',
         'estacion'   => 'required',
-        'nro_bien'   => 'required',
+        'nro_bien'   => 'required|max:10',
         'km_inicio'  => 'required|numeric|min:0',
         'km_termino' => 'required|numeric|min:0',
     ];
@@ -26,7 +27,7 @@ class Block extends \Eloquent {
      * Cosas que se pueden modificar
      * @var array
      */
-    protected $fillable = array( 'estacion', 'nro_bien', 'km_inicio', 'km_termino' );
+    protected $fillable = array( 'sector_id', 'estacion', 'nro_bien', 'km_inicio', 'km_termino' );
 
     /**
      * Cosas que no se pueden modificar

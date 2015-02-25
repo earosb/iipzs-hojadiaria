@@ -21,13 +21,32 @@
                 'class' 	=> 	'form-horizontal')) }}
             <fieldset>
 
+                {{-- Sector --}}
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="sector_id">Sector</label>
+
+                    <div>
+                        <div class="col-sm-10">
+                            <div class="controls">
+                                <select name="sector_id" id="sector_id" class="form-control">
+                                    <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
+                                    @foreach($sectores as $sector)
+                                        <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
+                                    @endforeach
+                                </select>
+
+                                <p class="text-danger">{{ $errors->first('sector_id') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="estacion">Estación</label>
 
                     <div class="col-sm-10">
-                        <input id="estacion" name="estacion" placeholder="" class="form-control" type="text"
-                               required="required" placeholder="">
+                        <input id="estacion" name="estacion" placeholder="Nombre estación" class="form-control" type="text"
+                               required="required">
 
                         <p class="text-danger">{{ $errors->first('estacion') }}</p>
                     </div>
@@ -37,8 +56,8 @@
                     <label class="col-sm-2 control-label" for="nro_bien">Nro. Bien</label>
 
                     <div class="col-sm-10">
-                        <input id="nro_bien" name="nro_bien" placeholder="" class="form-control"
-                               type="text" required="required" placeholder="">
+                        <input id="nro_bien" name="nro_bien" placeholder="Número de bien" class="form-control"
+                               type="text" required="required" >
 
                         <p class="text-danger">{{ $errors->first('nro_bien') }}</p>
                     </div>
@@ -48,8 +67,8 @@
                     <label class="col-sm-2 control-label" for="km_inicio">Km inicio</label>
 
                     <div class="col-sm-10">
-                        <input id="km_inicio" name="km_inicio" placeholder="" class="form-control" type="number"
-                               required="required" placeholder="">
+                        <input id="km_inicio" name="km_inicio" placeholder="Kilómetro de inicio" class="form-control" type="number"
+                               required="required" min="0">
 
                         <p class="text-danger">{{ $errors->first('km_inicio') }}</p>
                     </div>
@@ -59,8 +78,8 @@
                     <label class="col-sm-2 control-label" for="km_termino">Km término</label>
 
                     <div class="col-sm-10">
-                        <input id="km_termino" name="km_termino" placeholder="" class="form-control" type="number"
-                               required="required" placeholder="">
+                        <input id="km_termino" name="km_termino" placeholder="Kilómetro de término" class="form-control" type="number"
+                               required="required" min="0">
 
                         <p class="text-danger">{{ $errors->first('km_termino') }}</p>
                     </div>

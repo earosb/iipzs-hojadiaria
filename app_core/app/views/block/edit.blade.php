@@ -91,7 +91,7 @@
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Block {{ $block->estacion }}");
+                        //if ( data.error ) alert("Se produjo un problema el intentar eliminar el Block {{ $block->estacion }}");
 
                         window.location.replace("{{ URL::to('/m/sector') }}");
                     });
