@@ -24,6 +24,9 @@ Route::group(array( 'before' => 'auth' ), function () {
 
     Route::get('/', function () { return View::make('home'); });
 
+    route::get('profile', 'UserController@getProfile');
+    route::post('profile', 'UserController@postProfile');
+
     Route::get('logout', 'UserController@getLogout');
 
     /**

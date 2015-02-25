@@ -21,6 +21,12 @@
 {{-- Container
 ===================================================== --}}
 <div class="container-fluid">
+    @if(isset($msg))
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <p><strong>{{ $msg }}</strong></p>
+        </div>
+    @endif
     @yield('content')
 </div>
 {{-- Footer
