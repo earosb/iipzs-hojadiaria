@@ -4,136 +4,141 @@
  *
  * @author earosb
  */
-
 class MaterialRetiradoController extends \BaseController {
 
-	/**
-	 * Display a listing of the resource.
-	 * GET /materialretirado
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
+    /**
+     * Display a listing of the resource.
+     * GET /materialretirado
+     *
+     * @return Response
+     */
+    public function index() {
+        return Response::view('404');
+    }
 
-	/**
-	 * Show the form for creating a new resource.
-	 * GET /materialretirado/create
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+    /**
+     * Show the form for creating a new resource.
+     * GET /materialretirado/create
+     *
+     * @return Response
+     */
+    public function create() {
+        return Response::view('material.createRetirado');
+    }
 
-	/**
-	 * Store a newly created resource in storage.
-	 * POST /materialretirado
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		$input = array(
-			'_token' => Input::get('_token'),
-			'nombre' => Input::get('nombre'),
-			'clase' => Input::get('clase'),
-			//'codigo' => Input::get('codigo'),
-			'es_oficial' => Input::get('es_oficial'),
-		);
+    /**
+     * Store a newly created resource in storage.
+     * POST /materialretirado
+     *
+     * @return Response
+     */
+    public function store() {
+        $input = array(
+            '_token'     => Input::get('_token'),
+            'nombre'     => Input::get('nombre'),
+            'clase'      => Input::get('clase'),
+            'es_oficial' => Input::get('es_oficial'),
+        );
 
-		$rules = array(
-			'nombre' => 'required',
-			'clase' => 'required',
-			//'codigo' => 'required',
-		);
+        $validator = Validator::make($input, MaterialRetirado::$rules);
 
-		$validator = Validator::make($input, $rules);
+        if ( $validator->fails() ) {
+            if ( Request::ajax() ) {
+                return Response::json(array( 'error' => true,
+                                             'msg'   => $validator->messages() ));
+            }
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+        $matRet = new MaterialRetirado();
 
-		if ($validator->fails()) {
-			return Response::json(array(
-				'error' => true,
-				'msg' => $validator->messages()
-			));
-		}else{
-			$matRet = new MaterialRetirado();
+        $matRet->nombre = $input[ 'nombre' ];
+        $matRet->clase = $input[ 'clase' ];
+        if ( $input[ 'es_oficial' ] )
+            $matRet->es_oficial = true;
+        else
+            $matRet->es_oficial = false;
+        $matRet->save();
 
-			//$matRet->codigo = $input['codigo'];
-			$matRet->nombre = $input['nombre'];
-			$matRet->clase = $input['clase'];
-			if($input['es_oficial'])
-				$matRet->es_oficial = true;
-			else
-				$matRet->es_oficial = false;
-			$matRet->save();
+        if ( Request::ajax() ) {
+            return Response::json(array( 'error'       => false,
+                                         'nuevoMatRet' => $matRet,
+                                         'msg'         => 'Nuevo Material Retirado creado con éxito' ));
+        }
+        return Redirect::to('m/material');
+    }
 
-			return Response::json(array(
-				'error' => false,
-				'nuevoMatRet' => $matRet,
-				'msg' => 'Nuevo Material Retirado creado con éxito'
-			));
-		}
+    /**
+     * Display the specified resource.
+     * GET /materialretirado/{id}
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function show($id) {
+        return Response::view('404');
+    }
 
-	}
+    /**
+     * Show the form for editing the specified resource.
+     * GET /materialretirado/{id}/edit
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function edit($id) {
+        $matRet = MaterialRetirado::find($id);
+        return View::make('material.editRetirado', compact('matRet'));
+    }
 
-	/**
-	 * Display the specified resource.
-	 * GET /materialretirado/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
+    /**
+     * Update the specified resource in storage.
+     * PUT /materialretirado/{id}
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function update($id) {
+        $matRet = MaterialRetirado::find($id);
 
-	/**
-	 * Show the form for editing the specified resource.
-	 * GET /materialretirado/{id}/edit
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
+        $input = array(
+            '_token'     => Input::get('_token'),
+            'nombre'     => Input::get('nombre'),
+            'clase'      => Input::get('clase'),
+            'es_oficial' => Input::get('es_oficial'),
+        );
 
-	/**
-	 * Update the specified resource in storage.
-	 * PUT /materialretirado/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
+        $validator = Validator::make($input, MaterialRetirado::$rules);
 
-	/**
-	 * Remove the specified resource from storage.
-	 * DELETE /materialretirado/{id}
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+        if ( $validator->fails() ) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
 
-	public function ajaxList(){
-		$matRetAll = MaterialRetirado::all(array('id', 'nombre'));
+        $matRet->nombre = $input[ 'nombre' ];
+        $matRet->clase = $input[ 'clase' ];
+        $matRet->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
 
-		return Response::json(array(
-			'error' => false,
-			'matRetirados' => $matRetAll
-		));
-	}
+        $matRet->save();
+
+        return Redirect::to('m/material');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * DELETE /materialretirado/{id}
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function destroy($id) {
+        MaterialRetirado::destroy($id);
+        return Response::json(array( 'error' => false ));
+    }
+
+    public function ajaxList() {
+        $matRetAll = MaterialRetirado::all(array( 'id', 'nombre' ));
+
+        return Response::json(array( 'error'        => false,
+                                     'matRetirados' => $matRetAll ));
+    }
 
 }

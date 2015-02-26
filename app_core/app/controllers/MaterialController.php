@@ -12,7 +12,9 @@ class MaterialController extends \BaseController {
      * @return Response
      */
     public function index() {
-        //
+        $materiales = Material::all();
+        $matRetirados = MaterialRetirado::all();
+        return View::make('material.index', compact('materiales', 'matRetirados'));
     }
 
     /**
@@ -21,7 +23,7 @@ class MaterialController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //
+        return View::make('material.create');
     }
 
     /**
@@ -35,8 +37,11 @@ class MaterialController extends \BaseController {
         $validator = Validator::make($input, Material::$rules);
 
         if ( $validator->fails() ) {
-            return Response::json(array( 'error' => true,
-                                         'msg'   => $validator->messages() ));
+            if ( Request::ajax() ) {
+                return Response::json(array( 'error' => true,
+                                             'msg'   => $validator->messages() ));
+            }
+            return Redirect::back()->withErrors($validator)->withInput();
         }
         $material = new Material();
 
@@ -47,10 +52,13 @@ class MaterialController extends \BaseController {
         $material->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
 
         $material->save();
+        if ( Request::ajax() ) {
 
-        return Response::json(array( 'error'       => false,
-                                     'nuevoMatCol' => $material,
-                                     'msg'         => 'Nuevo Material creado con éxito' ));
+            return Response::json(array( 'error'       => false,
+                                         'nuevoMatCol' => $material,
+                                         'msg'         => 'Nuevo Material creado con éxito' ));
+        }
+        return Redirect::to('m/material');
     }
 
     /**
@@ -60,7 +68,7 @@ class MaterialController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        //
+        return Response::view('404');
     }
 
     /**
@@ -70,7 +78,8 @@ class MaterialController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //
+        $material = Material::find($id);
+        return View::make('material.edit', compact('material'));
     }
 
     /**
@@ -80,7 +89,25 @@ class MaterialController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        //
+        $material = Material::find($id);
+
+        $input = Input::except('_token');
+
+        $validator = Validator::make($input, Material::$rules);
+
+        if ( $validator->fails() ) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        $material->nombre = $input[ 'nombre' ];
+        $material->valor = $input[ 'valor' ];
+        $material->unidad = $input[ 'unidad' ];
+        $material->proveedor = $input[ 'proveedor' ];
+        $material->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
+
+        $material->save();
+
+        return Redirect::to('m/material');
     }
 
     /**
@@ -90,7 +117,8 @@ class MaterialController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        //
+        Material::destroy($id);
+        return Response::json(array( 'error' => false ));
     }
 
 }

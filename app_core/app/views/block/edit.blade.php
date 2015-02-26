@@ -81,10 +81,13 @@
 
         </div>
     </div>
-    <script>
-        function destroy(){
+@stop
+
+@section('js')
+    <script type="text/javascript">
+        function destroy() {
             if ( confirm("¿Desea borrar el Block?") == true ) {
-                if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")){
+                if ( confirm("El registro no podrá ser recuperado, ¿Desea continuar?") ) {
                     $.ajax({
                         type: 'delete',
                         url: '/m/block/' + "{{ $block->id }}"
@@ -97,7 +100,7 @@
                     });
                 }
             }
-        };
-
+        }
+        ;
     </script>
 @stop

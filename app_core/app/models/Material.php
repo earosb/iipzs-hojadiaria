@@ -11,7 +11,7 @@ class Material extends \Eloquent {
      * @var [type]
      */
     public static $rules = [ 'nombre'    => 'required',
-                             'valor'     => 'required|numeric',
+                             'valor'     => 'required|numeric|min:0',
                              'proveedor' => 'required',
                              'unidad'    => 'required', ];
     /**

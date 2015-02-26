@@ -88,10 +88,7 @@ class SectorController extends \BaseController {
     public function destroy($id) {
         Sector::destroy($id);
 
-        //return Redirect::route('sector.index');
-        return Response::json(array(
-                                  'error' => false
-                              ));
+        return Response::json(array( 'error' => false ));
     }
 
     /**

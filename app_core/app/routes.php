@@ -110,6 +110,7 @@ Route::group(array( 'before' => 'auth' ), function () {
 
         Route::resource('/m/trabajo', 'TrabajoController');
         Route::resource('/m/material', 'MaterialController');
+        Route::resource('/m/material-retirado', 'MaterialRetiradoController');
 
     });
 
@@ -119,5 +120,5 @@ Route::group(array( 'before' => 'auth' ), function () {
  * Errores
  */
 App::missing(function ($exception) {
-    return Response::view('error.404');
+    return Response::view('404');
 });

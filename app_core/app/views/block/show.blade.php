@@ -38,8 +38,7 @@
                                 {{ $desviador->km_inicio }}
                             </td>
                             <td class="text-center">
-                                <a class="glyphicon glyphicon-edit"
-                                   href="#"></a>
+                                <a class="glyphicon glyphicon-edit" href="#"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -81,8 +80,7 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a class="glyphicon glyphicon-edit"
-                                   href="#"></a>
+                                <a class="glyphicon glyphicon-edit" href="#"></a>
                             </td>
                         </tr>
                     @endforeach
