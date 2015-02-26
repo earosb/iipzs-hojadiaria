@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://icilicafalpzs.cl',
+	'url' => 'http://icilicafalpzs.local',
 
 	/*
 	|--------------------------------------------------------------------------

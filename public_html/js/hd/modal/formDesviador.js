@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    $('#modalDesviador').on('shown.bs.modal');
+    $('#modalDesvio').on('shown.bs.modal');
+});
 /**
  * [description]
  * @param  {[type]} e) {             e.preventDefault();  var $form [description]

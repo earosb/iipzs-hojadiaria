@@ -29,7 +29,7 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function store() {
-        $input     = Input::all();
+        $input = Input::all();
         $validator = Validator::make($input, Block::$rules);
 
         if ( $validator->fails() ) {
@@ -48,11 +48,19 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        $block = Block::findOrFail($id);
-        $desvios     = Block::find($id)->desvios;
-        $desviadores = Block::find($id)->desviadores;
-        $sectores = $block->sector;
-        return View::make('block.show', compact('block', 'desvios', 'desviadores', 'sectores'));
+        try {
+            $block = Block::findOrFail($id);
+            $desvios = Block::find($id)->desvios;
+            $desviadores = Block::find($id)->desviadores;
+            $sectores = $block->sector;
+            return View::make('block.show')
+                ->with('block', $block)
+                ->with('desvios', $desvios)
+                ->with('desviadores', $desviadores)
+                ->with('sectores', $sectores);
+        } catch ( \Exception $e ) {
+            return Response::view('error.404');
+        }
     }
 
     /**
@@ -83,9 +91,9 @@ class BlockController extends \BaseController {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        $block->estacion   = $input[ 'estacion' ];
-        $block->nro_bien   = $input[ 'nro_bien' ];
-        $block->km_inicio  = $input[ 'km_inicio' ];
+        $block->estacion = $input[ 'estacion' ];
+        $block->nro_bien = $input[ 'nro_bien' ];
+        $block->km_inicio = $input[ 'km_inicio' ];
         $block->km_termino = $input[ 'km_termino' ];
 
         $block->save();
@@ -138,8 +146,8 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function ajaxBlockTodo($idBlock) {
-        $block       = Block::find($idBlock);
-        $desvios     = Block::find($idBlock)->desvios;
+        $block = Block::find($idBlock);
+        $desvios = Block::find($idBlock)->desvios;
         $desviadores = Block::find($idBlock)->desviadores;
 
         return Response::json(

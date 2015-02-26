@@ -8,27 +8,29 @@
 @stop
 @section('content')
     <div class="row">
-        {{-- Botón "flotante"
-        ===================================================== --}}
-        <div class="btn-group pull-right">
-            <button type="button" class="btn btn-default dropdown-toggle glyphicon glyphicon-cog"
-                    data-toggle="dropdown" aria-expanded="false">
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li class="dropdown-header">Ubicaciones</li>
-                <li><a data-toggle="modal" data-target="#modalDesviador" href="#">Nuevo Desviador</a></li>
-                <li><a data-toggle="modal" data-target="#modalDesvio" href="#">Nuevo Desvío</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Trabajos</li>
-                <li><a data-toggle="modal" data-target="#modalTrabajo" href="#">Nuevo Trabajo</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Materiales</li>
-                <li><a data-toggle="modal" data-target="#modalMaterialCol" href="#">Nuevo Material Colocado</a>
-                </li>
-                <li><a data-toggle="modal" data-target="#modalMaterialRet" href="#">Nuevo Material Retirado</a>
-                </li>
-            </ul>
-        </div>
+        @if (Sentry::getUser()->hasAccess(['editor']))
+            {{-- Botón "flotante"
+            ===================================================== --}}
+            <div class="btn-group pull-right">
+                <button type="button" class="btn btn-default dropdown-toggle glyphicon glyphicon-cog"
+                        data-toggle="dropdown" aria-expanded="false">
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li class="dropdown-header">Ubicaciones</li>
+                    <li><a data-toggle="modal" data-target="#modalDesviador" href="#">Nuevo Desviador</a></li>
+                    <li><a data-toggle="modal" data-target="#modalDesvio" href="#">Nuevo Desvío</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Trabajos</li>
+                    <li><a data-toggle="modal" data-target="#modalTrabajo" href="#">Nuevo Trabajo</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Materiales</li>
+                    <li><a data-toggle="modal" data-target="#modalMaterialCol" href="#">Nuevo Material Colocado</a>
+                    </li>
+                    <li><a data-toggle="modal" data-target="#modalMaterialRet" href="#">Nuevo Material Retirado</a>
+                    </li>
+                </ul>
+            </div>
+        @endif
         {{ Form::open(array(
             'url' 		=>	'hd',
             'method' 	=>	'post',

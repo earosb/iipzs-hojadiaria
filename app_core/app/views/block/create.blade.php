@@ -45,8 +45,7 @@
                     <label class="col-sm-2 control-label" for="estacion">Estación</label>
 
                     <div class="col-sm-10">
-                        <input id="estacion" name="estacion" placeholder="Nombre estación" class="form-control" type="text"
-                               required="required">
+                        <input id="estacion" name="estacion" placeholder="Nombre estación" class="form-control" type="text" required="required">
 
                         <p class="text-danger">{{ $errors->first('estacion') }}</p>
                     </div>

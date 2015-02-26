@@ -18,8 +18,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Desviadores</div>
                 <div class="panel-body">
-                    {{--<a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.block.create') }}">Nuevo Desviador</a>--}}
-                    <a class="btn btn-info btn-new pull-right" data-toggle="modal" data-target="#modalDesviador" href="#">Nuevo Desviador</a>
+                    <a class="btn btn-info btn-new pull-right" href="#">Nuevo Desviador</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -39,8 +38,8 @@
                                 {{ $desviador->km_inicio }}
                             </td>
                             <td class="text-center">
-                                <a class="glyphicon glyphicon-pencil"
-                                   href="{{ URL::to('/m/block/'.$desviador->id.'/edit') }}"></a>
+                                <a class="glyphicon glyphicon-edit"
+                                   href="#"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -54,8 +53,7 @@
                 <div class="panel-heading">Desvíos
                 </div>
                 <div class="panel-body">
-                    <a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.block.create') }}">Nuevo
-                        Desvío</a>
+                    <a class="btn btn-info btn-new pull-right" href="#">Nuevo Desvío</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -70,35 +68,28 @@
                     @foreach($desvios as $desvio)
                         <tr>
                             <td>
-                                {{ $desviop->nombre }}
+                                {{ $desvio->nombre }}
                             </td>
                             <td>
-                                {{ $desvio->desviador_norte_id }}
+                                @if($desvio->desviador_norte_id) {{ $desvio->desviador_norte_id }}
+                                @else N/A
+                                @endif
                             </td>
                             <td>
-                                {{ $desvio->desviador_sur_id }}
+                                @if($desvio->desviador_sur_id) {{ $desvio->desviador_sur_id }}
+                                @else N/A
+                                @endif
                             </td>
                             <td class="text-center">
-                                <a class="glyphicon glyphicon-pencil"
-                                   href="{{ URL::to('/m/block/'.$desvio->id.'/edit') }}"></a>
+                                <a class="glyphicon glyphicon-edit"
+                                   href="#"></a>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
             </div>
+                <p>{{ $desvios }}</p>
         </div>
     </div>
-@stop
-
-<script>
-    $(document).ready(function () {
-        $('#modalDesviador').on('shown.bs.modal');
-        $('#modalDesvio').on('shown.bs.modal');
-    });
-</script>
-
-@section('modals')
-    @include('modal.formDesviador')
-    @include('modal.formDesvio')
 @stop

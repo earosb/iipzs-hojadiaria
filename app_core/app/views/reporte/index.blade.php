@@ -101,9 +101,9 @@
                 </div>
             </div>
             {{-- Opciones Avanzadas --}}
-            @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
+            {{--@if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
                 <div class="col-md-12">
-                    {{-- Grupo Vía --}}
+                     Grupo Vía
                     <div class="col-xs-12 col-md-3">
                         {{ Form::label('grupo_via', 'Grupo Vía', array('class' => 'control-label')) }}
                         <div class="controls">
@@ -116,7 +116,7 @@
                         </div>
                         <p class="text-danger">{{ $errors->first('grupo_via') }}</p>
                     </div>
-                    {{-- Checkboxes tipo de vía --}}
+                     Checkboxes tipo de vía
                     <div class="col-xs-12 col-md-3">
                         <div>
                             {{ Form::label('tipo_via[]', 'Tipo de Vía') }}
@@ -135,7 +135,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endif--}}
         </div>
 
         {{-- Botones --}}

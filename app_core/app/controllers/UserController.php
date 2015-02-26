@@ -19,7 +19,7 @@ class UserController extends BaseController {
     public function postProfile() {
 
         $rules = array(
-            'password' => 'required|confirmed' );
+            'password' => 'required|confirmed|min:6' );
 
         $validator = Validator::make(Input::all(), $rules);
 
