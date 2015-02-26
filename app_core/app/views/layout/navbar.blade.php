@@ -44,7 +44,7 @@
                             <li><a href="{{ URL::to('/m/sector') }}">Vías</a></li>
                             <li><a href="{{ URL::to('/m/trabajo') }}">Trabajos</a></li>
                             <li><a href="{{ URL::to('/m/material') }}">Materiales</a></li>
-                            <li><a href="{{ URL::to('/m/material') }}">Grupos Trabajo</a></li>
+                            <li><a href="{{ URL::to('/m/grupo-trabajo') }}">Grupos Trabajo</a></li>
                             @if(Sentry::getUser()->hasAccess(['Admin']))
                                 <li class="divider"></li>
                                 <li><a href="{{ URL::to('/dashboard') }}"><i class="glyphicon glyphicon-user"></i>

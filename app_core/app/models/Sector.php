@@ -19,6 +19,7 @@ class Sector extends \Eloquent {
      * @var string
      */
     protected $table = 'sector';
+
     /**
      * Don't forget to fill this array
      * @var [type]

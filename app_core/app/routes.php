@@ -105,12 +105,11 @@ Route::group(array( 'before' => 'auth' ), function () {
         Route::resource('/m/sector/{id}/blocks', 'SectorController@blocks');
 
         Route::resource('/m/block', 'BlockController');
-        //Route::resource('/m/block/{id}/edit', 'BlockController@blocks');
-        //Route::resource('/m/block/{id}/vias', 'BlockController@blocks');
 
         Route::resource('/m/trabajo', 'TrabajoController');
         Route::resource('/m/material', 'MaterialController');
         Route::resource('/m/material-retirado', 'MaterialRetiradoController');
+        Route::resource('/m/grupo-trabajo', 'GrupoTrabajoController');
 
     });
 
