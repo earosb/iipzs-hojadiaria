@@ -4,16 +4,14 @@
  *
  * @author earosb
  */
-class MaterialController extends \BaseController
-{
+class MaterialController extends \BaseController {
 
     /**
      * Display a listing of materials
      *
      * @return Response
      */
-    public function index()
-    {
+    public function index() {
         //
     }
 
@@ -22,8 +20,7 @@ class MaterialController extends \BaseController
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         //
     }
 
@@ -32,34 +29,28 @@ class MaterialController extends \BaseController
      * POST /material-colocado
      * @return Response
      */
-    public function store()
-    {
+    public function store() {
         $input = Input::except('_token');
-
 
         $validator = Validator::make($input, Material::$rules);
 
-        if ($validator->fails()) {
-            return Response::json(array(
-                                      'error' => true,
-                                      'msg'   => $validator->messages()
-                                  ));
+        if ( $validator->fails() ) {
+            return Response::json(array( 'error' => true,
+                                         'msg'   => $validator->messages() ));
         }
         $material = new Material();
 
-        $material->nombre = $input['nombre'];
-        $material->valor = $input['valor'];
-        $material->unidad = $input['unidad'];
-        $material->proveedor = $input['proveedor'];
-        $material->es_oficial = ( isset($input['es_oficial']) ) ? true : false;
+        $material->nombre = $input[ 'nombre' ];
+        $material->valor = $input[ 'valor' ];
+        $material->unidad = $input[ 'unidad' ];
+        $material->proveedor = $input[ 'proveedor' ];
+        $material->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
 
         $material->save();
 
-        return Response::json(array(
-                                  'error'       => false,
-                                  'nuevoMatCol' => $material,
-                                  'msg'         => 'Nuevo Material creado con éxito'
-                              ));
+        return Response::json(array( 'error'       => false,
+                                     'nuevoMatCol' => $material,
+                                     'msg'         => 'Nuevo Material creado con éxito' ));
     }
 
     /**
@@ -68,8 +59,7 @@ class MaterialController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -79,8 +69,7 @@ class MaterialController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -90,8 +79,7 @@ class MaterialController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
-    {
+    public function update($id) {
         //
     }
 
@@ -101,8 +89,7 @@ class MaterialController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
 

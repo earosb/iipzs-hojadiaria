@@ -43,6 +43,7 @@ class ReporteController extends \BaseController
         );
 
         $validator = Validator::make($input, $rules);
+
         if ($validator->fails()) {
             return Redirect::to('r/param')->withInput()->withErrors($validator->messages());
         }

@@ -218,7 +218,7 @@
     {{ HTML::script('js/calendar/calendar.min.js') }}
     {{ HTML::script('js/hd/create/table.js') }}
     {{ HTML::script('js/hd/create/create.js') }}
-    {{--{{ HTML::script('js/hd/create/ajax.js') }}--}}
+    {{ HTML::script('js/ajaxBlocks.js') }}
     {{ HTML::script('js/hd/create/formHojaDiaria.js') }}
 @stop
 

@@ -32,7 +32,8 @@ class SectorController extends \BaseController {
         $validator = Validator::make($input, Sector::$rules);
 
         if ( $validator->fails() ) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            //return Redirect::back()->withErrors($validator->messages())->withInput();
+            return Redirect::to('m/sector/create')->withInput()->withErrors($validator->messages());
         }
 
         Sector::create($input);

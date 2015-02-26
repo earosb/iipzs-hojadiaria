@@ -52,7 +52,8 @@ class BlockController extends \BaseController {
             $block = Block::findOrFail($id);
             $desvios = Block::find($id)->desvios;
             $desviadores = Block::find($id)->desviadores;
-            $sectores = $block->sector;
+//            $sectores = $block->sector;
+            $sectores = Sector::all();
             return View::make('block.show')
                 ->with('block', $block)
                 ->with('desvios', $desvios)

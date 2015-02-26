@@ -1,11 +1,14 @@
-$(document).ready(function () {
-    $('#modalDesviador').on('shown.bs.modal');
-    $('#modalDesvio').on('shown.bs.modal');
-});
 /**
- * [description]
- * @param  {[type]} e) {             e.preventDefault();  var $form [description]
- * @return {[type]}    [description]
+ * Carga los blocks en modal Form Desviador
+ */
+$('#selectsectorDesviador').on('change', function (e) {
+    e.preventDefault();
+    var sector_id = e.target.value;
+    ajaxBlocks(sector_id, '#selectblockDesviador');
+});
+
+/**
+ * Envía los datos del formulario
  */
 $("#formModalDesviador").submit(function (e) {
     e.preventDefault();

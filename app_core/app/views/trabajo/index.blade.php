@@ -1,67 +1,63 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 23-02-15
- * Time: 16:31
---}}
-
 @extends('layout.landing')
 
 @section('title')
-    Mantención Trabajos
+    Mantención de Trabajos
 @stop
 
 @section('content')
     <div class="row">
         <div class="col-xs-12 col-md-12">
-            <legend>Mantención Trabajos</legend>
-
-            <div class="pull-right">
-                <a class="btn btn-info btn-new" href="{{ URL::route('m.sector.create') }}">Nuevo Trabajo</a>
+            <div class="panel panel-default">
+                <div class="panel-heading"> Todos los Trabajos</div>
+                <div class="panel-body">
+                    <div class="btn-group pull-right">
+                        <a class="btn btn-info btn-new" href="{{ URL::route('m.trabajo.create') }}"> Nuevo Trabajo </a>
+                    </div>
+                </div>
+                @if( !$trabajos->isEmpty() )
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th class="col-md-1">Valor</th>
+                            <th class="col-md-1">Unidad</th>
+                            <th class="col-md-1">Form 2-3-4</th>
+                            <th class="col-md-2">Mantenimiento</th>
+                            <th class="col-md-1">Opciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($trabajos as $trabajo)
+                            <tr>
+                                <td>
+                                    {{ $trabajo->nombre }}
+                                </td>
+                                <td>
+                                    {{ $trabajo->valor }}
+                                </td>
+                                <td>
+                                    {{ $trabajo->unidad }}
+                                </td>
+                                <td>
+                                    @if ($trabajo->es_oficial == 1) Si
+                                    @else No
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $trabajo->mantenimiento }}
+                                </td>
+                                <td class="text-center">
+                                    <a title="Editar" href="{{ URL::to('/m/trabajo/'.$trabajo->id.'/edit') }}"><span
+                                                class="glyphicon glyphicon-edit"></span></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <h4>No existen registros</h4>
+                @endif
             </div>
-            <table class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Valor</th>
-                    <th>Unidad</th>
-                    <th>Form 2-3-4</th>
-                    <th>T. mant.</th>
-                    <th>Materiales</th>
-                    <th>Editar</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($trabajos as $trabajo)
-                    <tr>
-                        <td>
-                            {{ $trabajo->nombre }}
-                        </td>
-                        <td>
-                            {{ $trabajo->valor }}
-                        </td>
-                        <td>
-                            {{ $trabajo->unidad }}
-                        </td>
-                        <td>
-                            @if ($trabajo->es_oficial == 1) Si
-                            @else No
-                            @endif
-                        </td>
-                        <td>
-                            {{ $trabajo->tipo_mantencion }}
-                        </td>
-                        <td>
-                            {{ $trabajo->ide }}
-                        </td>
-                        <td class="text-center">
-                            <a class="glyphicon glyphicon-pencil"
-                               href="{{ URL::to('/m/trabajo/') }}"></a>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
         </div>
     </div>
 @stop

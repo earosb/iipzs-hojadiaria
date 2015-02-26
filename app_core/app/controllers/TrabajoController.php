@@ -13,14 +13,11 @@ class TrabajoController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-            ->join('trabajo_material', 'trabajo.id', '=', 'trabajo_material.trabajo_id')
-            ->join('material', 'trabajo_material.material_id', '=', 'material.id')
-            ->groupBy('trabajo.nombre')
-            ->select(array( 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'tipo_mantenimiento.nombre as tipo_mantencion', 'material.nombre as ide' ))
+        $trabajos = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=', 'trabajo.tipo_mantenimiento_id')
+            ->select('tipo_mantenimiento.nombre as mantenimiento', 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'trabajo.id')
+            //->groupBy('tipo_mantenimiento.id')
             ->get();
-
-//            ->get(array( 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'tipo_mantenimiento.nombre as tipo_mantencion', 'trabajo_material.id as ide' ));
+        //$trabajos = Trabajo::all();
 
         return View::make('trabajo.index', compact('trabajos'));
     }
@@ -32,7 +29,10 @@ class TrabajoController extends \BaseController {
      * @return Response
      */
     public function create() {
-        //
+
+        $tipoMantenimiento = TipoMantenimiento::All(array( 'id', 'nombre' ));
+
+        return View::make('trabajo.create')->with('tipoMantenimiento', $tipoMantenimiento);
     }
 
     /**
@@ -55,7 +55,7 @@ class TrabajoController extends \BaseController {
         $rules = array(
             'nombre' => 'required',
             'padre'  => ($input[ 'padre' ] != 'none') ? 'required|exists:trabajo,id' : 'required',
-            'valor'  => 'required|numeric',
+            'valor'  => 'required|numeric|min:0',
             'unidad' => 'required',
             'tMat'   => 'required|exists:tipo_mantenimiento,id',
         );
@@ -63,29 +63,34 @@ class TrabajoController extends \BaseController {
         $validator = Validator::make($input, $rules);
 
         if ( $validator->fails() ) {
-            return Response::json(
-                array(
-                    'error' => true,
-                    'msg'   => $validator->messages()
-                ));
+            if ( Request::ajax() ) {
+                return Response::json(
+                    array( 'error' => true, 'msg' => $validator->messages() ));
+            }
+            //return Redirect::back()->withErrors($validator->messages())->withInput();
+            return Redirect::to('m/trabajo/create')->withInput()->withErrors($validator->messages());
         }
 
         $trabajo = new Trabajo();
 
-        $trabajo->nombre                = $input[ 'nombre' ];
-        $trabajo->valor                 = $input[ 'valor' ];
-        $trabajo->unidad                = $input[ 'unidad' ];
-        $trabajo->es_oficial            = ($input[ 'es_oficial' ] != null) ? true : false;
+        $trabajo->nombre = $input[ 'nombre' ];
+        $trabajo->valor = $input[ 'valor' ];
+        $trabajo->unidad = $input[ 'unidad' ];
+        $trabajo->es_oficial = ($input[ 'es_oficial' ] != null) ? true : false;
         $trabajo->tipo_mantenimiento_id = $input[ 'tMat' ];
-        $trabajo->padre_id              = ($input[ 'padre' ] != 'none') ? $input[ 'padre' ] : null;
+        $trabajo->padre_id = ($input[ 'padre' ] != 'none') ? $input[ 'padre' ] : null;
 
         $trabajo->save();
 
-        return Response::json(array(
-                                  'error'   => false,
-                                  'trabajo' => $trabajo,
-                                  'msg'     => 'Nuevo Trabajo creado con éxito'
-                              ));
+        if ( Request::ajax() ) {
+            return Response::json(array(
+                                      'error'   => false,
+                                      'trabajo' => $trabajo,
+                                      'msg'     => 'Nuevo Trabajo creado con éxito'
+                                  ));
+        }
+
+        return Redirect::route('m.trabajo.index');
     }
 
     /**
@@ -107,7 +112,11 @@ class TrabajoController extends \BaseController {
      * @return Response
      */
     public function edit($id) {
-        //
+        $trabajo = Trabajo::find($id);
+        $tipoMantenimiento = TipoMantenimiento::All(array( 'id', 'nombre' ));
+        return View::make('trabajo.edit')
+            ->with('trabajo', $trabajo)
+            ->with('tipoMantenimiento', $tipoMantenimiento);
     }
 
     /**
@@ -118,7 +127,42 @@ class TrabajoController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        //
+        $trabajo = Trabajo::find($id);
+
+        $input = array(
+            '_token'     => Input::get('_token'),
+            'nombre'     => Input::get('nombre'),
+            'padre'      => Input::get('padre'),
+            'valor'      => Input::get('valor'),
+            'unidad'     => Input::get('unidad'),
+            'es_oficial' => Input::get('es_oficial'),
+            'tMat'       => Input::get('tMat')
+        );
+
+        $rules = array(
+            'nombre' => 'required',
+            'padre'  => ($input[ 'padre' ] != 'none') ? 'required|exists:trabajo,id' : 'required',
+            'valor'  => 'required|numeric|min:0',
+            'unidad' => 'required',
+            'tMat'   => 'required|exists:tipo_mantenimiento,id',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if ( $validator->fails() ) {
+            return Redirect::to('m/trabajo/create')->withInput()->withErrors($validator->messages());
+        }
+
+        $trabajo->nombre = $input[ 'nombre' ];
+        $trabajo->valor = $input[ 'valor' ];
+        $trabajo->unidad = $input[ 'unidad' ];
+        $trabajo->es_oficial = ($input[ 'es_oficial' ] != null) ? true : false;
+        $trabajo->tipo_mantenimiento_id = $input[ 'tMat' ];
+        $trabajo->padre_id = ($input[ 'padre' ] != 'none') ? $input[ 'padre' ] : null;
+
+        $trabajo->save();
+
+        return Redirect::route('m.trabajo.index');
     }
 
     /**
@@ -129,7 +173,10 @@ class TrabajoController extends \BaseController {
      * @return Response
      */
     public function destroy($id) {
-        //
+
+        Trabajo::destroy($id);
+
+        return Response::json(array( 'error' => false ));
     }
 
 }

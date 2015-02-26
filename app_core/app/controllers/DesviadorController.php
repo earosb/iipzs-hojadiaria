@@ -5,7 +5,7 @@ class DesviadorController extends \BaseController
 
     /**
      * Guarda un nuevo Desviador
-     * @return [type] [description]
+     * @return \Illuminate\Http\JsonResponse
      */
     public function ajaxCreate()
     {
@@ -61,26 +61,9 @@ class DesviadorController extends \BaseController
     }
 
     /**
-     * [ajaxDesviadores description]
-     * @param  [type] $blockId [description]
-     * @return [type]          [description]
-     *
-     * public function ajaxDesviadores($blockId)
-     * {
-     * $desviadores = Desviador::where('block_id', '=', $blockId)->get();
-     *
-     * return Response::json(
-     * array(
-     * 'fail' => false,
-     * 'desviadores' => $desviadores,
-     * )
-     * );
-     * }
-     */
-
-    /**
-     * retorna los desviadores al sur
+     * Retorna los desviadores al sur
      * @param $idNorte
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getDesviadoresSur($idNorte)
     {
