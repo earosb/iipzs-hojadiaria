@@ -119,7 +119,14 @@ Route::group(array( 'before' => 'auth' ), function () {
 
         Route::resource('/m/block', 'BlockController');
 
+        //Route::get('/m/desviador/create', 'DesviadorController@create');
+        //Route::post('/m/desviador', 'DesviadorController@store');
+        Route::resource('/m/desviador', 'DesviadorController');
+
+        Route::resource('/m/desvio', 'DesvioController');
+
         Route::resource('/m/trabajo', 'TrabajoController');
+
         Route::resource('/m/material', 'MaterialController');
 
         Route::resource('/m/material-retirado', 'MaterialRetiradoController');
@@ -136,12 +143,12 @@ Route::group(array( 'before' => 'auth' ), function () {
 //App::missing(function ($exception) {
 //    return Response::view('404');
 //});
-App::error(function($exception, $code)
+/*App::error(function($exception, $code)
 {
     switch ($code)
     {
         case 401:
-            return Response::view('error', array('code' => 'Error 401', 'message' => 'Acceso no Autorizado.'), 401);
+            return Response::view('error', array('code' => 'Error 401', 'message' => 'Acceso no autorizado.'), 401);
 
         case 403:
             return Response::view('error', array('code' => 'Error 403', 'message' => 'Ups...! La página solicitada no existe.'), 403);
@@ -158,4 +165,4 @@ App::error(function($exception, $code)
         default:
             return Response::view('error', array('code' => 'Error Desconocido '.$code, 'message' => 'Ups...! La página solicitada no existe.'), $code);
     }
-});
+});*/

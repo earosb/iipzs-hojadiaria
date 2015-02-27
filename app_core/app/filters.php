@@ -51,7 +51,7 @@ Route::filter('hasAccess', function ($route, $request, $value) {
         $user = Sentry::getUser();
 
         if ( !$user->hasAccess($value) ) {
-            return Response::view('error', array('code' => 'Error 401', 'message' => 'Acceso no Autorizado.'), 401);
+            App::abort(401);
         }
     } catch ( Cartalyst\Sentry\Users\UserNotFoundException $e ) {
         return Response::view('error', array('code' => 'Error Desconocido', 'message' => 'Usuario no encontrado.'), 401);

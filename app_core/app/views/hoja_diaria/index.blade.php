@@ -35,7 +35,7 @@
                     <th>Ingresada el</th>
                     <th>Ingresada por</th>
                     <th>Última edición</th>
-                    <th class="text-center">Ver</th>
+                    {{--<th class="text-center">Ver</th>--}}
                 </tr>
                 </thead>
                 <tbody>
@@ -53,10 +53,10 @@
                         <td>
                             {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
                         </td>
-                        <td class="text-center">
-                            <a class="glyphicon glyphicon-eye-open" title="Ver" href="#"
-                               onclick="verHojaDiaria({{ $hoja->id }});return false;"></a>
-                        </td>
+                        {{--<td class="text-center">--}}
+                            {{--<a class="glyphicon glyphicon-eye-open" title="Ver" href="#"--}}
+                               {{--onclick="verHojaDiaria({{ $hoja->id }});return false;"></a>--}}
+                        {{--</td>--}}
                     </tr>
                 @endforeach
                 </tbody>
