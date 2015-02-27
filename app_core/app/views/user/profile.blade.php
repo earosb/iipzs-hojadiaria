@@ -1,11 +1,9 @@
-{{--
-* Created by PhpStorm.
-* User: earosb
-* Date: 25-02-15
-* Time: 11:26
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Perfil de usuario, formulario de edición">
+    <meta name="author" content="earosb" >
+@stop
 
 @section('title')
     Perfil

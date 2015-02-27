@@ -1,5 +1,10 @@
 @extends('layout.landing')
 
+@section('meta')
+    <meta name="description" content="Formulario para la creación de un trabajo">
+    <meta name="author" content="earosb" >
+@stop
+
 @section('title')
     Nuevo Trabajo
 @stop

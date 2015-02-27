@@ -1,11 +1,9 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 12-02-15
- * Time: 14:11
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Listado de sectores">
+    <meta name="author" content="earosb" >
+@stop
 
 @section('title')
     Mantención de Sectores

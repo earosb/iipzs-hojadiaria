@@ -1,5 +1,10 @@
 @extends('layout.landing')
 
+@section('meta')
+    <meta name="description" content="Listado de trabajos">
+    <meta name="author" content="earosb" >
+@stop
+
 @section('title')
     Mantención de Trabajos
 @stop

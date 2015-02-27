@@ -1,5 +1,10 @@
 @extends('layout.landing')
 
+@section('meta')
+    <meta name="description" content="Listado de grupos de trabajo">
+    <meta name="author" content="earosb" >
+@stop
+
 @section('title')
     Grupos de Trabajo
 @stop

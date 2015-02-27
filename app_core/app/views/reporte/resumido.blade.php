@@ -1,11 +1,9 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 17-02-15
- * Time: 16:59
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Página de reporte resumido de trabajos realizados">
+    <meta name="author" content="earosb" >
+@stop
 
 @section('title')
     Reporte Resumido

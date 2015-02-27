@@ -1,5 +1,10 @@
 @extends('layout.landing')
 
+@section('meta')
+    <meta name="description" content="Formulario para la edición de un material a colocar">
+    <meta name="author" content="earosb" >
+@stop
+
 @section('title')
     Editar: {{ $material->nombre }}
 @stop

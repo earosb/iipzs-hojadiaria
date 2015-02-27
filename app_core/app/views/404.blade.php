@@ -1,5 +1,10 @@
 @extends('layout.landing')
 
+@section('meta')
+    <meta name="description" content="Página de error">
+    <meta name="author" content="earosb" >
+@stop
+
 @section('title')
     Error!
 @stop

@@ -1,11 +1,9 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 23-02-15
- * Time: 11:11
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Formulario para la creación de un sector">
+    <meta name="author" content="earosb" >
+@stop
 
 @section('title')
     Nuevo Sector

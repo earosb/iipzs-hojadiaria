@@ -1,11 +1,9 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 23-02-15
- * Time: 18:53
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Formulario para la edición de un block">
+    <meta name="author" content="earosb" >
+@stop
 
 @section('title')
     Editar: {{ $block->estacion }}

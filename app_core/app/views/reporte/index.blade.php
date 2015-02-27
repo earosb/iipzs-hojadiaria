@@ -1,11 +1,9 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 12-02-15
- * Time: 14:11
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Formulario para la creación de una consulta/reporte">
+    <meta name="author" content="earosb" >
+@stop
 
 @section('title')
     Consultas

@@ -1,5 +1,10 @@
 @extends('layout.landing')
 
+@section('meta')
+    <meta name="description" content="Página de login">
+    <meta name="author" content="earosb" >
+@stop
+
 @section('title')
     Iniciar Sesión
 @stop

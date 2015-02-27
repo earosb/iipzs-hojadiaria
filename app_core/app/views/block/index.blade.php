@@ -1,11 +1,10 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 23-02-15
- * Time: 18:48
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Listado de blocks">
+    <meta name="author" content="earosb" >
+@stop
+
 
 @section('title')
     Mantención de Blocks

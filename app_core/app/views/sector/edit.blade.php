@@ -1,11 +1,9 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 23-02-15
- * Time: 11:21
---}}
-
 @extends('layout.landing')
+
+@section('meta')
+    <meta name="description" content="Formulario para la edición de un sector">
+    <meta name="author" content="earosb" >
+@stop
 
 @section('title')
     Editar: {{ $sector->nombre }}
