@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la creación de una consulta/reporte">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -99,13 +99,13 @@
                 </div>
             </div>
             {{-- Opciones Avanzadas --}}
-            {{--@if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
+            @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
                 <div class="col-md-12">
-                     Grupo Vía
+                    {{-- Grupo Vía --}}
                     <div class="col-xs-12 col-md-3">
                         {{ Form::label('grupo_via', 'Grupo Vía', array('class' => 'control-label')) }}
                         <div class="controls">
-                            <select name="grupo_via" id="grupo_via" class="form-control" disabled="disabled">
+                            <select name="grupo_via" id="grupo_via" class="form-control">
                                 <option selected="selected" value="all"> Todos</option>
                                 @foreach($grupos as $grupo)
                                     <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
@@ -114,8 +114,8 @@
                         </div>
                         <p class="text-danger">{{ $errors->first('grupo_via') }}</p>
                     </div>
-                     Checkboxes tipo de vía
-                    <div class="col-xs-12 col-md-3">
+                    {{-- Checkboxes tipo de vía --}}
+                    {{--<div class="col-xs-12 col-md-3">
                         <div>
                             {{ Form::label('tipo_via[]', 'Tipo de Vía') }}
                         </div>
@@ -131,18 +131,18 @@
                             {{ Form::checkbox('tipo_via[2]', 'true', true, array('id' => 'tipo_via[2]', 'disabled' => 'disabled')) }}
                             <label for="tipo_via[2]"> Desviadores </label>
                         </div>
-                    </div>
+                    </div>--}}
                 </div>
-            @endif--}}
+            @endif
         </div>
 
         {{-- Botones --}}
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
                 {{--@if (Sentry::getUser()->hasAccess(['consultas-avanzadas']))--}}
-                    <div class="btn-group">
-                        {{ Form::button('Reporte Resumido', array('type' => 'submit', 'name' => 'action', 'value' => 'resumido', 'class' => 'btn btn-primary')) }}
-                    </div>
+                <div class="btn-group">
+                    {{ Form::button('Reporte Resumido', array('type' => 'submit', 'name' => 'action', 'value' => 'resumido', 'class' => 'btn btn-primary')) }}
+                </div>
                 {{--@endif--}}
                 <div class="btn-group">
                     {{ Form::button('Reporte Detallado', array('type' => 'submit', 'name' => 'action', 'value' => 'detallado', 'class' => 'btn btn-primary')) }}
