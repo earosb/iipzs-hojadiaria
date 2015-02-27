@@ -52,19 +52,42 @@ class ReporteController extends \BaseController {
         $km_inicio = $input[ 'km_inicio' ];
         $km_termino = $input[ 'km_termino' ];
 
+        $grupo = $input['grupo_via'];
+
+        /**
+         * @action string Tipo de consulta/reporte
+         */
+        $action = $input[ 'action' ];
+        /**
+         * @avanzada boolen
+         */
+        $avanzada = Sentry::getUser()->hasAccess([ 'consultas-avanzadas' ]);//
+
         /**
          * Consulta detallada de trabajos
          */
-        if ( $input[ 'action' ] == 'detallado' ) {
-            if ( Sentry::getUser()->hasAccess([ 'consultas-avanzadas' ]) ) {
-                $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                    ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                    ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                    ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
-                    ->whereBetween('fecha', array( $desde, $hasta ), 'and')
-                    ->whereBetween('detalle_hoja_diaria.km_inicio', array( $km_inicio, $km_termino ))
-                    ->orderBy('hoja_diaria.fecha')
-                    ->get(array( 'fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base' ));
+        if ( $action == 'detallado' ) {
+            if ( $avanzada ) {
+                if ( $grupo == 'all' ) {
+                    $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                        ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                        ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+                        ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
+                        ->whereBetween('fecha', array( $desde, $hasta ), 'and')
+                        ->whereBetween('detalle_hoja_diaria.km_inicio', array( $km_inicio, $km_termino ))
+                        ->orderBy('hoja_diaria.fecha')
+                        ->get(array( 'fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base' ));
+                } else {
+                    $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                        ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                        ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+                        ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
+                        ->whereBetween('fecha', array( $desde, $hasta ), 'and')
+                        ->whereBetween('detalle_hoja_diaria.km_inicio', array( $km_inicio, $km_termino ))
+                        ->where('grupo_trabajo.id', $grupo)
+                        ->orderBy('hoja_diaria.fecha')
+                        ->get(array( 'fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base' ));
+                }
 
             } else {
                 $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
@@ -78,8 +101,8 @@ class ReporteController extends \BaseController {
             /**
              * Consulta Resumida de trabajos
              */
-        } elseif ( $input[ 'action' ] == 'resumido' ) {
-            if ( Sentry::getUser()->hasAccess([ 'consultas-avanzadas' ]) ) {
+        } elseif ( $action == 'resumido' ) {
+            if ( $avanzada ) {
                 $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                     ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
                     ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
@@ -129,10 +152,9 @@ class ReporteController extends \BaseController {
             ->groupBy('material.nombre')
             ->get();
         /**
-         * Consulta agrupada de materiales retirados de la vía
-         * Si es que tiene permisos
+         * Consulta agrupada de materiales retirados de la vía (Si es que tiene permisos)
          */
-        if ( Sentry::getUser()->hasAccess([ 'reporte-avanzado' ]) ) {
+        if ( $avanzada ) {
             $materialesRetirados = HojaDiaria
                 ::join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
                 ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
@@ -146,12 +168,12 @@ class ReporteController extends \BaseController {
             $materialesRetirados = null;
         }
 
-        if ( $input[ 'action' ] == 'detallado' ) {
+        if ( $action == 'detallado' ) {
             return View::make('reporte.detallado')
                 ->with('trabajos', $trabajos)
                 ->with('materiales', $materiales)
                 ->with('materialesRetirados', $materialesRetirados);
-        } elseif ( $input[ 'action' ] == 'resumido' ) {
+        } elseif ( $action == 'resumido' ) {
             return View::make('reporte.resumido')
                 ->with('trabajos', $trabajos)
                 ->with('materiales', $materiales)
