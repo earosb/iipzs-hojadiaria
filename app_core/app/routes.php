@@ -121,7 +121,9 @@ Route::group(array( 'before' => 'auth' ), function () {
 
         Route::resource('/m/trabajo', 'TrabajoController');
         Route::resource('/m/material', 'MaterialController');
+
         Route::resource('/m/material-retirado', 'MaterialRetiradoController');
+
         Route::resource('/m/grupo-trabajo', 'GrupoTrabajoController');
 
     });
@@ -131,6 +133,29 @@ Route::group(array( 'before' => 'auth' ), function () {
 /**
  * Errores
  */
-App::missing(function ($exception) {
-    return Response::view('404');
+//App::missing(function ($exception) {
+//    return Response::view('404');
+//});
+App::error(function($exception, $code)
+{
+    switch ($code)
+    {
+        case 401:
+            return Response::view('error', array('code' => 'Error 401', 'message' => 'Acceso no Autorizado.'), 401);
+
+        case 403:
+            return Response::view('error', array('code' => 'Error 403', 'message' => 'Ups...! La página solicitada no existe.'), 403);
+
+        case 404:
+            return Response::view('error', array('code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.'), 404);
+
+        case 405:
+            return Response::view('error', array('code' => 'Error 405', 'message' => 'Ups...! La página solicitada no existe.'), 405);
+
+        case 500:
+            return Response::view('error', array('code' => 'Error 500', 'message' => 'Ups...! La página solicitada no existe.'), 500);
+
+        default:
+            return Response::view('error', array('code' => 'Error Desconocido '.$code, 'message' => 'Ups...! La página solicitada no existe.'), $code);
+    }
 });

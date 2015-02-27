@@ -51,12 +51,10 @@ Route::filter('hasAccess', function ($route, $request, $value) {
         $user = Sentry::getUser();
 
         if ( !$user->hasAccess($value) ) {
-            //return Redirect::route('error.404')->withErrors(array( Lang::get('user.noaccess') ));
-            return Response::view('error.404');
+            return Response::view('error', array('code' => 'Error 401', 'message' => 'Acceso no Autorizado.'), 401);
         }
     } catch ( Cartalyst\Sentry\Users\UserNotFoundException $e ) {
-        //return Redirect::route('error.404')->withErrors(array( Lang::get('user.notfound') ));
-        return Response::view('error.404');
+        return Response::view('error', array('code' => 'Error Desconocido', 'message' => 'Usuario no encontrado.'), 401);
     }
 
 });
