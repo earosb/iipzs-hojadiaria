@@ -1,0 +1,9 @@
+@media print {
+    .breadcrumb {
+        display: none;
+    }
+
+    .glyphicon {
+        display: none;
+    }
+}

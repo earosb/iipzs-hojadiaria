@@ -50,31 +50,44 @@ Route::group(array( 'before' => 'auth' ), function () {
         /**
          * Desviador
          */
-        Route::post('/desviador/ajax-create', 'DesviadorController@ajaxCreate');
         Route::get('/desviador/ajax-desviadores/{blockId}', 'DesviadorController@ajaxDesviadores');
         Route::get('/desviador/get-desviadores-sur/{id}', 'DesviadorController@getDesviadoresSur');
 
         /**
-         * Desvío
+         * Material Retirado
+         */
+        Route::get('material-retirado/ajax-list', 'MaterialRetiradoController@ajaxList');
+
+    });
+
+    /**
+     * Usuario logueado con permisos de creación en form hoja diaria
+     */
+    Route::group(array( 'before' => 'hasAccess:editor' ), function () {
+        /**
+         * Creación de desviador
+         */
+        Route::post('/desviador/ajax-create', 'DesviadorController@ajaxCreate');
+
+        /**
+         * Creación de desvio
          */
         Route::post('desvio', 'DesvioController@store');
 
         /**
-         * Material Retirado
+         * Creación de material retirado
          */
         Route::post('material-retirado', 'MaterialRetiradoController@store');
-        Route::get('material-retirado/ajax-list', 'MaterialRetiradoController@ajaxList');
 
         /**
-         * Material Colocado
+         * Creación de colocado
          */
         Route::post('material-colocado', 'MaterialController@store');
 
         /**
-         * Trabajos
+         * Creación de trabajo
          */
         Route::post('trabajo', 'TrabajoController@store');
-
     });
 
     /**

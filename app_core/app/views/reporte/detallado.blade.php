@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Página de reporte detallado de trabajos realizados">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -10,17 +10,7 @@
 @stop
 @section('css')
     {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
-    <style type="text/css">
-        @media print {
-            .breadcrumb {
-                display: none;
-            }
-
-            .glyphicon {
-                display: none;
-            }
-        }
-    </style>
+    {{ HTML::style('css/reporte.css') }}
 @endsection
 @section('content')
     <ul class="breadcrumb">
@@ -32,13 +22,19 @@
         </div>
     </ul>
     <div class="row">
-        <div class="col-xs-12 col-md-12">
-            <div class="well">
-                <p>Entre los kilómetros {{ Request::get('km_inicio') }} y {{ Request::get('km_termino') }}</p>
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p><strong>Parámetros de búsqueda:</strong></p>
 
-                <p>Desde el {{ Request::get('desde') }} Hasta el {{ Request::get('hasta') }}</p>
+                    <p>Entre los kilómetros {{ Request::get('km_inicio') }} y {{ Request::get('km_termino') }}</p>
+
+                    <p>Desde el {{ Request::get('fecha_desde') }} Hasta el {{ Request::get('fecha_hasta') }}</p>
+                </div>
             </div>
-            <legend><h2> Trabajos Realizados </h2></legend>
+        </div>
+        <div class="col-xs-12 col-md-12">
+            <legend><h3> Trabajos Realizados </h3></legend>
             <table class="table table-bordered table-striped display">
                 <thead>
                 <tr>
@@ -90,7 +86,7 @@
         </div>
         @if( isset($materiales) )
             <div class="col-xs-12 col-md-12">
-                <legend><h2> Materiales Colocados </h2></legend>
+                <legend><h3> Materiales Colocados </h3></legend>
                 <table class="table table-bordered table-striped display">
                     <thead>
                     <tr>
@@ -141,7 +137,7 @@
 
         @if( isset($materialesRetirados) )
             <div class="col-xs-12 col-md-12">
-                <legend><h2>Materiales Retirados</h2></legend>
+                <legend><h3>Materiales Retirados</h3></legend>
                 <table class="table table-bordered table-striped display">
                     <thead>
                     <tr>
