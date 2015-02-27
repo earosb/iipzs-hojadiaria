@@ -51,7 +51,7 @@
                 <div class="panel-heading">Desvíos
                 </div>
                 <div class="panel-body">
-                    {{--<a class="btn btn-info btn-new pull-right" href="{{ URL::route('/') }}">Nuevo Desvío</a>--}}
+                    <a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.desvio.create') }}">Nuevo Desvío</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -79,7 +79,7 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a class="glyphicon glyphicon-edit" href="#"></a>
+                                <a class="glyphicon glyphicon-edit" title="Editar" href="{{ URL::to('/m/desvio/'.$desvio->id.'/edit') }}"></a>
                             </td>
                         </tr>
                     @endforeach

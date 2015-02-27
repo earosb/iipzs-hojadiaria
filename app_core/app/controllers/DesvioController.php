@@ -1,7 +1,6 @@
 <?php
 
-class DesvioController extends \BaseController
-{
+class DesvioController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -9,9 +8,8 @@ class DesvioController extends \BaseController
      *
      * @return Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        App::abort(404);
     }
 
     /**
@@ -20,9 +18,9 @@ class DesvioController extends \BaseController
      *
      * @return Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        $sectores = Sector::all();
+        return View::make('desvio.create', compact('sectores'));
     }
 
     /**
@@ -31,40 +29,41 @@ class DesvioController extends \BaseController
      *
      * @return Response
      */
-    public function store()
-    {
+    public function store() {
         $input = array(
-            '_token' => Input::get('_token'),
-            'nombre' => Input::get('nombre'),
-            'selectsectorDesvio' => Input::get('selectsectorDesvio'),
-            'selectblockDesvio' => Input::get('selectblockDesvio'),
+            '_token'                => Input::get('_token'),
+            'nombre'                => Input::get('nombre'),
+            'selectsectorDesvio'    => Input::get('selectsectorDesvio'),
+            'selectblockDesvio'     => Input::get('selectblockDesvio'),
             'selectdesviador_norte' => Input::get('selectdesviador_norte'),
-            'selectdesviador_sur' => Input::get('selectdesviador_sur'),
+            'selectdesviador_sur'   => Input::get('selectdesviador_sur'),
         );
 
         $desvio = new Desvio();
 
         $validator = Validator::make($input, $desvio->getRules());
 
-        if ($validator->fails()) {
-            return Response::json(array(
-                'error' => true,
-                'msg' => $validator->messages()
-            ));
-        }else{
-            $desvio->nombre = $input['nombre'];
-            $desvio->block_id = $input['selectblockDesvio'];
-            if($input['selectdesviador_norte'])
-                $desvio->desviador_norte_id = $input['selectdesviador_norte'];
-            if($input['selectdesviador_sur'])
-                $desvio->desviador_sur_id = $input['selectdesviador_sur'];
+        if ( $validator->fails() ) {
+            if ( Request::ajax() ) {
+                return Response::json(array( 'error' => true,
+                                             'msg'   => $validator->messages() ));
+            }
+            return Redirect::back()->withErrors($validator)->withInput();
+        } else {
+            $desvio->nombre = $input[ 'nombre' ];
+            $desvio->block_id = $input[ 'selectblockDesvio' ];
+            if ( $input[ 'selectdesviador_norte' ] )
+                $desvio->desviador_norte_id = $input[ 'selectdesviador_norte' ];
+            if ( $input[ 'selectdesviador_sur' ] )
+                $desvio->desviador_sur_id = $input[ 'selectdesviador_sur' ];
 
             $desvio->save();
 
-            return Response::json(array(
-                'error' => false,
-                'msg'   =>  'Nuevo Desvío creado con éxito'
-            ));
+            if ( Request::ajax() ) {
+                return Response::json(array( 'error' => false,
+                                             'msg'   => 'Nuevo Desvío creado con éxito' ));
+            }
+            return Redirect::to('m/block/' . $desvio->block_id);
         }
 
     }
@@ -76,9 +75,8 @@ class DesvioController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        App::abort(404);
     }
 
     /**
@@ -88,9 +86,10 @@ class DesvioController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        $desvio = Desvio::find($id);
+        $sectores = Sector::all();
+        return View::make('desvio.edit', compact('desvio', 'sectores'));
     }
 
     /**
@@ -100,8 +99,7 @@ class DesvioController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function update($id)
-    {
+    public function update($id) {
         //
     }
 
@@ -112,9 +110,10 @@ class DesvioController extends \BaseController
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        Desvio::destroy($id);
+
+        return Response::json(array( 'error' => false ));
     }
 
 }
