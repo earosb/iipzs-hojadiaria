@@ -30,15 +30,26 @@ class BlockController extends \BaseController {
      */
     public function store() {
         $input = Input::all();
-        $validator = Validator::make($input, Block::$rules);
+
+        $sector = Sector::find($input[ 'sector_id' ]);
+
+        $rules = array(
+            'sector_id'  => 'required|exists:sector,id',
+            'estacion'   => 'required',
+            'nro_bien'   => 'required|max:10',
+            'km_inicio'  => 'required|numeric|between:' . $sector->km_inicio . ',' . $sector->km_termino,
+            'km_termino' => 'required|numeric|between:' . $input[ 'km_inicio' ] . ',' . $sector->km_termino,
+        );
+
+        $validator = Validator::make($input, $rules);
 
         if ( $validator->fails() ) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
         Block::create($input);
-        //$route = 'm.sector.' . $input[ 'sector_id' ] . '.blocks';
-        return Redirect::route('m.sector');
+
+        return Redirect::to('m/sector/'.$input[ 'sector_id' ]. '/blocks');
     }
 
     /**
@@ -52,7 +63,7 @@ class BlockController extends \BaseController {
             $block = Block::findOrFail($id);
             $desvios = Block::find($id)->desvios;
             $desviadores = Block::find($id)->desviadores;
-//            $sectores = $block->sector;
+            //            $sectores = $block->sector;
             $sectores = Sector::all();
             return View::make('block.show')
                 ->with('block', $block)
@@ -60,7 +71,7 @@ class BlockController extends \BaseController {
                 ->with('desviadores', $desviadores)
                 ->with('sectores', $sectores);
         } catch ( \Exception $e ) {
-            return Response::view('error.404');
+            return App::abort(404);
         }
     }
 
@@ -84,9 +95,20 @@ class BlockController extends \BaseController {
      */
     public function update($id) {
         $block = Block::find($id);
+
         $input = Input::all();
 
-        $validator = Validator::make($input, Block::$rules);
+        $sector = Sector::find($block->sector_id);
+
+        $rules = array(
+            'sector_id'  => 'required|exists:sector,id',
+            'estacion'   => 'required',
+            'nro_bien'   => 'required|max:10',
+            'km_inicio'  => 'required|numeric|between:' . $sector->km_inicio . ',' . $sector->km_termino,
+            'km_termino' => 'required|numeric|between:' . $input[ 'km_inicio' ] . ',' . $sector->km_termino,
+        );
+
+        $validator = Validator::make($input, $rules);
 
         if ( $validator->fails() ) {
             return Redirect::back()->withErrors($validator)->withInput();
@@ -111,10 +133,7 @@ class BlockController extends \BaseController {
     public function destroy($id) {
         Block::destroy($id);
 
-        //return Redirect::route('m.sector');
-        return Response::json(array(
-                                  'error' => false
-                              ));
+        return Response::json(array( 'error' => false ));
     }
 
     /**

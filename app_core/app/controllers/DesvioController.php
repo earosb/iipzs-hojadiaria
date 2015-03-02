@@ -39,9 +39,8 @@ class DesvioController extends \BaseController {
             'selectdesviador_sur'   => Input::get('selectdesviador_sur'),
         );
 
-        $desvio = new Desvio();
 
-        $validator = Validator::make($input, $desvio->getRules());
+        $validator = Validator::make($input, Desvio::$rules);
 
         if ( $validator->fails() ) {
             if ( Request::ajax() ) {
@@ -49,22 +48,23 @@ class DesvioController extends \BaseController {
                                              'msg'   => $validator->messages() ));
             }
             return Redirect::back()->withErrors($validator)->withInput();
-        } else {
-            $desvio->nombre = $input[ 'nombre' ];
-            $desvio->block_id = $input[ 'selectblockDesvio' ];
-            if ( $input[ 'selectdesviador_norte' ] )
-                $desvio->desviador_norte_id = $input[ 'selectdesviador_norte' ];
-            if ( $input[ 'selectdesviador_sur' ] )
-                $desvio->desviador_sur_id = $input[ 'selectdesviador_sur' ];
-
-            $desvio->save();
-
-            if ( Request::ajax() ) {
-                return Response::json(array( 'error' => false,
-                                             'msg'   => 'Nuevo Desvío creado con éxito' ));
-            }
-            return Redirect::to('m/block/' . $desvio->block_id);
         }
+        $desvio = new Desvio();
+        $desvio->nombre = $input[ 'nombre' ];
+        $desvio->block_id = $input[ 'selectblockDesvio' ];
+        if ( $input[ 'selectdesviador_norte' ] )
+            $desvio->desviador_norte_id = $input[ 'selectdesviador_norte' ];
+        if ( $input[ 'selectdesviador_sur' ] )
+            $desvio->desviador_sur_id = $input[ 'selectdesviador_sur' ];
+
+        $desvio->save();
+
+        if ( Request::ajax() ) {
+            return Response::json(array( 'error' => false,
+                                         'msg'   => 'Nuevo Desvío creado con éxito' ));
+        }
+        return Redirect::to('m/block/' . $desvio->block_id);
+
 
     }
 
@@ -100,7 +100,7 @@ class DesvioController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        //
+        App::abort(404);
     }
 
     /**
