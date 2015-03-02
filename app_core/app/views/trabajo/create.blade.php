@@ -67,12 +67,12 @@
 
                 {{-- Checkbox esOficial --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="es_oficial">Oficial</label>
+                    <label class="col-sm-2 control-label" for="es_oficial">Form 2-3-4</label>
                     <div class="col-sm-10">
                         <div class="checkbox">
                             <label>
                                 <input name="es_oficial" type="checkbox" value="true">
-                                <abbr title="Quiere decir que será incluido en el Form 2-3-4">¿Qué es esto?</abbr>
+                                <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es esto?</abbr>
                             </label>
                         </div>
                     </div>
