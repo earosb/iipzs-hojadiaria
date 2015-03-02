@@ -45,7 +45,7 @@
                             <li><a href="{{ URL::to('/m/trabajo') }}">Trabajos</a></li>
                             <li><a href="{{ URL::to('/m/material') }}">Materiales</a></li>
                             <li><a href="{{ URL::to('/m/grupo-trabajo') }}">Grupos Trabajo</a></li>
-                            @if(Sentry::getUser()->hasAccess(['Admin']))
+                            @if(Sentry::getUser()->hasAccess(['create-user']))
                                 <li class="divider"></li>
                                 <li><a href="{{ URL::to('/dashboard') }}"><i class="glyphicon glyphicon-user"></i>
                                         <span>Usuarios</span></a></li>
