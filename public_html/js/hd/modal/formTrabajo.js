@@ -1,8 +1,4 @@
 /**
- * Created by earosb on 11-02-15.
- */
-
-/**
  *
  */
 $("#formTrabajo").submit(function (e) {
@@ -43,7 +39,7 @@ $("#formTrabajo").submit(function (e) {
             modalFormGroup.removeClass('required has-error');
             modalHelpBlock.empty();
             alertify.log(data.msg);
-            $('.selecttrabajo').append('<option value="' + data.trabajo.id + '">' + data.trabajo.nombre + '</option>');
+            $('.selecttrabajo').append('<option value="' + data.trabajo.id + '">' + data.trabajo.nombre + ' ['+ data.trabajo.unidad + ']' + '</option>');
         }
     });
 });
