@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <legend>{{ $block->estacion }}
-                <a id="dlt" onclick="destroy()" class="glyphicon glyphicon-trash pull-right"></a>
+                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
             </legend>
             {{ Form::open(array(
                 'url'		=>	'/m/block/'.$block->id,
