@@ -34,7 +34,8 @@
                     <th>Fecha</th>
                     <th>Ingresada el</th>
                     <th>Ingresada por</th>
-                    <th>Última edición</th>
+                    {{--<th>Última edición</th>--}}
+                    <th>Grupo</th>
                     {{--<th class="text-center">Ver</th>--}}
                 </tr>
                 </thead>
@@ -50,8 +51,11 @@
                         <td>
                             {{ $hoja->username }}
                         </td>
-                        <td>
+                        {{--<td>
                             {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
+                        </td>--}}
+                        <td>
+                            {{ $hoja->base }}
                         </td>
                         {{--<td class="text-center">--}}
                             {{--<a class="glyphicon glyphicon-eye-open" title="Ver" href="#"--}}

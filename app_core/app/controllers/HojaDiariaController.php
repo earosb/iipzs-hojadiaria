@@ -36,7 +36,6 @@ class HojaDiariaController extends \BaseController
 
         return View::make('hoja_diaria.create')
             ->with('sectores', $sectores)
-            //->with('trabajos', $trabajos)
             ->with('grupos', $grupos)
             ->with('materiales', $materiales)
             ->with('materialesRet', $matRetirados)
@@ -51,10 +50,10 @@ class HojaDiariaController extends \BaseController
      */
     public function index()
     {
-        //$hojasCollection = HojaDiaria::all();
         $hojasCollection = HojaDiaria::join('users', 'hoja_diaria.user_id', '=', 'users.id')
+            ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
             ->orderBy('hoja_diaria.fecha')
-            ->get(array('hoja_diaria.id', 'hoja_diaria.fecha', 'hoja_diaria.created_at', 'hoja_diaria.updated_at', 'users.username'));
+            ->get(array('hoja_diaria.id', 'hoja_diaria.fecha', 'hoja_diaria.created_at', 'hoja_diaria.updated_at', 'users.username', 'grupo_trabajo.base'));
 
 
         return View::make('hoja_diaria.index')
