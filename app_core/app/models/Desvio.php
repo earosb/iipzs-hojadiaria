@@ -30,18 +30,16 @@ class Desvio extends \Eloquent {
         'selectdesviador_sur' => 'numeric|exists:desviador,id',
     );
 
-	/**
-	 * [sector description]
-	 * @return [type] [description]
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 	public function block()
     {
         return $this->belongsTo('Block');
     }
 
     /**
-     * [detalleHojaDiaria description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function detalleHojaDiaria()
     {
@@ -49,8 +47,7 @@ class Desvio extends \Eloquent {
     }
 
     /**
-     * [desviadorNorte description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function desviadorNorte()
     {
@@ -58,8 +55,7 @@ class Desvio extends \Eloquent {
     }
 
     /**
-     * [desviadorSur description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function desviadorSur()
     {

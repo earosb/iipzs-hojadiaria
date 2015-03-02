@@ -65,7 +65,6 @@ class DesvioController extends \BaseController {
         }
         return Redirect::to('m/block/' . $desvio->block_id);
 
-
     }
 
     /**
@@ -100,7 +99,47 @@ class DesvioController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        App::abort(404);
+        $desvio = Desvio::findOrFail($id);
+
+        $input = array(
+            '_token'                => Input::get('_token'),
+            'nombre'                => Input::get('nombre'),
+            'selectsectorDesvio'    => Input::get('selectsectorDesvio'),
+            'selectblockDesvio'     => Input::get('selectblockDesvio'),
+            'selectdesviador_norte' => Input::get('selectdesviador_norte'),
+            'selectdesviador_sur'   => Input::get('selectdesviador_sur'),
+        );
+
+
+        $validator = Validator::make($input, Desvio::$rules);
+
+        if ( $validator->fails() ) {
+            if ( Request::ajax() ) {
+                return Response::json(array( 'error' => true,
+                                             'msg'   => $validator->messages() ));
+            }
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        $desvio->nombre = $input[ 'nombre' ];
+        $desvio->block_id = $input[ 'selectblockDesvio' ];
+        if ( $input[ 'selectdesviador_norte' ] ) {
+            $desvio->desviador_norte_id = $input[ 'selectdesviador_norte' ];
+        } else {
+            $desvio->desviador_norte_id = null;
+        }
+        if ( $input[ 'selectdesviador_sur' ] ) {
+            $desvio->desviador_sur_id = $input[ 'selectdesviador_sur' ];
+        } else {
+            $desvio->desviador_sur_id = null;
+        }
+        $desvio->save();
+
+        if ( Request::ajax() ) {
+            return Response::json(array( 'error' => false,
+                                         'msg'   => 'Nuevo Desvío creado con éxito' ));
+        }
+        return Redirect::to('m/block/' . $desvio->block_id);
     }
 
     /**

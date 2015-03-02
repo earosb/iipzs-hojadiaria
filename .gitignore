@@ -8,3 +8,5 @@ app_core/composer.lock
 Thumbs.db
 .directory
 .idea/
+.brackets.json 
+

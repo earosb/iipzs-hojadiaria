@@ -62,14 +62,17 @@ class BlockController extends \BaseController {
         try {
             $block = Block::findOrFail($id);
             $desvios = Block::find($id)->desvios;
+            /*$desvios = Desvio::join('desviador', 'desviador.id', '=', 'desvio.desviador_norte_id')
+                ->join('desviador', 'desviador.id', '=', 'desvio.desviador_sur_id')
+                ->where('desvio.block_id', '=', $id)
+                ->get('desvio.id', 'desvio.nombre', 'desvio.block_id', 'desvio.desviador_norte_id', 'desvio.desviador_sur_id');*/
+
             $desviadores = Block::find($id)->desviadores;
-            //            $sectores = $block->sector;
-            $sectores = Sector::all();
+
             return View::make('block.show')
                 ->with('block', $block)
                 ->with('desvios', $desvios)
-                ->with('desviadores', $desviadores)
-                ->with('sectores', $sectores);
+                ->with('desviadores', $desviadores);
         } catch ( \Exception $e ) {
             return App::abort(404);
         }
