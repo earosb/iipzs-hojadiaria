@@ -122,7 +122,7 @@
                                     <optgroup label="{{ $tMat->nombre }}">
                                         @foreach($tMat->trabajos as $trabajo)
                                             <option value="{{ $trabajo->id }}">{{ $trabajo->nombre }}
-                                                [{{ $trabajo->unidad }}]
+                                                ({{ $trabajo->unidad }})
                                             </option>
                                         @endforeach
                                     </optgroup>

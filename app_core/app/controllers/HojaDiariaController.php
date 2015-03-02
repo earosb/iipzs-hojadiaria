@@ -22,10 +22,10 @@ class HojaDiariaController extends \BaseController
 
         $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array( 'id', 'base' ));
 
-        $materialesCollection = Material::all(array( 'id', 'nombre' ));
+        $materialesCollection = Material::all(array( 'id', 'nombre', 'unidad' ));
         $materiales = array();
         foreach ( $materialesCollection as $material ) {
-            $materiales[ $material->id ] = $material->nombre;
+            $materiales[ $material->id ] = $material->nombre.' ('.$material->unidad.')';
         }
 
         $matRetCollection = MaterialRetirado::all(array( 'id', 'nombre' ));
