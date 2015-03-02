@@ -153,10 +153,10 @@ if ( !Config::get('app.debug') ) {
                 return Response::view('error', array( 'code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.' ), 404);
 
             case 405:
-                return Response::view('error', array( 'code' => 'Error 405', 'message' => 'Ups...! La página solicitada no existe.' ), 405);
+                return Response::view('error', array( 'code' => 'Error 405', 'message' => 'Método no permitido.' ), 405);
 
             case 500:
-                return Response::view('error', array( 'code' => 'Error 500', 'message' => 'Ups...! La página solicitada no existe.' ), 500);
+                return Response::view('error', array( 'code' => 'Error 500', 'message' => 'Error interno del servidor.' ), 500);
 
             default:
                 return Response::view('error', array( 'code' => 'Error Desconocido ' . $code, 'message' => 'Ups...! La página solicitada no existe.' ), $code);
