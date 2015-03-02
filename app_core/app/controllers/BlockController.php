@@ -83,7 +83,7 @@ class BlockController extends \BaseController {
      * @return Response
      */
     public function update($id) {
-        $block = Block::findOrFail($id);
+        $block = Block::find($id);
         $input = Input::all();
 
         $validator = Validator::make($input, Block::$rules);
@@ -99,7 +99,7 @@ class BlockController extends \BaseController {
 
         $block->save();
 
-        return Redirect::route('m.sector.' . $block->sector_id . '.blocks');
+        return Redirect::to('m/sector/' . $block->sector_id . '/blocks');
     }
 
     /**

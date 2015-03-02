@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la edición de un block">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -21,6 +21,22 @@
                 'class' 	=> 	'form-horizontal')) }}
             <fieldset>
 
+                {{-- Sector --}}
+                <div class="form-group hidden">
+                    <label class="col-sm-2 control-label" for="sector_id">Sector</label>
+
+                    <div>
+                        <div class="col-sm-10">
+                            <div class="controls">
+                                <select name="sector_id" id="sector_id" class="form-control">
+                                    <option selected="selected" value="{{ $block->sector_id }}">{{ $block->sector_id }}</option>
+                                </select>
+
+                                <p class="text-danger">{{ $errors->first('sector_id') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="estacion">Estación</label>
