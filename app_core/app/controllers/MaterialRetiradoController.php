@@ -13,8 +13,7 @@ class MaterialRetiradoController extends \BaseController {
      * @return Response
      */
     public function index() {
-        return Response::view('error', array('code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.'), 404);
-        //App::abort(404);
+        App::abort(404);
     }
 
     /**
@@ -53,7 +52,6 @@ class MaterialRetiradoController extends \BaseController {
         $matRet = new MaterialRetirado();
 
         $matRet->nombre = $input[ 'nombre' ];
-        $matRet->clase = $input[ 'clase' ];
         if ( $input[ 'es_oficial' ] )
             $matRet->es_oficial = true;
         else
@@ -104,7 +102,6 @@ class MaterialRetiradoController extends \BaseController {
         $input = array(
             '_token'     => Input::get('_token'),
             'nombre'     => Input::get('nombre'),
-            'clase'      => Input::get('clase'),
             'es_oficial' => Input::get('es_oficial'),
         );
 
@@ -115,7 +112,6 @@ class MaterialRetiradoController extends \BaseController {
         }
 
         $matRet->nombre = $input[ 'nombre' ];
-        $matRet->clase = $input[ 'clase' ];
         $matRet->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
 
         $matRet->save();

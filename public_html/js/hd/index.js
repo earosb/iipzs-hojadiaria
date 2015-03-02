@@ -186,6 +186,7 @@ function escribirDetalle(data) {
 
         tbl_tr.append("<th>#</th>");
         tbl_tr.append("<th>Material</th>");
+        tbl_tr.append("<th>Reempleo</th>");
         tbl_tr.append("<th>Cantidad</th>");
 
         tbl_thead.append(tbl_tr);
@@ -195,8 +196,10 @@ function escribirDetalle(data) {
 
         $.each(data.hojaDiaria.detalle_material_retirado, function (index, value) {
             var tbl_tr = $("<tr></tr>");
+            var reempleo = value.reempleo === '1' ? 'Si' : 'No';
             tbl_tr.append("<td>" + (index + 1) + "</td>");
             tbl_tr.append("<td>" + value.material_retirado.nombre + "</td>");
+            tbl_tr.append("<td>" + reempleo + "</td>");
             tbl_tr.append("<td>" + value.cantidad + "</td>");
             tbl_tbody.append(tbl_tr);
         });

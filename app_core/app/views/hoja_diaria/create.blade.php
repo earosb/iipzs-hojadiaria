@@ -182,6 +182,7 @@
                         <thead>
                         <tr>
                             <th class="">Materiales Retirados</th>
+                            <th>Reempleo</th>
                             <th class="col-md-2">Cantidad</th>
                             <th class="text-center">
                                 <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
@@ -192,6 +193,9 @@
                         <tr id='addrMatRet0' data-id="0" class="hidden">
                             <td data-name="matRet" data-tipo="id">
                                 {{ Form::select('matRet[0][id]', $materialesRet, null, [ 'class'=>'form-control matRet']) }}
+                            </td>
+                            <td data-name="matRet" data-tipo="reempleo">
+                                {{ Form::checkbox('matRet[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
                             </td>
                             <td data-name="matRet" data-tipo="cant">
                                 {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0')) }}

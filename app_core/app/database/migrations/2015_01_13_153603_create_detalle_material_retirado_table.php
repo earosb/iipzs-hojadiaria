@@ -21,6 +21,7 @@ class CreateDetalleMaterialRetiradoTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('cantidad');
+            $table->boolean('reempleo');
 			
 			$table->integer('hoja_diaria_id')->unsigned();
 			$table->foreign('hoja_diaria_id')->references('id')->on('hoja_diaria');

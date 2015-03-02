@@ -153,7 +153,7 @@ class HojaDiariaController extends \BaseController
 
         foreach ( $input[ 'trabajos' ] as $key => $value ) {
             list($tipo, $id) = explode('-', $value[ 'ubicacion' ]);
-//            log($tipo);
+
             $trabajo = Trabajo::find($value[ 'trabajo' ]);
 
             $detHojaDiaria                 = new DetalleHojaDiaria();
@@ -201,6 +201,7 @@ class HojaDiariaController extends \BaseController
 
             $detMatRet                       = new DetalleMaterialRetirado();
             $detMatRet->cantidad             = $value[ 'cant' ];
+            $detMatRet->reempleo             = (array_key_exists('reempleo', $value)) ? true : false;
             $detMatRet->material_retirado_id = $matRet->id;
             $detMatRet->hoja_diaria_id       = $hojaDiaria->id;
 

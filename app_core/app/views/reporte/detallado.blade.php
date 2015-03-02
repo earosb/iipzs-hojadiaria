@@ -142,14 +142,31 @@
                     <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Clase</th>
                         <th>Cantidad</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($materialesRetirados as $material)
+                    @foreach($materialesRetirados['excluido'] as $material)
                         <tr>
                             <td>
                                 {{ $material->nombre }}
+                            </td>
+                            <td>
+                                Excluido
+                            </td>
+                            <td>
+                                {{ $material->cantidad }}
+                            </td>
+                        </tr>
+                    @endforeach
+                    @foreach($materialesRetirados['reempleo'] as $material)
+                        <tr>
+                            <td>
+                                {{ $material->nombre }}
+                            </td>
+                            <td>
+                                Reempleo
                             </td>
                             <td>
                                 {{ $material->cantidad }}

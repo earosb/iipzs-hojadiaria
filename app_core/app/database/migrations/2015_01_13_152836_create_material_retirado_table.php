@@ -21,7 +21,6 @@ class CreateMaterialRetiradoTable extends Migration {
 		{
 			$table->increments('id');
 			$table->string('nombre');
-			$table->string('clase');
 			$table->boolean('es_oficial');
 
 			$table->timestamps();

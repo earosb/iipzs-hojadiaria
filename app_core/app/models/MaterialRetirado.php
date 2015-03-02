@@ -20,7 +20,6 @@ class MaterialRetirado extends \Eloquent {
      */
     public static $rules = [
         'nombre'    => 'required',
-        'clase'     => 'required',
     ];
 
 	/**

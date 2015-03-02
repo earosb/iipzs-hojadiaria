@@ -155,10 +155,21 @@ class ReporteController extends \BaseController {
          * Consulta agrupada de materiales retirados de la vía (Si es que tiene permisos)
          */
         if ( $avanzada ) {
-            $materialesRetirados = HojaDiaria
+            $materialesRetirados['excluido'] = HojaDiaria
                 ::join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
                 ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
                 ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                ->where('detalle_material_retirado.reempleo', '=', '0')
+                ->whereBetween('fecha', array( $desde, $hasta ), 'and')
+                ->whereBetween('detalle_hoja_diaria.km_inicio', array( $km_inicio, $km_termino ))
+                ->select('material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
+                ->groupBy('material_retirado.nombre')
+                ->get();
+            $materialesRetirados['reempleo'] = HojaDiaria
+                ::join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
+                ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
+                ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                ->where('detalle_material_retirado.reempleo', '=', '1')
                 ->whereBetween('fecha', array( $desde, $hasta ), 'and')
                 ->whereBetween('detalle_hoja_diaria.km_inicio', array( $km_inicio, $km_termino ))
                 ->select('material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))

@@ -32,24 +32,6 @@
                             </div>
                         </div>
 
-                        {{-- Clase del material --}}
-                        <div id="clase_div" class="form-group">
-                            {{ Form::label('clase', 'Clase', array('class' => 'col-sm-2 control-label')) }}
-                            <div class="col-sm-10">
-                                {{ Form::text('clase', null, array('placeholder' => 'Clase del Material', 'class' => 'form-control')) }}
-                                <div class="help-block" id ="clase_error"></div>
-                            </div>
-                        </div>
-
-                        {{-- Código del material --}}
-                        {{--<div id="codigo_div" class="form-group">--}}
-                            {{--{{ Form::label('codigo', 'Código', array('class' => 'col-sm-2 control-label')) }}--}}
-                            {{--<div class="col-sm-10">--}}
-                                {{--{{ Form::text('codigo', null, array('placeholder' => 'Códio del Material', 'class' => 'form-control')) }}--}}
-                                {{--<div class="help-block" id ="codigo_error"></div>--}}
-                            {{--</div>--}}
-                        {{--</div>--}}
-
                         {{-- Checkbox esOficial --}}
                         <div id="es_oficial_div" class="form-group">
                             {{ Form::label('es_oficial', 'Form 2-3-4', array('class' => 'col-sm-2 control-label')) }}

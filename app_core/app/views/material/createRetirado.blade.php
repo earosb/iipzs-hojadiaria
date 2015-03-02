@@ -30,17 +30,6 @@
                     </div>
                 </div>
 
-                {{-- Clase --}}
-                <div class="form-group">
-                    <label class="col-sm-2 control-label" for="clase">Clase</label>
-
-                    <div class="col-sm-10">
-                        <input id="clase" name="clase" placeholder="Clase" class="form-control" type="text" required="required">
-
-                        <p class="text-danger">{{ $errors->first('clase') }}</p>
-                    </div>
-                </div>
-
                 {{-- Checkbox esOficial --}}
                 <div id="es_oficial_div" class="form-group">
                     {{ Form::label('es_oficial', 'Form 2-3-4', array('class' => 'col-sm-2 control-label')) }}
