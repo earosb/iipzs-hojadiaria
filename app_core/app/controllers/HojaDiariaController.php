@@ -20,7 +20,7 @@ class HojaDiariaController extends \BaseController
             $tMat->trabajos;
         }
 
-        $grupos = GrupoTrabajo::all(array( 'id', 'base' ));
+        $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array( 'id', 'base' ));
 
         $materialesCollection = Material::all(array( 'id', 'nombre' ));
         $materiales = array();
@@ -274,7 +274,7 @@ class HojaDiariaController extends \BaseController
      */
     public function edit($id)
     {
-        //
+        App::abort(404);
     }
 
     /**
@@ -286,7 +286,7 @@ class HojaDiariaController extends \BaseController
      */
     public function update($id)
     {
-        //
+        App::abort(404);
     }
 
     /**

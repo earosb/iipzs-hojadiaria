@@ -9,7 +9,7 @@ class GrupoTrabajoController extends \BaseController {
      * @return Response
      */
     public function index() {
-        $grupos = GrupoTrabajo::all(array( 'id', 'base' ));
+        $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array( 'id', 'base' ));
 
         return View::make('grupo_trabajo.index', compact('grupos'));
     }
