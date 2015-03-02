@@ -138,12 +138,12 @@ Route::group(array( 'before' => 'auth' ), function () {
 });
 
 /**
- * Errores
+ * Manejo de Errores
  */
 //App::missing(function ($exception) {
 //    return Response::view('404');
 //});
-/*App::error(function($exception, $code)
+App::error(function($exception, $code)
 {
     switch ($code)
     {
@@ -165,4 +165,4 @@ Route::group(array( 'before' => 'auth' ), function () {
         default:
             return Response::view('error', array('code' => 'Error Desconocido '.$code, 'message' => 'Ups...! La página solicitada no existe.'), $code);
     }
-});*/
+});
