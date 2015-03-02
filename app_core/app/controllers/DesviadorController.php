@@ -83,11 +83,7 @@ class DesviadorController extends \BaseController {
     public function edit($id) {
         $desviador = Desviador::find($id);
 
-        $sectores = Sector::all();
-        //$block = Desviador::find($id)->block();
-        //$sectores = Block::find($block->sector_id)->sector();
-
-        return View::make('desviador.edit', compact('desviador', 'sectores'));
+        return View::make('desviador.edit', compact('desviador'));
     }
 
     /**
@@ -105,7 +101,6 @@ class DesviadorController extends \BaseController {
         $rules = array(
             'nombre'    => 'required',
             'km_inicio' => 'required|numeric|between:' . $block->km_inicio . ',' . $block->km_termino,
-            'sector'    => 'required|numeric',
             'block'     => 'required|numeric',
         );
 
@@ -198,10 +193,8 @@ class DesviadorController extends \BaseController {
                 ->where('km_inicio', '>', $norte->km_inicio)
                 ->get();
             if ( $desviadores->isEmpty() ) {
-                return Response::json(array(
-                                          'error' => true,
-                                          'msg'   => 'El Desviador seleccionado no tiene Desviadores hacia el Sur'
-                                      ));
+                return Response::json(array( 'error' => true,
+                                             'msg'   => 'El Desviador seleccionado no tiene Desviadores hacia el Sur' ));
             }
             return Response::json(array( 'error'       => false,
                                          'desviadores' => $desviadores ));

@@ -36,32 +36,14 @@
                         <p class="text-danger">{{ $errors->first('km_inicio') }}</p>
                     </div>
                 </div>
-                {{-- Sector Desviador --}}
-                <div class="form-group">
-                    {{ Form::label('sector', 'Sector', array('class' => 'col-sm-2 control-label')) }}
-                    <div>
-                        <div class="col-sm-10">
-                            <div class="controls">
-                                <select name="sector" id="sector" class="form-control">
-                                    <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
-                                    @foreach($sectores as $sector)
-                                        <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
-                                    @endforeach
-                                </select>
-
-                                <p class="text-danger">{{ $errors->first('sector') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 {{-- Block Desviador --}}
-                <div class="form-group">
+                <div class="form-group hidden">
                     {{ Form::label('block', 'Block', array('class' => 'col-sm-2 control-label')) }}
                     <div>
                         <div class="col-sm-10">
                             <div class="controls">
                                 <select name="block" id="block" class="form-control">
-                                    <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
+                                    <option selected="selected" value="{{ $desviador->block_id }}">{{ $desviador->block_id }}</option>
                                 </select>
 
                                 <p class="text-danger">{{ $errors->first('block') }}</p>
