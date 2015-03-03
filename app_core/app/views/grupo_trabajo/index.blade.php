@@ -16,7 +16,7 @@
                 <div class="panel-heading"> Todos </div>
                 <div class="panel-body">
                     <div class="btn-group pull-right">
-                        <a class="btn btn-info btn-new" href="{{ URL::route('m.grupo-trabajo.create') }}">Nuevo Grupo</a>
+                        <a class="btn btn-primary" href="{{ URL::route('m.grupo-trabajo.create') }}">Nuevo Grupo</a>
                     </div>
                 </div>
                 @if( !$grupos->isEmpty() )

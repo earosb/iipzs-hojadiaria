@@ -16,7 +16,7 @@
                 <div class="panel-heading"> Todos los Trabajos</div>
                 <div class="panel-body">
                     <div class="btn-group pull-right">
-                        <a class="btn btn-info btn-new" href="{{ URL::route('m.trabajo.create') }}"> Nuevo Trabajo </a>
+                        <a class="btn btn-primary" href="{{ URL::route('m.trabajo.create') }}"> Nuevo Trabajo </a>
                     </div>
                 </div>
                 @if( !$trabajos->isEmpty() )

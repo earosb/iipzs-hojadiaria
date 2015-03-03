@@ -97,7 +97,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label"></label>
                     <div class="col-sm-10">
-                        <button id="btn_guardar" name="btn_guardar" class="btn btn-success pull-right">Guardar</button>
+                        <button id="btn_guardar" name="btn_guardar" class="btn btn-primary pull-right">Guardar</button>
                     </div>
                 </div>
 

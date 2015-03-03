@@ -72,10 +72,10 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="password_confirmation">Corfirmar contraseña</label>
+                <label class="col-sm-2 control-label" for="password_confirmation">Confirmar contraseña</label>
 
                 <div class="col-sm-10">
-                    <input id="password_confirmation" name="password_confirmation" placeholder="Corfirmar Contraseña" class="form-control"
+                    <input id="password_confirmation" name="password_confirmation" placeholder="Confirmar Contraseña" class="form-control"
                            type="password" required="required">
 
                     <p class="text-danger">{{ $errors->first('password_confirmation') }}</p>

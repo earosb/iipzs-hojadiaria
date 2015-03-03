@@ -80,7 +80,7 @@
 
                     <div class="col-sm-10">
                         {{--<button id="btn_eliminar" name="btn_eliminar" class="btn btn-danger">Eliminar</button>--}}
-                        <button id="btn_guardar" name="btn_guardar" class="btn btn-success pull-right">Guardar</button>
+                        <button id="btn_guardar" name="btn_guardar" class="btn btn-primary pull-right">Guardar</button>
                     </div>
                 </div>
 

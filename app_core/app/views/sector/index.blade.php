@@ -16,7 +16,7 @@
                 <div class="panel-heading"> Todos los Sectores</div>
                 <div class="panel-body">
                     <div class="btn-group pull-right">
-                        <a class="btn btn-info btn-new" href="{{ URL::route('m.sector.create') }}">Nuevo Sector</a>
+                        <a class="btn btn-primary" href="{{ URL::route('m.sector.create') }}">Nuevo Sector</a>
                     </div>
                 </div>
                 @if( !$sectores->isEmpty() )

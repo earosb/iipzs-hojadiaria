@@ -17,7 +17,7 @@
                 <div class="panel-heading">Mantención de Blocks, <strong> {{ $sector->nombre }} </strong>
                 </div>
                 <div class="panel-body">
-                    <a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.block.create') }}">Nuevo Block</a>
+                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.block.create') }}">Nuevo Block</a>
                 </div>
                 @if( !$blocks->isEmpty() )
                     <table class="table table-bordered table-striped">

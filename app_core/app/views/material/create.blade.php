@@ -77,7 +77,7 @@
                     <label class="col-sm-2 control-label"></label>
 
                     <div class="col-sm-10">
-                        {{ Form::submit('Guardar', array('class' => 'btn btn-success pull-right')) }}
+                        {{ Form::submit('Guardar', array('class' => 'btn btn-primary pull-right')) }}
                     </div>
                 </div>
 

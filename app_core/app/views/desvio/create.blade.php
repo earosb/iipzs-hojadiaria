@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="col-sm-10r">
-                    {{Form::submit('Guardar', array('class'=>'btn btn-success pull-right'))}}
+                    {{Form::submit('Guardar', array('class'=>'btn btn-primary pull-right'))}}
                 </div>
             </fieldset>
             {{ Form::close() }}

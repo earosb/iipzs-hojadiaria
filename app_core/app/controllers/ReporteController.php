@@ -36,7 +36,7 @@ class ReporteController extends \BaseController
         /**
          * @avanzada boolen
          */
-        $avanzada = Sentry::getUser()->hasAccess(['consultas-avanzadas']);
+        $avanzada = Sentry::getUser()->hasAccess(['reporte-avanzado']);
 
         $rules = array(
             'fecha_desde' => 'required|date_format:d/m/Y|before:' . $input['fecha_hasta'],
@@ -146,8 +146,7 @@ class ReporteController extends \BaseController
         /**
          * Consulta agrupada de materiales colocados marcados como de reempleo
          */
-        $materiales['reempleo'] = HojaDiaria
-            ::join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
+        $materiales['reempleo'] = HojaDiaria::join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
             ->join('material', 'detalle_material_colocado.material_id', '=', 'material.id')
             ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
             ->where('detalle_material_colocado.reempleo', '=', '1')
@@ -166,7 +165,7 @@ class ReporteController extends \BaseController
                 ->where('detalle_material_retirado.reempleo', '=', '0')
                 ->whereBetween('fecha', array($desde, $hasta), 'and')
                 ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                ->select('material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
+                ->select('material_retirado.nombre', 'detalle_material_retirado.reempleo', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
                 ->groupBy('material_retirado.nombre')
                 ->get();
 
@@ -187,11 +186,13 @@ class ReporteController extends \BaseController
             return View::make('reporte.detallado')
                 ->with('trabajos', $trabajos)
                 ->with('materiales', $materiales)
+                ->with('avanzada', $avanzada)
                 ->with('materialesRetirados', $materialesRetirados);
         } elseif ($action == 'resumido') {
             return View::make('reporte.resumido')
                 ->with('trabajos', $trabajos)
                 ->with('materiales', $materiales)
+                ->with('avanzada', $avanzada)
                 ->with('materialesRetirados', $materialesRetirados);
         } else {
             return Response::view('error.404');

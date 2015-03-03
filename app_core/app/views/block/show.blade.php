@@ -17,7 +17,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Desviadores</div>
                 <div class="panel-body">
-                    <a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.desviador.create') }}">Nuevo Desviador</a>
+                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.desviador.create') }}">Nuevo Desviador</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -51,7 +51,7 @@
                 <div class="panel-heading">Desvíos
                 </div>
                 <div class="panel-body">
-                    <a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.desvio.create') }}">Nuevo Desvío</a>
+                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.desvio.create') }}">Nuevo Desvío</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>

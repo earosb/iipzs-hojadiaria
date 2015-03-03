@@ -20,7 +20,7 @@ Route::post('login', 'UserController@postLogin');
 /**
  * Usuario logueado
  */
-Route::group(array( 'before' => 'auth' ), function () {
+Route::group(array('before' => 'auth'), function () {
 
     Route::get('/', 'HomeController@showWelcome');
 
@@ -32,7 +32,7 @@ Route::group(array( 'before' => 'auth' ), function () {
     /**
      * Usuario logueado con permiso hoja-diaria
      */
-    Route::group(array( 'before' => 'hasAccess:hoja-diaria' ), function () {
+    Route::group(array('before' => 'hasAccess:hoja-diaria'), function () {
 
         /**
          * Hoja Diaria
@@ -63,7 +63,7 @@ Route::group(array( 'before' => 'auth' ), function () {
     /**
      * Usuario logueado con permisos de creación en form hoja diaria
      */
-    Route::group(array( 'before' => 'hasAccess:editor' ), function () {
+    Route::group(array('before' => 'hasAccess:editor'), function () {
         /**
          * Creación de desviador
          */
@@ -93,7 +93,7 @@ Route::group(array( 'before' => 'auth' ), function () {
     /**
      * Usuario logueado con permisos para consultas/reportes
      */
-    Route::group(array( 'before' => 'hasAccess:reporte' ), function () {
+    Route::group(array('before' => 'hasAccess:reporte'), function () {
         /**
          * Rutas para generar reportes
          */
@@ -110,7 +110,7 @@ Route::group(array( 'before' => 'auth' ), function () {
     /**
      * Usuario logueado con permisos para mantención de datos
      */
-    Route::group(array( 'before' => 'hasAccess:mantencion' ), function () {
+    Route::group(array('before' => 'hasAccess:mantencion'), function () {
         /**
          * Rutas para CRUD vías/trabajos/materiales
          */
@@ -119,8 +119,6 @@ Route::group(array( 'before' => 'auth' ), function () {
 
         Route::resource('/m/block', 'BlockController');
 
-        //Route::get('/m/desviador/create', 'DesviadorController@create');
-        //Route::post('/m/desviador', 'DesviadorController@store');
         Route::resource('/m/desviador', 'DesviadorController');
 
         Route::resource('/m/desvio', 'DesvioController');
@@ -137,29 +135,35 @@ Route::group(array( 'before' => 'auth' ), function () {
 
 });
 
+
 /**
  * Manejo de Errores
  */
-if ( !Config::get('app.debug') ) {
+if (!Config::get('app.debug')) {
+
+    App::missing(function ($exception) {
+        return Response::view('error', array('code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.'), 404);
+    });
+
     App::error(function ($exception, $code) {
-        switch ( $code ) {
+        switch ($code) {
             case 401:
-                return Response::view('error', array( 'code' => 'Error 401', 'message' => 'Acceso no autorizado.' ), 401);
-/*
+                return Response::view('error', array('code' => 'Error 401', 'message' => 'Acceso no autorizado.'), 401);
+            /*
             case 403:
                 return Response::view('error', array( 'code' => 'Error 403', 'message' => 'Ups...! La página solicitada no existe.' ), 403);
-*/
+            */
             case 404:
-                return Response::view('error', array( 'code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.' ), 404);
+                return Response::view('error', array('code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.'), 404);
 
             case 405:
-                return Response::view('error', array( 'code' => 'Error 405', 'message' => 'Método no permitido.' ), 405);
+                return Response::view('error', array('code' => 'Error 405', 'message' => 'Método no permitido.'), 405);
 
             case 500:
-                return Response::view('error', array( 'code' => 'Error 500', 'message' => 'Error interno del servidor.' ), 500);
+                return Response::view('error', array('code' => 'Error 500', 'message' => 'Error interno del servidor.'), 500);
 
             default:
-                return Response::view('error', array( 'code' => 'Error Desconocido ' . $code, 'message' => 'Ups...! La página solicitada no existe.' ), $code);
+                return Response::view('error', array('code' => 'Error Desconocido ' . $code, 'message' => 'Ups...! La página solicitada no existe.'), $code);
         }
     });
 }

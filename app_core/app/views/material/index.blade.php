@@ -15,7 +15,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"> Materiales Colocados</div>
                 <div class="panel-body">
-                    <a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.material.create') }}"> Nuevo </a>
+                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.material.create') }}"> Nuevo </a>
                 </div>
                 @if( ! $materiales->isEmpty() )
                     <table class="table table-bordered table-striped">
@@ -56,7 +56,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"> Materiales Retirados</div>
                 <div class="panel-body">
-                    <a class="btn btn-info btn-new pull-right" href="{{ URL::route('m.material-retirado.create') }}"> Nuevo </a>
+                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.material-retirado.create') }}"> Nuevo </a>
                 </div>
                 @if( ! $matRetirados->isEmpty() )
                     <table class="table table-bordered table-striped">
