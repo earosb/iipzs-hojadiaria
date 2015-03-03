@@ -20,10 +20,9 @@ class TipoMantenimiento extends \Eloquent {
 	 */
 	protected $fillable = [];
 
-	/**
-	 * [trabajos description]
-	 * @return [type] [description]
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
 	public function trabajos()
     {
         return $this->hasMany('Trabajo');

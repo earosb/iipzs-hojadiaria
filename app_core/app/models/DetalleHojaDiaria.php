@@ -26,18 +26,16 @@ class DetalleHojaDiaria extends \Eloquent {
 	 */
 	protected $fillable = [];
 
-	/**
-	 * [hojaDiaria description]
-	 * @return [type] [description]
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 	public function hojaDiaria()
     {
         return $this->belongsTo('HojaDiaria');
     }
 
     /**
-     * [trabajo description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function trabajo()
     {
@@ -45,8 +43,7 @@ class DetalleHojaDiaria extends \Eloquent {
     }
 
     /**
-     * [block description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function block()
     {
@@ -54,17 +51,15 @@ class DetalleHojaDiaria extends \Eloquent {
     }
 
     /**
-     * [desviador description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function desviador()
     {
         return $this->belongsTo('Desviador');
     }
-	
+
     /**
-     * [desvio description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
 	public function desvio()
     {

@@ -11,7 +11,7 @@
 
 <style type="text/css">
     .well.login-box {
-        width: 400px;
+        width: 300px;
         margin: 0 auto;
     }
 

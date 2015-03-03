@@ -101,7 +101,7 @@ class TrabajoController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        //
+        App::abort(404);
     }
 
     /**

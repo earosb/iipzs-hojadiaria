@@ -25,19 +25,17 @@ class DetalleMaterialRetirado extends \Eloquent {
 	 * Don't forget to fill this array
 	 */
 	protected $fillable = [];
-	
-	/**
-	 * [materialRetirado description]
-	 * @return [type] [description]
-	 */
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 	public function materialRetirado()
     {
         return $this->belongsTo('MaterialRetirado');
     }
 
     /**
-     * [hojaDiaria description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function hojaDiaria()
     {

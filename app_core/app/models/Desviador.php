@@ -27,19 +27,16 @@ class Desviador extends \Eloquent {
 
 	];
 
-	/**
-	 * Describe la relación entre block 
-	 * y su sector
-	 * @return [type] [description]
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
 	public function block()
     {
         return $this->belongsTo('Block');
     }
 
     /**
-     * [detalleHojaDiaria description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function detalleHojaDiaria()
     {
@@ -47,8 +44,7 @@ class Desviador extends \Eloquent {
     }
 
     /**
-     * [desvioNorte description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function desvioNorte()
     {
@@ -56,8 +52,7 @@ class Desviador extends \Eloquent {
     }
 
     /**
-     * [desvioSur description]
-     * @return [type] [description]
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function desvioSur()
     {

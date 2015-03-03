@@ -74,7 +74,7 @@ class MaterialRetiradoController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        return Response::view('error', array('code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.'), 404);
+        App::abort(404);
     }
 
     /**

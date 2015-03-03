@@ -52,7 +52,6 @@ class HojaDiariaController extends \BaseController{
             ->orderBy('hoja_diaria.fecha')
             ->get(array( 'hoja_diaria.id', 'hoja_diaria.fecha', 'hoja_diaria.created_at', 'hoja_diaria.updated_at', 'users.username', 'grupo_trabajo.base' ));
 
-
         return View::make('hoja_diaria.index')
             ->with('hojas', $hojasCollection);
     }

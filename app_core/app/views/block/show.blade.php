@@ -89,19 +89,3 @@
         </div>
     </div>
 @stop
-
-{{--
-@section('js')
-    {{ HTML::script('js/ajaxBlocks.js') }}
-    <script>
-        $(document).ready(function () {
-            $('#modalDesviador').on('shown.bs.modal');
-            $('#modalDesvio').on('shown.bs.modal');
-        });
-    </script>
-@stop
-
-@section('modals')
-    @include('modal.formDesviador')
-    @include('modal.formDesvio')
-@stop--}}

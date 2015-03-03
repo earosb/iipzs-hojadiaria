@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="owner" content="Icil-Icafal Proyecto Zona Sur S.A.">
@@ -55,7 +56,6 @@
         <div class="container">
             <p class="text-muted">Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A. Todos los Derechos Reservados.
                 Contacto <a href="mailto:webmaster@icilicafalpzs.cl" target="_top">webmaster@icilicafalpzs.cl</a>
-                <a class="pull-right" href="">Licencias de código abierto</a></p>
         </div>
     </footer>
 @endif

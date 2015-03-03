@@ -68,7 +68,7 @@ class MaterialController extends \BaseController {
      * @return Response
      */
     public function show($id) {
-        return Response::view('404');
+        App::abort(404);
     }
 
     /**

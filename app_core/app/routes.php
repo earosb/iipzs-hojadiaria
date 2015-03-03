@@ -22,7 +22,7 @@ Route::post('login', 'UserController@postLogin');
  */
 Route::group(array( 'before' => 'auth' ), function () {
 
-    Route::get('/', function () { return View::make('home'); });
+    Route::get('/', 'HomeController@showWelcome');
 
     route::get('profile', 'UserController@getProfile');
     route::post('profile', 'UserController@postProfile');
@@ -145,10 +145,10 @@ if ( !Config::get('app.debug') ) {
         switch ( $code ) {
             case 401:
                 return Response::view('error', array( 'code' => 'Error 401', 'message' => 'Acceso no autorizado.' ), 401);
-
+/*
             case 403:
                 return Response::view('error', array( 'code' => 'Error 403', 'message' => 'Ups...! La página solicitada no existe.' ), 403);
-
+*/
             case 404:
                 return Response::view('error', array( 'code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.' ), 404);
 
