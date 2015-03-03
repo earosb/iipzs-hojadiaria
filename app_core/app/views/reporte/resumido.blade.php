@@ -8,10 +8,12 @@
 @section('title')
     Reporte Resumido
 @stop
+
 @section('css')
     {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
     {{ HTML::style('css/reporte.min.css') }}
 @endsection
+
 @section('content')
     <ul class="breadcrumb">
         <li><a href="{{ URL::to('/') }}">Inicio</a></li>
@@ -118,14 +120,31 @@
                     <thead>
                     <tr>
                         <th>Nombre</th>
+                        <th>Clase</th>
                         <th>Cantidad</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($materialesRetirados as $material)
+                    @foreach($materialesRetirados['excluido'] as $material)
                         <tr>
                             <td>
                                 {{ $material->nombre }}
+                            </td>
+                            <td>
+                                Excluido
+                            </td>
+                            <td>
+                                {{ $material->cantidad }}
+                            </td>
+                        </tr>
+                    @endforeach
+                    @foreach($materialesRetirados['reempleo'] as $material)
+                        <tr>
+                            <td>
+                                {{ $material->nombre }}
+                            </td>
+                            <td>
+                                Reempleo
                             </td>
                             <td>
                                 {{ $material->cantidad }}
