@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Listado de hojas diarias existentes">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -58,8 +58,8 @@
                             {{ $hoja->base }}
                         </td>
                         {{--<td class="text-center">--}}
-                            {{--<a class="glyphicon glyphicon-eye-open" title="Ver" href="#"--}}
-                               {{--onclick="verHojaDiaria({{ $hoja->id }});return false;"></a>--}}
+                        {{--<a class="glyphicon glyphicon-eye-open" title="Ver" href="#"--}}
+                        {{--onclick="verHojaDiaria({{ $hoja->id }});return false;"></a>--}}
                         {{--</td>--}}
                     </tr>
                 @endforeach
@@ -75,7 +75,9 @@
 @stop
 
 @section('js')
-    {{ HTML::script('js/hd/index.js') }}
+    {{--{{ HTML::script('js/hd/index.js') }}--}}
+    {{ HTML::script('js/min/1425397825695.min.js') }}
+
     {{ HTML::script('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js') }}
     {{ HTML::script('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js') }}
     <script>

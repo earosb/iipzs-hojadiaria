@@ -1,6 +1,4 @@
-/**
- * Created by earosb on 26-02-15.
- */
+/*global $*/
 /**
  * Llamada ajax para consultar y seetar los blocks de un sector en un select
  * @param sector_id

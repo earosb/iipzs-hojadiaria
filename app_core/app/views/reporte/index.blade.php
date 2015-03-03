@@ -159,5 +159,7 @@
 @section('js')
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js') }}
     {{ HTML::script('js/calendar/calendar.min.js') }}
-    {{ HTML::script('js/consultas/param.js') }}
+
+    {{--{{ HTML::script('js/consultas/param.js') }}--}}
+    {{ HTML::script('js/min/1425310788178.min.js') }}
 @stop

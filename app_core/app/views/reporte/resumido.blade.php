@@ -10,7 +10,7 @@
 @stop
 @section('css')
     {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
-    {{ HTML::style('css/reporte.css') }}
+    {{ HTML::style('css/reporte.min.css') }}
 @endsection
 @section('content')
     <ul class="breadcrumb">

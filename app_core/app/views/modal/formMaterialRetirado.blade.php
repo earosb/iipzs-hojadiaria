@@ -57,4 +57,5 @@
     </div>
 </div>
 
-{{ HTML::script('js/hd/modal/formMaterialRet.js') }}
+{{--{{ HTML::script('js/hd/modal/formMaterialRet.js') }}--}}
+{{ HTML::script('js/min/1424470502890.min.js') }}

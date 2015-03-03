@@ -95,4 +95,5 @@
     </div>
 </div>
 
-{{ HTML::script('js/hd/modal/formDesvio.js') }}
+{{--{{ HTML::script('js/hd/modal/formDesvio.js') }}--}}
+{{ HTML::script('js/min/1424470502889.min.js') }}

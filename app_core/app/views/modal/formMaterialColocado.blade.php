@@ -83,4 +83,5 @@
     </div>
 </div>
 
-{{ HTML::script('js/hd/modal/formMaterialCol.js') }}
+{{--{{ HTML::script('js/min/modal/formMaterialCol.js') }}--}}
+{{ HTML::script('js/min/1424470502887.min.js') }}

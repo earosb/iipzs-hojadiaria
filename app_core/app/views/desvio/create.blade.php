@@ -108,6 +108,9 @@
             });
         });
     </script>
-    {{ HTML::script('js/ajaxBlocks.js') }}
-    {{ HTML::script('js/hd/modal/formDesvio.js') }}
+    {{--{{ HTML::script('js/ajaxBlocks.js') }}--}}
+    {{ HTML::script('js/min/1425396779231.min.js') }}
+
+    {{--{{ HTML::script('js/hd/modal/formDesvio.js') }}--}}
+    {{ HTML::script('js/min/1424470502889.min.js') }}
 @stop

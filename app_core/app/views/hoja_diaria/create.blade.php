@@ -226,9 +226,15 @@
 @section('js')
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js') }}
     {{ HTML::script('js/calendar/calendar.min.js') }}
-    {{ HTML::script('js/hd/create/table.js') }}
-    {{ HTML::script('js/hd/create/create.js') }}
-    {{ HTML::script('js/ajaxBlocks.js') }}
+
+    {{--{{ HTML::script('js/hd/create/table.js') }}--}}
+    {{ HTML::script('js/min/1424470502873.min.js') }}
+
+    {{--{{ HTML::script('js/hd/create/create.js') }}--}}
+    {{ HTML::script('js/min/1425312083058.min.js') }}
+
+    {{--{{ HTML::script('js/ajaxBlocks.js') }}--}}
+    {{ HTML::script('js/min/1425396779231.min.js') }}
 @stop
 
 @section('modals')
