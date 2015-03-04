@@ -108,6 +108,18 @@ Route::group(array('before' => 'auth'), function () {
     });
 
     /**
+     * Usuario logueado con permisos para form 2-3-4
+     */
+    Route::group(array('before' => 'hasAccess:reporte-avanzado'), function () {
+        /**
+         * Rutas para generar formulario
+         */
+        Route::get('/r/form', 'ReporteController@getForm');
+        Route::post('/r/form', 'ReporteController@postForm');
+
+    });
+
+    /**
      * Usuario logueado con permisos para mantención de datos
      */
     Route::group(array('before' => 'hasAccess:mantencion'), function () {

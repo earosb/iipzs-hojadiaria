@@ -49,7 +49,7 @@ return array(
         |--------------------------------------------------------------------------
         */
         'pageSetup' => array(
-            'orientation'           => 'portrait',
+            'orientation'           => 'landscape',
             'paperSize'             => '9',
             'scale'                 => '100',
             'fitToPage'             => false,

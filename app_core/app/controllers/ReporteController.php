@@ -199,4 +199,75 @@ class ReporteController extends \BaseController
         }
     }
 
+    /**
+     * despliega formulario para la generación de excel
+     * @return $this
+     */
+    public function getForm()
+    {
+        $sectores = Sector::all(array('id', 'nombre'));
+        $year = Carbon::today()->year;
+        return View::make('reporte.form')
+            ->with('sectores', $sectores)
+            ->with('year', $year);
+    }
+
+    /**
+     * Recibe parámetros y genera excel formulario 2-3-4
+     * @return $this
+     */
+    public function postForm()
+    {
+        $input = Input::all();
+
+        $desde = $input['desde'];
+        $hasta = $input['hasta'];
+        $year = $input['year'];
+
+        $rules = array(
+            'desde' => 'required|numeric|between:1,12',
+            'hasta' => 'required|numeric|between:' . $input['desde'] . ',12',
+            'year' => 'required|numeric|between:2015,' . $year,
+            'sector' => 'required|exists:sector,id',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withInput()->withErrors($validator->messages());
+        }
+
+        $sector = Sector::find($input['sector']);
+
+        $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
+
+        Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
+
+            foreach (range($desde, $hasta) as $month) {
+
+                $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
+
+                $excel->sheet($monthName . " '" . $year, function ($sheet) {
+
+//                    $blocks = Block::all();
+//                    $sheet->fromModel($blocks);
+
+                    $sheet->freezeFirstRow();
+
+                    $sheet->row(5, array('Form. 2'));
+                    $sheet->row(6, array('PART.', 'DESIGNACION'));
+
+                    $sheet->rows(array(
+                        array('test1', 'test2'),
+                        array('test3', 'test4')
+                    ));
+
+
+                });
+            }
+
+        })->export('xls');
+
+    }
+
 }
