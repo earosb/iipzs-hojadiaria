@@ -43,7 +43,7 @@
             'id'		=>	'formHojaDiaria',
             'class' 	=> 	'form-horizontal')) }}
         <fieldset>
-            <div class="col-md-3">
+            <div class="col-xs-12 col-md-3">
                 <legend>Nueva hoja diaria de trabajo</legend>
                 <div class="input-group" id="fecha_div">
                     {{ Form::text('fecha', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha', 'required' => 'required']) }}
@@ -52,7 +52,7 @@
                 <div class="help-block" id="fecha_error"></div>
 
             </div>
-            <div class="col-md-12">
+            <div class="col-xs-12 col-md-12">
                 {{-- Select sector
                 ===================================================== --}}
                 <div id="selectsector_div" class="form-group col-xs-12 col-md-4">
@@ -98,7 +98,7 @@
             </div>
             {{-- Tabla trabajos realizados
             ===================================================== --}}
-            <div class="col-md-12">
+            <div class="col-xs-12 col-md-12">
                 <table class="table table-bordered table-striped" id="tab_trabajados">
                     <thead>
                     <tr>

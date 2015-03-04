@@ -54,8 +54,8 @@
 @if(Sentry::check())
     <footer class="footer">
         <div class="container">
-            <p class="text-muted">Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A. Todos los Derechos Reservados.
-                Contacto <a href="mailto:webmaster@icilicafalpzs.cl" target="_top">webmaster@icilicafalpzs.cl</a>
+            <p class="text-muted">Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A. Todos los Derechos Reservados.</p>
+                {{--Contacto <a href="mailto:webmaster@icilicafalpzs.cl" target="_top">webmaster@icilicafalpzs.cl</a>--}}
         </div>
     </footer>
 @endif

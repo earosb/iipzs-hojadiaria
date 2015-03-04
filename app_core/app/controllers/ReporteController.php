@@ -241,6 +241,16 @@ class ReporteController extends \BaseController
 
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
 
+        /*
+                Excel::load('template.xls', function($excel) {
+
+                    $property = array('creator' => 'evalo');
+                    $excel->set{$property}();
+
+                })->export('xls');
+        */
+
+
         Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
 
             foreach (range($desde, $hasta) as $month) {
@@ -249,19 +259,29 @@ class ReporteController extends \BaseController
 
                 $excel->sheet($monthName . " '" . $year, function ($sheet) {
 
-//                    $blocks = Block::all();
-//                    $sheet->fromModel($blocks);
+                    $blocks = Block::all();
 
-                    $sheet->freezeFirstRow();
-
-                    $sheet->row(5, array('Form. 2'));
-                    $sheet->row(6, array('PART.', 'DESIGNACION'));
-
-                    $sheet->rows(array(
-                        array('test1', 'test2'),
-                        array('test3', 'test4')
+                    $sheet->setWidth(array(
+                        'A' => 5,
+                        'B' => 30
                     ));
 
+                    $sheet->mergeCells('A6:A10');
+                    $sheet->mergeCells('B6:B10');
+                    $sheet->mergeCells('C7:C8');
+
+                    $sheet->row(5, array('Form. 2'));
+                    $sheet->row(6, array('PART.', 'DESIGNACION', 'N° Bien'));
+                    $sheet->row(7, array('', '', 'Ubic.'));
+                    $sheet->row(8, array('', '', ''));
+                    $sheet->row(9, array('', '', 'Block'));
+                    $sheet->row(10, array('', '', 'Unidad'));
+
+                    foreach ($blocks as $cont => $block) {
+                        $sheet->cells('A1:A5', function ($cells) {
+                            // manipulate the range of cells
+                        });
+                    }
 
                 });
             }

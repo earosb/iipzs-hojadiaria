@@ -62,7 +62,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="password">Contraseña</label>
+                <label class="col-sm-2 control-label" for="password">Nueva contraseña</label>
 
                 <div class="col-sm-10">
                     <input id="password" name="password" placeholder="Contraseña" class="form-control" type="password" required="required">
