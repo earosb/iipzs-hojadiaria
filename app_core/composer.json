@@ -9,7 +9,8 @@
 		"mrjuliuss/syntara": "1.2.*",
 		"barryvdh/laravel-debugbar": "~1.8",
 		"nesbot/Carbon": "*",
-        "fitztrev/laravel-html-minify": "1.*"
+        "fitztrev/laravel-html-minify": "1.*",
+        "maatwebsite/excel": "1.*"
 	},
 	"require-dev": {
 	    "way/generators": "~2.0"

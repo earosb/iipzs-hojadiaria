@@ -9,6 +9,7 @@
 - <https://github.com/MrJuliuss/syntara>
 - <https://github.com/briannesbitt/Carbon>
 - <https://github.com/fitztrev/laravel-html-minify>
+- <https://github.com/Maatwebsite/Laravel-Excel>
 
 **Fontend**
 

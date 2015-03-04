@@ -126,6 +126,7 @@ return array(
     	'Way\Generators\GeneratorsServiceProvider',
     	'Barryvdh\Debugbar\ServiceProvider',
 		'Fitztrev\LaravelHtmlMinify\LaravelHtmlMinifyServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
 
 	),
 
@@ -194,6 +195,7 @@ return array(
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
 		'Sentry'			=> 'Cartalyst\Sentry\Facades\Laravel\Sentry',
+        'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
 
 	),
 
