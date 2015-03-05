@@ -131,10 +131,10 @@
                                 {{ $material->nombre }}
                             </td>
                             <td>
-                                Excluido
+                                {{ $material->cantidad }}
                             </td>
                             <td>
-                                {{ $material->cantidad }}
+                                Excluido
                             </td>
                         </tr>
                     @endforeach
@@ -144,10 +144,10 @@
                                 {{ $material->nombre }}
                             </td>
                             <td>
-                                Reempleo
+                                {{ $material->cantidad }}
                             </td>
                             <td>
-                                {{ $material->cantidad }}
+                                Reempleo
                             </td>
                         </tr>
                     @endforeach

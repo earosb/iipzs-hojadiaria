@@ -69,9 +69,9 @@ class ReporteController extends \BaseController
          */
         $action = $input['action'];
 
-        /**
-         * Consulta detallada de trabajos
-         */
+        /** Trabajos
+         * ******************************************/
+        // Consulta detallada de trabajos
         if ($action == 'detallado') {
             if ($avanzada) {
                 $grupo = $input['grupo_via'];
@@ -105,9 +105,8 @@ class ReporteController extends \BaseController
                     ->orderBy('hoja_diaria.fecha')
                     ->get(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad'));
             }
-            /**
-             * Consulta Resumida de trabajos
-             */
+
+            // Consulta Resumida de trabajos
         } elseif ($action == 'resumido') {
             if ($avanzada) {
                 $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
@@ -131,33 +130,33 @@ class ReporteController extends \BaseController
             }
         }
 
-        /**
-         * Consulta agrupada de materiales colocados marcados como nuevos
-         */
-        $materiales['nuevo'] = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'detalle_material_colocado.id')
+        /** Materiales Colocados
+         * ******************************************/
+        // Consulta agrupada de materiales colocados marcados como nuevos
+        $materiales['nuevo'] = HojaDiaria::join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
             ->join('material', 'detalle_material_colocado.material_id', '=', 'material.id')
+            ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
             ->where('detalle_material_colocado.reempleo', '=', '0')
-            ->whereBetween('fecha', array($desde, $hasta), 'and')
+            ->whereBetween('hoja_diaria.fecha', array($desde, $hasta), 'and')
             ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
             ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
             ->groupBy('material.nombre')
             ->get();
-        /**
-         * Consulta agrupada de materiales colocados marcados como de reempleo
-         */
+
+        // Consulta agrupada de materiales colocados marcados como de reempleo
         $materiales['reempleo'] = HojaDiaria::join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
             ->join('material', 'detalle_material_colocado.material_id', '=', 'material.id')
             ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
             ->where('detalle_material_colocado.reempleo', '=', '1')
-            ->whereBetween('fecha', array($desde, $hasta), 'and')
+            ->whereBetween('hoja_diaria.fecha', array($desde, $hasta), 'and')
             ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
             ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
             ->groupBy('material.nombre')
             ->get();
-        /**
-         * Consulta agrupada de materiales retirados de la vía (Si es que tiene permisos)
-         */
+
+        /** Materiales Retirados
+         * ******************************************/
+        // Consulta agrupada de materiales retirados de la vía (Si es que tiene permisos)
         if ($avanzada) {
             $materialesRetirados['excluido'] = HojaDiaria::join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
                 ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
@@ -195,7 +194,7 @@ class ReporteController extends \BaseController
                 ->with('avanzada', $avanzada)
                 ->with('materialesRetirados', $materialesRetirados);
         } else {
-            return Response::view('error.404');
+            return App::abort(404);
         }
     }
 
@@ -241,52 +240,71 @@ class ReporteController extends \BaseController
 
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
 
+        $sectores = Sector::all();
+
+        return View::make('test')->with('sectores', $sectores);
+
+        /*Excel::load('template.xls', function($excel) {
+
+            $excel->setName('Evalo');
+
+        })->export('xls');*/
+
         /*
-                Excel::load('template.xls', function($excel) {
+                Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
 
-                    $property = array('creator' => 'evalo');
-                    $excel->set{$property}();
+                    $excel->setTitle('Formularios 2 - 3 - 4');
+                    $excel->setCreator('http://icilicafalpzs.cl/');
+                    $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
+                    $excel->setLastModifiedBy('Eduardo Aros');
+                    $excel->setDescription('A demonstration to change the file properties');
 
-                })->export('xls');
-        */
+                    foreach (range($desde, $hasta) as $month) {
 
+                        $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
 
-        Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
+                        $excel->sheet($monthName . " '" . $year, function ($sheet) {
 
-            foreach (range($desde, $hasta) as $month) {
+                            $blocks = Block::all();
 
-                $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
+                            $sheet->setWidth(array(
+                                'A' => 5,
+                                'B' => 30
+                            ));
 
-                $excel->sheet($monthName . " '" . $year, function ($sheet) {
+                            $sheet->mergeCells('A6:A10');
+                            $sheet->mergeCells('B6:B10');
+                            $sheet->mergeCells('C7:C8');
 
-                    $blocks = Block::all();
+                            $sheet->row(5, array('Form. 2'));
+                            $sheet->row(6, array('PART.', 'DESIGNACION', 'N° Bien'));
+                            $sheet->row(7, array('', '', 'Ubic.'));
+                            $sheet->row(8, array('', '', ''));
+                            $sheet->row(9, array('', '', 'Block'));
+                            $sheet->row(10, array('', '', 'Unidad'));
 
-                    $sheet->setWidth(array(
-                        'A' => 5,
-                        'B' => 30
-                    ));
+                            foreach ($blocks as $cont => $block) {
+                                $sheet->cells('A1:A5', function ($cells) {
+                                    // manipulate the range of cells
+                                });
+                            }
 
-                    $sheet->mergeCells('A6:A10');
-                    $sheet->mergeCells('B6:B10');
-                    $sheet->mergeCells('C7:C8');
+                            $sectores = Sector::all();
 
-                    $sheet->row(5, array('Form. 2'));
-                    $sheet->row(6, array('PART.', 'DESIGNACION', 'N° Bien'));
-                    $sheet->row(7, array('', '', 'Ubic.'));
-                    $sheet->row(8, array('', '', ''));
-                    $sheet->row(9, array('', '', 'Block'));
-                    $sheet->row(10, array('', '', 'Unidad'));
+                            //return View::make('sector.index', compact('sectores'));
 
-                    foreach ($blocks as $cont => $block) {
-                        $sheet->cells('A1:A5', function ($cells) {
-                            // manipulate the range of cells
+                            // Using normal with()
+                            $sheet->loadView('test')
+                                ->with('sectores', $sectores);
+
+                            // using dynamic with()
+        //                    $sheet->loadView('view')
+        //                        ->withKey('value');
+
                         });
                     }
 
-                });
-            }
-
-        })->export('xls');
+                })->export('xls');*/
 
     }
 

@@ -27,7 +27,7 @@
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/r/param') }}">Consultar Trabajos</a></li>
-                            @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
+                            @if (Sentry::getUser()->hasAccess(['form2-3-4']))
                                 <li class="divider"></li>
                                 <li class="dropdown-header">Descargar</li>
                                 <li><a href="{{ URL::to('/r/form') }}">Formulario 2-3-4</a></li>

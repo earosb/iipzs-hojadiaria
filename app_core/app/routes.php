@@ -110,7 +110,7 @@ Route::group(array('before' => 'auth'), function () {
     /**
      * Usuario logueado con permisos para form 2-3-4
      */
-    Route::group(array('before' => 'hasAccess:reporte-avanzado'), function () {
+    Route::group(array('before' => 'hasAccess:form2-3-4'), function () {
         /**
          * Rutas para generar formulario
          */

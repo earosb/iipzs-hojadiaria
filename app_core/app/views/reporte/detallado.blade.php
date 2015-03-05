@@ -144,8 +144,8 @@
                     <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Clase</th>
                         <th>Cantidad</th>
+                        <th>Clase</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -155,10 +155,10 @@
                                 {{ $excluido->nombre }}
                             </td>
                             <td>
-                                Excluido
+                                {{ $excluido->cantidad }}
                             </td>
                             <td>
-                                {{ $excluido->cantidad }}
+                                Excluido
                             </td>
                         </tr>
                     @endforeach
@@ -169,10 +169,10 @@
                                 {{ $mreempleo->nombre }}
                             </td>
                             <td>
-                                Reempleo
+                                {{ $mreempleo->cantidad }}
                             </td>
                             <td>
-                                {{ $mreempleo->cantidad }}
+                                Reempleo
                             </td>
                         </tr>
                     @endforeach
