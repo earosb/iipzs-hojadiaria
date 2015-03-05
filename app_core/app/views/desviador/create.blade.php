@@ -22,7 +22,7 @@
                 <div class="form-group">
                     {{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        {{ Form::text('nombre', null, array('placeholder' => 'Nombre Desviador', 'class' => 'form-control')) }}
+                        {{ Form::text('nombre', null, array('placeholder' => 'Nombre Desviador', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('nombre') }}</p>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     {{ Form::label('km_inicio', 'Ubicación', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        {{ Form::number('km_inicio', null, array('placeholder' => 'Kilómetro de ubicación', 'class' => 'form-control' )) }}
+                        {{ Form::number('km_inicio', null, array('placeholder' => 'Kilómetro de ubicación', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('km_inicio') }}</p>
                     </div>
                 </div>

@@ -1,10 +1,3 @@
-{{--
- * Created by PhpStorm.
- * User: earosb
- * Date: 05-02-15
- * Time: 17:48
- --}}
-
 <div class="modal fade" id="modalHojaDiaria" tabindex="1" role="dialog" aria-labelledby="modalHojaDiariaLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -16,7 +9,7 @@
             </div>
             <div class="modal-body">
 
-                {{--<div id="div_detalle"></div>--}}
+                <div id="div_detalle"></div>
 
             </div>
         </div>

@@ -21,11 +21,9 @@
 
                 {{-- Nombre --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="nombre">Nombre</label>
-
+                    {{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="nombre" name="nombre" placeholder="Nombre" class="form-control" type="text" required="required">
-
+                        {{ Form::text('nombre', null, array('placeholder' => 'Nombre', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('nombre') }}</p>
                     </div>
                 </div>

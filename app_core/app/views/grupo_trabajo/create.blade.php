@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la creación de un grupo de trabajo">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -21,11 +21,9 @@
 
                 {{-- Base --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="base">Base</label>
-
+                    {{ Form::label('base', 'Base', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="base" name="base" placeholder="Base" class="form-control" type="text" required="required">
-
+                        {{ Form::text('base', null, array('placeholder' => 'Base', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('base') }}</p>
                     </div>
                 </div>

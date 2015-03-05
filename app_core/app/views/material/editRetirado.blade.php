@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la edición de un material a retirar">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -13,7 +13,8 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <legend> {{ $matRet->nombre }}
-                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span
+                            class="glyphicon glyphicon-trash"></span></a>
             </legend>
             {{ Form::open(array(
                 'url'		=>	'/m/material-retirado/'.$matRet->id,
@@ -23,12 +24,9 @@
 
                 {{-- Nombre --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="nombre">Nombre</label>
-
+                    {{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="nombre" name="nombre" placeholder="Nombre estación" class="form-control" type="text" required="required"
-                               value="{{ $matRet->nombre }}">
-
+                        {{ Form::text('nombre', $matRet->nombre, array('placeholder' => 'Nombre', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('nombre') }}</p>
                     </div>
                 </div>
@@ -39,10 +37,12 @@
                     <div class="col-sm-10">
                         <div class="checkbox">
                             <label>
-                                @if( $matRet->es_oficial ) <input name="es_oficial" type="checkbox" value="true" checked="checked">
+                                @if( $matRet->es_oficial ) <input name="es_oficial" type="checkbox" value="true"
+                                                                  checked="checked">
                                 @else <input name="es_oficial" type="checkbox" value="true">
                                 @endif
-                                    <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es esto?</abbr>
+                                <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es
+                                    esto?</abbr>
                             </label>
                         </div>
                     </div>
@@ -67,20 +67,21 @@
 @section('js')
     <script type="text/javascript">
         function destroy() {
-            if ( confirm("¿Desea borrar el Material?") == true ) {
-                if ( confirm("El registro no podrá ser recuperado, ¿Desea continuar?") ) {
+            if (confirm("¿Desea borrar el Material?") == true) {
+                if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")) {
                     $.ajax({
                         type: 'delete',
                         url: '/m/material-retirado/' + "{{ $matRet->id }}"
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Material {{ $matRet->nombre }}");
+                        if (data.error) alert("Se produjo un problema el intentar eliminar el Material {{ $matRet->nombre }}");
 
                         window.location.replace("{{ URL::to('/m/material') }}");
                     });
                 }
             }
-        };
+        }
+        ;
     </script>
 @stop

@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la edición de un material a colocar">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -13,7 +13,8 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <legend> {{ $material->nombre }}
-                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span
+                            class="glyphicon glyphicon-trash"></span></a>
             </legend>
             {{ Form::open(array(
                 'url'		=>	'/m/material/'.$material->id,
@@ -23,45 +24,33 @@
 
                 {{-- Nombre --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="nombre">Nombre</label>
-
+                    {{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="nombre" name="nombre" placeholder="Nombre estación" class="form-control" type="text" required="required"
-                               value="{{ $material->nombre }}">
-
+                        {{ Form::text('nombre', $material->nombre, array('placeholder' => 'Nombre estación', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('nombre') }}</p>
                     </div>
                 </div>
                 {{-- Valor --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="valor">Valor Unitario (UF)</label>
-
+                    {{ Form::label('valor', 'Valor Unitario (UF)', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="valor" name="valor" placeholder="Valor" class="form-control" type="number" min="0" step="0.01" required="required"
-                               value="{{ $material->valor }}">
-
+                        {{ Form::number('valor', $material->valor, array('class' => 'form-control', 'placeholder' => 'Valor', 'min' => '0', 'step' => '0.01', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('valor') }}</p>
                     </div>
                 </div>
                 {{-- Proveedor --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="proveedor">Proveedor</label>
-
+                    {{ Form::label('proveedor', 'Proveedor', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="proveedor" name="proveedor" placeholder="Proveedor" class="form-control" type="text" required="required"
-                               value="{{ $material->proveedor }}">
-
+                        {{ Form::text('proveedor', $material->proveedor, array('placeholder' => 'Proveedor', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('proveedor') }}</p>
                     </div>
                 </div>
                 {{-- Unidad --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="unidad">Unidad</label>
-
+                    {{ Form::label('unidad', 'Unidad', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="unidad" name="unidad" placeholder="Unidad" class="form-control" type="text" required="required"
-                               value="{{ $material->unidad }}">
-
+                        {{ Form::text('unidad', $material->unidad, array('placeholder' => 'Unidad', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('unidad') }}</p>
                     </div>
                 </div>
@@ -72,10 +61,12 @@
                     <div class="col-sm-10">
                         <div class="checkbox">
                             <label>
-                                @if( $material->es_oficial ) <input name="es_oficial" type="checkbox" value="true" checked="checked">
+                                @if( $material->es_oficial ) <input name="es_oficial" type="checkbox" value="true"
+                                                                    checked="checked">
                                 @else <input name="es_oficial" type="checkbox" value="true">
                                 @endif
-                                    <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es esto?</abbr>
+                                <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es
+                                    esto?</abbr>
                             </label>
                         </div>
                     </div>
@@ -100,20 +91,21 @@
 @section('js')
     <script type="text/javascript">
         function destroy() {
-            if ( confirm("¿Desea borrar el trabajo?") == true ) {
-                if ( confirm("El registro no podrá ser recuperado, ¿Desea continuar?") ) {
+            if (confirm("¿Desea borrar el trabajo?") == true) {
+                if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")) {
                     $.ajax({
                         type: 'delete',
                         url: '/m/material/' + "{{ $material->id }}"
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Material {{ $material->nombre }}");
+                        if (data.error) alert("Se produjo un problema el intentar eliminar el Material {{ $material->nombre }}");
 
                         window.location.replace("{{ URL::to('/m/material') }}");
                     });
                 }
             }
-        };
+        }
+        ;
     </script>
 @stop

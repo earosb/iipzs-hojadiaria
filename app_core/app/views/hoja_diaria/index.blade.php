@@ -25,7 +25,7 @@
 @endsection
 
 @section('content')
-    <div class="col-xs-12 col-md-6 col-lg-4" id="div_historico">
+    <div class="col-xs-12 col-md-12 col-lg-8" id="div_historico">
         <legend>Histórico Hojas Diarias</legend>
         @if( ! $hojas->isEmpty() )
             <table class="table table-bordered table-hover" id="tab_trabajados">
@@ -34,7 +34,7 @@
                     <th>Fecha</th>
                     <th>Ingresada el</th>
                     <th>Ingresada por</th>
-                    {{--<th>Última edición</th>--}}
+                    <th>Última edición</th>
                     <th>Grupo</th>
                     {{--<th class="text-center">Ver</th>--}}
                 </tr>
@@ -51,9 +51,9 @@
                         <td>
                             {{ $hoja->username }}
                         </td>
-                        {{--<td>
+                        <td>
                             {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
-                        </td>--}}
+                        </td>
                         <td>
                             {{ $hoja->base }}
                         </td>
@@ -70,13 +70,15 @@
         @endif
     </div>
 
-    <div id="div_detalle" class="col-xs-12 col-md-6 col-lg-8"></div>
+    {{--<div id="div_detalle" class="col-xs-12 col-md-6 col-lg-8"></div>--}}
 
 @stop
 
+@include('modal.viewHojaDiaria')
+
 @section('js')
-    {{--{{ HTML::script('js/hd/index.js') }}--}}
-    {{ HTML::script('js/min/1425397825695.min.js') }}
+    {{ HTML::script('js/hd/index.js') }}
+    {{--{{ HTML::script('js/min/1425397825695.min.js') }}--}}
 
     {{ HTML::script('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js') }}
     {{ HTML::script('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js') }}

@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la edición de un trabajo">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -19,16 +19,15 @@
             <fieldset>
 
                 <legend>Nuevo Trabajo
-                    <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+                    <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span
+                                class="glyphicon glyphicon-trash"></span></a>
                 </legend>
                 {{-- Nombre --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="nombre">Nombre</label>
+                    {{ Form::label('nombre', 'Nombre', array('class' => 'col-sm-2 control-label')) }}
 
                     <div class="col-sm-10">
-                        <input id="nombre" name="nombre" placeholder="Nombre del trabajo" class="form-control" type="text"
-                               value="{{ $trabajo->nombre }}">
-
+                        {{ Form::text('nombre', $trabajo->nombre, array('placeholder' => 'Nombre del trabajo', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('nombre') }}</p>
                     </div>
                 </div>
@@ -44,7 +43,9 @@
                                 <optgroup label="{{ $tMat->nombre }}">
                                     @foreach($tMat->trabajos as $t)
                                         @if( $t->id == $trabajo->padre_id)
-                                            <option selected="selected" value="{{ $t->id }}">{{ $t->nombre }} [{{ $t->unidad }}]</option>
+                                            <option selected="selected" value="{{ $t->id }}">{{ $t->nombre }}
+                                                [{{ $t->unidad }}]
+                                            </option>
                                         @else
                                             <option value="{{ $t->id }}">{{ $t->nombre }} [{{ $t->unidad }}]</option>
                                         @endif
@@ -58,24 +59,19 @@
                 </div>
                 {{-- Valor --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="valor">Valor Unitario (UF)</label>
+                    {{ Form::label('valor', 'Valor Unitario (UF)', array('class' => 'col-sm-2 control-label')) }}
 
                     <div class="col-sm-10">
-                        <input id="valor" name="valor" placeholder="Valor del Trabajo" class="form-control" type="number" step="0.01" min="0"
-                               required="required" value="{{ $trabajo->valor }}">
-
+                        {{ Form::number('valor', $trabajo->valor, array('class' => 'form-control', 'placeholder' => 'Valor del Trabajo', 'min' => '0', 'step' => '0.01', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('valor') }}</p>
                     </div>
                 </div>
 
                 {{-- Unidad --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="unidad">Unidad de Medida</label>
-
+                    {{ Form::label('unidad', 'Unidad de Medida', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="unidad" name="unidad" placeholder="m3, nro, mlv, etc." class="form-control" type="text" required="required"
-                               value="{{ $trabajo->unidad }}">
-
+                        {{ Form::text('unidad', $trabajo->unidad, array('placeholder' => 'm3, nro, mlv, etc.', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('unidad') }}</p>
                     </div>
                 </div>
@@ -92,7 +88,8 @@
                                 @else
                                     <input name="es_oficial" type="checkbox" value="true">
                                 @endif
-                                    <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es esto?</abbr>
+                                <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es
+                                    esto?</abbr>
                             </label>
                         </div>
                     </div>
@@ -107,10 +104,12 @@
                             <div class="radio">
                                 <label>
                                     @if( $tMat->id == $trabajo->tipo_mantenimiento_id )
-                                        <input name="tMat" id="tMat{{ $tMat->id }}" value="{{ $tMat->id }}" checked="checked"
+                                        <input name="tMat" id="tMat{{ $tMat->id }}" value="{{ $tMat->id }}"
+                                               checked="checked"
                                                type="radio">{{ $tMat->nombre }}
                                     @else
-                                        <input name="tMat" id="tMat{{ $tMat->id }}" value="{{ $tMat->id }}" type="radio">{{ $tMat->nombre }}
+                                        <input name="tMat" id="tMat{{ $tMat->id }}" value="{{ $tMat->id }}"
+                                               type="radio">{{ $tMat->nombre }}
                                     @endif
                                 </label>
                             </div>
@@ -137,15 +136,15 @@
 @section('js')
     <script type="text/javascript">
         function destroy() {
-            if ( confirm("¿Desea borrar el trabajo?") == true ) {
-                if ( confirm("El registro no podrá ser recuperado, ¿Desea continuar?") ) {
+            if (confirm("¿Desea borrar el trabajo?") == true) {
+                if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")) {
                     $.ajax({
                         type: 'delete',
                         url: '/m/trabajo/' + "{{ $trabajo->id }}"
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Trabajo {{ $trabajo->nombre }}");
+                        if (data.error) alert("Se produjo un problema el intentar eliminar el Trabajo {{ $trabajo->nombre }}");
 
                         window.location.replace("{{ URL::to('/m/trabajo') }}");
                     });

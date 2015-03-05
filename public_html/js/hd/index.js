@@ -9,7 +9,7 @@ function verHojaDiaria(id) {
         type: 'GET'
     }).success(function (data) {
         escribirDetalle(data);
-        //$('#modalHojaDiaria').modal('show');
+        $('#modalHojaDiaria').modal('show');
     }).error(function () {
         alert("Error al descargar datos\nPor favor verifique su conexión a Internet");
     });

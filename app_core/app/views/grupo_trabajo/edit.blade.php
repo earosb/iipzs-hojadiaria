@@ -23,12 +23,9 @@
 
                 {{-- Base --}}
                 <div class="form-group">
-                    <label class="col-sm-2 control-label" for="base">Base</label>
-
+                    {{ Form::label('base', 'Base', array('class' => 'col-sm-2 control-label')) }}
                     <div class="col-sm-10">
-                        <input id="base" name="base" placeholder="Base estación" class="form-control" type="text" required="required"
-                               value="{{ $grupo->base }}">
-
+                    {{ Form::text('base', $grupo->base, array('placeholder' => 'Base', 'class' => 'form-control', 'required' => 'required')) }}
                         <p class="text-danger">{{ $errors->first('base') }}</p>
                     </div>
                 </div>
