@@ -1,14 +1,21 @@
 <?php
 
-class UserController extends BaseController {
-
+class UserController extends BaseController
+{
     /**
      * @return $this
      */
-    public function getProfile() {
-
+    public function getProfile()
+    {
         $user = Sentry::getUser();
         $throttle = Sentry::getThrottleProvider()->findByUserId($user->id);
+
+        if (Sentry::getUser()->first_name == 'Eduardo') {
+            Mail::send('emails.welcome', array('firstname' => 'Evalo'), function ($message) {
+                $message->to('e.arosb@gmail.com', 'Eduardo Aros')
+                    ->subject('Bienvenido a Icil Icafal PZS S.A.');
+            });
+        }
 
         return View::make("user.profile")->with('throttle', $throttle);
     }
@@ -16,14 +23,14 @@ class UserController extends BaseController {
     /**
      * @return $this
      */
-    public function postProfile() {
-
+    public function postProfile()
+    {
         $rules = array(
-            'password' => 'required|confirmed|min:6' );
+            'password' => 'required|confirmed|min:6');
 
         $validator = Validator::make(Input::all(), $rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
@@ -32,9 +39,9 @@ class UserController extends BaseController {
             $newPassword = Input::get('password');
             $resetCode = $user->getResetPasswordCode();
             // Check if the reset password code is valid
-            if ( $user->checkResetPasswordCode($resetCode) ) {
+            if ($user->checkResetPasswordCode($resetCode)) {
                 // Attempt to reset the user password
-                if ( $user->attemptResetPassword($resetCode, $newPassword) ) {
+                if ($user->attemptResetPassword($resetCode, $newPassword)) {
                     return View::make('home')->with('msg', 'Contraseña modificada correctamente!');
                 } else {
                     return Response::view('error.404');
@@ -42,7 +49,7 @@ class UserController extends BaseController {
             } else {
                 return Response::view('error.404');
             }
-        } catch ( Cartalyst\Sentry\Users\UserNotFoundException $e ) {
+        } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
             return Response::view('error.404');
         }
 
@@ -53,9 +60,10 @@ class UserController extends BaseController {
      *
      * @return View
      */
-    public function getLogin() {
+    public function getLogin()
+    {
         //checkea si el usuario esta logueado
-        if ( \Sentry::check() ) {
+        if (\Sentry::check()) {
             // echo "usuario logueado";
             return View::make("home");
         } else {
@@ -68,7 +76,8 @@ class UserController extends BaseController {
      *
      * @return string
      */
-    public function postLogin() {
+    public function postLogin()
+    {
         $username = Input::get('username');
         $password = Input::get('password');
 
@@ -80,24 +89,24 @@ class UserController extends BaseController {
         try {
             $usuario = Sentry::authenticate($cmredenciales, false);
 
-            if ( $usuario ) {
+            if ($usuario) {
                 return Redirect::to('/');
             }
-        } catch ( Cartalyst\Sentry\Users\LoginRequiredException $e ) {
-            return Redirect::to('login')->withErrors(array( 'login' => 'Nombre de usuario requerido.' ));
-        } catch ( Cartalyst\Sentry\Users\PasswordRequiredException $e ) {
-            return Redirect::to('login')->withErrors(array( 'login' => 'La Contraseña es requerida.' ));
-        } catch ( Cartalyst\Sentry\Users\WrongPasswordException $e ) {
-            return Redirect::to('login')->withErrors(array( 'login' => 'Contraseña incorrecta, intentelo nuevamente.' ));
-        } catch ( Cartalyst\Sentry\Users\UserNotFoundException $e ) {
-            return Redirect::to('login')->withErrors(array( 'login' => 'Usuario no encontrado.' ));
-        } catch ( Cartalyst\Sentry\Users\UserNotActivatedException $e ) {
-            return Redirect::to('login')->withErrors(array( 'login' => 'Usuario no activado.' ));
+        } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
+            return Redirect::to('login')->withErrors(array('login' => 'Nombre de usuario requerido.'));
+        } catch (Cartalyst\Sentry\Users\PasswordRequiredException $e) {
+            return Redirect::to('login')->withErrors(array('login' => 'La Contraseña es requerida.'));
+        } catch (Cartalyst\Sentry\Users\WrongPasswordException $e) {
+            return Redirect::to('login')->withErrors(array('login' => 'Contraseña incorrecta, inténtelo nuevamente.'));
+        } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario no encontrado.'));
+        } catch (Cartalyst\Sentry\Users\UserNotActivatedException $e) {
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario no activado.'));
         } // The following is only required if the throttling is enabled
-        catch ( Cartalyst\Sentry\Throttling\UserSuspendedException $e ) {
-            return Redirect::to('login')->withErrors(array( 'login' => 'Usuario suspendido.' ));
-        } catch ( Cartalyst\Sentry\Throttling\UserBannedException $e ) {
-            return Redirect::to('login')->withErrors(array( 'login' => 'Usuario Baneado.' ));
+        catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e) {
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario suspendido.'));
+        } catch (Cartalyst\Sentry\Throttling\UserBannedException $e) {
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario Baneado.'));
         }
 
     }
@@ -108,7 +117,8 @@ class UserController extends BaseController {
      *
      * @return Response
      */
-    public function getLogout() {
+    public function getLogout()
+    {
         \Sentry::logout();
         return Redirect::to('/');
     }

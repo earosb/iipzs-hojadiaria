@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'sendmail',
+	'driver' => 'smtp',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return array(
 	|
 	*/
 
-	'port' => 25,
+	'port' => 27,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'noreply@icilicafalpzs.cl', 'name' => 'No Reply'),
+	'from' => array('address' => 'noreply@icilicafalpzs.cl', 'name' => 'Icil Icafal PZS S.A.'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'encryption' => 'tls',
+	'encryption' => '',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return array(
 	|
 	*/
 
-	'username' => 'noreply',
+	'username' => 'noreply@icilicafalpzs.cl',
 
 	/*
 	|--------------------------------------------------------------------------
