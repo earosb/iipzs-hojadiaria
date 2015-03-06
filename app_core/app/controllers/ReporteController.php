@@ -240,71 +240,34 @@ class ReporteController extends \BaseController
 
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
 
-        $sectores = Sector::all();
 
-        return View::make('test')->with('sectores', $sectores);
+        $blocks = $sector->blocks;
+        return View::make('test')->with('blocks', $blocks);
 
-        /*Excel::load('template.xls', function($excel) {
 
-            $excel->setName('Evalo');
+        Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
 
-        })->export('xls');*/
+//            $excel->setTitle('Formularios 2 - 3 - 4');
+//            $excel->setCreator('Icil-Icafal PZS');
+//            $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
+//            $excel->setLastModifiedBy('http://icilicafalpzs.cl/');
+//            $excel->setDescription('Formularios 2-3-4 para EFE');
 
-        /*
-                Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
+            foreach (range($desde, $hasta) as $month) {
 
-                    $excel->setTitle('Formularios 2 - 3 - 4');
-                    $excel->setCreator('http://icilicafalpzs.cl/');
-                    $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
-                    $excel->setLastModifiedBy('Eduardo Aros');
-                    $excel->setDescription('A demonstration to change the file properties');
+                $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
 
-                    foreach (range($desde, $hasta) as $month) {
+                $excel->sheet($monthName . " '" . $year, function ($sheet) use ($sector) {
 
-                        $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
+                    $blocks = $sector->blocks;
+                    // Using normal with()
+                    $sheet->loadView('test')
+                        ->with('blocks', $blocks);
 
-                        $excel->sheet($monthName . " '" . $year, function ($sheet) {
+                });
+            }
 
-                            $blocks = Block::all();
-
-                            $sheet->setWidth(array(
-                                'A' => 5,
-                                'B' => 30
-                            ));
-
-                            $sheet->mergeCells('A6:A10');
-                            $sheet->mergeCells('B6:B10');
-                            $sheet->mergeCells('C7:C8');
-
-                            $sheet->row(5, array('Form. 2'));
-                            $sheet->row(6, array('PART.', 'DESIGNACION', 'N° Bien'));
-                            $sheet->row(7, array('', '', 'Ubic.'));
-                            $sheet->row(8, array('', '', ''));
-                            $sheet->row(9, array('', '', 'Block'));
-                            $sheet->row(10, array('', '', 'Unidad'));
-
-                            foreach ($blocks as $cont => $block) {
-                                $sheet->cells('A1:A5', function ($cells) {
-                                    // manipulate the range of cells
-                                });
-                            }
-
-                            $sectores = Sector::all();
-
-                            //return View::make('sector.index', compact('sectores'));
-
-                            // Using normal with()
-                            $sheet->loadView('test')
-                                ->with('sectores', $sectores);
-
-                            // using dynamic with()
-        //                    $sheet->loadView('view')
-        //                        ->withKey('value');
-
-                        });
-                    }
-
-                })->export('xls');*/
+        })->export('xls');
 
     }
 

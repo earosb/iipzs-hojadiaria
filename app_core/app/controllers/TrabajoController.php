@@ -49,22 +49,13 @@ class TrabajoController extends \BaseController
     public function store()
     {
         $input = Input::all();
-//        $input = array(
-//            '_token'     => Input::get('_token'),
-//            'nombre'     => Input::get('nombre'),
-//            'padre'      => Input::get('padre'),
-//            'valor'      => Input::get('valor'),
-//            'unidad'     => Input::get('unidad'),
-//            'es_oficial' => Input::get('es_oficial'),
-//            'tMat'       => Input::get('tMat')
-//        );
 
         $rules = array(
             'nombre' => 'required',
             'padre' => ($input['padre'] != 'none') ? 'required|exists:trabajo,id' : 'required',
             'valor' => 'required|numeric|min:0',
             'unidad' => 'required',
-                    'tMat' => 'required|exists:tipo_mantenimiento,id',
+            'tMat' => 'required|exists:tipo_mantenimiento,id',
         );
 
         if (isset($input['materiales'])) {
@@ -81,7 +72,6 @@ class TrabajoController extends \BaseController
                     array('error' => true, 'msg' => $validator->messages()));
             }
             return Redirect::back()->withInput()->withErrors($validator);
-            // return Redirect::to('m/trabajo/create')->withInput()->withErrors($validator->messages());
         }
 
         $trabajo = new Trabajo();
@@ -139,7 +129,7 @@ class TrabajoController extends \BaseController
         $trabajo = Trabajo::find($id);
         $trabajo->trabajoMaterial;
         $materiales = Material::all(array('id', 'nombre'));
-        $materiales = Material::join('trabajo_material', 'material.id', '=', 'trabajo_material.material_id');
+        // $materiales = Material::join('trabajo_material', 'material.id', '=', 'trabajo_material.material_id');
         $tipoMantenimiento = TipoMantenimiento::All(array('id', 'nombre'));
         return View::make('trabajo.edit')
             ->with('trabajo', $trabajo)
@@ -158,15 +148,7 @@ class TrabajoController extends \BaseController
     {
         $trabajo = Trabajo::find($id);
 
-        $input = array(
-            '_token' => Input::get('_token'),
-            'nombre' => Input::get('nombre'),
-            'padre' => Input::get('padre'),
-            'valor' => Input::get('valor'),
-            'unidad' => Input::get('unidad'),
-            'es_oficial' => Input::get('es_oficial'),
-            'tMat' => Input::get('tMat')
-        );
+        $input = Input::all();
 
         $rules = array(
             'nombre' => 'required',
@@ -175,6 +157,12 @@ class TrabajoController extends \BaseController
             'unidad' => 'required',
             'tMat' => 'required|exists:tipo_mantenimiento,id',
         );
+
+        if (isset($input['materiales'])) {
+            foreach ($input['materiales'] as $mId) {
+                $rules['materiales.' . $mId] = 'required|exists:material,id';
+            }
+        }
 
         $validator = Validator::make($input, $rules);
 
@@ -185,11 +173,22 @@ class TrabajoController extends \BaseController
         $trabajo->nombre = $input['nombre'];
         $trabajo->valor = $input['valor'];
         $trabajo->unidad = $input['unidad'];
-        $trabajo->es_oficial = ($input['es_oficial'] != null) ? true : false;
+        $trabajo->es_oficial = isset($input['es_oficial']) ? true : false;
         $trabajo->tipo_mantenimiento_id = $input['tMat'];
         $trabajo->padre_id = ($input['padre'] != 'none') ? $input['padre'] : null;
 
         $trabajo->save();
+
+        $trabajo->trabajoMaterial()->forceDelete();
+
+        if (isset($input['materiales'])) {
+            foreach ($input['materiales'] as $cont => $m) {
+                $trabajoMaterial = new TrabajoMaterial();
+                $trabajoMaterial->trabajo_id = $trabajo->id;
+                $trabajoMaterial->material_id = $cont;
+                $trabajoMaterial->save();
+            }
+        }
 
         return Redirect::route('m.trabajo.index');
     }

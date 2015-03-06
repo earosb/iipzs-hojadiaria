@@ -129,21 +129,23 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-sm-10">
-                            {{--@foreach($materiales as $material)--}}
-                            <div class="checkbox">
-                                <label>
-                                    @foreach($trabajo->trabajo_material as $trabajoMaterial)
-                                        {{--@if($material->id == $trabajoMaterial->material_id)
-                                            {{ Form::checkbox('materiales['.$material->id.']', $material->id, true) }}
-                                        @else
-                                            {{ Form::checkbox('materiales['.$material->id.']', $material->id, false) }}
-                                        @endif--}}
-                                        {{ Form::checkbox('materiales['.$trabajoMaterial->id.']', $trabajoMaterial->id, true) }}
-                                        <p>{{ $trabajoMaterial->id }}</p>
-                                    @endforeach
-                                </label>
-                            </div>
-                            {{--@endforeach--}}
+                            @foreach($trabajo->trabajo_material as $trabajoMaterial)
+                                <div class="checkbox">
+                                    <label>
+                                        @foreach($materiales as $material)
+                                            @if($material->id == $trabajoMaterial->material_id)
+                                                {{ Form::checkbox('materiales['.$material->id.']', $material->id, true) }}
+                                                <p>{{ $material->nombre }}</p>
+                                            @else
+                                                {{--{{ Form::checkbox('materiales['.$material->id.']', $material->id, false) }}--}}
+                                                {{--<p>{{ $material->nombre }}</p>--}}
+                                            @endif
+                                            {{--{{ Form::checkbox('materiales['.$trabajoMaterial->id.']', $trabajoMaterial->id, true) }}--}}
+                                        @endforeach
+                                    </label>
+                                </div>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
