@@ -16,7 +16,7 @@ class TrabajoMaterial extends \Eloquent {
     /**
      * Don't forget to fill this array
      */
-    protected $fillable = [];
+    protected $fillable = ['trabajo_id', 'material_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
