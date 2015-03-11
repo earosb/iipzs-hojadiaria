@@ -241,9 +241,10 @@ class ReporteController extends \BaseController
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
 
 
-        $blocks = $sector->blocks;
-        return View::make('test')->with('blocks', $blocks);
+//        $blocks = $sector->blocks;
+//        return View::make('test')->with('blocks', $blocks);
 
+        $excel = App::make('excel');
 
         Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
 
