@@ -5,7 +5,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ URL::to('/') }}">Icil-Icafal PZS</a>
+        <a class="navbar-brand" href="{{ URL::to('/') }}">
+            <img style="max-width:100px; margin-top: -4px;" alt="Icil-Icafal PZS" src="{{ asset('/logo.png') }}">
+        </a>
     </div>
     @if(Sentry::check())
         <div class="navbar-collapse collapse navbar-responsive-collapse">
@@ -55,7 +57,8 @@
                 @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ URL::to('profile') }}">Bienvenido, <strong>{{ Sentry::getUser()->first_name }}</strong></a></li>
+                <li><a href="{{ URL::to('profile') }}">Bienvenido, <strong>{{ Sentry::getUser()->first_name }}</strong></a>
+                </li>
                 <li><a href="{{ URL::to('logout') }}"><i class="glyphicon glyphicon-share-alt"></i> Salir</a></li>
             </ul>
         </div>
