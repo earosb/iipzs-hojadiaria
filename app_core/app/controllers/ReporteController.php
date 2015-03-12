@@ -240,9 +240,30 @@ class ReporteController extends \BaseController
 
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
 
+        $blocks = $sector->blocks;
 
-//        $blocks = $sector->blocks;
-//        return View::make('test')->with('blocks', $blocks);
+        $data = Sector::find($input['sector'])
+            ->rightJoin('block', 'block.sector_id', '=', 'sector.id')
+            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.id', '=', 'block.id')
+            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+            ->rightJoin('trabajo', 'trabajo.id', '=', 'detalle_hoja_diaria.trabajo_id')
+            ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+            ->where('trabajo.es_oficial', '=', '1', 'and')
+            ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
+            ->select('block.estacion', 'trabajo.nombre', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
+            ->groupBy('block.estacion', 'trabajo.nombre')
+            ->get();
+
+        $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+            ->where('trabajo.es_oficial', '=', '1', 'and')
+            ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
+            ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+            ->get();
+
+        return View::make('test')
+            ->with('blocks', $blocks)
+            ->with('trabajos', $trabajos)
+            ->with('data', $data);
 
         $excel = App::make('excel');
 
@@ -261,9 +282,15 @@ class ReporteController extends \BaseController
                 $excel->sheet($monthName . " '" . $year, function ($sheet) use ($sector) {
 
                     $blocks = $sector->blocks;
+                    $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                        ->where('trabajo.es_oficial', '=', '1', 'and')
+                        ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
+                        ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+                        ->get();
                     // Using normal with()
                     $sheet->loadView('test')
-                        ->with('blocks', $blocks);
+                        ->with('blocks', $blocks)
+                        ->with('trabajos', $trabajos);
 
                 });
             }
