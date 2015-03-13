@@ -238,65 +238,149 @@ class ReporteController extends \BaseController
 
         $sector = Sector::find($input['sector']);
 
+        /*
+                $blocks = $sector->blocks;
+                $data = Sector::find($input['sector'])
+                    ->rightJoin('block', 'block.sector_id', '=', 'sector.id')
+                    ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.id', '=', 'block.id')
+                    ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                    ->rightJoin('trabajo', 'trabajo.id', '=', 'detalle_hoja_diaria.trabajo_id')
+                    ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                    ->where('trabajo.es_oficial', '=', '1', 'and')
+                    ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
+                    ->select('block.estacion', 'trabajo.nombre', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
+                    ->groupBy('block.estacion', 'trabajo.nombre')
+                    ->get();
+
+                $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                    ->where('trabajo.es_oficial', '=', '1', 'and')
+                    ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
+                    ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+                    ->get();
+
+                return View::make('test')
+                    ->with('blocks', $blocks)
+                    ->with('trabajos', $trabajos)
+                    ->with('data', $data);
+        */
+
+        // Nombre del archivo
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
 
-        $blocks = $sector->blocks;
-
-        $data = Sector::find($input['sector'])
-            ->rightJoin('block', 'block.sector_id', '=', 'sector.id')
-            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.id', '=', 'block.id')
-            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-            ->rightJoin('trabajo', 'trabajo.id', '=', 'detalle_hoja_diaria.trabajo_id')
-            ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-            ->where('trabajo.es_oficial', '=', '1', 'and')
-            ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
-            ->select('block.estacion', 'trabajo.nombre', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-            ->groupBy('block.estacion', 'trabajo.nombre')
-            ->get();
-
-        $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-            ->where('trabajo.es_oficial', '=', '1', 'and')
-            ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
-            ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
-            ->get();
-
-        return View::make('test')
-            ->with('blocks', $blocks)
-            ->with('trabajos', $trabajos)
-            ->with('data', $data);
-
-        $excel = App::make('excel');
-
         Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
-
-//            $excel->setTitle('Formularios 2 - 3 - 4');
-//            $excel->setCreator('Icil-Icafal PZS');
-//            $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
-//            $excel->setLastModifiedBy('http://icilicafalpzs.cl/');
-//            $excel->setDescription('Formularios 2-3-4 para EFE');
-
+            $blocks = $sector->blocks;
             foreach (range($desde, $hasta) as $month) {
 
+                // Nombre de cada hoja
                 $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
 
-                $excel->sheet($monthName . " '" . $year, function ($sheet) use ($sector) {
+                $excel->sheet($monthName, function ($sheet) use ($blocks) {
 
-                    $blocks = $sector->blocks;
+                    $sheet->setAutoSize(true);
+
+//                    $sheet->mergeCells('B10:C10');
+//                    $sheet->mergeCells('B11:C11');
+//                    $sheet->mergeCells('B12:C12');
+//                    $sheet->mergeCells('B13:C13');
+//                    $sheet->mergeCells('B14:C14');
+                    $sheet->mergeCells('A10:A14');
+                    $sheet->mergeCells('B10:B14');
+                    $sheet->mergeCells('C10:C14');
+                    $sheet->mergeCells('B14:C14');
+                    $sheet->mergeCells('D11:D12');
+
+                    // Cabeceras
+                    $sheet->appendRow(10, array('PART.', 'DESIGNACION', '', 'N°Bien'));
+                    $sheet->appendRow(11, array('PART.', 'DESIGNACION', '', 'UBIC.'));
+                    $sheet->appendRow(13, array('PART.', 'DESIGNACION', '', 'BLOCK'));
+                    $sheet->appendRow(14, array('PART.', 'DESIGNACION', '', 'UNID.'));
+
+                    // Blocks en cabecera
+                    $columna = 'E';
+                    $columnaSig = 'F';
+                    $fila = 10;
+                    foreach ($blocks as $block) {
+                        // Nro bien
+                        $tmp = $columna . $fila . ':' . $columnaSig . $fila;
+                        $sheet->mergeCells($tmp);
+                        $sheet->cell($columna . $fila, $block->nro_bien);
+
+                        // Ubicación
+                        $sheet->cell($columna . ($fila + 1), 'KM');
+                        $sheet->cell($columnaSig . ($fila + 1), $block->km_inicio);
+                        $sheet->cell($columna . ($fila + 2), 'KM');
+                        $sheet->cell($columnaSig . ($fila + 2), $block->km_termino);
+
+                        // Estación
+                        $tmp = $columna . ($fila + 3) . ':' . $columnaSig . ($fila + 3);
+                        $sheet->mergeCells($tmp);
+                        $sheet->cell($columna . ($fila + 3), $block->estacion);
+
+                        // INFORMA/RECIBE
+                        $sheet->cell($columna . ($fila + 4), 'INFORMA');
+                        $sheet->cell($columnaSig . ($fila + 4), 'RECIBE');
+
+                        $columna++;
+                        $columna++;
+                        $columnaSig++;
+                        $columnaSig++;
+                    }
+
+                    // Trabajos
                     $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
                         ->where('trabajo.es_oficial', '=', '1', 'and')
                         ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
                         ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
                         ->get();
-                    // Using normal with()
-                    $sheet->loadView('test')
-                        ->with('blocks', $blocks)
-                        ->with('trabajos', $trabajos);
+                    $fila = 15;
+                    foreach ($trabajos as $cont => $trabajo) {
+                        $tmp = 'B' . $fila . ':' . 'C' . $fila;
+                        $sheet->mergeCells($tmp);
+                        $sheet->appendRow($fila, array(
+                            ($cont + 1), $trabajo->nombre, $trabajo->unidad
+                        ));
+                        $fila++;
+                    }
+
 
                 });
             }
 
         })->export('xls');
 
+        /*
+                $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
+
+                Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
+
+                    $excel->setTitle('Formularios 2 - 3 - 4');
+                    $excel->setCreator('Icil-Icafal PZS');
+                    $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
+                    $excel->setLastModifiedBy('http://icilicafalpzs.cl/');
+                    $excel->setDescription('Formularios 2-3-4 para EFE');
+
+                    foreach (range($desde, $hasta) as $month) {
+
+                        $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
+
+                        $excel->sheet($monthName . " '" . $year, function ($sheet) use ($sector) {
+
+                            $blocks = $sector->blocks;
+                            $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                                ->where('trabajo.es_oficial', '=', '1', 'and')
+                                ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
+                                ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+                                ->get();
+                            // Using normal with()
+                            $sheet->loadView('test')
+                                ->with('blocks', $blocks)
+                                ->with('trabajos', $trabajos);
+
+                        });
+                    }
+
+                })->export('xls');
+        */
     }
 
 }
