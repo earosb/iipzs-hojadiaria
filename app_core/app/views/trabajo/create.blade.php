@@ -107,7 +107,7 @@
         {{-- Checkboxes Materiales Asociados --}}
         <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Materiales Asociados</div>
+                <div class="panel-heading">Materiales Asociados <p class="text-danger"><strong>En construcción!</strong></p></div>
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-sm-10">
