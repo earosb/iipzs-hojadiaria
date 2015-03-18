@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="{{ URL::to('/') }}">
-            <img style="max-width:100px; margin-top: -4px;" alt="Icil-Icafal PZS" src="{{ asset('/logo.png') }}">
+            <img style="max-width:100px; margin-top: -4px;" alt="Icil-Icafal PZS" src="{{ asset('img/navbar.png') }}">
         </a>
     </div>
     @if(Sentry::check())
