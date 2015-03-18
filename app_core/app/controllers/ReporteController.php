@@ -219,6 +219,8 @@ class ReporteController extends \BaseController
     {
         $input = Input::all();
 
+        $desdeArray = array(1 => '');
+
         $desde = $input['desde'];
         $hasta = $input['hasta'];
         $year = $input['year'];
@@ -235,34 +237,17 @@ class ReporteController extends \BaseController
         if ($validator->fails()) {
             return Redirect::back()->withInput()->withErrors($validator->messages());
         }
-
+        $dataMaterial = Material::join('detalle_material_colocado', 'detalle_material_colocado.material_id', '=', 'material.id')
+            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
+            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.hoja_diaria_id', '=', 'hoja_diaria.id')
+            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
+            ->join('sector', 'sector.id', '=', 'block.sector_id')
+            ->where('sector.id', '=', 1)
+            ->where('material.id', '=', 5)
+            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+            ->get();
+        return $dataMaterial;
         $sector = Sector::find($input['sector']);
-
-        /*
-                $blocks = $sector->blocks;
-                $data = Sector::find($input['sector'])
-                    ->rightJoin('block', 'block.sector_id', '=', 'sector.id')
-                    ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.id', '=', 'block.id')
-                    ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                    ->rightJoin('trabajo', 'trabajo.id', '=', 'detalle_hoja_diaria.trabajo_id')
-                    ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-                    ->where('trabajo.es_oficial', '=', '1', 'and')
-                    ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
-                    ->select('block.estacion', 'trabajo.nombre', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-                    ->groupBy('block.estacion', 'trabajo.nombre')
-                    ->get();
-
-                $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-                    ->where('trabajo.es_oficial', '=', '1', 'and')
-                    ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
-                    ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
-                    ->get();
-
-                return View::make('test')
-                    ->with('blocks', $blocks)
-                    ->with('trabajos', $trabajos)
-                    ->with('data', $data);
-        */
 
         // Nombre del archivo
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
@@ -274,26 +259,36 @@ class ReporteController extends \BaseController
                 // Nombre de cada hoja
                 $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
 
-                $excel->sheet($monthName, function ($sheet) use ($blocks) {
+                $excel->sheet($monthName, function ($sheet) use ($sector, $blocks) {
 
+                    // Ancho de columnas automático
                     $sheet->setAutoSize(true);
 
-//                    $sheet->mergeCells('B10:C10');
-//                    $sheet->mergeCells('B11:C11');
-//                    $sheet->mergeCells('B12:C12');
-//                    $sheet->mergeCells('B13:C13');
-//                    $sheet->mergeCells('B14:C14');
+                    // Sin bordes (deberían ser invisibles :/)
+                    $sheet->setAllBorders('none');
+
+                    // Estilo de cabeceras
+                    $style = array(
+                        'font' => array(
+                            'bold' => true),
+                        'alignment' => array(
+                            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                        ));
+
                     $sheet->mergeCells('A10:A14');
                     $sheet->mergeCells('B10:B14');
                     $sheet->mergeCells('C10:C14');
                     $sheet->mergeCells('B14:C14');
                     $sheet->mergeCells('D11:D12');
 
+                    // Título formulario 2
+                    $sheet->cell('A9', 'Form. 2');
+
                     // Cabeceras
-                    $sheet->appendRow(10, array('PART.', 'DESIGNACION', '', 'N°Bien'));
-                    $sheet->appendRow(11, array('PART.', 'DESIGNACION', '', 'UBIC.'));
-                    $sheet->appendRow(13, array('PART.', 'DESIGNACION', '', 'BLOCK'));
-                    $sheet->appendRow(14, array('PART.', 'DESIGNACION', '', 'UNID.'));
+                    $sheet->appendRow(10, array('PART.', 'DESIGNACION', null, 'N°Bien'));
+                    $sheet->appendRow(11, array('PART.', 'DESIGNACION', null, 'UBIC.'));
+                    $sheet->appendRow(13, array('PART.', 'DESIGNACION', null, 'BLOCK'));
+                    $sheet->appendRow(14, array('PART.', 'DESIGNACION', null, 'UNID.'));
 
                     // Blocks en cabecera
                     $columna = 'E';
@@ -304,7 +299,8 @@ class ReporteController extends \BaseController
                         $tmp = $columna . $fila . ':' . $columnaSig . $fila;
                         $sheet->mergeCells($tmp);
                         $sheet->cell($columna . $fila, $block->nro_bien);
-
+                        $sheet->getStyle($columna . $fila)->applyFromArray($style);
+                        $sheet->setBorder($columna . $fila, 'thin');
                         // Ubicación
                         $sheet->cell($columna . ($fila + 1), 'KM');
                         $sheet->cell($columnaSig . ($fila + 1), $block->km_inicio);
@@ -315,6 +311,7 @@ class ReporteController extends \BaseController
                         $tmp = $columna . ($fila + 3) . ':' . $columnaSig . ($fila + 3);
                         $sheet->mergeCells($tmp);
                         $sheet->cell($columna . ($fila + 3), $block->estacion);
+                        $sheet->getStyle($columna . ($fila + 3))->applyFromArray($style);
 
                         // INFORMA/RECIBE
                         $sheet->cell($columna . ($fila + 4), 'INFORMA');
@@ -330,57 +327,85 @@ class ReporteController extends \BaseController
                     $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
                         ->where('trabajo.es_oficial', '=', '1', 'and')
                         ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
-                        ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+                        ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
                         ->get();
-                    $fila = 15;
+
+                    $fila = $fila + 5;
                     foreach ($trabajos as $cont => $trabajo) {
                         $tmp = 'B' . $fila . ':' . 'C' . $fila;
                         $sheet->mergeCells($tmp);
-                        $sheet->appendRow($fila, array(
-                            ($cont + 1), $trabajo->nombre, $trabajo->unidad
-                        ));
+                        $sheet->appendRow($fila, array(($cont + 1), $trabajo->nombre, null, $trabajo->unidad));
+
+                        $dataTrabajo = Trabajo::join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
+                            ->join('sector', 'sector.id', '=', 'block.sector_id')
+                            ->where('sector.id', '=', $sector->id)
+                            ->where('trabajo.id', '=', $trabajo->id)
+                            ->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
+                            ->groupBy('block.estacion')
+                            ->get();
+
+                        $columna = 'E';
+                        foreach ($blocks as $block) {
+                            foreach ($dataTrabajo as $data) {
+                                if ($block->id == $data->id) {
+                                    $sheet->cell($columna . $fila, $data->cantidad);
+                                    break 1;
+                                }
+                            }
+                            $columna++;
+                            $columna++;
+                        }
                         $fila++;
                     }
+                    // Bordes
+                    $sheet->setBorder('A10:AF29', 'thin');
 
+                    /**
+                     * FORMULARIO 3
+                     */
+                    // Título Formulario 3
+                    $sheet->cell('A' . ($fila + 5), 'Form. 3');
+
+                    $sheet->mergeCells('A'.($fila + 6).':B'.($fila + 6));
+                    $sheet->appendRow(($fila + 6), array('B.- MATERIAL COLOCADO', null, 'PROVEEDOR', 'CLASE'));
+
+                    // Materiales colocados
+                    $materialesColocados = Material::where('es_oficial', '=', '1')
+                        ->select('nombre', 'proveedor')
+                        ->get();
+                    $fila = $fila + 7;
+                    foreach ($materialesColocados as $cont => $matCol) {
+                        $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'N'));
+
+                        $dataMaterial = Material::join('detalle_material_colocado', 'detalle_material_colocado.material_id', '=', 'material.id')
+                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
+                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.hoja_diaria.id', '=', 'hoja_diaria.id')
+                            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
+                            ->join('sector', 'sector.id', '=', 'block.sector_id')
+                            ->where('sector.id', '=', $sector->id)
+                            ->where('trabajo.id', '=', $trabajo->id)
+                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
+                            ->get();
+/*
+                        $dataTrabajo = Trabajo::join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
+                            ->join('sector', 'sector.id', '=', 'block.sector_id')
+                            ->where('sector.id', '=', $sector->id)
+                            ->where('trabajo.id', '=', $trabajo->id)
+                            ->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
+                            ->groupBy('block.estacion')
+                            ->get();
+*/
+
+                        $fila++;
+                    }
 
                 });
             }
 
         })->export('xls');
-
-        /*
-                $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
-
-                Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
-
-                    $excel->setTitle('Formularios 2 - 3 - 4');
-                    $excel->setCreator('Icil-Icafal PZS');
-                    $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
-                    $excel->setLastModifiedBy('http://icilicafalpzs.cl/');
-                    $excel->setDescription('Formularios 2-3-4 para EFE');
-
-                    foreach (range($desde, $hasta) as $month) {
-
-                        $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
-
-                        $excel->sheet($monthName . " '" . $year, function ($sheet) use ($sector) {
-
-                            $blocks = $sector->blocks;
-                            $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-                                ->where('trabajo.es_oficial', '=', '1', 'and')
-                                ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
-                                ->select('trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
-                                ->get();
-                            // Using normal with()
-                            $sheet->loadView('test')
-                                ->with('blocks', $blocks)
-                                ->with('trabajos', $trabajos);
-
-                        });
-                    }
-
-                })->export('xls');
-        */
     }
-
 }
