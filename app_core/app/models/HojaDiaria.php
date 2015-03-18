@@ -16,7 +16,7 @@ class HojaDiaria extends \Eloquent
     /**
      * @var array
      */
-    protected $fillable = [ ];
+    protected $fillable = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -53,7 +53,7 @@ class HojaDiaria extends \Eloquent
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function creador()
+    public function user()
     {
         return $this->belongsTo('User');
     }

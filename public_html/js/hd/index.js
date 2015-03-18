@@ -3,7 +3,6 @@
  */
 
 function verHojaDiaria(id) {
-
     $.ajax({
         url: '/hd/' + id,
         type: 'GET'
@@ -20,13 +19,13 @@ function editarHojaDiaria(id) {
     //console.log('editar() ID ' + id);
 }
 function borrarHojaDiaria(id) {
-    setTimeout(function () {
-        if ( confirm("¿Borrar Hoja Diaria?") == true ) {
+    if (confirm("¿Desea borrar Hoja Diaria?") == true) {
+        if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")) {
             $.ajax({
                 url: '/hd/' + id,
                 type: 'DELETE'
             }).success(function (data) {
-                if ( data.error ) {
+                if (data.error) {
                     alert(data.msg);
                 } else {
                     window.location.reload();
@@ -35,12 +34,11 @@ function borrarHojaDiaria(id) {
                 console.log("error");
             });
         }
-    }, 3000);
-
+    }
 }
 
 function escribirDetalle(data) {
-    if ( data.error ) {
+    if (data.error) {
         alertify.log(data.msg);
         return;
     }
@@ -87,7 +85,7 @@ function escribirDetalle(data) {
     /**
      * Tabla de trabajos realizados
      */
-    if ( typeof data.hojaDiaria.detalle_hoja_diaria[0] !== 'undefined' && data.hojaDiaria.detalle_hoja_diaria[0] !== null ) {
+    if (typeof data.hojaDiaria.detalle_hoja_diaria[0] !== 'undefined' && data.hojaDiaria.detalle_hoja_diaria[0] !== null) {
         var tbl_trabajos = $("<table></table>", {
             class: "table table-bordered table-striped"
         });
@@ -117,10 +115,10 @@ function escribirDetalle(data) {
             tbl_tbjs_tr.append("<td>" + value.trabajo.nombre + "</td>");
             //tbl_tbjs_tr.append("<td>" + value.block.estacion + "</td>");
 
-            if ( value['desvio'] != null ) {
+            if (value['desvio'] != null) {
                 tbl_tbjs_tr.append("<td>" + value.desvio.nombre + "</td>");
             }
-            else if ( value['desviador'] != null ) {
+            else if (value['desviador'] != null) {
                 tbl_tbjs_tr.append("<td>" + value.desviador.nombre + "</td>");
             }
             else {
@@ -139,7 +137,7 @@ function escribirDetalle(data) {
     /**
      * Tabla de materiales colocados
      */
-    if ( typeof data.hojaDiaria.detalle_material_colocado[0] !== 'undefined' && data.hojaDiaria.detalle_material_colocado[0] !== null ) {
+    if (typeof data.hojaDiaria.detalle_material_colocado[0] !== 'undefined' && data.hojaDiaria.detalle_material_colocado[0] !== null) {
         var tbl_matCol = $("<table></table>", {
             class: "table table-bordered table-striped"
         });
@@ -177,7 +175,7 @@ function escribirDetalle(data) {
     /**
      * Tabla de materiales Retirados
      */
-    if ( typeof data.hojaDiaria.detalle_material_retirado[0] !== 'undefined' && data.hojaDiaria.detalle_material_retirado[0] !== null ) {
+    if (typeof data.hojaDiaria.detalle_material_retirado[0] !== 'undefined' && data.hojaDiaria.detalle_material_retirado[0] !== null) {
         var tbl_matCol = $("<table></table>", {
             class: "table table-bordered table-striped"
         });
@@ -209,7 +207,7 @@ function escribirDetalle(data) {
         div.append(tbl_matCol);
     }
 
-    if ( data.hojaDiaria.observaciones ) {
+    if (data.hojaDiaria.observaciones) {
         div.append("<h4>Observaciones</h4>");
         div.append("<p>" + data.hojaDiaria.observaciones + "</p>");
     }
