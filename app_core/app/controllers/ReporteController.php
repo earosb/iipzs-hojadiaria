@@ -237,7 +237,16 @@ class ReporteController extends \BaseController
         if ($validator->fails()) {
             return Redirect::back()->withInput()->withErrors($validator->messages());
         }
-        $dataMaterial = Material::join('detalle_material_colocado', 'detalle_material_colocado.material_id', '=', 'material.id')
+        $dataMaterial = Block::where('block.sector_id', '=', 1)
+            ->where('material.id', '=', 2)
+            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
+            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
+            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+            ->get();
+        /*
+         $dataMaterial = Material::join('detalle_material_colocado', 'detalle_material_colocado.material_id', '=', 'material.id')
             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
             ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.hoja_diaria_id', '=', 'hoja_diaria.id')
             ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
@@ -245,7 +254,9 @@ class ReporteController extends \BaseController
             ->where('sector.id', '=', 1)
             ->where('material.id', '=', 5)
             ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+            ->groupBy('block.id')
             ->get();
+         */
         return $dataMaterial;
         $sector = Sector::find($input['sector']);
 
@@ -379,27 +390,14 @@ class ReporteController extends \BaseController
                     foreach ($materialesColocados as $cont => $matCol) {
                         $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'N'));
 
-                        $dataMaterial = Material::join('detalle_material_colocado', 'detalle_material_colocado.material_id', '=', 'material.id')
-                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
-                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.hoja_diaria.id', '=', 'hoja_diaria.id')
-                            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
-                            ->join('sector', 'sector.id', '=', 'block.sector_id')
-                            ->where('sector.id', '=', $sector->id)
-                            ->where('trabajo.id', '=', $trabajo->id)
-                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-                            ->get();
-/*
-                        $dataTrabajo = Trabajo::join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                        $dataMaterial = Block::where('block.sector_id', '=', $sector->id)
+                            ->where('material.id', '=', $matCol->id)
+                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
-                            ->join('sector', 'sector.id', '=', 'block.sector_id')
-                            ->where('sector.id', '=', $sector->id)
-                            ->where('trabajo.id', '=', $trabajo->id)
-                            ->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-                            ->groupBy('block.estacion')
+                            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
+                            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
+                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
                             ->get();
-*/
-
                         $fila++;
                     }
 
