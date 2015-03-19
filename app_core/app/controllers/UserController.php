@@ -97,7 +97,7 @@ class UserController extends BaseController
         } catch (Cartalyst\Sentry\Users\PasswordRequiredException $e) {
             return Redirect::to('login')->withErrors(array('login' => 'La Contraseña es requerida.'));
         } catch (Cartalyst\Sentry\Users\WrongPasswordException $e) {
-            return Redirect::to('login')->withErrors(array('login' => 'Contraseña incorrecta, inténtelo nuevamente.'));
+            return Redirect::to('login')->withErrors(array('login' => 'Contraseña incorrecta.'));
         } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
             return Redirect::to('login')->withErrors(array('login' => 'Usuario no encontrado.'));
         } catch (Cartalyst\Sentry\Users\UserNotActivatedException $e) {
