@@ -120,3 +120,13 @@ Route::filter('csrf', function () {
         throw new Illuminate\Session\TokenMismatchException;
     }
 });
+
+/**
+ * Cambiar nombre del sitio en Syntara
+ */
+View::composer('syntara::layouts.dashboard.master', function($view)
+{
+    $view->with('siteName', 'Icil Icafal PZS');
+    $view->with('favicon', asset('img/favicon.ico'));
+    $view->with('faviconType', asset('img/favicon.ico'));
+});
