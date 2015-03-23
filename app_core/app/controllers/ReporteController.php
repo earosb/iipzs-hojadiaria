@@ -237,28 +237,20 @@ class ReporteController extends \BaseController
         if ($validator->fails()) {
             return Redirect::back()->withInput()->withErrors($validator->messages());
         }
-        $dataMaterial = Block::where('block.sector_id', '=', 1)
-            ->where('material.id', '=', 2)
-            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
-            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
-            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-            ->get();
-        /*
-         $dataMaterial = Material::join('detalle_material_colocado', 'detalle_material_colocado.material_id', '=', 'material.id')
-            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
-            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.hoja_diaria_id', '=', 'hoja_diaria.id')
-            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
-            ->join('sector', 'sector.id', '=', 'block.sector_id')
-            ->where('sector.id', '=', 1)
-            ->where('material.id', '=', 5)
-            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-            ->groupBy('block.id')
-            ->get();
-         */
-        return $dataMaterial;
+
         $sector = Sector::find($input['sector']);
+
+//        $dataMaterial = Block::where('block.sector_id', '=', '1')
+//            ->where('material.id', '=', '1')
+//            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+//            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+//            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
+//            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
+//            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+//            ->groupBy('block.estacion')
+//            ->get();
+//        return View::make('test')
+//            ->with('test', $dataMaterial);
 
         // Nombre del archivo
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
@@ -335,9 +327,9 @@ class ReporteController extends \BaseController
                     }
 
                     // Trabajos
-                    $trabajos = Trabajo::join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-                        ->where('trabajo.es_oficial', '=', '1', 'and')
-                        ->where('tipo_mantenimiento.nombre', '=', 'Mantenimiento mayor')
+                    $trabajos = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+                        ->where('tipo_mantenimiento.cod', '=', 'mayor')
+                        ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
                         ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
                         ->get();
 
@@ -347,12 +339,12 @@ class ReporteController extends \BaseController
                         $sheet->mergeCells($tmp);
                         $sheet->appendRow($fila, array(($cont + 1), $trabajo->nombre, null, $trabajo->unidad));
 
-                        $dataTrabajo = Trabajo::join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                        $dataTrabajo = Trabajo::where('sector.id', '=', $sector->id)
+                            ->where('trabajo.id', '=', $trabajo->id)
+                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
                             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                             ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
                             ->join('sector', 'sector.id', '=', 'block.sector_id')
-                            ->where('sector.id', '=', $sector->id)
-                            ->where('trabajo.id', '=', $trabajo->id)
                             ->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
                             ->groupBy('block.estacion')
                             ->get();
@@ -379,17 +371,18 @@ class ReporteController extends \BaseController
                     // Título Formulario 3
                     $sheet->cell('A' . ($fila + 5), 'Form. 3');
 
-                    $sheet->mergeCells('A'.($fila + 6).':B'.($fila + 6));
+                    $sheet->mergeCells('A' . ($fila + 6) . ':B' . ($fila + 6));
                     $sheet->appendRow(($fila + 6), array('B.- MATERIAL COLOCADO', null, 'PROVEEDOR', 'CLASE'));
 
                     // Materiales colocados
                     $materialesColocados = Material::where('es_oficial', '=', '1')
-                        ->select('nombre', 'proveedor')
+                        ->select('id', 'nombre', 'proveedor')
                         ->get();
+
                     $fila = $fila + 7;
                     foreach ($materialesColocados as $cont => $matCol) {
                         $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'N'));
-
+                        Log::info('$matCol ' . $matCol);
                         $dataMaterial = Block::where('block.sector_id', '=', $sector->id)
                             ->where('material.id', '=', $matCol->id)
                             ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
@@ -397,7 +390,20 @@ class ReporteController extends \BaseController
                             ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
                             ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
                             ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+                            ->groupBy('block.estacion')
                             ->get();
+
+                        $columna = 'E';
+                        foreach ($blocks as $block) {
+                            foreach ($dataMaterial as $data) {
+                                if ($block->id == $data->id) {
+                                    $sheet->cell($columna . $fila, $data->cantidad);
+                                    break 1;
+                                }
+                            }
+                            $columna++;
+                            $columna++;
+                        }
                         $fila++;
                     }
 
