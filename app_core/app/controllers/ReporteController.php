@@ -246,8 +246,8 @@ class ReporteController extends \BaseController
 //            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
 //            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
 //            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
-//            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-//            ->groupBy('block.estacion')
+//            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', 'detalle_material_colocado.reempleo', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+//            ->groupBy('block.estacion', 'detalle_material_colocado.reempleo')
 //            ->get();
 //        return View::make('test')
 //            ->with('test', $dataMaterial);
@@ -365,8 +365,9 @@ class ReporteController extends \BaseController
                     // Bordes
                     $sheet->setBorder('A10:AF29', 'thin');
 
-                    /**
+                    /***********************************************
                      * FORMULARIO 3
+                     * *********************************************
                      */
                     // Título Formulario 3
                     $sheet->cell('A' . ($fila + 5), 'Form. 3');
@@ -382,20 +383,71 @@ class ReporteController extends \BaseController
                     $fila = $fila + 7;
                     foreach ($materialesColocados as $cont => $matCol) {
                         $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'N'));
-                        Log::info('$matCol ' . $matCol);
+                        $sheet->appendRow($fila + 1, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'R'));
+
                         $dataMaterial = Block::where('block.sector_id', '=', $sector->id)
                             ->where('material.id', '=', $matCol->id)
                             ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                             ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
                             ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
-                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-                            ->groupBy('block.estacion')
+                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', 'detalle_material_colocado.reempleo', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+                            ->groupBy('block.estacion', 'detalle_material_colocado.reempleo')
                             ->get();
 
                         $columna = 'E';
                         foreach ($blocks as $block) {
                             foreach ($dataMaterial as $data) {
+                                if ($block->id == $data->id) {
+                                    $data->reempleo == 0 ? $sheet->cell($columna . $fila, $data->cantidad) : null;
+                                    $data->reempleo == 1 ? $sheet->cell($columna . ($fila + 1), $data->cantidad) : null;
+                                    //$sheet->cell($columna . $fila, $data->cantidad);
+                                    break 1;
+                                }
+                            }
+                            $columna++;
+                            $columna++;
+                        }
+                        $fila++;
+                        $fila++;
+                    }
+
+                    /***********************************************
+                     * FORMULARIO 4
+                     * *********************************************
+                     */
+                    // Título Formulario 4
+                    $sheet->cell('A' . ($fila + 5), 'Form. 4');
+
+                    $sheet->mergeCells('A' . ($fila + 6) . ':B' . ($fila + 6));
+                    $sheet->appendRow(($fila + 6), array('C.- MATERIAL RETIRADO DE LA VIA', null, null, 'CLASE'));
+
+                    // Materiales retirados
+                    $materialesRetirados = MaterialRetirado::where('es_oficial', '=', '1')
+                        ->select('id', 'nombre')
+                        ->get();
+
+                    $fila = $fila + 7;
+                    foreach ($materialesRetirados as $cont => $matRet) {
+                        $tmp = 'B' . $fila . ':' . 'C' . $fila;
+                        $sheet->mergeCells($tmp);
+                        $sheet->appendRow($fila, array(($cont + 1), $matRet->nombre, null, 'Exc.'));
+                        //$sheet->appendRow($fila, array(($cont + 2), $matRet->nombre), 'R.');
+
+                        $dataMaterialR = Block::where('block.sector_id', '=', $sector->id)
+                            ->where('material_retirado.id', '=', $matRet->id)
+                            ->where('detalle_material_retirado.reempleo', '=', '0')
+                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                            ->join('detalle_material_retirado', 'detalle_material_retirado.hoja_diaria_id', '=', 'hoja_diaria.id')
+                            ->join('material_retirado', 'material_retirado.id', '=', 'detalle_material_retirado.material_retirado_id')
+                            ->select('block.id', 'block.estacion', 'material_retirado.id as material_id', 'material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
+                            ->groupBy('block.estacion')
+                            ->get();
+
+                        $columna = 'E';
+                        foreach ($blocks as $block) {
+                            foreach ($dataMaterialR as $data) {
                                 if ($block->id == $data->id) {
                                     $sheet->cell($columna . $fila, $data->cantidad);
                                     break 1;
@@ -406,6 +458,7 @@ class ReporteController extends \BaseController
                         }
                         $fila++;
                     }
+
 
                 });
             }
