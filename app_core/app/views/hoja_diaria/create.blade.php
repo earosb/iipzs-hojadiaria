@@ -139,7 +139,7 @@
                             {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
-                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0')) }}
+                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
                         </td>
                     </tr>
                     </tbody>
@@ -169,7 +169,7 @@
                                 {{ Form::checkbox('matCol[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
                             </td>
                             <td data-name="matCol" data-tipo="cant">
-                                {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0')) }}
+                                {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
                             </td>
                         </tr>
                         </tbody>
@@ -198,7 +198,7 @@
                                 {{ Form::checkbox('matRet[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
                             </td>
                             <td data-name="matRet" data-tipo="cant">
-                                {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0')) }}
+                                {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
                             </td>
                         </tr>
                         </tbody>
