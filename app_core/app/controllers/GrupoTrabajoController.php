@@ -1,6 +1,7 @@
 <?php
 
-class GrupoTrabajoController extends \BaseController {
+class GrupoTrabajoController extends \BaseController
+{
 
     /**
      * Display a listing of the resource.
@@ -8,8 +9,9 @@ class GrupoTrabajoController extends \BaseController {
      *
      * @return Response
      */
-    public function index() {
-        $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array( 'id', 'base' ));
+    public function index()
+    {
+        $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array('id', 'base'));
 
         return View::make('grupo_trabajo.index', compact('grupos'));
     }
@@ -20,7 +22,8 @@ class GrupoTrabajoController extends \BaseController {
      *
      * @return Response
      */
-    public function create() {
+    public function create()
+    {
         return Response::view('grupo_trabajo.create');
     }
 
@@ -30,12 +33,13 @@ class GrupoTrabajoController extends \BaseController {
      *
      * @return Response
      */
-    public function store() {
+    public function store()
+    {
         $input = Input::all();
 
         $validator = Validator::make($input, GrupoTrabajo::$rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
         // Crea el grupo mágicamente :O
@@ -51,7 +55,8 @@ class GrupoTrabajoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         return Response::view('404');
     }
 
@@ -62,7 +67,8 @@ class GrupoTrabajoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $grupo = GrupoTrabajo::find($id);
         return View::make('grupo_trabajo.edit', compact('grupo'));
     }
@@ -74,12 +80,13 @@ class GrupoTrabajoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function update($id) {
+    public function update($id)
+    {
         $input = Input::all();
 
         $validator = Validator::make($input, GrupoTrabajo::$rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
@@ -96,9 +103,15 @@ class GrupoTrabajoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
-        GrupoTrabajo::destroy($id);
-        return Response::json(array( 'error' => false ));
+    public function destroy($id)
+    {
+        try {
+            GrupoTrabajo::destroy($id);
+        } catch (\Exception $e) {
+            return Response::json(array('error' => true,
+                'msg' => $e->getMessage()));
+        }
+        return Response::json(array('error' => false));
     }
 
 }

@@ -4,15 +4,16 @@
  *
  * @author earosb
  */
-class MaterialRetiradoController extends \BaseController {
-
+class MaterialRetiradoController extends \BaseController
+{
     /**
      * Display a listing of the resource.
      * GET /materialretirado
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
         App::abort(404);
     }
 
@@ -22,7 +23,8 @@ class MaterialRetiradoController extends \BaseController {
      *
      * @return Response
      */
-    public function create() {
+    public function create()
+    {
         return Response::view('material.createRetirado');
     }
 
@@ -32,36 +34,37 @@ class MaterialRetiradoController extends \BaseController {
      *
      * @return Response
      */
-    public function store() {
+    public function store()
+    {
         $input = array(
-            '_token'     => Input::get('_token'),
-            'nombre'     => Input::get('nombre'),
-            'clase'      => Input::get('clase'),
+            '_token' => Input::get('_token'),
+            'nombre' => Input::get('nombre'),
+            'clase' => Input::get('clase'),
             'es_oficial' => Input::get('es_oficial'),
         );
 
         $validator = Validator::make($input, MaterialRetirado::$rules);
 
-        if ( $validator->fails() ) {
-            if ( Request::ajax() ) {
-                return Response::json(array( 'error' => true,
-                                             'msg'   => $validator->messages() ));
+        if ($validator->fails()) {
+            if (Request::ajax()) {
+                return Response::json(array('error' => true,
+                    'msg' => $validator->messages()));
             }
             return Redirect::back()->withErrors($validator)->withInput();
         }
         $matRet = new MaterialRetirado();
 
-        $matRet->nombre = $input[ 'nombre' ];
-        if ( $input[ 'es_oficial' ] )
+        $matRet->nombre = $input['nombre'];
+        if ($input['es_oficial'])
             $matRet->es_oficial = true;
         else
             $matRet->es_oficial = false;
         $matRet->save();
 
-        if ( Request::ajax() ) {
-            return Response::json(array( 'error'       => false,
-                                         'nuevoMatRet' => $matRet,
-                                         'msg'         => 'Nuevo Material Retirado creado con éxito' ));
+        if (Request::ajax()) {
+            return Response::json(array('error' => false,
+                'nuevoMatRet' => $matRet,
+                'msg' => 'Nuevo Material Retirado creado con éxito'));
         }
         return Redirect::to('m/material');
     }
@@ -73,7 +76,8 @@ class MaterialRetiradoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         App::abort(404);
     }
 
@@ -84,7 +88,8 @@ class MaterialRetiradoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $matRet = MaterialRetirado::find($id);
         return View::make('material.editRetirado', compact('matRet'));
     }
@@ -96,23 +101,24 @@ class MaterialRetiradoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function update($id) {
+    public function update($id)
+    {
         $matRet = MaterialRetirado::find($id);
 
         $input = array(
-            '_token'     => Input::get('_token'),
-            'nombre'     => Input::get('nombre'),
+            '_token' => Input::get('_token'),
+            'nombre' => Input::get('nombre'),
             'es_oficial' => Input::get('es_oficial'),
         );
 
         $validator = Validator::make($input, MaterialRetirado::$rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        $matRet->nombre = $input[ 'nombre' ];
-        $matRet->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
+        $matRet->nombre = $input['nombre'];
+        $matRet->es_oficial = (isset($input['es_oficial'])) ? true : false;
 
         $matRet->save();
 
@@ -126,16 +132,23 @@ class MaterialRetiradoController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
-        MaterialRetirado::destroy($id);
-        return Response::json(array( 'error' => false ));
+    public function destroy($id)
+    {
+        try {
+            MaterialRetirado::destroy($id);
+        } catch (\Exception $e) {
+            return Response::json(array('error' => true,
+                'msg' => $e->getMessage()));
+        }
+        return Response::json(array('error' => false));
     }
 
-    public function ajaxList() {
-        $matRetAll = MaterialRetirado::all(array( 'id', 'nombre' ));
+    public function ajaxList()
+    {
+        $matRetAll = MaterialRetirado::all(array('id', 'nombre'));
 
-        return Response::json(array( 'error'        => false,
-                                     'matRetirados' => $matRetAll ));
+        return Response::json(array('error' => false,
+            'matRetirados' => $matRetAll));
     }
 
 }

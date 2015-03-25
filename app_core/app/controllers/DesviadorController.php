@@ -134,8 +134,12 @@ class DesviadorController extends \BaseController
      */
     public function destroy($id)
     {
-        Desviador::destroy($id);
-
+        try {
+            Desviador::destroy($id);
+        } catch (\Exception $e) {
+            return Response::json(array('error' => true,
+                'msg' => $e->getMessage()));
+        }
         return Response::json(array('error' => false));
     }
 

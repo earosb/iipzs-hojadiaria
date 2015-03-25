@@ -202,9 +202,14 @@ class TrabajoController extends \BaseController
      */
     public function destroy($id)
     {
-        $trabajo = Trabajo::find($id);
-        $trabajo->trabajoMaterial()->forceDelete();
-        $trabajo->forceDelete();
+        try {
+            $trabajo = Trabajo::find($id);
+            $trabajo->trabajoMaterial()->forceDelete();
+            $trabajo->forceDelete();
+        } catch (\Exception $e) {
+            return Response::json(array('error' => true,
+                'msg' => $e->getMessage()));
+        }
 
         return Response::json(array('error' => false));
     }

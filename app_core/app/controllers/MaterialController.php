@@ -4,14 +4,16 @@
  *
  * @author earosb
  */
-class MaterialController extends \BaseController {
+class MaterialController extends \BaseController
+{
 
     /**
      * Display a listing of materials
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
         $materiales = Material::all();
         $matRetirados = MaterialRetirado::all();
         return View::make('material.index', compact('materiales', 'matRetirados'));
@@ -22,7 +24,8 @@ class MaterialController extends \BaseController {
      *
      * @return Response
      */
-    public function create() {
+    public function create()
+    {
         return View::make('material.create');
     }
 
@@ -31,32 +34,33 @@ class MaterialController extends \BaseController {
      * POST /material-colocado
      * @return Response
      */
-    public function store() {
+    public function store()
+    {
         $input = Input::except('_token');
 
         $validator = Validator::make($input, Material::$rules);
 
-        if ( $validator->fails() ) {
-            if ( Request::ajax() ) {
-                return Response::json(array( 'error' => true,
-                                             'msg'   => $validator->messages() ));
+        if ($validator->fails()) {
+            if (Request::ajax()) {
+                return Response::json(array('error' => true,
+                    'msg' => $validator->messages()));
             }
             return Redirect::back()->withErrors($validator)->withInput();
         }
         $material = new Material();
 
-        $material->nombre = $input[ 'nombre' ];
-        $material->valor = $input[ 'valor' ];
-        $material->unidad = $input[ 'unidad' ];
-        $material->proveedor = $input[ 'proveedor' ];
-        $material->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
+        $material->nombre = $input['nombre'];
+        $material->valor = $input['valor'];
+        $material->unidad = $input['unidad'];
+        $material->proveedor = $input['proveedor'];
+        $material->es_oficial = (isset($input['es_oficial'])) ? true : false;
 
         $material->save();
-        if ( Request::ajax() ) {
+        if (Request::ajax()) {
 
-            return Response::json(array( 'error'       => false,
-                                         'nuevoMatCol' => $material,
-                                         'msg'         => 'Nuevo Material creado con éxito' ));
+            return Response::json(array('error' => false,
+                'nuevoMatCol' => $material,
+                'msg' => 'Nuevo Material creado con éxito'));
         }
         return Redirect::to('m/material');
     }
@@ -67,7 +71,8 @@ class MaterialController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
         App::abort(404);
     }
 
@@ -77,7 +82,8 @@ class MaterialController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $material = Material::find($id);
         return View::make('material.edit', compact('material'));
     }
@@ -88,22 +94,23 @@ class MaterialController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function update($id) {
+    public function update($id)
+    {
         $material = Material::find($id);
 
         $input = Input::except('_token');
 
         $validator = Validator::make($input, Material::$rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        $material->nombre = $input[ 'nombre' ];
-        $material->valor = $input[ 'valor' ];
-        $material->unidad = $input[ 'unidad' ];
-        $material->proveedor = $input[ 'proveedor' ];
-        $material->es_oficial = (isset($input[ 'es_oficial' ])) ? true : false;
+        $material->nombre = $input['nombre'];
+        $material->valor = $input['valor'];
+        $material->unidad = $input['unidad'];
+        $material->proveedor = $input['proveedor'];
+        $material->es_oficial = (isset($input['es_oficial'])) ? true : false;
 
         $material->save();
 
@@ -116,9 +123,15 @@ class MaterialController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
-        Material::destroy($id);
-        return Response::json(array( 'error' => false ));
+    public function destroy($id)
+    {
+        try {
+            Material::destroy($id);
+        } catch (\Exception $e) {
+            return Response::json(array('error' => true,
+                'msg' => $e->getMessage()));
+        }
+        return Response::json(array('error' => false));
     }
 
 }

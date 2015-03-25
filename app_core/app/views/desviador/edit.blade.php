@@ -79,7 +79,10 @@
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Desviador {{ $desviador->nombre }}");
+                        if (data.error){
+                            alert("Se produjo un problema el intentar eliminar el Desviador {{ $desviador->nombre }}");
+                            alert(data.msg);
+                        }
 
                         window.location.replace("{{ URL::to('/m/block/'.$desviador->block_id) }}");
                     });

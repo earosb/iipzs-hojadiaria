@@ -1,13 +1,15 @@
 <?php
 
-class SectorController extends \BaseController {
+class SectorController extends \BaseController
+{
 
     /**
      * Display a listing of sector
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
         $sectores = Sector::all();
 
         return View::make('sector.index', compact('sectores'));
@@ -18,7 +20,8 @@ class SectorController extends \BaseController {
      *
      * @return Response
      */
-    public function create() {
+    public function create()
+    {
         return View::make('sector.create');
     }
 
@@ -27,11 +30,12 @@ class SectorController extends \BaseController {
      *
      * @return Response
      */
-    public function store() {
-        $input     = Input::all();
+    public function store()
+    {
+        $input = Input::all();
         $validator = Validator::make($input, Sector::$rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             //return Redirect::back()->withErrors($validator->messages())->withInput();
             return Redirect::to('m/sector/create')->withInput()->withErrors($validator->messages());
         }
@@ -47,7 +51,8 @@ class SectorController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function edit($id) {
+    public function edit($id)
+    {
         $sector = Sector::findOrFail($id);
 
         return View::make('sector.edit', compact('sector'));
@@ -59,20 +64,21 @@ class SectorController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function update($id) {
-        $sector    = Sector::findOrFail($id);
-        $input     = Input::all();
+    public function update($id)
+    {
+        $sector = Sector::findOrFail($id);
+        $input = Input::all();
         $validator = Validator::make($input, Sector::$rules);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        $sector->nombre           = $input[ 'nombre' ];
-        $sector->estacion_inicio  = $input[ 'estacion_inicio' ];
-        $sector->estacion_termino = $input[ 'estacion_termino' ];
-        $sector->km_inicio        = $input[ 'km_inicio' ];
-        $sector->km_termino       = $input[ 'km_termino' ];
+        $sector->nombre = $input['nombre'];
+        $sector->estacion_inicio = $input['estacion_inicio'];
+        $sector->estacion_termino = $input['estacion_termino'];
+        $sector->km_inicio = $input['km_inicio'];
+        $sector->km_termino = $input['km_termino'];
 
         $sector->save();
 
@@ -85,17 +91,23 @@ class SectorController extends \BaseController {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
-        Sector::destroy($id);
-
-        return Response::json(array( 'error' => false ));
+    public function destroy($id)
+    {
+        try {
+            Sector::destroy($id);
+        } catch (\Exception $e) {
+            return Response::json(array('error' => true,
+                'msg' => $e->getMessage()));
+        }
+        return Response::json(array('error' => false));
     }
 
     /**
      * @param $id
      * @return \Illuminate\View\View
      */
-    public function blocks($id) {
+    public function blocks($id)
+    {
 
         try {
             /*$blocks = Block::where('sector_id', '=', $id)
@@ -104,7 +116,7 @@ class SectorController extends \BaseController {
             $sector = Sector::find($id);
             $blocks = $sector->blocks;
             return View::make('block.index', compact('blocks', 'sector'));
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             App::abort(404);
         }
     }

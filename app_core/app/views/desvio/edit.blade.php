@@ -118,7 +118,10 @@
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Desvío {{ $desvio->nombre }}");
+                        if (data.error){
+                            alert("Se produjo un problema el intentar eliminar el Desvío {{ $desvio->nombre }}");
+                            alert(data.msg);
+                        }
 
                         window.location.replace("{{ URL::to('/m/block/'.$desvio->block_id) }}");
                     });

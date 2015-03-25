@@ -99,7 +99,10 @@
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if (data.error) alert("Se produjo un problema el intentar eliminar el Material {{ $material->nombre }}");
+                        if (data.error){
+                            alert("Se produjo un problema el intentar eliminar el Material {{ $material->nombre }}");
+                            alert(data.msg);
+                        }
 
                         window.location.replace("{{ URL::to('/m/material') }}");
                     });

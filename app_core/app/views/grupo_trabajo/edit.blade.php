@@ -57,7 +57,10 @@
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if ( data.error ) alert("Se produjo un problema el intentar eliminar el Grupo: {{ $grupo->base }}");
+                        if (data.error){
+                            alert("Se produjo un problema el intentar eliminar el Grupo: {{ $grupo->base }}");
+                            alert(data.msg);
+                        }
 
                         window.location.replace("{{ URL::to('/m/grupo-trabajo') }}");
                     });
