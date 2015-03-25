@@ -6,6 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="owner" content="Icil-Icafal Proyecto Zona Sur S.A.">
 
+    <!--[if lte IE 9]>
+    <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js'></script>
+    <script src='http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js'></script>
+    <![endif]-->
+
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('img/apple-icon-60x60.png')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('img/apple-icon-72x72.png')}}">
