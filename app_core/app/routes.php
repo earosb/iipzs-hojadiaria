@@ -154,28 +154,46 @@ Route::group(array('before' => 'auth'), function () {
 if (!Config::get('app.debug')) {
 
     App::missing(function ($exception) {
-        return Response::view('error', array('code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.'), 404);
+        return Response::view('error', array(
+            'code' => 'Error 404',
+            'exception' => $exception->getMessage(),
+            'message' => 'Ups...! La página solicitada no existe.'),
+            404);
     });
 
     App::error(function ($exception, $code) {
+
+//        $username = 'evalo'; //Sentry::getUser()->username;
+//        Mail::send('emails.error',
+//            array(
+//                'user' => $username,
+//                'code' => $code,
+//                'message' => $exception->getMessage(),
+//                'exception' => $exception,
+//            ),
+//            function ($message) use ($username) {
+//                $message->to('webmaster@icilicafalpzs.cl', $username)
+//                    ->subject('I-I PZS ERROR');
+//            });
+
         switch ($code) {
-            case 401:
-                return Response::view('error', array('code' => 'Error 401', 'message' => 'Acceso no autorizado.'), 401);
-            /*
             case 403:
-                return Response::view('error', array( 'code' => 'Error 403', 'message' => 'Ups...! La página solicitada no existe.' ), 403);
-            */
+                $message = trans('all.error.403');
+                break;
             case 404:
-                return Response::view('error', array('code' => 'Error 404', 'message' => 'Ups...! La página solicitada no existe.'), 404);
-
-            case 405:
-                return Response::view('error', array('code' => 'Error 405', 'message' => 'Método no permitido.'), 405);
-
+                $message = trans('all.error.404');
+                break;
             case 500:
-                return Response::view('error', array('code' => 'Error 500', 'message' => 'Error interno del servidor.'), 500);
-
+                $message = trans('all.error.500');
+                break;
             default:
-                return Response::view('error', array('code' => 'Error Desconocido ' . $code, 'message' => 'Ups...! La página solicitada no existe.'), $code);
+                $message = trans('all.error.default');
         }
+
+        return Response::view('error', array(
+            'code' => 'Error ' . $code,
+            'exception' => $exception->getMessage(),
+            'message' => $message),
+            $code);
     });
 }
