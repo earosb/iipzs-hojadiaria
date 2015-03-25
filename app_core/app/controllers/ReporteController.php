@@ -431,31 +431,34 @@ class ReporteController extends \BaseController
                     foreach ($materialesRetirados as $cont => $matRet) {
                         $tmp = 'B' . $fila . ':' . 'C' . $fila;
                         $sheet->mergeCells($tmp);
+                        $tmp = 'B' . ($fila+1) . ':' . 'C' . ($fila+1);
+                        $sheet->mergeCells($tmp);
                         $sheet->appendRow($fila, array(($cont + 1), $matRet->nombre, null, 'Exc.'));
-                        //$sheet->appendRow($fila, array(($cont + 2), $matRet->nombre), 'R.');
+                        $sheet->appendRow($fila +1, array(($cont + 1), $matRet->nombre, null, 'R.'));
 
                         $dataMaterialR = Block::where('block.sector_id', '=', $sector->id)
                             ->where('material_retirado.id', '=', $matRet->id)
-                            ->where('detalle_material_retirado.reempleo', '=', '0')
                             ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                             ->join('detalle_material_retirado', 'detalle_material_retirado.hoja_diaria_id', '=', 'hoja_diaria.id')
                             ->join('material_retirado', 'material_retirado.id', '=', 'detalle_material_retirado.material_retirado_id')
                             ->select('block.id', 'block.estacion', 'material_retirado.id as material_id', 'material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
-                            ->groupBy('block.estacion')
+                            ->groupBy('block.estacion', 'detalle_material_retirado.reempleo')
                             ->get();
 
                         $columna = 'E';
                         foreach ($blocks as $block) {
                             foreach ($dataMaterialR as $data) {
                                 if ($block->id == $data->id) {
-                                    $sheet->cell($columna . $fila, $data->cantidad);
+                                    $data->reempleo == 0 ? $sheet->cell($columna . $fila, $data->cantidad) : null;
+                                    $data->reempleo == 1 ? $sheet->cell($columna . ($fila + 1), $data->cantidad) : null;
                                     break 1;
                                 }
                             }
                             $columna++;
                             $columna++;
                         }
+                        $fila++;
                         $fila++;
                     }
 
