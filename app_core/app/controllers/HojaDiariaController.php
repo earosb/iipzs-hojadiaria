@@ -49,16 +49,25 @@ class HojaDiariaController extends \BaseController
      */
     public function index()
     {
-        $allHojas = HojaDiaria::orderBy('fecha', 'desc')
-            ->paginate(20);
+        if (Input::get('grupos')) {
+            $allHojas = HojaDiaria::whereIn('grupo_trabajo_id', Input::get('grupos'))
+                ->orderBy('fecha', 'desc')
+                ->paginate(20);
+        } else {
+            $allHojas = HojaDiaria::orderBy('fecha', 'desc')
+                ->paginate(20);
+        }
 
         foreach ($allHojas as $hoja) {
             $hoja->user('username');
             $hoja->grupoTrabajo('base');
         }
 
+        $grupos = GrupoTrabajo::all(array('id', 'base'));
+
         return View::make('hoja_diaria.index')
-            ->with('allHojas', $allHojas);
+            ->with('allHojas', $allHojas)
+            ->with('grupos', $grupos);
     }
 
     /**

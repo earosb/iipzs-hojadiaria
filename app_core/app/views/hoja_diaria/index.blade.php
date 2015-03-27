@@ -25,15 +25,15 @@
 @endsection
 
 @section('content')
-    <div class="col-xs-12 col-md-12 col-lg-8" id="div_historico">
-        <legend>Histórico Hojas Diarias</legend>
+    <legend>Histórico Hojas Diarias</legend>
+    <div class="col-xs-12 col-md-8" id="div_historico">
         <table class="table table-bordered table-hover" id="tab_trabajados">
             <thead>
             <tr>
                 <th>Fecha</th>
-                <th>Ingresada el</th>
+                <th class="hidden-xs">Ingresada el</th>
                 <th>Ingresada por</th>
-                <th>Última edición</th>
+                <th class="hidden-xs">Última edición</th>
                 <th>Grupo</th>
             </tr>
             </thead>
@@ -43,13 +43,13 @@
                     <td>
                         {{ Carbon\Carbon::parse($hoja->fecha)->format('d-m-Y') }}
                     </td>
-                    <td>
+                    <td class="hidden-xs">
                         {{ Carbon\Carbon::parse($hoja->created_at)->format('d-m-Y H:i:s') }}
                     </td>
                     <td>
                         {{ $hoja->user->username }}
                     </td>
-                    <td>
+                    <td class="hidden-xs">
                         {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
                     </td>
                     <td>
@@ -62,6 +62,30 @@
         <div class="pull-right">
             {{ $allHojas->links() }}
         </div>
+    </div>
+    <div class="col-xs-12 col-md-4">
+        {{ Form::open(array(
+        'url'		=>	'/hd',
+        'method'	=>	'get')) }}
+        <div class="panel panel-default filterable">
+            <div class="panel-heading clearfix">
+                <div class="btn-group pull-right">
+                    {{ Form::submit('Aplicar', array('class' => 'btn btn-primary btn-xs')) }}
+                </div>
+                <h3 class="panel-title pull-left" style="padding-top: 5px;">Filtrar</h3>
+            </div>
+            <div class="panel-body">
+                @foreach($grupos as $grupo)
+                    <div class="checkbox">
+                        <label>
+                            {{ Form::checkbox('grupos[]', $grupo->id) }}
+                            {{ $grupo->base }}
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        {{ Form::close() }}
     </div>
 @stop
 
