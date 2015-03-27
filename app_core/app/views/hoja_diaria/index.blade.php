@@ -17,6 +17,10 @@
                 display: none;
             }
 
+            #div_filter {
+                display: none;
+            }
+
             .btn-group {
                 display: none;
             }
@@ -63,12 +67,13 @@
             {{ $allHojas->links() }}
         </div>
     </div>
-    <div class="col-xs-12 col-md-4">
+    <div class="col-xs-12 col-md-4" id="div_filter">
         {{ Form::open(array(
         'url'		=>	'/hd',
         'method'	=>	'get')) }}
         <div class="panel panel-default filterable">
             <div class="panel-heading clearfix">
+                {{ Form::select('paginate', array('20' => '20', '30' => '30', '40' => '40', '50' => '50'), Input::get('paginate')) }}
                 <div class="btn-group pull-right">
                     {{ Form::submit('Aplicar', array('class' => 'btn btn-primary btn-xs')) }}
                 </div>
@@ -78,7 +83,7 @@
                 @foreach($grupos as $grupo)
                     <div class="checkbox">
                         <label>
-                            {{ Form::checkbox('grupos[]', $grupo->id) }}
+                            {{ Form::checkbox('grupos['.$grupo->id.']', $grupo->id, (Input::get('grupos.'.$grupo->id) == $grupo->id)) }}
                             {{ $grupo->base }}
                         </label>
                     </div>
