@@ -194,7 +194,7 @@ class ReporteController extends \BaseController
                 ->with('avanzada', $avanzada)
                 ->with('materialesRetirados', $materialesRetirados);
         } else {
-            return App::abort(404);
+            App::abort(404);
         }
     }
 
@@ -219,8 +219,6 @@ class ReporteController extends \BaseController
     {
         $input = Input::all();
 
-        $desdeArray = array(1 => '');
-
         $desde = $input['desde'];
         $hasta = $input['hasta'];
         $year = $input['year'];
@@ -240,35 +238,32 @@ class ReporteController extends \BaseController
 
         $sector = Sector::find($input['sector']);
 
-//        $dataMaterial = Block::where('block.sector_id', '=', '1')
-//            ->where('material.id', '=', '1')
-//            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-//            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-//            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
-//            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
-//            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', 'detalle_material_colocado.reempleo', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-//            ->groupBy('block.estacion', 'detalle_material_colocado.reempleo')
-//            ->get();
-//        return View::make('test')
-//            ->with('test', $dataMaterial);
-
         // Nombre del archivo
         $filename = 'Form 2-3-4 ' . $sector->nombre . ' Año ' . $year . ' [' . $desde . '-' . $hasta . ']';
 
         Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
+
+            $excel->setTitle('Formularios 2-3-4');
+            $excel->setCreator('Icil-Icafal PZS');
+            $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
+            $excel->setLastModifiedBy('http://icilicafalpzs.cl/');
+            $excel->setDescription('Formularios 2-3-4');
+
             $blocks = $sector->blocks;
             foreach (range($desde, $hasta) as $month) {
 
                 // Nombre de cada hoja
-                $monthName = date("M", mktime(0, 0, 0, $month, 1, $year));
+                $monthName = date("M", mktime(0, 0, 0, $month, 1, $year)) . ' \'' . $year;
+                $desdeQuery = date('Y-m-01', strtotime($year . '-' . $month . '-01'));
+                $hastaQuery = date('Y-m-t', strtotime($year . '-' . $month . '-01'));
 
-                $excel->sheet($monthName, function ($sheet) use ($sector, $blocks) {
+                $excel->sheet($monthName, function ($sheet) use ($sector, $blocks, $desdeQuery, $hastaQuery) {
 
                     // Ancho de columnas automático
                     $sheet->setAutoSize(true);
 
                     // Sin bordes (deberían ser invisibles :/)
-                    $sheet->setAllBorders('none');
+                    //$sheet->setAllBorders('none');
 
                     // Estilo de cabeceras
                     $style = array(
@@ -309,16 +304,23 @@ class ReporteController extends \BaseController
                         $sheet->cell($columnaSig . ($fila + 1), $block->km_inicio);
                         $sheet->cell($columna . ($fila + 2), 'KM');
                         $sheet->cell($columnaSig . ($fila + 2), $block->km_termino);
+                        $sheet->setBorder($columna . ($fila + 1), 'thin');
+                        $sheet->setBorder($columna . ($fila + 2), 'thin');
+                        $sheet->setBorder($columnaSig . ($fila + 1), 'thin');
+                        $sheet->setBorder($columnaSig . ($fila + 2), 'thin');
 
                         // Estación
                         $tmp = $columna . ($fila + 3) . ':' . $columnaSig . ($fila + 3);
                         $sheet->mergeCells($tmp);
                         $sheet->cell($columna . ($fila + 3), $block->estacion);
                         $sheet->getStyle($columna . ($fila + 3))->applyFromArray($style);
+                        $sheet->setBorder($columna . ($fila + 3), 'thin');
 
                         // INFORMA/RECIBE
                         $sheet->cell($columna . ($fila + 4), 'INFORMA');
                         $sheet->cell($columnaSig . ($fila + 4), 'RECIBE');
+                        $sheet->setBorder($columna . ($fila + 4), 'thin');
+                        $sheet->setBorder($columnaSig . ($fila + 4), 'thin');
 
                         $columna++;
                         $columna++;
@@ -341,6 +343,7 @@ class ReporteController extends \BaseController
 
                         $dataTrabajo = Trabajo::where('sector.id', '=', $sector->id)
                             ->where('trabajo.id', '=', $trabajo->id)
+                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
                             ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
                             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                             ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
@@ -363,7 +366,7 @@ class ReporteController extends \BaseController
                         $fila++;
                     }
                     // Bordes
-                    $sheet->setBorder('A10:AF29', 'thin');
+                    //$sheet->setBorder('A10:AF29', 'thin');
 
                     /***********************************************
                      * FORMULARIO 3
@@ -387,6 +390,7 @@ class ReporteController extends \BaseController
 
                         $dataMaterial = Block::where('block.sector_id', '=', $sector->id)
                             ->where('material.id', '=', $matCol->id)
+                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
                             ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                             ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
@@ -431,13 +435,14 @@ class ReporteController extends \BaseController
                     foreach ($materialesRetirados as $cont => $matRet) {
                         $tmp = 'B' . $fila . ':' . 'C' . $fila;
                         $sheet->mergeCells($tmp);
-                        $tmp = 'B' . ($fila+1) . ':' . 'C' . ($fila+1);
+                        $tmp = 'B' . ($fila + 1) . ':' . 'C' . ($fila + 1);
                         $sheet->mergeCells($tmp);
                         $sheet->appendRow($fila, array(($cont + 1), $matRet->nombre, null, 'Exc.'));
-                        $sheet->appendRow($fila +1, array(($cont + 1), $matRet->nombre, null, 'R.'));
+                        $sheet->appendRow($fila + 1, array(($cont + 1), $matRet->nombre, null, 'R.'));
 
                         $dataMaterialR = Block::where('block.sector_id', '=', $sector->id)
                             ->where('material_retirado.id', '=', $matRet->id)
+                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
                             ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                             ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                             ->join('detalle_material_retirado', 'detalle_material_retirado.hoja_diaria_id', '=', 'hoja_diaria.id')
