@@ -54,7 +54,9 @@
     <p class="text-danger text-center">Hemos detectado que utilizas Internet Explorer, Cámbialo.</p>
     <![endif]-->
     <noscript>
-        <p class="text-danger text-center">Para utilizar las funcionalidades completas de este sitio es necesario tener JavaScript habilitado. Aquí están las <a href="http://www.enable-javascript.com/es/" target="_blank"> instrucciones para habilitar JavaScript en tu navegador web</a>.</p>
+        <p class="text-danger text-center">Para utilizar las funcionalidades completas de este sitio es necesario tener
+            JavaScript habilitado. Aquí están las <a href="http://www.enable-javascript.com/es/" target="_blank">
+                instrucciones para habilitar JavaScript en tu navegador web</a>.</p>
     </noscript>
     @if(isset($msg))
         <div class="alert alert-dismissible alert-success">
@@ -73,6 +75,7 @@
 {{ HTML::script('//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js') }}
 {{ HTML::script('//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js') }}
 {{ HTML::script('js/alertify.min.js') }}
+{{ HTML::script('http://arrow.scrolltotop.com/arrow35.js') }}
 
 {{-- yield para agregar scripts en cada página --}}
 @yield('js')
