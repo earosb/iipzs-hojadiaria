@@ -35,10 +35,10 @@
             <thead>
             <tr>
                 <th>Fecha</th>
-                <th class="hidden-xs">Ingresada el</th>
-                <th>Ingresada por</th>
-                <th class="hidden-xs">Última edición</th>
                 <th>Grupo</th>
+                <th>Ingresada por</th>
+                <th class="hidden-xs">Ingresada el</th>
+                <th class="hidden-xs">Última edición</th>
             </tr>
             </thead>
             <tbody>
@@ -47,17 +47,17 @@
                     <td>
                         {{ Carbon\Carbon::parse($hoja->fecha)->format('d-m-Y') }}
                     </td>
-                    <td class="hidden-xs">
-                        {{ Carbon\Carbon::parse($hoja->created_at)->format('d-m-Y H:i:s') }}
+                    <td>
+                        {{ $hoja->grupo_trabajo->base }}
                     </td>
                     <td>
                         {{ $hoja->user->username }}
                     </td>
                     <td class="hidden-xs">
-                        {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
+                        {{ Carbon\Carbon::parse($hoja->created_at)->format('d-m-Y H:i:s') }}
                     </td>
-                    <td>
-                        {{ $hoja->grupo_trabajo->base }}
+                    <td class="hidden-xs">
+                        {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
                     </td>
                 </tr>
             @endforeach
