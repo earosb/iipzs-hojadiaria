@@ -71,11 +71,17 @@ class HojaDiariaController extends \BaseController
 
         $paginate = (Input::get('paginate') ? Input::get('paginate') : 20);
 
-        if (Input::get('grupos')) {
-            $allHojas = HojaDiaria::whereIn('grupo_trabajo_id', Input::get('grupos'))
-                ->whereMonth('fecha', '=', Input::get('mes'))
-                ->orderBy('fecha', 'desc')
-                ->paginate($paginate);
+        if (Input::get('month')) {
+            if (Input::get('group')) {
+                $allHojas = HojaDiaria::whereIn('grupo_trabajo_id', Input::get('group'))
+                    ->whereMonth('fecha', '=', Input::get('month'))
+                    ->orderBy('fecha', 'desc')
+                    ->paginate($paginate);
+            } else {
+                $allHojas = HojaDiaria::whereMonth('fecha', '=', Input::get('month'))
+                    ->orderBy('fecha', 'desc')
+                    ->paginate($paginate);
+            }
         } else {
             $allHojas = HojaDiaria::orderBy('fecha', 'desc')
                 ->paginate($paginate);

@@ -82,19 +82,19 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    {{ Form::label('mes', 'Mes', array('class' => 'col-xs-2 control-label')) }}
+                    {{ Form::label('month', 'Mes', array('class' => 'col-xs-2 control-label')) }}
                     <div class="col-xs-6">
-                        {{ Form::select('mes', trans('form.months'), Input::get('mes'), ['class'=>'form-control']) }}
+                        {{ Form::select('month', trans('form.months'), Input::get('month'), ['class'=>'form-control']) }}
                     </div>
                 </div>
                 <div class="form-group">
-                    {{ Form::label('grupos', 'Grupos', array('class' => 'col-xs-2 control-label')) }}
+                    {{ Form::label('group', 'Grupos', array('class' => 'col-xs-2 control-label')) }}
 
                     <div class="col-xs-6">
                         @foreach($grupos as $grupo)
                             <div class="checkbox">
                                 <label>
-                                    {{ Form::checkbox('grupos['.$grupo->id.']', $grupo->id, (Input::get('grupos.'.$grupo->id) == $grupo->id)) }}
+                                    {{ Form::checkbox('group['.$grupo->id.']', $grupo->id, (Input::get('group.'.$grupo->id) == $grupo->id)) }}
                                     {{ $grupo->base }}
                                 </label>
                             </div>
