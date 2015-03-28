@@ -49,10 +49,31 @@ class HojaDiariaController extends \BaseController
      */
     public function index()
     {
+        /*$query = DB::table('hoja_diaria');
+
+        if(Input::get('grupos'))
+            $query->whereIn('grupo_trabajo_id', Input::get('grupos'));
+
+        if(Input::get('mes'))
+            $query->whereMonth('fecha', '=', Input::get('mes'));
+
+        if(Input::get('paginate'))
+            $query->paginate(Input::get('paginate'));
+        else
+            $query->paginate(20);
+
+
+        $allHojas = $query
+            ->join('grupo_trabajo', 'grupo_trabajo.id', '=', 'hoja_diaria.grupo_trabajo_id')
+            ->join('users', 'users.id', '=', 'hoja_diaria.user_id')
+            ->orderBy('fecha', 'desc')
+            ->get(array());*/
+
         $paginate = (Input::get('paginate') ? Input::get('paginate') : 20);
 
         if (Input::get('grupos')) {
             $allHojas = HojaDiaria::whereIn('grupo_trabajo_id', Input::get('grupos'))
+                ->whereMonth('fecha', '=', Input::get('mes'))
                 ->orderBy('fecha', 'desc')
                 ->paginate($paginate);
         } else {
@@ -68,7 +89,7 @@ class HojaDiariaController extends \BaseController
         $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array('id', 'base'));
 
         return View::make('hoja_diaria.index')
-            ->with('allHojas', $allHojas)
+            ->with('allHojas', $allHojas->appends(Input::except('page')))
             ->with('grupos', $grupos);
     }
 

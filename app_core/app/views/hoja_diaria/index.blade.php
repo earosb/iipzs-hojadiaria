@@ -70,24 +70,37 @@
     <div class="col-xs-12 col-md-4" id="div_filter">
         {{ Form::open(array(
         'url'		=>	'/hd',
-        'method'	=>	'get')) }}
+        'method'	=>	'get',
+        'class' =>  'form-horizontal')) }}
         <div class="panel panel-default filterable">
             <div class="panel-heading clearfix">
                 {{ Form::select('paginate', array('20' => '20', '30' => '30', '40' => '40', '50' => '50'), Input::get('paginate')) }}
                 <div class="btn-group pull-right">
                     {{ Form::submit('Aplicar', array('class' => 'btn btn-primary btn-xs')) }}
                 </div>
-                <h3 class="panel-title pull-left" style="padding-top: 5px;">Filtrar</h3>
+                <h3 class="panel-title pull-left" style="padding-top: 5px;padding-right: 15px;">Filtrar</h3>
             </div>
             <div class="panel-body">
-                @foreach($grupos as $grupo)
-                    <div class="checkbox">
-                        <label>
-                            {{ Form::checkbox('grupos['.$grupo->id.']', $grupo->id, (Input::get('grupos.'.$grupo->id) == $grupo->id)) }}
-                            {{ $grupo->base }}
-                        </label>
+                <div class="form-group">
+                    {{ Form::label('mes', 'Mes', array('class' => 'col-xs-2 control-label')) }}
+                    <div class="col-xs-6">
+                        {{ Form::select('mes', trans('form.months'), Input::get('mes'), ['class'=>'form-control']) }}
                     </div>
-                @endforeach
+                </div>
+                <div class="form-group">
+                    {{ Form::label('grupos', 'Grupos', array('class' => 'col-xs-2 control-label')) }}
+
+                    <div class="col-xs-6">
+                        @foreach($grupos as $grupo)
+                            <div class="checkbox">
+                                <label>
+                                    {{ Form::checkbox('grupos['.$grupo->id.']', $grupo->id, (Input::get('grupos.'.$grupo->id) == $grupo->id)) }}
+                                    {{ $grupo->base }}
+                                </label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
         {{ Form::close() }}
