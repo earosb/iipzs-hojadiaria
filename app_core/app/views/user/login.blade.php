@@ -37,7 +37,7 @@
                 @if($errors->has('login'))
                     <div class="alert alert-dismissable alert-danger">
                         {{--<button type="button" class="close" data-dismiss="alert">×</button>--}}
-                        <p><strong>{{ $errors->first('login', ':message') }}</strong></p>
+                        <p class="text-center"><strong>{{ $errors->first('login', ':message') }}</strong></p>
                     </div>
                 @endif
                 <div class="form-group">
