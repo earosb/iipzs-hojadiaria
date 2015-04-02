@@ -212,10 +212,10 @@ class ReporteController extends \BaseController
     }
 
     /**
-     * Recibe parámetros y genera excel formulario 2-3-4
+     * Recibe parámetros y genera excel formulario 2-3-4 manteniminto mayor
      * @return $this
      */
-    public function postForm()
+    public function postFormMayor()
     {
         $input = Input::all();
 
@@ -468,6 +468,168 @@ class ReporteController extends \BaseController
                     }
 
 
+                });
+            }
+
+        })->export('xls');
+    }
+
+    /**
+     * Recibe parámetros y genera excel formulario 2-3-4 manteniminto mayor
+     * @return $this
+     */
+    public function postFormMenor()
+    {
+        $input = Input::all();
+
+        $desde = $input['desde'];
+        $hasta = $input['hasta'];
+        $year = $input['year'];
+
+        $rules = array(
+            'desde' => 'required|numeric|between:1,12',
+            'hasta' => 'required|numeric|between:' . $input['desde'] . ',12',
+            'year' => 'required|numeric|between:2015,' . $year,
+            'sector' => 'required|exists:sector,id',
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withInput()->withErrors($validator->messages());
+        }
+
+        $sector = Sector::find($input['sector']);
+
+        // Nombre del archivo
+        $filename = 'Form 2 ' . $sector->nombre . ' Año ' . $year . ' [Mantenimiento Menor]';
+
+        Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
+
+            $excel->setTitle('Formulario 2');
+            $excel->setCreator('Icil-Icafal PZS');
+            $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
+            $excel->setLastModifiedBy('http://icilicafalpzs.cl/');
+            $excel->setDescription('Formulario 2');
+
+            $blocks = $sector->blocks;
+            foreach (range($desde, $hasta) as $month) {
+
+                // Nombre de cada hoja
+                $monthName = date("M", mktime(0, 0, 0, $month, 1, $year)) . ' \'' . $year;
+                $desdeQuery = date('Y-m-01', strtotime($year . '-' . $month . '-01'));
+                $hastaQuery = date('Y-m-t', strtotime($year . '-' . $month . '-01'));
+
+                $excel->sheet($monthName, function ($sheet) use ($sector, $blocks, $desdeQuery, $hastaQuery) {
+
+                    // Ancho de columnas automático
+                    $sheet->setAutoSize(true);
+
+                    // Sin bordes (deberían ser invisibles :/)
+                    //$sheet->setAllBorders('none');
+
+                    // Estilo de cabeceras
+                    $style = array(
+                        'font' => array(
+                            'bold' => true),
+                        'alignment' => array(
+                            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                        ));
+
+                    $sheet->mergeCells('A10:A14');
+                    $sheet->mergeCells('B10:B14');
+                    $sheet->mergeCells('C10:C14');
+                    $sheet->mergeCells('B14:C14');
+                    $sheet->mergeCells('D11:D12');
+
+                    // Título formulario 2
+                    $sheet->cell('A9', 'Form. 2');
+
+                    // Cabeceras
+                    $sheet->appendRow(10, array('PART.', 'DESIGNACION', null, 'N°Bien'));
+                    $sheet->appendRow(11, array('PART.', 'DESIGNACION', null, 'UBIC.'));
+                    $sheet->appendRow(13, array('PART.', 'DESIGNACION', null, 'BLOCK'));
+                    $sheet->appendRow(14, array('PART.', 'DESIGNACION', null, 'UNID.'));
+
+                    // Blocks en cabecera
+                    $columna = 'E';
+                    $columnaSig = 'F';
+                    $fila = 10;
+                    foreach ($blocks as $block) {
+                        // Nro bien
+                        $tmp = $columna . $fila . ':' . $columnaSig . $fila;
+                        $sheet->mergeCells($tmp);
+                        $sheet->cell($columna . $fila, $block->nro_bien);
+                        $sheet->getStyle($columna . $fila)->applyFromArray($style);
+                        $sheet->setBorder($columna . $fila, 'thin');
+                        // Ubicación
+                        $sheet->cell($columna . ($fila + 1), 'KM');
+                        $sheet->cell($columnaSig . ($fila + 1), $block->km_inicio);
+                        $sheet->cell($columna . ($fila + 2), 'KM');
+                        $sheet->cell($columnaSig . ($fila + 2), $block->km_termino);
+                        $sheet->setBorder($columna . ($fila + 1), 'thin');
+                        $sheet->setBorder($columna . ($fila + 2), 'thin');
+                        $sheet->setBorder($columnaSig . ($fila + 1), 'thin');
+                        $sheet->setBorder($columnaSig . ($fila + 2), 'thin');
+
+                        // Estación
+                        $tmp = $columna . ($fila + 3) . ':' . $columnaSig . ($fila + 3);
+                        $sheet->mergeCells($tmp);
+                        $sheet->cell($columna . ($fila + 3), $block->estacion);
+                        $sheet->getStyle($columna . ($fila + 3))->applyFromArray($style);
+                        $sheet->setBorder($columna . ($fila + 3), 'thin');
+
+                        // INFORMA/RECIBE
+                        $sheet->cell($columna . ($fila + 4), 'INFORMA');
+                        $sheet->cell($columnaSig . ($fila + 4), 'RECIBE');
+                        $sheet->setBorder($columna . ($fila + 4), 'thin');
+                        $sheet->setBorder($columnaSig . ($fila + 4), 'thin');
+
+                        $columna++;
+                        $columna++;
+                        $columnaSig++;
+                        $columnaSig++;
+                    }
+
+                    // Trabajos
+                    $trabajos = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+                        ->where('tipo_mantenimiento.cod', '=', 'menor')
+                        ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                        ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+                        ->get();
+
+                    $fila = $fila + 5;
+                    foreach ($trabajos as $cont => $trabajo) {
+                        $tmp = 'B' . $fila . ':' . 'C' . $fila;
+                        $sheet->mergeCells($tmp);
+                        $sheet->appendRow($fila, array(($cont + 1), $trabajo->nombre, null, $trabajo->unidad));
+
+                        $dataTrabajo = Trabajo::where('sector.id', '=', $sector->id)
+                            ->where('trabajo.id', '=', $trabajo->id)
+                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
+                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                            ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
+                            ->join('sector', 'sector.id', '=', 'block.sector_id')
+                            ->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
+                            ->groupBy('block.estacion')
+                            ->get();
+
+                        $columna = 'E';
+                        foreach ($blocks as $block) {
+                            foreach ($dataTrabajo as $data) {
+                                if ($block->id == $data->id) {
+                                    $sheet->cell($columna . $fila, $data->cantidad);
+                                    break 1;
+                                }
+                            }
+                            $columna++;
+                            $columna++;
+                        }
+                        $fila++;
+                    }
+                    // Bordes
+                    //$sheet->setBorder('A10:AF29', 'thin');
                 });
             }
 

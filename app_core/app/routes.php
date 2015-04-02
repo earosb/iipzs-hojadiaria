@@ -115,7 +115,16 @@ Route::group(array('before' => 'auth'), function () {
          * Rutas para generar formulario
          */
         Route::get('/r/form', 'ReporteController@getForm');
-        Route::post('/r/form', 'ReporteController@postForm');
+//        Route::post('/r/form', 'ReporteController@postForm');
+        Route::post('/r/form', function () {
+            if (Input::get('action') == 'mayor') {
+                $action = 'postFormMayor';
+                return App::make('ReporteController')->$action();
+            } elseif (Input::get('action') == 'menor') {
+                $action = 'postFormMenor';
+                return App::make('ReporteController')->$action();
+            }
+        });
 
     });
 

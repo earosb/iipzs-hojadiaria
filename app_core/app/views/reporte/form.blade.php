@@ -74,7 +74,10 @@
         <div class="col-xs-12 col-md-6">
             <div class="pull-right">
                 <div class="btn-group">
-                    {{ Form::button('Generar', array('type' => 'submit', 'class' => 'btn btn-primary')) }}
+                    {{ Form::button('Mantenimiento menor', array('type' => 'submit', 'class' => 'btn btn-primary', 'name' => 'action', 'value' => 'menor')) }}
+                </div>
+                <div class="btn-group">
+                    {{ Form::button('Mantenimiento mayor', array('type' => 'submit', 'class' => 'btn btn-primary', 'name' => 'action', 'value' => 'mayor')) }}
                 </div>
             </div>
         </div>
