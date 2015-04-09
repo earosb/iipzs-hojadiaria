@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la creación de una hoja diaria de trabajo">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -133,7 +133,7 @@
                             {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
-                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]')) }}
+                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]', 'onblur' => 'onblurKmTermino(this);')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
                             {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]')) }}
@@ -230,8 +230,8 @@
     {{--{{ HTML::script('js/hd/create/table.js') }}--}}
     {{ HTML::script('js/min/1424470502873.min.js') }}
 
-    {{--{{ HTML::script('js/hd/create/create.js') }}--}}
-    {{ HTML::script('js/min/1425312083058.min.js') }}
+    {{ HTML::script('js/hd/create/create.js') }}
+    {{--{{ HTML::script('js/min/1425312083058.min.js') }}--}}
 
     {{--{{ HTML::script('js/ajaxBlocks.js') }}--}}
     {{ HTML::script('js/min/1425396779231.min.js') }}

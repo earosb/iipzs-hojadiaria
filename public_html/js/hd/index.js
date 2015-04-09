@@ -14,10 +14,6 @@ function verHojaDiaria(id) {
     });
 }
 
-function editarHojaDiaria(id) {
-    alertify.log("Función editar no disponible");
-    //console.log('editar() ID ' + id);
-}
 function borrarHojaDiaria(id) {
     if (confirm("¿Desea borrar Hoja Diaria?") == true) {
         if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")) {
@@ -42,7 +38,7 @@ function escribirDetalle(data) {
         alertify.log(data.msg);
         return;
     }
-    console.log(data);
+
     var div = $("#div_detalle");
     div.empty();
 

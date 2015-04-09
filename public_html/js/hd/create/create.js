@@ -215,3 +215,16 @@ $('#formHojaDiaria').submit(function (e) {
 
 });
 
+/**
+ * Cambia el valor de km termino al perder el foco en km inicio
+ * copia el valor +100 y el atributo min
+ * @param obj input
+ */
+function onblurKmTermino(obj) {
+    var id = (obj.id).split(/[[\]]{1,2}/);
+    id.length--;
+    var km_termino = document.getElementById("trabajos[" + id[1] + "][km_termino]");
+    km_termino.value = parseInt(obj.value) + 100;
+    km_termino.setAttribute("min", obj.value);
+}
+
