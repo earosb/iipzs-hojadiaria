@@ -194,7 +194,7 @@ function escribirDetalle(data) {
 
         $.each(data.hojaDiaria.detalle_material_retirado, function (index, value) {
             var tbl_tr = $("<tr></tr>");
-            var reempleo = value.reempleo === '1' ? 'Si' : 'No';
+            var reempleo = value.reempleo == '1' ? 'Si' : 'No';
             tbl_tr.append("<td>" + (index + 1) + "</td>");
             tbl_tr.append("<td>" + value.material_retirado.nombre + "</td>");
             tbl_tr.append("<td>" + reempleo + "</td>");
