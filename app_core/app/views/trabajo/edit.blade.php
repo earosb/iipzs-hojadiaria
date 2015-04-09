@@ -123,9 +123,10 @@
 
         </div>
         {{-- Checkboxes Materiales Asociados --}}
-        <div class="col-xs-12 col-md-6">
+        <div class="col-xs-12 col-md-4">
             <div class="panel panel-default">
-                <div class="panel-heading">Materiales Asociados <p class="text-danger"><strong>En construcción!</strong></p></div>
+                <div class="panel-heading">Materiales Asociados <b class="text-danger">Beta <span
+                                class="glyphicon glyphicon-exclamation-sign"></span></b></div>
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-sm-10">
@@ -145,7 +146,6 @@
                                     </label>
                                 </div>
                             @endforeach
-
                         </div>
                     </div>
                 </div>
@@ -167,7 +167,7 @@
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if (data.error){
+                        if (data.error) {
                             alert("Se produjo un problema el intentar eliminar el Trabajo {{ $trabajo->nombre }}");
                             alert(data.msg);
                         }

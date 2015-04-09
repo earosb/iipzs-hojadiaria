@@ -75,7 +75,7 @@
 {{ HTML::script('//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js') }}
 {{ HTML::script('//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js') }}
 {{ HTML::script('js/alertify.min.js') }}
-{{ HTML::script('http://arrow.scrolltotop.com/arrow35.js') }}
+{{ HTML::script('js/back_to_top.js') }}
 
 {{-- yield para agregar scripts en cada página --}}
 @yield('js')

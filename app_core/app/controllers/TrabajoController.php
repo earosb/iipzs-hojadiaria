@@ -214,4 +214,15 @@ class TrabajoController extends \BaseController
         return Response::json(array('error' => false));
     }
 
+    /**
+     * Retorna los materiales enlazados con el trabajo
+     * @param $id int ID del trabajo
+     * @return \Illuminate\Http\JsonResponse materiales
+     */
+    public function getMateriales($id)
+    {
+        $materiales = 'consulta aqui';
+        return Response::json(array('materiales' => $materiales));
+    }
+
 }

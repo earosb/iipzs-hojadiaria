@@ -31,7 +31,7 @@
 @section('content')
     <legend>Histórico Hojas Diarias</legend>
     <div class="col-xs-12 col-md-8" id="div_historico">
-        <table class="table table-bordered table-hover" id="tab_trabajados">
+        <table class="table table-bordered table-striped table-hover" id="tab_trabajados">
             <thead>
             <tr>
                 <th>Fecha</th>

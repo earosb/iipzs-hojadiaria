@@ -42,7 +42,7 @@ function escribirDetalle(data) {
         alertify.log(data.msg);
         return;
     }
-
+    console.log(data);
     var div = $("#div_detalle");
     div.empty();
 
@@ -64,17 +64,17 @@ function escribirDetalle(data) {
     var btn_editar = $("<a></a>", {
         class: "btn btn-default glyphicon glyphicon-pencil",
         title: "Editar",
-        href: "#",
-        onClick: "editarHojaDiaria( " + data.hojaDiaria.id + " );return false;"
+        href: "/hd/" + data.hojaDiaria.id + "/edit",
+        //onClick: "editarHojaDiaria( " + data.hojaDiaria.id + " );return false;"
     });
 
-    var btn_imprimir = $("<a></a>", {
-        class: "btn btn-default glyphicon glyphicon-print",
-        title: "Imprimir",
-        href: "javascript:window.print();"
-    });
+    //var btn_imprimir = $("<a></a>", {
+    //    class: "btn btn-default glyphicon glyphicon-print",
+    //    title: "Imprimir",
+    //    href: "javascript:window.print();"
+    //});
 
-    btn_div.append(btn_imprimir);
+    //btn_div.append(btn_imprimir);
     btn_div.append(btn_editar);
     btn_div.append(btn_borrar);
 

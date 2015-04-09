@@ -314,19 +314,217 @@ class HojaDiariaController extends \BaseController
      */
     public function edit($id)
     {
-        App::abort(404);
+        $hoja= HojaDiaria::findOrFail($id);
+        $hoja->fecha = Carbon::parse($hoja->fecha)->format('d/m/Y');
+
+        $hoja->detalleMaterialRetirado;
+        foreach ($hoja->detalleMaterialRetirado as $materialRet) {
+            $materialRet->materialRetirado;
+        }
+
+        $hoja->detalleMaterialColocado;
+        foreach ($hoja->detalleMaterialColocado as $materialCol) {
+            $materialCol->material;
+        }
+
+        $hoja->detalleHojaDiaria;
+        foreach ($hoja->detalleHojaDiaria as $trabajo) {
+            $trabajo->trabajo;
+            $trabajo->block;
+            $trabajo->desvio;
+            $trabajo->desviador;
+        }
+
+        $sectores = Sector::all(array('id', 'nombre'));
+
+        $tipoMantenimiento = TipoMantenimiento::All(array('id', 'nombre'));
+        foreach ($tipoMantenimiento as $tMat) {
+            $tMat->trabajos;
+        }
+
+        $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array('id', 'base'));
+
+        $materialesCollection = Material::all(array('id', 'nombre', 'unidad'));
+        $materiales = array();
+        foreach ($materialesCollection as $material) {
+            $materiales[$material->id] = $material->nombre . ' (' . $material->unidad . ')';
+        }
+
+        $matRetCollection = MaterialRetirado::all(array('id', 'nombre'));
+        $matRetirados = array();
+        foreach ($matRetCollection as $matRet) {
+            $matRetirados[$matRet->id] = $matRet->nombre;
+        }
+
+        return View::make('hoja_diaria.edit', compact('hoja'))
+            ->with('sectores', $sectores)
+            ->with('grupos', $grupos)
+            ->with('materiales', $materiales)
+            ->with('materialesRet', $matRetirados)
+            ->with('tipoMantenimiento', $tipoMantenimiento);
     }
 
     /**
      * Update the specified resource in storage.
      * PUT /hd/{id}
      *
-     * @param  int $id
+     * @param  int $idHoja
      * @return Response
      */
-    public function update($id)
+    public function update($idHoja)
     {
-        App::abort(404);
+        /**
+         * extrae todos los campos excepto los ocultos en el formulario
+         */
+        $input = Input::except('trabajos.0', 'matCol.0', 'matRet.0');
+        /**
+         * reglas de validación
+         * @var array
+         */
+        $rules = array(
+            'fecha' => 'required|date_format:d/m/Y|before:"now +1 day"',
+            'selectsector' => 'required|exists:sector,id',
+            'selectblock' => 'required|exists:block,id,sector_id,' . $input['selectsector'],
+            'selectgrupos' => 'required|exists:grupo_trabajo,id',
+        );
+        $messages = array(
+            'before' => 'Debe seleccionar una fecha anterior a hoy.',
+        );
+        /**
+         * agrega reglas de validación si es que existen campos
+         * @var [type]
+         */
+        foreach ($input['trabajos'] as $key => $value) {
+            // explode() simil de función split()
+            list($tipo, $id) = explode('-', $value['ubicacion']);
+            switch ($tipo) {
+                case 'block':
+                    $block = Block::find($id);
+                    $min = $block->km_inicio;
+                    $max = $block->km_termino;
+                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . $min . ',' . $value['km_termino'];
+                    $rules['trabajos.' . $key . '.km_termino'] = 'required|numeric|between:' . $value['km_inicio'] . ',' . $max;
+                    break;
+                case 'desvio':
+                    $desvio = Desvio::find($id);
+                    $min = $desvio->block->km_inicio;
+                    $max = $desvio->block->km_termino;
+                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . $min . ',' . $max;
+                    break;
+                case 'desviador':
+                    $desviador = Desviador::find($id);
+                    $min = $desviador->km_inicio;
+                    // Rango de 100 mts a cada lado por si las moscas los viejos ponen datos malos, en teoría debería ser un km exacto
+                    $rules['trabajos.' . $key . '.km_inicio'] = 'required|numeric|between:' . ($min - 100) . ',' . ($min + 100);
+                    break;
+            }
+            $rules['trabajos.' . $key . '.ubicacion'] = 'required';
+            $rules['trabajos.' . $key . '.trabajo'] = 'required|exists:trabajo,id';
+            $rules['trabajos.' . $key . '.cantidad'] = 'required|numeric|min:0';
+
+        }
+        foreach ($input['matCol'] as $key => $value) {
+            $rules['matCol.' . $key . '.id'] = 'required|exists:material,id';
+            $rules['matCol.' . $key . '.cant'] = 'required|numeric|min:0';
+        }
+        foreach ($input['matRet'] as $key => $value) {
+            $rules['matRet.' . $key . '.id'] = 'required|exists:material_retirado,id';
+            $rules['matRet.' . $key . '.cant'] = 'required|numeric|min:0';
+        }
+        /**
+         * lleva la validación acabo
+         * @var [type]
+         */
+        $validator = Validator::make($input, $rules, $messages);
+
+        if ($validator->fails()) {
+            return Response::json(
+                array('error' => true,
+                    'msg' => $validator->messages()));
+        }
+
+            $hojaDiaria = HojaDiaria::find($idHoja);
+
+            $hojaDiaria->detalleHojaDiaria()->forceDelete();
+            $hojaDiaria->detalleMaterialColocado()->forceDelete();
+            $hojaDiaria->detalleMaterialRetirado()->forceDelete();
+            //$hojaDiaria->forceDelete();
+
+        /**
+         * Sin errores, listo para guardar
+         */
+        $dateFlag = Carbon::createFromFormat('d/m/Y', $input['fecha']);
+
+        $hojaDiaria->fecha = $dateFlag->toDateString();
+        $hojaDiaria->observaciones = $input['obs'];
+        $hojaDiaria->grupo_trabajo_id = $input['selectgrupos'];
+        $hojaDiaria->user_id = Sentry::getUser()->id;
+
+        $hojaDiaria->save();
+
+        foreach ($input['trabajos'] as $key => $value) {
+            list($tipo, $id) = explode('-', $value['ubicacion']);
+
+            $trabajo = Trabajo::find($value['trabajo']);
+
+            $detHojaDiaria = new DetalleHojaDiaria();
+            $detHojaDiaria->trabajo_id = $trabajo->id;
+            $detHojaDiaria->cantidad = $value['cantidad'];
+            $detHojaDiaria->hoja_diaria_id = $hojaDiaria->id;
+            switch ($tipo) {
+                case 'block':
+                    $block = Block::find($id);
+                    $detHojaDiaria->block_id = $block->id;
+                    $detHojaDiaria->km_inicio = $value['km_inicio'];
+                    $detHojaDiaria->km_termino = $value['km_termino'];
+                    break;
+                case 'desvio':
+                    $desvio = Desvio::find($id);
+                    $detHojaDiaria->block_id = $desvio->block->id;
+                    $detHojaDiaria->desvio_id = $desvio->id;
+                    $detHojaDiaria->km_inicio = $value['km_inicio'];
+                    $detHojaDiaria->km_termino = $value['km_termino'];
+                    break;
+                case 'desviador':
+                    $desviador = Desviador::find($id);
+                    $detHojaDiaria->block_id = $desviador->block->id;
+                    $detHojaDiaria->desviador_id = $desviador->id;
+                    $detHojaDiaria->km_inicio = $desviador->km_inicio;
+                    break;
+            }
+            $detHojaDiaria->save();
+        }
+
+        foreach ($input['matCol'] as $key => $value) {
+            $material = Material::find($value['id']);
+
+            $detMatCol = new DetalleMaterialColocado();
+            $detMatCol->cantidad = $value['cant'];
+            $detMatCol->reempleo = (array_key_exists('reempleo', $value)) ? true : false;
+            $detMatCol->material_id = $material->id;
+            $detMatCol->hoja_diaria_id = $hojaDiaria->id;
+
+            $detMatCol->save();
+        }
+
+        foreach ($input['matRet'] as $key => $value) {
+            $matRet = MaterialRetirado::find($value['id']);
+
+            $detMatRet = new DetalleMaterialRetirado();
+            $detMatRet->cantidad = $value['cant'];
+            $detMatRet->reempleo = (array_key_exists('reempleo', $value)) ? true : false;
+            $detMatRet->material_retirado_id = $matRet->id;
+            $detMatRet->hoja_diaria_id = $hojaDiaria->id;
+
+            $detMatRet->save();
+        }
+
+        return Response::json(
+            array(
+                'error' => false,
+                'edit' => true
+            ));
+
     }
 
     /**

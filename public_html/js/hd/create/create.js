@@ -203,6 +203,9 @@ $('#formHojaDiaria').submit(function (e) {
                 }
             });
         } else {
+            if (data.edit){
+                window.history.back(-1);
+            }
             alertify.log(data.msg);
             formGroup.removeClass('required has-error');
             helpBlock.empty();
