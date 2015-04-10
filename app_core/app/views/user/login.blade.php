@@ -2,41 +2,44 @@
 
 @section('meta')
     <meta name="description" content="Página de login">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
     Iniciar Sesión
 @stop
+@section('css')
+    {{ HTML::style('//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.6/animate.min.css') }}
+    <style type="text/css">
+        .well.login-box {
+            width: 300px;
+            margin: 0 auto;
+        }
 
-<style type="text/css">
-    .well.login-box {
-        width: 300px;
-        margin: 0 auto;
-    }
+        .well.login-box legend {
+            font-size: 26px;
+            text-align: center;
+            font-weight: 300;
+        }
 
-    .well.login-box legend {
-        font-size: 26px;
-        text-align: center;
-        font-weight: 300;
-    }
-
-    .well.login-box input[type="text"] {
-        border-color: #ddd;
-        border-radius: 0;
-    }
-</style>
+        .well.login-box input[type="text"] {
+            border-color: #ddd;
+            border-radius: 0;
+        }
+    </style>
+@stop
 
 @section('content')
-
     <div class="row">
-        <div class="col-xs-12 col-md-12">
+        <div id="divForm" class="col-xs-12 col-md-12" style="display: none;">
+            <div style="text-align: center; margin-bottom: 10px;">
+                <img alt="Icil-Icafal PZS" src="{{ asset('img/logo.png') }}" width="290px" height="89px">
+            </div>
             <div class="well login-box">
                 {{ Form::open(array('url' => 'login')) }}
                 <legend>{{ trans('form.signin'); }}</legend>
                 @if($errors->has('login'))
-                    <div class="alert alert-dismissable alert-danger">
-                        {{--<button type="button" class="close" data-dismiss="alert">×</button>--}}
+                    <div class="alert alert-dismissable alert-danger animated shake">
                         <p class="text-center"><strong>{{ $errors->first('login', ':message') }}</strong></p>
                     </div>
                 @endif
@@ -58,5 +61,14 @@
             </div>
         </div>
     </div>
+@stop
 
+@section('js')
+    <script>
+        $(document).ready(function () {
+            var form = $('#divForm');
+            form.show();
+            form.addClass('animated pulse');
+        });
+    </script>
 @stop
