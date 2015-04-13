@@ -20,15 +20,22 @@
                     @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
                         <p>13/04/2015</p>
                         <ul>
-                            <li>Despliega materiales requeridos por cada trabajo seleccionado en formulario hoja diaria.</li>
-                            <li>Interfaz de mantenimiento de trabajos.</li>
+                            <li>Despliega materiales requeridos por cada trabajo seleccionado en formulario hoja
+                                diaria (requiere configuración en mantención de trabajos).
+                            </li>
+                            <li>Trabajos se muestran por orden alfabético en formulario hoja diaria.</li>
+                            @if (Sentry::getUser()->hasAccess(['mantencion']))
+                                <li>Interfaz de mantenimiento de trabajos con lista de materiales existentes.</li>
+                            @endif
                         </ul>
                     @endif
 
                     @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
                         <p>10/04/2015</p>
                         <ul>
-                            <li class="text-success">Copia el km de inicio y suma 100 en km de término al ingresar un km de inicio en trabajos hd.</li>
+                            <li class="text-success">Copia el km de inicio y suma 100 en km de término al ingresar un km
+                                de inicio en trabajos hd.
+                            </li>
                         </ul>
                     @endif
 

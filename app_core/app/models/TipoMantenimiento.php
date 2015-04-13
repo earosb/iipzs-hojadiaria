@@ -25,6 +25,6 @@ class TipoMantenimiento extends \Eloquent {
      */
 	public function trabajos()
     {
-        return $this->hasMany('Trabajo');
+        return $this->hasMany('Trabajo')->orderBy('nombre', 'asc');
     }
 }

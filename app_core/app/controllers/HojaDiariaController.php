@@ -16,7 +16,7 @@ class HojaDiariaController extends \BaseController
 
         $tipoMantenimiento = TipoMantenimiento::All(array('id', 'nombre'));
         foreach ($tipoMantenimiento as $tMat) {
-            $tMat->trabajos;
+            $tMat->trabajos();
         }
 
         $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array('id', 'base'));
@@ -314,7 +314,7 @@ class HojaDiariaController extends \BaseController
      */
     public function edit($id)
     {
-        $hoja= HojaDiaria::findOrFail($id);
+        $hoja = HojaDiaria::findOrFail($id);
         $hoja->fecha = Carbon::parse($hoja->fecha)->format('d/m/Y');
 
         $hoja->detalleMaterialRetirado;
@@ -443,12 +443,12 @@ class HojaDiariaController extends \BaseController
                     'msg' => $validator->messages()));
         }
 
-            $hojaDiaria = HojaDiaria::find($idHoja);
+        $hojaDiaria = HojaDiaria::find($idHoja);
 
-            $hojaDiaria->detalleHojaDiaria()->forceDelete();
-            $hojaDiaria->detalleMaterialColocado()->forceDelete();
-            $hojaDiaria->detalleMaterialRetirado()->forceDelete();
-            //$hojaDiaria->forceDelete();
+        $hojaDiaria->detalleHojaDiaria()->forceDelete();
+        $hojaDiaria->detalleMaterialColocado()->forceDelete();
+        $hojaDiaria->detalleMaterialRetirado()->forceDelete();
+        //$hojaDiaria->forceDelete();
 
         /**
          * Sin errores, listo para guardar
