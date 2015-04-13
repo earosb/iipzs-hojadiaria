@@ -29,7 +29,7 @@ $(document).ready(function () {
         var selectUbicacion = $('.selectubicacion');
         $('#selectblock').empty();
         selectUbicacion.empty();
-        selectUbicacion.append('<option disabled selected value="null"> Seleccione Block </option>');
+        selectUbicacion.append('<option disabled selected value="" style="display:none;"> Seleccione Block </option>');
 
         ajaxBlocks(sector_id, '#selectblock');
 
@@ -53,7 +53,7 @@ $('#selectblock').on('change', function (e) {
     e.preventDefault();
     var id_block = e.target.value;
 
-    if ( id_block == 'empty' || id_block == 'null' ) {
+    if (id_block == 'empty' || id_block == 'null') {
         $('.selectubicacion').empty();
     } else {
         $.ajax({
@@ -66,7 +66,7 @@ $('#selectblock').on('change', function (e) {
             /** DONE */
             var selectUbicacion = $('.selectubicacion');
             selectUbicacion.empty();
-            selectUbicacion.append('<option selected="selected" disabled="disabled"> Seleccione vía </option>');
+            selectUbicacion.append('<option selected="selected" disabled="disabled" value="" style="display:none;"> Seleccione vía </option>');
             selectUbicacion.append('<optgroup label="Vía Principal">');
             selectUbicacion.append('<option value=' + 'block-' + data.block.id + '>' + data.block.estacion + '</option>');
             selectUbicacion.append('</optgroup>');
@@ -81,15 +81,15 @@ $('#selectblock').on('change', function (e) {
             kmTermino.removeAttr('max');
 
             $.each(data.desvios, function (index, desvioObj) {
-                if ( index === 0 ) selectUbicacion.append('<optgroup label="Desvíos">');
+                if (index === 0) selectUbicacion.append('<optgroup label="Desvíos">');
                 selectUbicacion.append('<option value=' + 'desvio-' + desvioObj.id + '>' + desvioObj.nombre + '</option>');
-                if ( index == data.desvios.length - 1 ) { // Esto no funciona
+                if (index == data.desvios.length - 1) { // Esto no funciona
                     selectUbicacion.append('</optgroup>');
                 }
             });
 
             $.each(data.desviadores, function (index, desviadoresObj) {
-                if ( index === 0 ) selectUbicacion.append('<optgroup label="Desviadores">');
+                if (index === 0) selectUbicacion.append('<optgroup label="Desviadores">');
                 selectUbicacion.append('<option value=' + 'desviador-' + desviadoresObj.id + '>' + desviadoresObj.nombre + '</option>');
             });
 
@@ -111,7 +111,7 @@ function cargarKilometros(id) {
         alert("Error al obtener los datos\nPor favor verifique su conexión a Internet");
     }).done(function (data) {
 
-        if ( data.error ) {
+        if (data.error) {
             alertify.log(data.msg);
             return;
         }
@@ -125,7 +125,7 @@ function cargarKilometros(id) {
 
         var km_inicio;
         var km_termino;
-        switch ( data.tipo ) {
+        switch (data.tipo) {
             case 'block':
                 km_inicio = document.getElementById("trabajos[" + id + "][km_inicio]");
                 km_inicio.setAttribute("placeholder", data.km_inicio);
@@ -182,15 +182,15 @@ $('#formHojaDiaria').submit(function (e) {
         var form = $('#formHojaDiaria');
         var formGroup = form.find('.form-group');
         var helpBlock = form.find('.help-block');
-        if ( data.error ) {
+        if (data.error) {
             formGroup.removeClass('required has-error');
             helpBlock.empty();
             $.each(data.msg, function (index, value) {
-                if ( index.substring(0, 8) == 'trabajos' ) {
+                if (index.substring(0, 8) == 'trabajos') {
                     document.getElementById(index).setAttribute("class", "form-group required has-error");
-                } else if ( index.substring(0, 6) == 'matCol' ) {
+                } else if (index.substring(0, 6) == 'matCol') {
                     document.getElementById(index).setAttribute("class", "form-group required has-error");
-                } else if ( index.substring(0, 6) == 'matRet' ) {
+                } else if (index.substring(0, 6) == 'matRet') {
                     document.getElementById(index).setAttribute("class", "form-group required has-error");
                 } else {
                     var errorDiv = '#' + index + '_error';
@@ -203,7 +203,7 @@ $('#formHojaDiaria').submit(function (e) {
                 }
             });
         } else {
-            if (data.edit){
+            if (data.edit) {
                 window.history.back(-1);
             }
             alertify.log(data.msg);
@@ -216,7 +216,7 @@ $('#formHojaDiaria').submit(function (e) {
 });
 
 /**
- * Cambia el valor de km termino al perder el foco en km inicio
+ * Cambia el valor en km termino al perder el foco en km inicio
  * copia el valor +100 y el atributo min
  * @param obj input
  */
@@ -226,5 +226,100 @@ function onblurKmTermino(obj) {
     var km_termino = document.getElementById("trabajos[" + id[1] + "][km_termino]");
     km_termino.value = parseInt(obj.value) + 100;
     km_termino.setAttribute("min", obj.value);
+}
+
+/**
+ * Trae los materiales de cada trabajo y los agrega a la tabla de materiales colocados
+ * @param obj
+ */
+function getMateriales(obj) {
+
+    var id = (obj.id).split(/[[\]]{1,2}/);
+    id.length--;
+
+    $.ajax({
+        url: '/trabajo/' + obj.value + '/materiales',
+        type: 'get',
+        dataType: 'json'
+    }).done(function (data) {
+
+        $.each(data.materiales, function (index, value) {
+
+            var newid = 0;
+            $.each($("#tab_material_colocado tr"), function () {
+                if ( parseInt($(this).data("id")) > newid ) {
+                    newid = parseInt($(this).data("id"));
+                }
+            });
+            newid ++;
+            // tr principal
+            var tr = $("<tr></tr>", {
+                id: "addrMatCol" + newid,
+                "data-id": newid
+            });
+            // td select
+            var tdSelect = $("<td></td>", {
+                "data-name": "matCol",
+                id: "matCol." + newid + ".id",
+                name: "matCol." + newid + ".id"
+            });
+
+            var select = $("<select></select>", {
+                class: "form-control matCol",
+                name: "matCol[" + newid + "][id]",
+                id: "matCol[" + newid + "][id]"
+            });
+
+            var option = $("<option>"+value.nombre+"</option>", {
+                value: value.id
+            });
+            // td reempleo
+            var tdReempleo = $("<td></td>", {
+                "data-name": "matCol",
+                id: "matCol." + newid + ".reempleo",
+                name: "matCol." + newid + ".reempleo"
+            });
+
+            var inputReempleo = $("<input>", {
+                class: "form-control",
+                name: "matCol[" + newid + "][reempleo]",
+                type: "checkbox",
+                value: "",
+                id: "matCol[" + newid + "][reempleo]"
+            });
+            // td cantidad
+            var tdCantidad = $("<td></td>", {
+                "data-name": "matCol",
+                id: "matCol." + newid + ".cant",
+                name: "matCol." + newid + ".cant"
+            });
+
+            var inputCantidad = $("<input>", {
+                class: "form-control",
+                min: "0",
+                step: "any",
+                name: "matCol[" + newid + "][cant]",
+                type: "number",
+                id: "matCol[" + newid + "][cant]"
+            });
+
+            var tdBtnDelete = $("<td></td>").append(
+                $("<button class='btn btn-xs btn-danger glyphicon glyphicon-remove row-remove center-btn'></button>")
+                    .click(function () {
+                        $(this).closest("tr").remove();
+                    }));
+
+            select.append(option);
+            tdSelect.append(select);
+            tdReempleo.append(inputReempleo);
+            tdCantidad.append(inputCantidad);
+            tr.append(tdSelect);
+            tr.append(tdReempleo);
+            tr.append(tdCantidad);
+            tr.append(tdBtnDelete);
+            $('#tab_material_colocado').append(tr);
+        });
+
+    });
 }
 

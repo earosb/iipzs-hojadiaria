@@ -216,13 +216,22 @@ class TrabajoController extends \BaseController
 
     /**
      * Retorna los materiales enlazados con el trabajo
+     * GET /trabajo/{id}/materiales
+     *
      * @param $id int ID del trabajo
-     * @return \Illuminate\Http\JsonResponse materiales
+     * @return \Illuminate\Http\JsonResponse materiales en formato Json
      */
     public function getMateriales($id)
     {
-        $materiales = 'consulta aqui';
-        return Response::json(array('materiales' => $materiales));
+        $materiales = Trabajo::join('trabajo_material', 'trabajo_material.trabajo_id', '=', 'trabajo.id')
+            ->join('material', 'material.id', '=', 'trabajo_material.material_id')
+            ->where('trabajo_material.trabajo_id', '=', $id)
+            ->select(array('material.id', 'material.nombre'))
+            ->get();
+
+        return Response::json(array(
+                'materiales' => $materiales)
+        );
     }
 
 }

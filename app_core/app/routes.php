@@ -58,6 +58,11 @@ Route::group(array('before' => 'auth'), function () {
          */
         Route::get('material-retirado/ajax-list', 'MaterialRetiradoController@ajaxList');
 
+        /**
+         * Materiales de cada trabajo
+         */
+        Route::get('/trabajo/{id}/materiales', 'TrabajoController@getMateriales');
+
     });
 
     /**

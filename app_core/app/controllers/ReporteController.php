@@ -69,65 +69,43 @@ class ReporteController extends \BaseController
          */
         $action = $input['action'];
 
-        /** Trabajos
-         * ******************************************/
-        // Consulta detallada de trabajos
+        /*
+        |--------------------------------------------------------------------------
+        |   Trabajos
+        |--------------------------------------------------------------------------
+        */
+        /* Consulta detallada de trabajos */
         if ($action == 'detallado') {
-            if ($avanzada) {
-                $grupo = $input['grupo_via'];
-                if ($grupo == 'all') {
-                    $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                        ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                        ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                        ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
-                        ->whereBetween('fecha', array($desde, $hasta), 'and')
-                        ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                        ->orderBy('hoja_diaria.fecha')
-                        ->get(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base'));
-                } else {
-                    $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                        ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                        ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                        ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
-                        ->whereBetween('fecha', array($desde, $hasta), 'and')
-                        ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                        ->where('grupo_trabajo.id', $grupo)
-                        ->orderBy('hoja_diaria.fecha')
-                        ->get(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base'));
-                }
+            $query = DB::table('hoja_diaria');
 
-            } else {
-                $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                    ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                    ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                    ->whereBetween('fecha', array($desde, $hasta), 'and')
-                    ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                    ->orderBy('hoja_diaria.fecha')
-                    ->get(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad'));
-            }
+            if ($avanzada)
+                $query->select(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base'));
+            else
+                $query->select(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad'));
 
-            // Consulta Resumida de trabajos
+            if (Input::get('grupo_via') != 'all')
+                $query->whereIn('grupo_trabajo.id', Input::get('grupo_via'));
+
+            $trabajos = $query
+                ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+                ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
+                ->whereBetween('fecha', array($desde, $hasta), 'and')
+                ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
+                ->orderBy('hoja_diaria.fecha')
+                ->get();
+            /* Consulta Resumida de trabajos */
         } elseif ($action == 'resumido') {
-            if ($avanzada) {
-                $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                    ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                    ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                    ->whereBetween('fecha', array($desde, $hasta), 'and')
-                    ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                    ->select('trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-                    ->groupBy('trabajo.nombre')
-                    ->get();
-
-            } else {
-                $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                    ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                    ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                    ->whereBetween('fecha', array($desde, $hasta), 'and')
-                    ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                    ->select('trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-                    ->groupBy('trabajo.nombre')
-                    ->get();
-            }
+            $trabajos = DB::table('hoja_diaria')
+                ->select('trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
+                ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+                ->whereBetween('fecha', array($desde, $hasta), 'and')
+                ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
+                ->groupBy('trabajo.nombre')
+                ->get();
         }
 
         /** Materiales Colocados
@@ -140,7 +118,7 @@ class ReporteController extends \BaseController
             ->whereBetween('hoja_diaria.fecha', array($desde, $hasta), 'and')
             ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
             ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-            ->groupBy('material.nombre')
+            ->groupBy('material.id')
             ->get();
 
         // Consulta agrupada de materiales colocados marcados como de reempleo
@@ -151,7 +129,7 @@ class ReporteController extends \BaseController
             ->whereBetween('hoja_diaria.fecha', array($desde, $hasta), 'and')
             ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
             ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-            ->groupBy('material.nombre')
+            ->groupBy('material.id')
             ->get();
 
         /** Materiales Retirados
@@ -168,15 +146,14 @@ class ReporteController extends \BaseController
                 ->groupBy('material_retirado.nombre')
                 ->get();
 
-            $materialesRetirados['reempleo'] = HojaDiaria::join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
-                ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
-                ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                ->where('detalle_material_retirado.reempleo', '=', '1')
-                ->whereBetween('fecha', array($desde, $hasta), 'and')
-                ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                ->select('material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
-                ->groupBy('material_retirado.nombre')
-                ->get();
+            $materialesRetirados['reempleo'] = DB::select("select mr.nombre, sum(dmr.cantidad) AS cantidad
+                from hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+                where dmr.reempleo = 1
+                    AND hd.id = dmr.hoja_diaria_id
+                    AND dmr.material_retirado_id = mr.id
+                    AND hd.id  IN (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio BETWEEN '" . $km_inicio . "' AND '" . $km_termino . "' )
+                    AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                GROUP BY  mr.id");
         } else {
             $materialesRetirados = null;
         }
@@ -636,3 +613,16 @@ class ReporteController extends \BaseController
         })->export('xls');
     }
 }
+
+/**
+ *
+ * SELECT mr.nombre, sum(dmr.cantidad)
+ * FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+ * WHERE dmr.reempleo = '1'
+ * and hd.id = dmr.hoja_diaria_id
+ * and dmr.material_retirado_id = mr.id
+ * and hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio BETWEEN '498800' AND '1066000' )
+ * AND hd.fecha BETWEEN '2015-02-01 00:00:00' AND '2015-04-10 23:59:59'
+ * GROUP BY  mr.id;
+
+ */
