@@ -92,7 +92,9 @@ class ReporteController extends \BaseController
                 ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                 ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
                 ->whereBetween('fecha', array($desde, $hasta), 'and')
-                ->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
+                //->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
+                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio, 'and')
+                ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
                 ->orderBy('hoja_diaria.fecha')
                 ->get();
             /* Consulta Resumida de trabajos */

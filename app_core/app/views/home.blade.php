@@ -18,6 +18,14 @@
                     <p>Historial de cambios:</p>
 
                     @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
+                        <p>13/04/2015</p>
+                        <ul>
+                            <li>Despliega materiales requeridos por cada trabajo seleccionado en formulario hoja diaria.</li>
+                            <li>Interfaz de mantenimiento de trabajos.</li>
+                        </ul>
+                    @endif
+
+                    @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
                         <p>10/04/2015</p>
                         <ul>
                             <li class="text-success">Copia el km de inicio y suma 100 en km de término al ingresar un km de inicio en trabajos hd.</li>

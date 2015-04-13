@@ -247,11 +247,11 @@ function getMateriales(obj) {
 
             var newid = 0;
             $.each($("#tab_material_colocado tr"), function () {
-                if ( parseInt($(this).data("id")) > newid ) {
+                if (parseInt($(this).data("id")) > newid) {
                     newid = parseInt($(this).data("id"));
                 }
             });
-            newid ++;
+            newid++;
             // tr principal
             var tr = $("<tr></tr>", {
                 id: "addrMatCol" + newid,
@@ -270,7 +270,7 @@ function getMateriales(obj) {
                 id: "matCol[" + newid + "][id]"
             });
 
-            var option = $("<option>"+value.nombre+"</option>", {
+            var option = $("<option>" + value.nombre + "</option>", {
                 value: value.id
             });
             // td reempleo

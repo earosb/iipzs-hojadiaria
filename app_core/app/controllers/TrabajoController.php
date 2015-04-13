@@ -127,13 +127,13 @@ class TrabajoController extends \BaseController
     public function edit($id)
     {
         $trabajo = Trabajo::find($id);
-        $trabajo->trabajoMaterial;
-        $materiales = Material::all(array('id', 'nombre'));
-        // $materiales = Material::join('trabajo_material', 'material.id', '=', 'trabajo_material.material_id');
         $tipoMantenimiento = TipoMantenimiento::All(array('id', 'nombre'));
+
+        $trabajo['materiales'] = Material::join('trabajo_material', 'trabajo_material.material_id', '=', 'material.id', 'left')
+            ->get(array('material.id', 'material.nombre', 'trabajo_material.trabajo_id'));
+
         return View::make('trabajo.edit')
             ->with('trabajo', $trabajo)
-            ->with('materiales', $materiales)
             ->with('tipoMantenimiento', $tipoMantenimiento);
     }
 

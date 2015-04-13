@@ -130,19 +130,16 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-sm-10">
-                            @foreach($trabajo->trabajo_material as $trabajoMaterial)
+                            @foreach($trabajo->materiales as $material)
                                 <div class="checkbox">
                                     <label>
-                                        @foreach($materiales as $material)
-                                            @if($material->id == $trabajoMaterial->material_id)
-                                                {{ Form::checkbox('materiales['.$material->id.']', $material->id, true) }}
-                                                <p>{{ $material->nombre }}</p>
-                                            @else
-                                                {{--{{ Form::checkbox('materiales['.$material->id.']', $material->id, false) }}--}}
-                                                {{--<p>{{ $material->nombre }}</p>--}}
-                                            @endif
-                                            {{--{{ Form::checkbox('materiales['.$trabajoMaterial->id.']', $trabajoMaterial->id, true) }}--}}
-                                        @endforeach
+                                        @if($trabajo->id == $material->trabajo_id)
+                                            {{ Form::checkbox('materiales['.$material->id.']', $material->id, true) }}
+                                            <p>{{ $material->nombre }}</p>
+                                        @else
+                                            {{ Form::checkbox('materiales['.$material->id.']', $material->id, false) }}
+                                            <p>{{ $material->nombre }}</p>
+                                        @endif
                                     </label>
                                 </div>
                             @endforeach
