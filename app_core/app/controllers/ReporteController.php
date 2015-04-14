@@ -19,7 +19,7 @@ class ReporteController extends \BaseController
         $sectores = Sector::all(array('id', 'nombre'));
         $grupos = GrupoTrabajo::orderBy('base', 'asc')
             ->get(array('id', 'base'));
-        
+
         return View::make('reporte.index')
             ->with('grupos', $grupos)
             ->with('sectores', $sectores);
@@ -402,6 +402,12 @@ class ReporteController extends \BaseController
                         ->get();
 
                     $fila = $fila + 7;
+                    $styleCell = array(
+                        'fill' => array(
+                            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                            'color' => array('rgb' => '66B2FF')
+                        )
+                    );
                     foreach ($materialesColocados as $cont => $matCol) {
                         $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'N'));
                         $sheet->appendRow($fila + 1, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'R'));
@@ -421,8 +427,14 @@ class ReporteController extends \BaseController
                         foreach ($blocks as $block) {
                             foreach ($dataMaterial as $data) {
                                 if ($block->id == $data->id) {
-                                    $data->reempleo == 0 ? $sheet->cell($columna . $fila, $data->cantidad) : null;
-                                    $data->reempleo == 1 ? $sheet->cell($columna . ($fila + 1), $data->cantidad) : null;
+                                    if ($data->reempleo == 0) {
+                                        $sheet->cell($columna . $fila, $data->cantidad);
+                                        $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
+                                    }
+                                    if ($data->reempleo == 1) {
+                                        $sheet->cell($columna . ($fila + 1), $data->cantidad);
+                                        $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
+                                    }
                                     break 1;
                                 }
                             }
@@ -449,6 +461,12 @@ class ReporteController extends \BaseController
                         ->get();
 
                     $fila = $fila + 7;
+                    $styleCell = array(
+                        'fill' => array(
+                            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                            'color' => array('rgb' => '66B2FF')
+                        )
+                    );
                     foreach ($materialesRetirados as $cont => $matRet) {
                         $tmp = 'B' . $fila . ':' . 'C' . $fila;
                         $sheet->mergeCells($tmp);
@@ -472,8 +490,14 @@ class ReporteController extends \BaseController
                         foreach ($blocks as $block) {
                             foreach ($dataMaterialR as $data) {
                                 if ($block->id == $data->id) {
-                                    $data->reempleo == 0 ? $sheet->cell($columna . $fila, $data->cantidad) : null;
-                                    $data->reempleo == 1 ? $sheet->cell($columna . ($fila + 1), $data->cantidad) : null;
+                                    if ($data->reempleo == 0) {
+                                        $sheet->cell($columna . $fila, $data->cantidad);
+                                        $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
+                                    }
+                                    if ($data->reempleo == 1) {
+                                        $sheet->cell($columna . ($fila + 1), $data->cantidad);
+                                        $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
+                                    }
                                     break 1;
                                 }
                             }
