@@ -84,7 +84,7 @@ class ReporteController extends \BaseController
                 $query->select(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad'));
 
             if (Input::get('grupo_via') != 'all')
-                $query->whereIn('grupo_trabajo.id', Input::get('grupo_via'));
+                $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
 
             $trabajos = $query
                 ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
@@ -92,21 +92,23 @@ class ReporteController extends \BaseController
                 ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                 ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
                 ->whereBetween('fecha', array($desde, $hasta), 'and')
-                //->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio, 'and')
+                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
                 ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
                 ->orderBy('hoja_diaria.fecha')
                 ->get();
             /* Consulta Resumida de trabajos */
         } elseif ($action == 'resumido') {
-            $trabajos = DB::table('hoja_diaria')
+            $query = DB::table('hoja_diaria');
+            if (Input::get('grupo_via') != 'all')
+                $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
+
+            $trabajos = $query
                 ->select('trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
                 ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                 ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
                 ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
                 ->whereBetween('fecha', array($desde, $hasta), 'and')
-                //->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio, 'and')
+                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
                 ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
                 ->groupBy('trabajo.nombre')
                 ->get();
@@ -118,15 +120,14 @@ class ReporteController extends \BaseController
         $query = DB::table('hoja_diaria');
 
         if (Input::get('grupo_via') != 'all')
-            $query->whereIn('grupo_trabajo.id', Input::get('grupo_via'));
+            $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
 
         $materiales['nuevo'] = $query->join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
             ->join('material', 'detalle_material_colocado.material_id', '=', 'material.id')
             ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
             ->where('detalle_material_colocado.reempleo', '=', '0')
-            ->whereBetween('hoja_diaria.fecha', array($desde, $hasta), 'and')
-            //->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-            ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio, 'and')
+            ->whereBetween('hoja_diaria.fecha', array($desde, $hasta))
+            ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
             ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
             ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
             ->groupBy('material.id')
@@ -136,15 +137,14 @@ class ReporteController extends \BaseController
         $query = DB::table('hoja_diaria');
 
         if (Input::get('grupo_via') != 'all')
-            $query->whereIn('grupo_trabajo.id', Input::get('grupo_via'));
+            $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
 
         $materiales['reempleo'] = $query->join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
             ->join('material', 'detalle_material_colocado.material_id', '=', 'material.id')
             ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
             ->where('detalle_material_colocado.reempleo', '=', '1')
             ->whereBetween('hoja_diaria.fecha', array($desde, $hasta), 'and')
-            //->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-            ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio, 'and')
+            ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
             ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
             ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
             ->groupBy('material.id')
@@ -157,15 +157,14 @@ class ReporteController extends \BaseController
             $query = DB::table('hoja_diaria');
 
             if (Input::get('grupo_via') != 'all')
-                $query->whereIn('grupo_trabajo.id', Input::get('grupo_via'));
+                $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
 
             $materialesRetirados['excluido'] = $query->join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
                 ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
                 ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                 ->where('detalle_material_retirado.reempleo', '=', '0')
                 ->whereBetween('fecha', array($desde, $hasta), 'and')
-                //->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio, 'and')
+                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
                 ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
                 ->select('material_retirado.nombre', 'detalle_material_retirado.reempleo', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
                 ->groupBy('material_retirado.nombre')
@@ -174,27 +173,18 @@ class ReporteController extends \BaseController
             $query = DB::table('hoja_diaria');
 
             if (Input::get('grupo_via') != 'all')
-                $query->whereIn('grupo_trabajo.id', Input::get('grupo_via'));
+                $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
 
             $materialesRetirados['reempleo'] = $query->join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
                 ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
                 ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                 ->where('detalle_material_retirado.reempleo', '=', '1')
                 ->whereBetween('fecha', array($desde, $hasta), 'and')
-                //->whereBetween('detalle_hoja_diaria.km_inicio', array($km_inicio, $km_termino))
-                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio, 'and')
+                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
                 ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
                 ->select('material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
                 ->groupBy('material_retirado.nombre')
                 ->get();
-//            $materialesRetirados['reempleo'] = DB::select("select mr.nombre, sum(dmr.cantidad) AS cantidad
-//                from hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
-//                where dmr.reempleo = 1
-//                    AND hd.id = dmr.hoja_diaria_id
-//                    AND dmr.material_retirado_id = mr.id
-//                    AND hd.id  IN (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio BETWEEN '" . $km_inicio . "' AND '" . $km_termino . "' )
-//                    AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
-//                GROUP BY  mr.id");
 
         } else {
             $materialesRetirados = null;
@@ -368,14 +358,21 @@ class ReporteController extends \BaseController
                             ->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')
                             ->join('sector', 'sector.id', '=', 'block.sector_id')
                             ->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-                            ->groupBy('block.estacion')
+                            ->groupBy('block.id')
                             ->get();
 
+                        $styleCell = array(
+                            'fill' => array(
+                                'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                                'color' => array('rgb' => '66B2FF')
+                            )
+                        );
                         $columna = 'E';
                         foreach ($blocks as $block) {
                             foreach ($dataTrabajo as $data) {
                                 if ($block->id == $data->id) {
                                     $sheet->cell($columna . $fila, $data->cantidad);
+                                    $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
                                     break 1;
                                 }
                             }
@@ -415,7 +412,7 @@ class ReporteController extends \BaseController
                             ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
                             ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
                             ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', 'detalle_material_colocado.reempleo', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-                            ->groupBy('block.estacion', 'detalle_material_colocado.reempleo')
+                            ->groupBy('block.id', 'detalle_material_colocado.reempleo')
                             ->get();
 
                         $columna = 'E';
@@ -424,7 +421,6 @@ class ReporteController extends \BaseController
                                 if ($block->id == $data->id) {
                                     $data->reempleo == 0 ? $sheet->cell($columna . $fila, $data->cantidad) : null;
                                     $data->reempleo == 1 ? $sheet->cell($columna . ($fila + 1), $data->cantidad) : null;
-                                    //$sheet->cell($columna . $fila, $data->cantidad);
                                     break 1;
                                 }
                             }
@@ -467,7 +463,7 @@ class ReporteController extends \BaseController
                             ->join('detalle_material_retirado', 'detalle_material_retirado.hoja_diaria_id', '=', 'hoja_diaria.id')
                             ->join('material_retirado', 'material_retirado.id', '=', 'detalle_material_retirado.material_retirado_id')
                             ->select('block.id', 'block.estacion', 'material_retirado.id as material_id', 'material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
-                            ->groupBy('block.estacion', 'detalle_material_retirado.reempleo')
+                            ->groupBy('block.id', 'detalle_material_retirado.reempleo')
                             ->get();
 
                         $columna = 'E';
@@ -638,7 +634,14 @@ class ReporteController extends \BaseController
                         foreach ($blocks as $block) {
                             foreach ($dataTrabajo as $data) {
                                 if ($block->id == $data->id) {
+                                    $styleCell = array(
+                                        'fill' => array(
+                                            'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                                            'color' => array('rgb' => '66B2FF')
+                                        )
+                                    );
                                     $sheet->cell($columna . $fila, $data->cantidad);
+                                    $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
                                     break 1;
                                 }
                             }
