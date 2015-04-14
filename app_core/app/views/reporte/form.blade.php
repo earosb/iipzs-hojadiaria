@@ -24,7 +24,7 @@
                 <div class="col-md-3">
                     {{ Form::label('desde', 'Desde', array('class' => 'control-label')) }}
                     <div class="input-group">
-                        {{ Form::select('desde', trans('form.months'), null, ['class'=>'form-control']) }}
+                        {{ Form::select('desde', trans('form.months'), null, ['class'=>'form-control', 'onchange'=>'changeMonth(this.value)']) }}
                         <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                     <p class="text-danger">{{ $errors->first('desde') }}</p>
@@ -86,4 +86,13 @@
 
     </div>
     </div>
+@stop
+
+@section('js')
+    {{-- Cambia el mes en select hasta al seleccionar algo en select desde --}}
+    <script>
+        function changeMonth(val) {
+            document.getElementById("hasta").value = val;
+        }
+    </script>
 @stop
