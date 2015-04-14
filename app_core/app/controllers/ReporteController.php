@@ -17,7 +17,9 @@ class ReporteController extends \BaseController
     public function param()
     {
         $sectores = Sector::all(array('id', 'nombre'));
-        $grupos = GrupoTrabajo::all(array('id', 'base'));
+        $grupos = GrupoTrabajo::orderBy('base', 'asc')
+            ->get(array('id', 'base'));
+        
         return View::make('reporte.index')
             ->with('grupos', $grupos)
             ->with('sectores', $sectores);
