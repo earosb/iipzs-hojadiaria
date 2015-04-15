@@ -1,6 +1,6 @@
 var scrolltotop = {
 
-    setting: {startline: 100, scrollto: 0, scrollduration: 1000, fadeduration: [500, 100]},
+    setting: {startline: 100, scrollto: 0, scrollduration: 500, fadeduration: [500, 100]},
 
     controlHTML: '<a href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-up"></span></a>', //HTML for control, which is auto wrapped in DIV w/ ID="topcontrol"
 
@@ -58,7 +58,7 @@ var scrolltotop = {
 
         if (this.state.shouldvisible && !this.state.isvisible) {
 
-            this.$control.stop().animate({opacity: 1}, this.setting.fadeduration[0]);
+            this.$control.stop().animate({opacity: 1}, this.setting.fadeduration[1]);
 
             this.state.isvisible = true
 
