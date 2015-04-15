@@ -234,9 +234,6 @@ function onblurKmTermino(obj) {
  */
 function getMateriales(obj) {
 
-    var id = (obj.id).split(/[[\]]{1,2}/);
-    id.length--;
-
     $.ajax({
         url: '/trabajo/' + obj.value + '/materiales',
         type: 'get',
@@ -245,12 +242,20 @@ function getMateriales(obj) {
 
         $.each(data.materiales, function (index, value) {
 
+            var chao = false; // No agrega el material si ya está seleccionado en la tabla
             var newid = 0;
+
             $.each($("#tab_material_colocado tr"), function () {
                 if (parseInt($(this).data("id")) > newid) {
                     newid = parseInt($(this).data("id"));
+                    if ($(this).find('td').find('select').val() == value.id){
+                        chao = true;
+                    }
                 }
             });
+
+            if (chao) return false;
+
             newid++;
             // tr principal
             var tr = $("<tr></tr>", {
@@ -270,9 +275,7 @@ function getMateriales(obj) {
                 id: "matCol[" + newid + "][id]"
             });
 
-            var option = $("<option>" + value.nombre + "</option>", {
-                value: value.id
-            });
+            var option = $("<option value=" + value.id + ">" + value.nombre + "</option>");
             // td reempleo
             var tdReempleo = $("<td></td>", {
                 "data-name": "matCol",
