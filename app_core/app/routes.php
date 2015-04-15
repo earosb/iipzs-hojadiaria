@@ -177,19 +177,6 @@ if (!Config::get('app.debug')) {
 
     App::error(function ($exception, $code) {
 
-//        $username = 'evalo'; //Sentry::getUser()->username;
-//        Mail::send('emails.error',
-//            array(
-//                'user' => $username,
-//                'code' => $code,
-//                'message' => $exception->getMessage(),
-//                'exception' => $exception,
-//            ),
-//            function ($message) use ($username) {
-//                $message->to('webmaster@icilicafalpzs.cl', $username)
-//                    ->subject('I-I PZS ERROR');
-//            });
-
         switch ($code) {
             case 403:
                 $message = trans('all.error.403');
@@ -211,38 +198,3 @@ if (!Config::get('app.debug')) {
             $code);
     });
 }
-
-//Route::get('test', function () {
-
-
-//    $trabajos = DB::select("
-//        SELECT t.nombre AS partida, t.unidad, sum(dhd.cantidad) AS cantidad
-//            FROM hoja_diaria hd, detalle_hoja_diaria dhd, trabajo t, block b
-//            WHERE hd.id = dhd.hoja_diaria_id
-//                AND dhd.trabajo_id = t.id
-//                AND dhd.block_id = b.id
-//                AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '498800' AND dhd.km_inicio < '625500' )
-//                AND hd.fecha BETWEEN '2015-03-01 00:00:00' AND '2015-03-31 23:59:59'
-//            GROUP BY t.id");
-
-//    $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-//        ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-//        ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-//        ->whereBetween('fecha', array('2015-03-01 00:00:00', '2015-03-31 23:59:59'), 'and')
-//        ->where('detalle_hoja_diaria.km_inicio', '>=', '498800')
-//        ->where('detalle_hoja_diaria.km_inicio', '<', '625500')
-//        ->select('trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))
-//        ->groupBy('trabajo.nombre')
-//        ->get();
-//
-//    return $trabajos;
-//});
-
-//        SELECT t.nombre AS partida, t.unidad, sum(dhd.cantidad) AS cantidad
-//        FROM hoja_diaria hd, detalle_hoja_diaria dhd, trabajo t, block b
-//        WHERE hd.id = dhd.hoja_diaria_id
-//        AND dhd.trabajo_id = t.id
-//        AND dhd.block_id = b.id
-//        AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '498800' AND dhd.km_inicio < '625500' )
-//              AND hd.fecha BETWEEN '2015-03-01 00:00:00' AND '2015-03-31 23:59:59'
-//        GROUP BY t.id;

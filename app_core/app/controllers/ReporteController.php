@@ -412,31 +412,42 @@ class ReporteController extends \BaseController
                         $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'N'));
                         $sheet->appendRow($fila + 1, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'R'));
 
-                        $dataMaterial = Block::where('block.sector_id', '=', $sector->id)
-                            ->where('material.id', '=', $matCol->id)
-                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
-                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
-                            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
-                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', 'detalle_material_colocado.reempleo', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-                            ->groupBy('block.id', 'detalle_material_colocado.reempleo')
-                            ->get();
+//                        $dataMaterial = Block::where('block.sector_id', '=', $sector->id)
+//                            ->where('material.id', '=', $matCol->id)
+//                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
+//                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+//                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+//                            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
+//                            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
+//                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', 'detalle_material_colocado.reempleo', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
+//                            ->groupBy('block.id', 'detalle_material_colocado.reempleo')
+//                            ->get();
+
 
                         $columna = 'E';
                         foreach ($blocks as $block) {
+                            $query = "SELECT m.nombre, dmc.reempleo, sum(dmc.cantidad) AS cantidad
+                                        FROM hoja_diaria hd, detalle_material_colocado dmc, material m
+                                        WHERE m.id = " . $matCol->id . "
+                                        AND hd.id = dmc.hoja_diaria_id
+                                        AND dmc.material_id = m.id
+                                        AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $block->km_inicio . "' AND dhd.km_inicio < '" . $block->km_termino . "' )
+                                        AND hd.fecha BETWEEN '" . $desdeQuery . "' AND '" . $hastaQuery .
+                                "' GROUP BY  m.id, dmc.reempleo";
+
+                            $dataMaterial = DB::select($query);
                             foreach ($dataMaterial as $data) {
-                                if ($block->id == $data->id) {
-                                    if ($data->reempleo == 0) {
-                                        $sheet->cell($columna . $fila, $data->cantidad);
-                                        $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
-                                    }
-                                    if ($data->reempleo == 1) {
-                                        $sheet->cell($columna . ($fila + 1), $data->cantidad);
-                                        $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
-                                    }
-                                    break 1;
+
+                                if ($data->reempleo == 0) {
+                                    $sheet->cell($columna . $fila, $data->cantidad);
+                                    $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
                                 }
+                                if ($data->reempleo == 1) {
+                                    $sheet->cell($columna . ($fila + 1), $data->cantidad);
+                                    $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
+                                }
+
+
                             }
                             $columna++;
                             $columna++;
@@ -475,21 +486,30 @@ class ReporteController extends \BaseController
                         $sheet->appendRow($fila, array(($cont + 1), $matRet->nombre, null, 'Exc.'));
                         $sheet->appendRow($fila + 1, array(($cont + 1), $matRet->nombre, null, 'R.'));
 
-                        $dataMaterialR = Block::where('block.sector_id', '=', $sector->id)
-                            ->where('material_retirado.id', '=', $matRet->id)
-                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
-                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                            ->join('detalle_material_retirado', 'detalle_material_retirado.hoja_diaria_id', '=', 'hoja_diaria.id')
-                            ->join('material_retirado', 'material_retirado.id', '=', 'detalle_material_retirado.material_retirado_id')
-                            ->select('block.id', 'block.estacion', 'material_retirado.id as material_id', 'material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
-                            ->groupBy('block.id', 'detalle_material_retirado.reempleo')
-                            ->get();
+//                        $dataMaterialR = Block::where('block.sector_id', '=', $sector->id)
+//                            ->where('material_retirado.id', '=', $matRet->id)
+//                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
+//                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+//                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+//                            ->join('detalle_material_retirado', 'detalle_material_retirado.hoja_diaria_id', '=', 'hoja_diaria.id')
+//                            ->join('material_retirado', 'material_retirado.id', '=', 'detalle_material_retirado.material_retirado_id')
+//                            ->select('block.id', 'block.estacion', 'material_retirado.id as material_id', 'material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
+//                            ->groupBy('block.id', 'detalle_material_retirado.reempleo')
+//                            ->get();
 
                         $columna = 'E';
                         foreach ($blocks as $block) {
+                            $query = "SELECT mr.nombre, dmr.reempleo, sum(dmr.cantidad) AS cantidad
+                                        FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+                                        WHERE mr.id = " . $matRet->id . "
+                                        AND hd.id = dmr.hoja_diaria_id
+                                        AND dmr.material_retirado_id = mr.id
+                                        AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $block->km_inicio . "' AND dhd.km_inicio < '" . $block->km_termino . "' )
+                                        AND hd.fecha BETWEEN '" . $desdeQuery . "' AND '" . $hastaQuery .
+                                "' GROUP BY  mr.id, dmr.reempleo";
+
+                            $dataMaterialR = DB::select($query);
                             foreach ($dataMaterialR as $data) {
-                                if ($block->id == $data->id) {
                                     if ($data->reempleo == 0) {
                                         $sheet->cell($columna . $fila, $data->cantidad);
                                         $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
@@ -498,8 +518,6 @@ class ReporteController extends \BaseController
                                         $sheet->cell($columna . ($fila + 1), $data->cantidad);
                                         $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
                                     }
-                                    break 1;
-                                }
                             }
                             $columna++;
                             $columna++;
