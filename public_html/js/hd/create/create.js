@@ -3,8 +3,7 @@ $(document).ready(function () {
      * Lanza calendario
      */
     $("#fecha").datepicker({
-        defaultDate: "-1m",
-        numberOfMonths: 2,
+        numberOfMonths: 1,
         showAnim: "slideDown",
         beforeShow: function () {
             $(".ui-datepicker").css('font-size', 12)
