@@ -77,7 +77,7 @@
 
             {{-- Checkbox esOficial --}}
             <div class="form-group">
-                {{ Form::label('es_oficial', 'Form 2-3-4', array('class' => 'col-sm-2 control-label')) }}
+                {{ Form::label('es_oficial', 'Form 2', array('class' => 'col-sm-2 control-label')) }}
                 <div class="col-sm-10">
                     <div class="checkbox">
                         <label>
@@ -86,7 +86,7 @@
                             @else
                                 {{ Form::checkbox('es_oficial', 'true') }}
                             @endif
-                            <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es
+                            <abbr title="Quiere decir que será incluido en Formulario 2">¿Qué es
                                 esto?</abbr>
                         </label>
                     </div>
@@ -101,10 +101,8 @@
                         <div class="radio">
                             <label>
                                 @if( $tMat->id == $trabajo->tipo_mantenimiento_id )
-                                    {{--<input name="tMat" id="tMat{{ $tMat->id }}" value="{{ $tMat->id }}" checked="checked" type="radio">--}}
                                     {{ Form::radio('tMat', $tMat->id, true) }}
                                 @else
-                                    {{--<input name="tMat" id="tMat{{ $tMat->id }}" value="{{ $tMat->id }}" type="radio">--}}
                                     {{ Form::radio('tMat', $tMat->id) }}
                                 @endif
                                 {{ $tMat->nombre }}

@@ -25,7 +25,7 @@
                             <th class="col-md-1">Unidad</th>
                             <th class="col-md-2">Valor(UF)</th>
                             <th class="col-md-1">Proveedor</th>
-                            <th class="col-md-2">Form 2-3-4</th>
+                            <th class="col-md-2">Form 3</th>
                             <th class="col-md-1">Opciones</th>
                         </tr>
                         </thead>
@@ -63,7 +63,7 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Form 2-3-4</th>
+                            <th>Form 4</th>
                             <th class="col-md-1">Opciones</th>
                         </tr>
                         </thead>

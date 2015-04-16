@@ -69,12 +69,12 @@
 
             {{-- Checkbox esOficial --}}
             <div class="form-group">
-                {{ Form::label('es_oficial', 'Form 2-3-4', array('class' => 'col-sm-2 control-label')) }}
+                {{ Form::label('es_oficial', 'Form 2', array('class' => 'col-sm-2 control-label')) }}
                 <div class="col-sm-10">
                     <div class="checkbox">
                         <label>
                             {{ Form::checkbox('es_oficial', 'true') }}
-                            <abbr title="Quiere decir que será incluido en los Formularios 2-3-4">¿Qué es
+                            <abbr title="Quiere decir que será incluido en Formulario 2">¿Qué es
                                 esto? </abbr>
                         </label>
                     </div>

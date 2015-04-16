@@ -26,7 +26,7 @@
                             <th>Nombre</th>
                             <th class="col-md-1">Valor</th>
                             <th class="col-md-1">Unidad</th>
-                            <th class="col-md-1">Form 2-3-4</th>
+                            <th class="col-md-1">Form 2</th>
                             <th class="col-md-2">Mantenimiento</th>
                             <th class="col-md-1">Opciones</th>
                         </tr>
