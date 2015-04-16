@@ -60,7 +60,7 @@ function escribirDetalle(data) {
     var btn_editar = $("<a></a>", {
         class: "btn btn-default glyphicon glyphicon-pencil",
         title: "Editar",
-        href: "/hd/" + data.hojaDiaria.id + "/edit",
+        href: "/hd/" + data.hojaDiaria.id + "/edit"
         //onClick: "editarHojaDiaria( " + data.hojaDiaria.id + " );return false;"
     });
 
