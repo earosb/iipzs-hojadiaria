@@ -1,9 +1,9 @@
 ## Icil Icafal Proyecto Zona Sur S.A.
 
 ###¿Qué necesitas?
-- <Laravel PHP Framework 4.2.x>
-- <PHP 5.4+>
-- <MySql 5.5+>
+- Laravel PHP Framework 4.2.x
+- PHP 5.4+
+- MySql 5.5+
 
 ###Librerías utilizadas
 **Backend**
