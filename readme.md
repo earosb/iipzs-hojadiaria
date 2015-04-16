@@ -1,5 +1,10 @@
 ## Icil Icafal Proyecto Zona Sur S.A.
 
+###¿Qué necesitas?
+- <Laravel PHP Framework 4.2.x>
+- <PHP 5.4+>
+- <MySql 5.5+>
+
 ###Librerías utilizadas
 **Backend**
 
@@ -20,8 +25,3 @@
 - <https://github.com/fabien-d/alertify.js>
 - <https://datatables.net/>
 - <https://github.com/flatlogic/awesome-bootstrap-checkbox>
-
-
-### Laravel PHP Framework 4.2.x
-### PHP 5.4+
-### MySql 5.5+
