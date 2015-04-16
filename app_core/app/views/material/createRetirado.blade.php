@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la creación de un material a retirar">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')

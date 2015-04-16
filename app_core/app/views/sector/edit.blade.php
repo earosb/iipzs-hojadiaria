@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la edición de un sector">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -13,7 +13,8 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <legend>{{ $sector->nombre }}
-                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span
+                            class="glyphicon glyphicon-trash"></span></a>
             </legend>
             {{ Form::open(array(
                 'url'		=>	'/m/sector/'.$sector->id,
@@ -95,15 +96,15 @@
 @section('js')
     <script type="text/javascript">
         function destroy() {
-            if ( confirm("¿Desea borrar el sector?") == true ) {
-                if ( confirm("El registro no podrá ser recuperado, ¿Desea continuar?") ) {
+            if (confirm("¿Desea borrar el sector?") == true) {
+                if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")) {
                     $.ajax({
                         type: 'delete',
                         url: '/m/sector/' + "{{ $sector->id }}"
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if (data.error){
+                        if (data.error) {
                             alert("Se produjo un problema el intentar eliminar el Sector {{ $sector->nombre }}");
                             alert(data.msg);
                         }

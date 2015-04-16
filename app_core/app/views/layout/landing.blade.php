@@ -10,7 +10,7 @@
     <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js'></script>
     <script src='http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js'></script>
     <![endif]-->
-    
+
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/apple-icon-57x57.png') }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('img/apple-icon-60x60.png')}}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('img/apple-icon-72x72.png')}}">
@@ -50,10 +50,11 @@
 {{-- Container
 ===================================================== --}}
 <div class="container-fluid">
-    <!--[if IE]>
-    <p class="text-danger text-center">Hemos detectado que utilizas Internet Explorer.</p>
+    <!--[if lte IE 9]>
+    <p class="text-danger text-center">Sitio no optimizado para Internet Explorer.</p>
     <![endif]-->
-    <p class="text-danger text-center" id="ie" style="display: none;">Hemos detectado que utilizas Internet Explorer.</p>
+    <p class="text-danger text-center" id="ie" style="display: none;">Hemos detectado que utilizas Internet
+        Explorer.</p>
     <noscript>
         <p class="text-danger text-center">Para utilizar las funcionalidades completas de este sitio es necesario tener
             JavaScript habilitado. Aquí están las <a href="http://www.enable-javascript.com/es/" target="_blank">

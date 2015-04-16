@@ -32,31 +32,31 @@
                         </div>
                     </div>
 
-                        {{-- Valor del material --}}
-                        <div id="valor_div" class="form-group">
-                            {{ Form::label('valor', 'Valor Unitario (UF)', array('class' => 'col-sm-3 control-label')) }}
-                            <div class="col-sm-6">
-                                {{ Form::text('valor', null, array('placeholder' => 'Valor', 'class' => 'form-control')) }}
-                                <div class="help-block" id="valor_error"></div>
-                            </div>
+                    {{-- Valor del material --}}
+                    <div id="valor_div" class="form-group">
+                        {{ Form::label('valor', 'Valor Unitario (UF)', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-6">
+                            {{ Form::text('valor', null, array('placeholder' => 'Valor', 'class' => 'form-control')) }}
+                            <div class="help-block" id="valor_error"></div>
                         </div>
+                    </div>
 
-                        {{-- Proveedor del material --}}
-                        <div id="proveedor_div" class="form-group">
-                            {{ Form::label('proveedor', 'Proveedor', array('class' => 'col-sm-3 control-label')) }}
-                            <div class="col-sm-6">
-                                {{ Form::text('proveedor', null, array('placeholder' => 'Proveedor', 'class' => 'form-control')) }}
-                                <div class="help-block" id="proveedor_error"></div>
-                            </div>
+                    {{-- Proveedor del material --}}
+                    <div id="proveedor_div" class="form-group">
+                        {{ Form::label('proveedor', 'Proveedor', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-6">
+                            {{ Form::text('proveedor', null, array('placeholder' => 'Proveedor', 'class' => 'form-control')) }}
+                            <div class="help-block" id="proveedor_error"></div>
                         </div>
-                        {{-- Unidad del material --}}
-                        <div id="unidad_div" class="form-group">
-                            {{ Form::label('unidad', 'Unidad', array('class' => 'col-sm-3 control-label')) }}
-                            <div class="col-sm-6">
-                                {{ Form::text('unidad', null, array('placeholder' => 'Unidad', 'class' => 'form-control')) }}
-                                <div class="help-block" id="unidad_error"></div>
-                            </div>
+                    </div>
+                    {{-- Unidad del material --}}
+                    <div id="unidad_div" class="form-group">
+                        {{ Form::label('unidad', 'Unidad', array('class' => 'col-sm-3 control-label')) }}
+                        <div class="col-sm-6">
+                            {{ Form::text('unidad', null, array('placeholder' => 'Unidad', 'class' => 'form-control')) }}
+                            <div class="help-block" id="unidad_error"></div>
                         </div>
+                    </div>
 
                     {{-- Checkbox esOficial --}}
                     <div id="es_oficial_div" class="form-group">

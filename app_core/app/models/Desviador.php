@@ -4,33 +4,31 @@
  *
  * @author earosb
  */
-class Desviador extends \Eloquent {
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'desviador';
-	
-	/**
-	 * [$fillable description]
-	 * @var [type]
-	 */
-	protected $fillable = ['nombre', 'km_inicio', 'block_id'];
-
-	/**
+class Desviador extends \Eloquent
+{
+    /**
      * Add your validation rules here
      * @var [type]
      */
-	public static $rules = [
+    public static $rules = [
 
-	];
+    ];
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'desviador';
+    /**
+     * [$fillable description]
+     * @var [type]
+     */
+    protected $fillable = ['nombre', 'km_inicio', 'block_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function block()
+    public function block()
     {
         return $this->belongsTo('Block');
     }

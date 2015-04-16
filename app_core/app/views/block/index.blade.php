@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Listado de blocks">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 

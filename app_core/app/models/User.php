@@ -7,7 +7,6 @@ use Illuminate\Auth\UserTrait;
 
 class User extends Eloquent implements UserInterface, RemindableInterface
 {
-
     use UserTrait, RemindableTrait;
 
     /**
@@ -22,7 +21,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      *
      * @var array
      */
-    protected $hidden = array( 'password', 'remember_token' );
+    protected $hidden = array('password', 'remember_token');
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

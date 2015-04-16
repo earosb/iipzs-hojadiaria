@@ -166,7 +166,8 @@
                                 </select>
                             </td>
                             <td data-name="trabajos" data-tipo="ubicacion" data-ubicacion="true">
-                                <select name="trabajos[{{ ($cont + 1) }}][ubicacion]" class="form-control selectubicacion">
+                                <select name="trabajos[{{ ($cont + 1) }}][ubicacion]"
+                                        class="form-control selectubicacion">
                                     @if($detalle->desvio_id )
                                         <option value="desvio-{{ $detalle->desvio_id }}">Desvio</option>
                                     @elseif($detalle->desviador_id )

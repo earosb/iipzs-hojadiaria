@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Muestra los elementos contenidos en un block (desvíos, desviadores)">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 
@@ -17,7 +17,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Desviadores</div>
                 <div class="panel-body">
-                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.desviador.create') }}">Nuevo Desviador</a>
+                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.desviador.create') }}">Nuevo
+                        Desviador</a>
                 </div>
                 <table class="table table-bordered table-striped">
                     <thead>
@@ -37,7 +38,8 @@
                                 {{ $desviador->km_inicio }}
                             </td>
                             <td class="text-center">
-                                <a class="glyphicon glyphicon-edit" title="Editar" href="{{ URL::to('/m/desviador/'.$desviador->id.'/edit') }}"></a>
+                                <a class="glyphicon glyphicon-edit" title="Editar"
+                                   href="{{ URL::to('/m/desviador/'.$desviador->id.'/edit') }}"></a>
                             </td>
                         </tr>
                     @endforeach
@@ -79,7 +81,8 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <a class="glyphicon glyphicon-edit" title="Editar" href="{{ URL::to('/m/desvio/'.$desvio->id.'/edit') }}"></a>
+                                <a class="glyphicon glyphicon-edit" title="Editar"
+                                   href="{{ URL::to('/m/desvio/'.$desvio->id.'/edit') }}"></a>
                             </td>
                         </tr>
                     @endforeach

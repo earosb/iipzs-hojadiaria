@@ -13,7 +13,8 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <legend>{{ $desviador->nombre }}
-                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+                <a id="dlt" onclick="destroy()" class="text-danger pull-right"><span
+                            class="glyphicon glyphicon-trash"></span></a>
             </legend>
             {{ Form::open(array(
                     'url'		=>	'm/desviador/'.$desviador->id,
@@ -43,7 +44,8 @@
                         <div class="col-sm-10">
                             <div class="controls">
                                 <select name="block" id="block" class="form-control">
-                                    <option selected="selected" value="{{ $desviador->block_id }}">{{ $desviador->block_id }}</option>
+                                    <option selected="selected"
+                                            value="{{ $desviador->block_id }}">{{ $desviador->block_id }}</option>
                                 </select>
 
                                 <p class="text-danger">{{ $errors->first('block') }}</p>
@@ -71,15 +73,15 @@
             });
         });
         function destroy() {
-            if ( confirm("¿Desea borrar el Desviador?") == true ) {
-                if ( confirm("El registro no podrá ser recuperado, ¿Desea continuar?") ) {
+            if (confirm("¿Desea borrar el Desviador?") == true) {
+                if (confirm("El registro no podrá ser recuperado, ¿Desea continuar?")) {
                     $.ajax({
                         type: 'delete',
                         url: '/m/desviador/' + "{{ $desviador->id }}"
                     }).error(function () {
                         alert("Error al enviar datos\nPor favor, verifique su conexión a Internet");
                     }).done(function (data) {
-                        if (data.error){
+                        if (data.error) {
                             alert("Se produjo un problema el intentar eliminar el Desviador {{ $desviador->nombre }}");
                             alert(data.msg);
                         }

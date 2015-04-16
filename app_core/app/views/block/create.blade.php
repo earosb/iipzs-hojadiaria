@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Formulario para la creación de un block">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -43,7 +43,8 @@
                     <label class="col-sm-2 control-label" for="estacion">Estación</label>
 
                     <div class="col-sm-10">
-                        <input id="estacion" name="estacion" placeholder="Nombre estación" class="form-control" type="text" required="required">
+                        <input id="estacion" name="estacion" placeholder="Nombre estación" class="form-control"
+                               type="text" required="required">
 
                         <p class="text-danger">{{ $errors->first('estacion') }}</p>
                     </div>
@@ -54,7 +55,7 @@
 
                     <div class="col-sm-10">
                         <input id="nro_bien" name="nro_bien" placeholder="Número de bien" class="form-control"
-                               type="text" required="required" >
+                               type="text" required="required">
 
                         <p class="text-danger">{{ $errors->first('nro_bien') }}</p>
                     </div>
@@ -64,7 +65,8 @@
                     <label class="col-sm-2 control-label" for="km_inicio">Km inicio</label>
 
                     <div class="col-sm-10">
-                        <input id="km_inicio" name="km_inicio" placeholder="Kilómetro de inicio" class="form-control" type="number"
+                        <input id="km_inicio" name="km_inicio" placeholder="Kilómetro de inicio" class="form-control"
+                               type="number"
                                required="required" min="0">
 
                         <p class="text-danger">{{ $errors->first('km_inicio') }}</p>
@@ -75,7 +77,8 @@
                     <label class="col-sm-2 control-label" for="km_termino">Km término</label>
 
                     <div class="col-sm-10">
-                        <input id="km_termino" name="km_termino" placeholder="Kilómetro de término" class="form-control" type="number"
+                        <input id="km_termino" name="km_termino" placeholder="Kilómetro de término" class="form-control"
+                               type="number"
                                required="required" min="0">
 
                         <p class="text-danger">{{ $errors->first('km_termino') }}</p>

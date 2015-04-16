@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Listado de materiales colocaros y retirados">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -42,7 +42,8 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="glyphicon glyphicon-edit" title="Editar" href="{{ URL::to('/m/material/'.$material->id.'/edit') }}"></a>
+                                    <a class="glyphicon glyphicon-edit" title="Editar"
+                                       href="{{ URL::to('/m/material/'.$material->id.'/edit') }}"></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -56,7 +57,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading"> Materiales Retirados</div>
                 <div class="panel-body">
-                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.material-retirado.create') }}"> Nuevo </a>
+                    <a class="btn btn-primary pull-right" href="{{ URL::route('m.material-retirado.create') }}">
+                        Nuevo </a>
                 </div>
                 @if( ! $matRetirados->isEmpty() )
                     <table class="table table-bordered table-striped">
@@ -77,7 +79,8 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="glyphicon glyphicon-edit" title="Editar" href="{{ URL::to('/m/material-retirado/'.$matReti->id.'/edit') }}"></a>
+                                    <a class="glyphicon glyphicon-edit" title="Editar"
+                                       href="{{ URL::to('/m/material-retirado/'.$matReti->id.'/edit') }}"></a>
                                 </td>
                             </tr>
                         @endforeach

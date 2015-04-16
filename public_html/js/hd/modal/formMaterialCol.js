@@ -19,7 +19,7 @@ $("#formMaterialColocado").submit(function (e) {
     }).error(function () {
         alert("Error al enviar datos\nPor favor verifique su conexión a Internet");
     }).done(function (data) {
-        if ( data.error ) {
+        if (data.error) {
             var form = $('#formMaterialColocado');
             var formGroup = form.find('.form-group');
             var helpBlock = form.find('.help-block');

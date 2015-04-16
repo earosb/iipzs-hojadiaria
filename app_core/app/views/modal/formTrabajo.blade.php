@@ -48,6 +48,7 @@
                                     </optgroup>
                                 @endforeach
                             </select>
+
                             <div class="help-block" id="padre_error"></div>
                         </div>
                     </div>
@@ -85,6 +86,7 @@
                     {{-- Radio tipo mantenimiento --}}
                     <div id="tMat" class="form-group">
                         <label class="col-sm-3 control-label">Mantenimiento</label>
+
                         <div class="col-sm-9">
                             @foreach($tipoMantenimiento as $tMat)
                                 <div class="radio">

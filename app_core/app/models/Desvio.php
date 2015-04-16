@@ -4,21 +4,8 @@
  *
  * @author earosb
  */
-class Desvio extends \Eloquent {
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'desvio';
-	
-	/**
-	 * [$fillable description]
-	 * @var [type]
-	 */
-	protected $fillable = [];
-
+class Desvio extends \Eloquent
+{
     /**
      * @var array con reglas de validación
      */
@@ -29,11 +16,22 @@ class Desvio extends \Eloquent {
         'selectdesviador_norte' => 'numeric|exists:desviador,id',
         'selectdesviador_sur' => 'numeric|exists:desviador,id',
     );
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'desvio';
+    /**
+     * [$fillable description]
+     * @var [type]
+     */
+    protected $fillable = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function block()
+    public function block()
     {
         return $this->belongsTo('Block');
     }

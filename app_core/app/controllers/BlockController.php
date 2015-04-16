@@ -67,10 +67,6 @@ class BlockController extends \BaseController
         try {
             $block = Block::findOrFail($id);
             $desvios = Block::find($id)->desvios;
-            /*$desvios = Desvio::join('desviador', 'desviador.id', '=', 'desvio.desviador_norte_id')
-                ->join('desviador', 'desviador.id', '=', 'desvio.desviador_sur_id')
-                ->where('desvio.block_id', '=', $id)
-                ->get('desvio.id', 'desvio.nombre', 'desvio.block_id', 'desvio.desviador_norte_id', 'desvio.desviador_sur_id');*/
 
             $desviadores = Block::find($id)->desviadores;
 

@@ -70,9 +70,6 @@
                     {{ Form::label('password', trans('form.password')) }}
                     {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Ingrese Contraseña', 'required' => 'required')) }}
                 </div>
-                {{--<div class="form-group">
-                    {{ HTML::link('/', trans('form.password_lost')) }}
-                </div>--}}
                 <div class="form-group text-center">
                     {{ Form::submit(trans('form.signin'), array('class'=>'btn btn-success btn-login-submit')) }}
                 </div>

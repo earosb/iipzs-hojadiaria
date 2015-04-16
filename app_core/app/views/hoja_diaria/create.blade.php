@@ -116,8 +116,11 @@
                     <tr id='addr0' data-id="0" class="hidden">
                         <td data-name="trabajos" data-tipo="trabajo">
                             {{--{{ Form::select('trabajos[0][trabajo]', $tipoMantenimiento, null, [ 'class'=>'form-control selecttrabajo']) }}--}}
-                            <select name="trabajos[0][trabajo]" class="form-control selecttrabajo" onChange="getMateriales(this)">
-                                <option selected="selected" disabled="disabled" value="" style="display:none;"> Seleccione un Trabajo</option>
+                            <select name="trabajos[0][trabajo]" class="form-control selecttrabajo"
+                                    onChange="getMateriales(this)">
+                                <option selected="selected" disabled="disabled" value="" style="display:none;">
+                                    Seleccione un Trabajo
+                                </option>
                                 @foreach($tipoMantenimiento as $tMat)
                                     <optgroup label="{{ $tMat->nombre }}">
                                         @foreach($tMat->trabajos as $trabajo)

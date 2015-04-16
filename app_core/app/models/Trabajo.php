@@ -4,8 +4,8 @@
  *
  * @author earosb
  */
-class Trabajo extends \Eloquent {
-
+class Trabajo extends \Eloquent
+{
     /**
      * The database table used by the model.
      *
@@ -17,40 +17,45 @@ class Trabajo extends \Eloquent {
      * [$fillable description]
      * @var [type]
      */
-    protected $fillable = [ ];
+    protected $fillable = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function tipoMantenimiento() {
+    public function tipoMantenimiento()
+    {
         return $this->belongsTo('TipoMantenimiento');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function detalleHojaDiaria() {
+    public function detalleHojaDiaria()
+    {
         return $this->hasMany('DetalleHojaDiaria');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function alias() {
+    public function alias()
+    {
         return $this->belongsTo('Trabajo', 'padre_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function nombreOficial() {
+    public function nombreOficial()
+    {
         return $this->hasMany('Trabajo', 'padre_id');
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function trabajoMaterial() {
+    public function trabajoMaterial()
+    {
         return $this->hasMany('TrabajoMaterial');
     }
 }

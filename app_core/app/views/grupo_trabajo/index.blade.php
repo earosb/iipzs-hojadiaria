@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Listado de grupos de trabajo">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading"> Todos </div>
+                <div class="panel-heading"> Todos</div>
                 <div class="panel-body">
                     <div class="btn-group pull-right">
                         <a class="btn btn-primary" href="{{ URL::route('m.grupo-trabajo.create') }}">Nuevo Grupo</a>
@@ -34,7 +34,8 @@
                                     {{ $grupo->base }}
                                 </td>
                                 <td class="text-center">
-                                    <a title="Editar" href="{{ URL::to('/m/grupo-trabajo/'.$grupo->id.'/edit') }}"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a title="Editar" href="{{ URL::to('/m/grupo-trabajo/'.$grupo->id.'/edit') }}"><span
+                                                class="glyphicon glyphicon-edit"></span></a>
                                 </td>
                             </tr>
                         @endforeach

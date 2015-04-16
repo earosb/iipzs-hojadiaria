@@ -247,7 +247,7 @@ function getMateriales(obj) {
             $.each($("#tab_material_colocado tr"), function () {
                 if (parseInt($(this).data("id")) > newid) {
                     newid = parseInt($(this).data("id"));
-                    if ($(this).find('td').find('select').val() == value.id){
+                    if ($(this).find('td').find('select').val() == value.id) {
                         chao = true;
                     }
                 }

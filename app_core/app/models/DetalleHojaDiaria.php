@@ -4,32 +4,29 @@
  *
  * @author earosb
  */
-
-class DetalleHojaDiaria extends \Eloquent {
-
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'detalle_hoja_diaria';
-
-	/**
-	 * Add your validation rules here
-	 */
-	public static $rules = [
-		// 'title' => 'required'
-	];
-
-	/**
-	 * Don't forget to fill this array
-	 */
-	protected $fillable = [];
+class DetalleHojaDiaria extends \Eloquent
+{
+    /**
+     * Add your validation rules here
+     */
+    public static $rules = [
+        // 'title' => 'required'
+    ];
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'detalle_hoja_diaria';
+    /**
+     * Don't forget to fill this array
+     */
+    protected $fillable = [];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function hojaDiaria()
+    public function hojaDiaria()
     {
         return $this->belongsTo('HojaDiaria');
     }
@@ -61,7 +58,7 @@ class DetalleHojaDiaria extends \Eloquent {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-	public function desvio()
+    public function desvio()
     {
         return $this->belongsTo('Desvio');
     }

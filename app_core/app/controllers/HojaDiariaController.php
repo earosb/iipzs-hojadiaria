@@ -49,29 +49,6 @@ class HojaDiariaController extends \BaseController
      */
     public function index()
     {
-//        $query = DB::table('hoja_diaria');
-//
-//        if(Input::get('grupos'))
-//            $query->whereIn('grupo_trabajo_id', Input::get('grupos'));
-//
-//        if(Input::get('mes'))
-//            $query->whereMonth('fecha', '=', Input::get('mes'));
-//
-//        if(Input::get('paginate'))
-//            $query->paginate(Input::get('paginate'));
-//        else
-//            $query->paginate(2);
-//
-//
-//        $allHojas = $query
-//            ->join('grupo_trabajo', 'grupo_trabajo.id', '=', 'hoja_diaria.grupo_trabajo_id')
-//            ->join('users', 'users.id', '=', 'hoja_diaria.user_id')
-//            ->orderBy('fecha', 'desc')
-//            ->select(array('hoja_diaria.id', 'hoja_diaria.fecha', 'users.username', 'grupo_trabajo.base', 'hoja_diaria.created_at', 'hoja_diaria.updated_at'))
-//            ->get();
-//        $allHojas = Paginator::make($allHojas, count($allHojas), 2);
-
-
         $paginate = (Input::get('paginate') ? Input::get('paginate') : 20);
 
         if (Input::get('month')) {

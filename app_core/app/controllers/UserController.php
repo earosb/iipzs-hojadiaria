@@ -10,13 +10,6 @@ class UserController extends BaseController
         $user = Sentry::getUser();
         $throttle = Sentry::getThrottleProvider()->findByUserId($user->id);
 
-//        if (Sentry::getUser()->first_name == 'Eduardo') {
-//            Mail::send('emails.welcome', array('firstname' => 'Test'), function ($message) {
-//                $message->to('webmaster@icilicafalpzs.cl', 'webmaster')
-//                    ->subject('[ERROR] Test');
-//            });
-//        }
-
         return View::make("user.profile")->with('throttle', $throttle);
     }
 

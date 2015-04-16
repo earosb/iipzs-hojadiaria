@@ -35,7 +35,7 @@ $(document).ready(function () {
         ubicacion.append('<option disabled selected> Seleccione Sector y Block </option>');
 
         var block = $('#block');
-        if ( sector_id === 'all' ) {
+        if (sector_id === 'all') {
             block.empty();
             block.append('<option disabled selected> Seleccione Block o Ramal </option>');
             var km_inicio = document.getElementById('km_inicio');
@@ -87,7 +87,7 @@ $(document).ready(function () {
                 alert("Error al obtener los datos\nPor favor verifique su conexión a Internet");
             })
             .done(function (data) {
-                switch ( data.tipo ) {
+                switch (data.tipo) {
                     case 'block':
                         var km_inicio = document.getElementById('km_inicio');
                         var km_termino = document.getElementById('km_termino');

@@ -20,7 +20,8 @@
             <div class="well">
                 <p>{{ $message }}</p>
 
-                <p>Para solicitar ayuda escriba a: <a href="mailto:webmaster@icilicafalpzs.cl" target="_top">webmaster@icilicafalpzs.cl</a></p>
+                <p>Para solicitar ayuda escriba a: <a href="mailto:webmaster@icilicafalpzs.cl"
+                                                      target="_top">webmaster@icilicafalpzs.cl</a></p>
             </div>
             <code>
                 {{ $exception }}

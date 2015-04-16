@@ -9,11 +9,11 @@ $("#add_row_trabajos").on("click", function () {
     // Get max row id and set new id
     var newid = 0;
     $.each($("#tab_trabajados tr"), function () {
-        if ( parseInt($(this).data("id")) > newid ) {
+        if (parseInt($(this).data("id")) > newid) {
             newid = parseInt($(this).data("id"));
         }
     });
-    newid ++;
+    newid++;
 
     var tr = $("<tr></tr>", {
         id: "addr" + newid,
@@ -27,7 +27,7 @@ $("#add_row_trabajos").on("click", function () {
         var children = cur_td.children();
 
         // add new td and element if it has a nane
-        if ( $(this).data("name") !== undefined ) {
+        if ($(this).data("name") !== undefined) {
             var td = $("<td></td>", {
                 "data-name": $(cur_td).data("name")
             });
@@ -37,7 +37,7 @@ $("#add_row_trabajos").on("click", function () {
             c.attr("id", $(cur_td).data("name") + "[" + newid + "][" + $(cur_td).data("tipo") + "]");
             td.attr("id", $(cur_td).data("name") + "." + newid + "." + $(cur_td).data("tipo"));
             td.attr("name", $(cur_td).data("name") + "." + newid + "." + $(cur_td).data("tipo"));
-            if ( $(cur_td).data("ubicacion") ) c.attr("onchange", "llamarAjax(" + newid + ")");
+            if ($(cur_td).data("ubicacion")) c.attr("onchange", "llamarAjax(" + newid + ")");
 
             c.appendTo($(td));
             td.appendTo($(tr));
@@ -76,11 +76,11 @@ $("#add_row_matCol").on("click", function () {
     // Get max row id and set new id
     var newid = 0;
     $.each($("#tab_material_colocado tr"), function () {
-        if ( parseInt($(this).data("id")) > newid ) {
+        if (parseInt($(this).data("id")) > newid) {
             newid = parseInt($(this).data("id"));
         }
     });
-    newid ++;
+    newid++;
 
     var tr = $("<tr></tr>", {
         id: "addrMatCol" + newid,
@@ -94,7 +94,7 @@ $("#add_row_matCol").on("click", function () {
         var children = cur_td.children();
 
         // add new td and element if it has a nane
-        if ( $(this).data("name") !== undefined ) {
+        if ($(this).data("name") !== undefined) {
             var td = $("<td></td>", {
                 "data-name": $(cur_td).data("name")
             });
@@ -141,11 +141,11 @@ $("#add_row_matRet").on("click", function () {
     // Get max row id and set new id
     var newid = 0;
     $.each($("#tab_material_retirado tr"), function () {
-        if ( parseInt($(this).data("id")) > newid ) {
+        if (parseInt($(this).data("id")) > newid) {
             newid = parseInt($(this).data("id"));
         }
     });
-    newid ++;
+    newid++;
 
     var tr = $("<tr></tr>", {
         id: "addrMatRet" + newid,
@@ -159,7 +159,7 @@ $("#add_row_matRet").on("click", function () {
         var children = cur_td.children();
 
         // add new td and element if it has a nane
-        if ( $(this).data("name") !== undefined ) {
+        if ($(this).data("name") !== undefined) {
             var td = $("<td></td>", {
                 "data-name": $(cur_td).data("name")
             });

@@ -31,7 +31,7 @@ $('#selectblockDesvio').on('change', function (e) {
         helpBlock.empty();
         var selectDesviadorNorte = $('#selectdesviador_norte');
         var selectDesviadorSur = $('#selectdesviador_sur');
-        if ( data.error ) {
+        if (data.error) {
             $('#selectblockDesvio_error').append('<p class="text-warning">' + data.msg + '</p>');
             selectDesviadorNorte.empty();
             selectDesviadorNorte.prop("disabled", true);
@@ -67,7 +67,7 @@ $("#selectdesviador_norte").on('change', function (e) {
         formGroup.removeClass('required has-error');
         helpBlock.empty();
         var selectDesviadorSur = $('#selectdesviador_sur');
-        if ( data.error ) {
+        if (data.error) {
             $('#selectdesviador_norte_error').append('<p class="text-warning">' + data.msg + '</p>');
             selectDesviadorSur.empty();
             selectDesviadorSur.prop("disabled", true);
@@ -99,7 +99,7 @@ $("#formModalDesvio").submit(function (e) {
     }).error(function () {
         alert("Error al enviar datos\nPor favor verifique su conexión a Internet");
     }).done(function (data) {
-        if ( data.error ) {
+        if (data.error) {
             var form = $('#formModalDesvio');
             var formGroup = form.find('.form-group');
             var helpBlock = form.find('.help-block');

@@ -108,11 +108,7 @@ class SectorController extends \BaseController
      */
     public function blocks($id)
     {
-
         try {
-            /*$blocks = Block::where('sector_id', '=', $id)
-                ->join('sector', 'block.sector_id', '=', 'sector.id')
-                ->get(array( 'block.id', 'block.nro_bien', 'block.estacion', 'block.km_inicio', 'block.km_termino', 'block.sector_id', 'sector.nombre as sector_nombre' ));*/
             $sector = Sector::find($id);
             $blocks = $sector->blocks;
             return View::make('block.index', compact('blocks', 'sector'));

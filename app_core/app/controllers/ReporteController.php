@@ -701,24 +701,9 @@ class ReporteController extends \BaseController
                         }
                         $fila++;
                     }
-                    // Bordes
-                    //$sheet->setBorder('A10:AF29', 'thin');
                 });
             }
 
         })->export('xls');
     }
 }
-
-/**
- *
- * SELECT mr.nombre, sum(dmr.cantidad)
- * FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
- * WHERE dmr.reempleo = '1'
- * and hd.id = dmr.hoja_diaria_id
- * and dmr.material_retirado_id = mr.id
- * and hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio BETWEEN '498800' AND '1066000' )
- * AND hd.fecha BETWEEN '2015-02-01 00:00:00' AND '2015-04-10 23:59:59'
- * GROUP BY  mr.id;
-
- */
