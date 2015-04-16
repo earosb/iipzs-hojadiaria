@@ -34,8 +34,7 @@
                             @if (Sentry::getUser()->hasAccess(['form2-3-4']))
                                 <li class="divider"></li>
                                 <li class="dropdown-header">Descargar</li>
-                                <li><a href="{{ URL::to('/r/form') }}">Formulario 2-3-4 <b class="text-danger">Beta
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span></b></a></li>
+                                <li><a href="{{ URL::to('/r/form') }}">Formularios 2-3-4 </a></li>
                             @endif
                         </ul>
                     </li>

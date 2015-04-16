@@ -11,7 +11,7 @@
 
 @section('css')
     {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
-    {{ HTML::style('css/reporte.min.css') }}
+    {{ HTML::style('css/reporte.css') }}
 @endsection
 
 @section('content')
@@ -115,23 +115,24 @@
                             </td>
                         </tr>
                     @endforeach
-
-                    @foreach($materiales['reempleo'] as $reempleo)
-                        <tr>
-                            <td>
-                                {{ $reempleo->nombre }}
-                            </td>
-                            <td>
-                                {{ $reempleo->cantidad }}
-                            </td>
-                            <td>
-                                {{ $reempleo->unidad }}
-                            </td>
-                            <td>
-                                Reempleo
-                            </td>
-                        </tr>
-                    @endforeach
+                    @if(isset($materiales['reempleo']))
+                        @foreach($materiales['reempleo'] as $reempleo)
+                            <tr>
+                                <td>
+                                    {{ $reempleo->nombre }}
+                                </td>
+                                <td>
+                                    {{ $reempleo->cantidad }}
+                                </td>
+                                <td>
+                                    {{ $reempleo->unidad }}
+                                </td>
+                                <td>
+                                    Reempleo
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                     </tbody>
                 </table>
             </div>

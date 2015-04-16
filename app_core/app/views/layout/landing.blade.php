@@ -67,11 +67,7 @@
     @endif
     @yield('content')
 </div>
-{{-- Footer
-===================================================== --}}
-<div class="footer">
-    @yield('footer')
-</div>
+
 {{-- Archivos js --}}
 {{ HTML::script('//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js') }}
 {{ HTML::script('//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js') }}
@@ -84,6 +80,8 @@
 {{-- Modals --}}
 @yield('modals')
 
+{{-- Footer (si está logueado)
+===================================================== --}}
 @if(Sentry::check())
     <footer class="footer">
         <blockquote class="pull-right">

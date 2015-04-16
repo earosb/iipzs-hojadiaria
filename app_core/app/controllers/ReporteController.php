@@ -67,16 +67,20 @@ class ReporteController extends \BaseController
         $km_termino = $input['km_termino'];
 
         /**
-         * @action string Tipo de consulta/reporte
+         * @action string Tipo de consulta/reporte puede ser detallado o resumido.
          */
         $action = $input['action'];
 
+        /**
+         * @grupoVia boolean Determina si se filtran los resultados por grupo o no.
+         */
+        $grupoVia = Input::get('grupo_via') && Input::get('grupo_via') != 'all';
         /*
         |--------------------------------------------------------------------------
         |   Trabajos
         |--------------------------------------------------------------------------
         */
-        /* Consulta detallada de trabajos */
+        // Consulta detallada de trabajos
         if ($action == 'detallado') {
             $query = DB::table('hoja_diaria');
 
@@ -85,7 +89,7 @@ class ReporteController extends \BaseController
             else
                 $query->select(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad'));
 
-            if (Input::get('grupo_via') != 'all')
+            if ($grupoVia)
                 $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
 
             $trabajos = $query
@@ -98,10 +102,10 @@ class ReporteController extends \BaseController
                 ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
                 ->orderBy('hoja_diaria.fecha')
                 ->get();
-            /* Consulta Resumida de trabajos */
+            // Consulta Resumida de trabajos
         } elseif ($action == 'resumido') {
             $query = DB::table('hoja_diaria');
-            if (Input::get('grupo_via') != 'all')
+            if ($grupoVia)
                 $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
 
             $trabajos = $query
@@ -116,78 +120,104 @@ class ReporteController extends \BaseController
                 ->get();
         }
 
-        /** Materiales Colocados
-         * ******************************************/
-        // Consulta agrupada de materiales colocados marcados como nuevos
-        $query = DB::table('hoja_diaria');
-
-        if (Input::get('grupo_via') != 'all')
-            $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
-
-        $materiales['nuevo'] = $query->join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
-            ->join('material', 'detalle_material_colocado.material_id', '=', 'material.id')
-            ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-            ->where('detalle_material_colocado.reempleo', '=', '0')
-            ->whereBetween('hoja_diaria.fecha', array($desde, $hasta))
-            ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
-            ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
-            ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-            ->groupBy('material.id')
-            ->get();
-
-        // Consulta agrupada de materiales colocados marcados como de reempleo
-        $query = DB::table('hoja_diaria');
-
-        if (Input::get('grupo_via') != 'all')
-            $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
-
-        $materiales['reempleo'] = $query->join('detalle_material_colocado', 'hoja_diaria.id', '=', 'detalle_material_colocado.hoja_diaria_id')
-            ->join('material', 'detalle_material_colocado.material_id', '=', 'material.id')
-            ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-            ->where('detalle_material_colocado.reempleo', '=', '1')
-            ->whereBetween('hoja_diaria.fecha', array($desde, $hasta), 'and')
-            ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
-            ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
-            ->select('material.nombre', 'detalle_material_colocado.reempleo', 'material.unidad', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-            ->groupBy('material.id')
-            ->get();
-
-        /** Materiales Retirados
-         * ******************************************/
-        // Consulta agrupada de materiales retirados de la vía (Si es que tiene permisos)
+        /*
+        |--------------------------------------------------------------------------
+        |   Materiales Colocados
+        |--------------------------------------------------------------------------
+        */
+        // Consulta agrupada de materiales colocados nuevos y reempleo
+        if ($grupoVia) {
+            $queryNuevos = "m.nombre, m.unidad, sum(dmc.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_colocado dmc, material m
+                    WHERE dmc.reempleo = '0'
+                          AND hd.id = dmc.hoja_diaria_id
+                          AND dmc.material_id = m.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                          AND hd.grupo_trabajo_id = " . Input::get('grupo_via') . "
+                    GROUP BY  m.id;";
+            $queryReempleo = "m.nombre, m.unidad, sum(dmc.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_colocado dmc, material m
+                    WHERE dmc.reempleo = '1'
+                          AND hd.id = dmc.hoja_diaria_id
+                          AND dmc.material_id = m.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                          AND hd.grupo_trabajo_id = " . Input::get('grupo_via') . "
+                    GROUP BY  m.id;";
+        } else {
+            $queryNuevos = "m.nombre, m.unidad, sum(dmc.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_colocado dmc, material m
+                    WHERE dmc.reempleo = '0'
+                          AND hd.id = dmc.hoja_diaria_id
+                          AND dmc.material_id = m.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                    GROUP BY  m.id;";
+            $queryReempleo = "m.nombre, m.unidad, sum(dmc.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_colocado dmc, material m
+                    WHERE dmc.reempleo = '1'
+                          AND hd.id = dmc.hoja_diaria_id
+                          AND dmc.material_id = m.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                    GROUP BY  m.id;";
+        }
+        // Concateno el select aqui para que el IDE no me muestre error en la variable $query, tonteras de phpstorm
+        $materiales['nuevo'] = DB::select('SELECT ' . $queryNuevos);
         if ($avanzada) {
-            $query = DB::table('hoja_diaria');
+            $materiales['reempleo'] = DB::select('SELECT ' . $queryReempleo);
+        } else {
+            $materiales['reempleo'] = null;
+        }
 
-            if (Input::get('grupo_via') != 'all')
-                $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
+        /*
+        |--------------------------------------------------------------------------
+        |   Materiales Retirados
+        |   Consulta agrupada de materiales retirados de la vía (si es que tiene permisos)
+        |--------------------------------------------------------------------------
+        */
+        if ($avanzada) {
+            if (Input::get('grupo_via') != 'all') {
+                $queryExcluido = "mr.nombre, sum(dmr.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+                    WHERE dmr.reempleo = '0'
+                          AND hd.id = dmr.hoja_diaria_id
+                          AND dmr.material_retirado_id = mr.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                          AND hd.grupo_trabajo_id = " . Input::get('grupo_via') . "
+                    GROUP BY  mr.id;";
+                $queryReempleo = "mr.nombre, sum(dmr.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+                    WHERE dmr.reempleo = '1'
+                          AND hd.id = dmr.hoja_diaria_id
+                          AND dmr.material_retirado_id = mr.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                          AND hd.grupo_trabajo_id = " . Input::get('grupo_via') . "
+                    GROUP BY  mr.id;";
+            } else {
+                $queryExcluido = "mr.nombre, sum(dmr.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+                    WHERE dmr.reempleo = '0'
+                          AND hd.id = dmr.hoja_diaria_id
+                          AND dmr.material_retirado_id = mr.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                    GROUP BY  mr.id;";
+                $queryReempleo = "mr.nombre, sum(dmr.cantidad) AS cantidad
+                    FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+                    WHERE dmr.reempleo = '1'
+                          AND hd.id = dmr.hoja_diaria_id
+                          AND dmr.material_retirado_id = mr.id
+                          AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $km_inicio . "' AND dhd.km_inicio < '" . $km_termino . "' )
+                          AND hd.fecha BETWEEN '" . $desde . "' AND '" . $hasta . "'
+                    GROUP BY  mr.id;";
+            }
 
-            $materialesRetirados['excluido'] = $query->join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
-                ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
-                ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                ->where('detalle_material_retirado.reempleo', '=', '0')
-                ->whereBetween('fecha', array($desde, $hasta), 'and')
-                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
-                ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
-                ->select('material_retirado.nombre', 'detalle_material_retirado.reempleo', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
-                ->groupBy('material_retirado.nombre')
-                ->get();
-
-            $query = DB::table('hoja_diaria');
-
-            if (Input::get('grupo_via') != 'all')
-                $query->where('hoja_diaria.grupo_trabajo_id', Input::get('grupo_via'));
-
-            $materialesRetirados['reempleo'] = $query->join('detalle_material_retirado', 'hoja_diaria.id', '=', 'detalle_material_retirado.hoja_diaria_id')
-                ->join('material_retirado', 'detalle_material_retirado.material_retirado_id', '=', 'material_retirado.id')
-                ->join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                ->where('detalle_material_retirado.reempleo', '=', '1')
-                ->whereBetween('fecha', array($desde, $hasta), 'and')
-                ->where('detalle_hoja_diaria.km_inicio', '>=', $km_inicio)
-                ->where('detalle_hoja_diaria.km_inicio', '<', $km_termino)
-                ->select('material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
-                ->groupBy('material_retirado.nombre')
-                ->get();
-
+            $materialesRetirados['excluido'] = DB::select('SELECT ' . $queryExcluido);
+            $materialesRetirados['reempleo'] = DB::select('SELECT ' . $queryReempleo);
         } else {
             $materialesRetirados = null;
         }
@@ -487,14 +517,14 @@ class ReporteController extends \BaseController
 
                             $dataMaterialR = DB::select($query);
                             foreach ($dataMaterialR as $data) {
-                                    if ($data->reempleo == 0) {
-                                        $sheet->cell($columna . $fila, $data->cantidad);
-                                        $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
-                                    }
-                                    if ($data->reempleo == 1) {
-                                        $sheet->cell($columna . ($fila + 1), $data->cantidad);
-                                        $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
-                                    }
+                                if ($data->reempleo == 0) {
+                                    $sheet->cell($columna . $fila, $data->cantidad);
+                                    $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
+                                }
+                                if ($data->reempleo == 1) {
+                                    $sheet->cell($columna . ($fila + 1), $data->cantidad);
+                                    $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
+                                }
                             }
                             $columna++;
                             $columna++;

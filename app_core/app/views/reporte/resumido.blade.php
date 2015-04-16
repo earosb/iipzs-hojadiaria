@@ -2,7 +2,7 @@
 
 @section('meta')
     <meta name="description" content="Página de reporte resumido de trabajos realizados">
-    <meta name="author" content="earosb" >
+    <meta name="author" content="earosb">
 @stop
 
 @section('title')
@@ -11,7 +11,7 @@
 
 @section('css')
     {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
-    {{ HTML::style('css/reporte.min.css') }}
+    {{ HTML::style('css/reporte.css') }}
 @endsection
 
 @section('content')
@@ -92,22 +92,24 @@
                         </tr>
                     @endforeach
 
-                    @foreach($materiales['reempleo'] as $material)
-                        <tr>
-                            <td>
-                                {{ $material->nombre }}
-                            </td>
-                            <td>
-                                {{ $material->cantidad }}
-                            </td>
-                            <td>
-                                {{ $material->unidad }}
-                            </td>
-                            <td>
-                                Reempleo
-                            </td>
-                        </tr>
-                    @endforeach
+                    @if(isset($materiales['reempleo']))
+                        @foreach($materiales['reempleo'] as $material)
+                            <tr>
+                                <td>
+                                    {{ $material->nombre }}
+                                </td>
+                                <td>
+                                    {{ $material->cantidad }}
+                                </td>
+                                <td>
+                                    {{ $material->unidad }}
+                                </td>
+                                <td>
+                                    Reempleo
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                     </tbody>
                 </table>
             </div>

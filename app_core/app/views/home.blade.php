@@ -16,6 +16,15 @@
             <section>
                 <blockquote>
                     <p>Historial de cambios:</p>
+                    @if (Sentry::getUser()->hasAccess(['reporte']))
+                        <p>16/04/2015</p>
+                        <ul>
+                            <li>Corregido error al sumar materiales en reportes detallado y resumido.</li>
+                            @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
+                                <li>Corregido error al sumar materiales en formularios 2, 3 y 4.</li>
+                            @endif
+                        </ul>
+                    @endif
 
                     @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
                         <p>13/04/2015</p>

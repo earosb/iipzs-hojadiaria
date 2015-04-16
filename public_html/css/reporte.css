@@ -6,4 +6,8 @@
     .glyphicon {
         display: none;
     }
+
+    .footer {
+        display: none;
+    }
 }
