@@ -284,25 +284,25 @@ class ReporteController extends \BaseController
                             'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
                         ));
 
-                    $sheet->mergeCells('A10:A14');
-                    $sheet->mergeCells('B10:B14');
-                    $sheet->mergeCells('C10:C14');
-                    $sheet->mergeCells('B14:C14');
-                    $sheet->mergeCells('D11:D12');
+                    $sheet->mergeCells('A2:A6');
+                    $sheet->mergeCells('B2:B6');
+                    $sheet->mergeCells('C2:C6');
+                    $sheet->mergeCells('B6:C6');
+                    $sheet->mergeCells('D3:D4');
 
                     // Título formulario 2
-                    $sheet->cell('A9', 'Form. 2');
+                    $sheet->cell('A1', 'Form. 2');
 
                     // Cabeceras
-                    $sheet->appendRow(10, array('PART.', 'DESIGNACION', null, 'N°Bien'));
-                    $sheet->appendRow(11, array('PART.', 'DESIGNACION', null, 'UBIC.'));
-                    $sheet->appendRow(13, array('PART.', 'DESIGNACION', null, 'BLOCK'));
-                    $sheet->appendRow(14, array('PART.', 'DESIGNACION', null, 'UNID.'));
+                    $sheet->appendRow(2, array('PART.', 'DESIGNACION', null, 'N°Bien'));
+                    $sheet->appendRow(3, array('PART.', 'DESIGNACION', null, 'UBIC.'));
+                    $sheet->appendRow(4, array('PART.', 'DESIGNACION', null, 'BLOCK'));
+                    $sheet->appendRow(5, array('PART.', 'DESIGNACION', null, 'UNID.'));
 
                     // Blocks en cabecera
                     $columna = 'E';
                     $columnaSig = 'F';
-                    $fila = 10;
+                    $fila = 2;
                     foreach ($blocks as $block) {
                         // Nro bien
                         $tmp = $columna . $fila . ':' . $columnaSig . $fila;
@@ -391,17 +391,17 @@ class ReporteController extends \BaseController
                      * *********************************************
                      */
                     // Título Formulario 3
-                    $sheet->cell('A' . ($fila + 5), 'Form. 3');
+                    $sheet->cell('A' . ($fila + 2), 'Form. 3');
 
-                    $sheet->mergeCells('A' . ($fila + 6) . ':B' . ($fila + 6));
-                    $sheet->appendRow(($fila + 6), array('B.- MATERIAL COLOCADO', null, 'PROVEEDOR', 'CLASE'));
+                    $sheet->mergeCells('A' . ($fila + 3) . ':B' . ($fila + 3));
+                    $sheet->appendRow(($fila + 3), array('B.- MATERIAL COLOCADO', null, 'PROVEEDOR', 'CLASE'));
 
                     // Materiales colocados
                     $materialesColocados = Material::where('es_oficial', '=', '1')
                         ->select('id', 'nombre', 'proveedor')
                         ->get();
 
-                    $fila = $fila + 7;
+                    $fila = $fila + 4;
                     $styleCell = array(
                         'fill' => array(
                             'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -411,18 +411,6 @@ class ReporteController extends \BaseController
                     foreach ($materialesColocados as $cont => $matCol) {
                         $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'N'));
                         $sheet->appendRow($fila + 1, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'R'));
-
-//                        $dataMaterial = Block::where('block.sector_id', '=', $sector->id)
-//                            ->where('material.id', '=', $matCol->id)
-//                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
-//                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-//                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-//                            ->join('detalle_material_colocado', 'detalle_material_colocado.hoja_diaria_id', '=', 'hoja_diaria.id')
-//                            ->join('material', 'material.id', '=', 'detalle_material_colocado.material_id')
-//                            ->select('block.id', 'block.estacion', 'material.id as material_id', 'material.nombre', 'detalle_material_colocado.reempleo', DB::raw('SUM(detalle_material_colocado.cantidad) as cantidad'))
-//                            ->groupBy('block.id', 'detalle_material_colocado.reempleo')
-//                            ->get();
-
 
                         $columna = 'E';
                         foreach ($blocks as $block) {
@@ -461,17 +449,17 @@ class ReporteController extends \BaseController
                      * *********************************************
                      */
                     // Título Formulario 4
-                    $sheet->cell('A' . ($fila + 5), 'Form. 4');
+                    $sheet->cell('A' . ($fila + 2), 'Form. 4');
 
-                    $sheet->mergeCells('A' . ($fila + 6) . ':B' . ($fila + 6));
-                    $sheet->appendRow(($fila + 6), array('C.- MATERIAL RETIRADO DE LA VIA', null, null, 'CLASE'));
+                    $sheet->mergeCells('A' . ($fila + 3) . ':B' . ($fila + 3));
+                    $sheet->appendRow(($fila + 3), array('C.- MATERIAL RETIRADO DE LA VIA', null, null, 'CLASE'));
 
                     // Materiales retirados
                     $materialesRetirados = MaterialRetirado::where('es_oficial', '=', '1')
                         ->select('id', 'nombre')
                         ->get();
 
-                    $fila = $fila + 7;
+                    $fila = $fila + 4;
                     $styleCell = array(
                         'fill' => array(
                             'type' => PHPExcel_Style_Fill::FILL_SOLID,
@@ -485,17 +473,6 @@ class ReporteController extends \BaseController
                         $sheet->mergeCells($tmp);
                         $sheet->appendRow($fila, array(($cont + 1), $matRet->nombre, null, 'Exc.'));
                         $sheet->appendRow($fila + 1, array(($cont + 1), $matRet->nombre, null, 'R.'));
-
-//                        $dataMaterialR = Block::where('block.sector_id', '=', $sector->id)
-//                            ->where('material_retirado.id', '=', $matRet->id)
-//                            ->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))
-//                            ->join('detalle_hoja_diaria', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-//                            ->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-//                            ->join('detalle_material_retirado', 'detalle_material_retirado.hoja_diaria_id', '=', 'hoja_diaria.id')
-//                            ->join('material_retirado', 'material_retirado.id', '=', 'detalle_material_retirado.material_retirado_id')
-//                            ->select('block.id', 'block.estacion', 'material_retirado.id as material_id', 'material_retirado.nombre', DB::raw('SUM(detalle_material_retirado.cantidad) as cantidad'))
-//                            ->groupBy('block.id', 'detalle_material_retirado.reempleo')
-//                            ->get();
 
                         $columna = 'E';
                         foreach ($blocks as $block) {
