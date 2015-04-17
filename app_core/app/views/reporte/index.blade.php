@@ -81,10 +81,9 @@
                 {{-- Km Inicio --}}
                 <div class="col-xs-12 col-md-3">
                     {{ Form::label('km_inicio', 'Km Inicio', array('class' => 'control-label')) }}
-                    {{--{{ Form::text('km_inicio', 498800, array('placeholder' => 'Kilómetro Inicio', 'class' => 'form-control')) }}--}}
                     <div class="input-group">
                         <span class="input-group-addon">Desde</span>
-                        {{ Form::number('km_inicio', 498800, array('step' => '100', 'min' => '498800', 'class' => 'form-control', 'required' => 'required')) }}
+                        {{ Form::number('km_inicio', 498800, array('min' => '498800', 'class' => 'form-control', 'required' => 'required')) }}
                     </div>
                     <p class="text-danger">{{ $errors->first('km_inicio') }}</p>
                 </div>
@@ -93,7 +92,7 @@
                     {{ Form::label('km_termino', 'Km Término', array('class' => 'control-label')) }}
                     <div class="input-group">
                         <span class="input-group-addon">Hasta</span>
-                        {{ Form::number('km_termino', 1066000, array('step' => '100', 'max' => '1066000', 'class' => 'form-control', 'required' => 'required')) }}
+                        {{ Form::number('km_termino', 1066000, array('max' => '1066000', 'class' => 'form-control', 'required' => 'required')) }}
                     </div>
                     <p class="text-danger">{{ $errors->first('km_termino') }}</p>
                 </div>

@@ -17,7 +17,7 @@
                 'method' 	=>	'post',
                 'id'		=>	'formParam',
                 'class' 	=> 	'form-horizontal')) }}
-            <legend>Generar Formulario 2-3-4</legend>
+            <legend>Generar formularios 2-3-4</legend>
             <div class="col-md-12">
 
                 {{-- Mes Inicio --}}
