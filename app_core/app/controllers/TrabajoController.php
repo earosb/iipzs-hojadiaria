@@ -128,7 +128,7 @@ class TrabajoController extends \BaseController
         $trabajo = Trabajo::find($id);
         $tipoMantenimiento = TipoMantenimiento::All(array('id', 'nombre'));
 
-        $trabajo['materiales'] = Material::join('trabajo_material', 'trabajo_material.material_id', '=', 'material.id')
+        $trabajo['materiales'] = Material::join('trabajo_material', 'trabajo_material.material_id', '=', 'material.id', 'left')
             ->orderBy('material.nombre', 'asc')
             ->get(array('material.id', 'material.nombre', 'trabajo_material.trabajo_id'));
 
