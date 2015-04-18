@@ -1,8 +1,6 @@
 {
-	"name": "laravel/laravel",
-	"description": "The Laravel Framework.",
-	"keywords": ["framework", "laravel"],
-	"license": "MIT",
+	"name": "earosb/iipzs",
+	"description": "Sistema Icil Icafal Proyecto Zona Sur S.A., icilicafalpzs.cl",
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",

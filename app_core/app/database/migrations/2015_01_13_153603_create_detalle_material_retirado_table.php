@@ -20,7 +20,7 @@ class CreateDetalleMaterialRetiradoTable extends Migration {
 		Schema::create('detalle_material_retirado', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('cantidad');
+			$table->decimal('cantidad', 10, 2);
             $table->boolean('reempleo');
 			
 			$table->integer('hoja_diaria_id')->unsigned();
