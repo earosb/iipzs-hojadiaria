@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return array(
     // layouts
@@ -31,4 +31,5 @@ return array(
     'permissions-list' => 'syntara::permission.list-permissions',
     'permission-create' => 'syntara::permission.new-permission',
     'permission-edit' => 'syntara::permission.show-permission',
+
 );
