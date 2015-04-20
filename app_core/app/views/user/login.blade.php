@@ -15,7 +15,7 @@
 <!--                  +=/_|\ '' /~~\ '' /    ( o )( o )     ( o )    ( o )     ( o )( o )       ( o ) ( o ) ( o )              -->
 <!--      ==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-=     -->
 <!--                                                                                                                           -->
-<!--                                                                                                       CC Eduardo Aros     -->
+<!--                                                                                                                           -->
 <!--                                                                                                                           -->
 @extends('layout.landing')
 
@@ -64,11 +64,11 @@
                 @endif
                 <div class="form-group">
                     {{ Form::label('username', trans('form.username')) }}
-                    {{ Form::text('username', '', array('class' => 'form-control', 'placeholder' => 'Ingrese Usuario', 'required' => 'required')) }}
+                    {{ Form::text('username', '', array('class' => 'form-control', 'placeholder' => 'Ingrese usuario', 'required' => 'required')) }}
                 </div>
                 <div class="form-group">
                     {{ Form::label('password', trans('form.password')) }}
-                    {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Ingrese Contraseña', 'required' => 'required')) }}
+                    {{ Form::password('password', array('class' => 'form-control', 'placeholder' => 'Ingrese contraseña', 'required' => 'required')) }}
                 </div>
                 <div class="form-group text-center">
                     {{ Form::submit(trans('form.signin'), array('class'=>'btn btn-success btn-login-submit')) }}
