@@ -103,7 +103,7 @@ class HojaDiariaController extends \BaseController
             'selectgrupos' => 'required|exists:grupo_trabajo,id',
         );
         $messages = array(
-            'before' => 'Debe seleccionar una fecha anterior a hoy.',
+            'before' => 'Debe seleccionar una fecha anterior al día de hoy.',
         );
         /**
          * agrega reglas de validación si es que existen campos
