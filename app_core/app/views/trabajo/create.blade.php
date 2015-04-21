@@ -107,8 +107,7 @@
         {{-- Checkboxes Materiales Asociados --}}
         <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">Materiales Asociados <b class="text-danger">Beta <span
-                                class="glyphicon glyphicon-exclamation-sign"></span></b></div>
+                <div class="panel-heading">Materiales Asociados </div>
                 <div class="panel-body">
                     <div class="form-group">
                         <div class="col-sm-10">
