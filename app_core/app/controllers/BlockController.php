@@ -2,7 +2,6 @@
 
 class BlockController extends \BaseController
 {
-
     /**
      * Display a listing of block
      *

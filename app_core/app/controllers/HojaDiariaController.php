@@ -336,12 +336,28 @@ class HojaDiariaController extends \BaseController
             $matRetirados[$matRet->id] = $matRet->nombre;
         }
 
+        $idBlock = $hoja->detalleHojaDiaria[0]->block_id;
+        $block = Block::find($idBlock);
+        $desvios = Block::find($idBlock)->desvios;
+        $desviadores = Block::find($idBlock)->desviadores;
+
+        $blockTodo = ["block-".$idBlock => "Vía principal"];
+        foreach( $desvios as $desvio ){
+            $blockTodo += ["desvio-".$desvio->id => $desvio->nombre];
+        }
+        foreach( $desviadores as $desviador ){
+            $blockTodo += ["desviador-".$desviador->id => $desviador->nombre];
+        }
+
+//        return $blockTodo;
+
         return View::make('hoja_diaria.edit', compact('hoja'))
             ->with('sectores', $sectores)
             ->with('grupos', $grupos)
             ->with('materiales', $materiales)
             ->with('materialesRet', $matRetirados)
-            ->with('tipoMantenimiento', $tipoMantenimiento);
+            ->with('tipoMantenimiento', $tipoMantenimiento)
+            ->with('blockTodo', $blockTodo);
     }
 
     /**

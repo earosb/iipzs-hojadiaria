@@ -131,16 +131,16 @@
                             </select>
                         </td>
                         <td data-name="trabajos" data-tipo="ubicacion" data-ubicacion="true">
-                            {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
+                            {{ Form::select('trabajos[0][ubicacion]', $blockTodo, null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
-                            {{ Form::number('trabajos[0][km_inicio]', null, array('step' => '100', 'class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]')) }}
+                            {{ Form::number('trabajos[0][km_inicio]', null, array('class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
-                            {{ Form::number('trabajos[0][km_termino]', null, array('step' => '100', 'class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]')) }}
+                            {{ Form::number('trabajos[0][km_termino]', null, array('class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]')) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
-                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
+                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
                         </td>
                     </tr>
                     @foreach($hoja->detalle_hoja_diaria as $cont => $detalle)
@@ -169,7 +169,7 @@
                                 <select name="trabajos[{{ ($cont + 1) }}][ubicacion]"
                                         class="form-control selectubicacion">
                                     @if($detalle->desvio_id )
-                                        <option value="desvio-{{ $detalle->desvio_id }}">Desvio</option>
+                                        <option value="desvio-{{ $detalle->desvio_id }}">{{ $detalle->desvio->nombre }}</option>
                                     @elseif($detalle->desviador_id )
                                         <option value="desviador-{{ $detalle->desviador_id }}">{{ $detalle->desviador->nombre }}</option>
                                     @else
