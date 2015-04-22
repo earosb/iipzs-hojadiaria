@@ -75,6 +75,9 @@ class ReporteController extends \BaseController
          * @grupoVia boolean Determina si se filtran los resultados por grupo o no.
          */
         $grupoVia = Input::get('grupo_via') && Input::get('grupo_via') != 'all';
+
+        $grupoVia ? $grupo = GrupoTrabajo::find($grupoVia) : $grupo = null;
+
         /*
         |--------------------------------------------------------------------------
         |   Trabajos
@@ -227,13 +230,15 @@ class ReporteController extends \BaseController
                 ->with('trabajos', $trabajos)
                 ->with('materiales', $materiales)
                 ->with('avanzada', $avanzada)
-                ->with('materialesRetirados', $materialesRetirados);
+                ->with('materialesRetirados', $materialesRetirados)
+                ->with('grupo', $grupo);
         } elseif ($action == 'resumido') {
             return View::make('reporte.resumido')
                 ->with('trabajos', $trabajos)
                 ->with('materiales', $materiales)
                 ->with('avanzada', $avanzada)
-                ->with('materialesRetirados', $materialesRetirados);
+                ->with('materialesRetirados', $materialesRetirados)
+                ->with('grupo', $grupo);
         } else {
             App::abort(404);
         }

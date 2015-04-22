@@ -29,6 +29,10 @@
                 <div class="panel-body">
                     <p><strong>Parámetros de búsqueda:</strong></p>
 
+                    @if( isset($grupo) )
+                        <p>Grupo {{ $grupo->base }}</p>
+                    @endif
+
                     <p>Entre los kilómetros {{ Request::get('km_inicio') }} y {{ Request::get('km_termino') }}</p>
 
                     <p>Desde el {{ Request::get('fecha_desde') }} Hasta el {{ Request::get('fecha_hasta') }}</p>
