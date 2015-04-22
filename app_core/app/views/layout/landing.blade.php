@@ -35,7 +35,7 @@
         @yield('title') - Icil Icafal PZS S.A.
     </title>
 
-    {{ HTML::style('//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css') }}
+    {{ HTML::style('//maxcdn.bootstrapcdn.com/bootswatch/3.3.2/yeti/bootstrap.min.css') }}
     {{ HTML::style('css/alertify.core.css') }}
     {{ HTML::style('css/alertify.default.css') }}
     {{ HTML::style('css/landing.min.css') }}
