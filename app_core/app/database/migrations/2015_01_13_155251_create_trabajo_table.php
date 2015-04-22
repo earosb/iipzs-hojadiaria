@@ -24,6 +24,7 @@ class CreateTrabajoTable extends Migration {
 			$table->string('unidad',10);
 			$table->float('valor');
 			$table->boolean('es_oficial');
+			$table->integer('orden');
 
 			$table->integer('tipo_mantenimiento_id')->unsigned();
 			$table->foreign('tipo_mantenimiento_id')->references('id')->on('tipo_mantenimiento');
