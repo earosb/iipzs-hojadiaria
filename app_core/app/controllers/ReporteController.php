@@ -593,7 +593,6 @@ class ReporteController extends \BaseController
                                 }
                             }
                             $columna++;
-                            $columna++;
                         }
                         $fila++;
                     }
