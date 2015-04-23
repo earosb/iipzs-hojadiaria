@@ -7,7 +7,11 @@
 function ajaxBlocks(sector_id, select) {
     $.ajax({
         type: 'get',
-        url: '/block/ajax-blocks/' + sector_id
+        url: '/block/ajax-blocks/' + sector_id,
+        beforeSend: function () {
+            $(select).empty();
+            $(select).append('<option disabled selected> Cargando... </option>');
+        }
     }).error(function () {
         alert("Error al obtener los datos\nPor favor, verifique su conexión a Internet");
     }).done(function (data) {

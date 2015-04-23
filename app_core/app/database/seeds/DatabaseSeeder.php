@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call('TrabajoTableSeeder');
         $this->call('MaterialTableSeeder');
         $this->call('GrupoTrabajosTableSeeder');
+        $this->call('PermisosTableSeeder');
     }
 
 }
