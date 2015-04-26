@@ -36,67 +36,75 @@
             'id'		=>	'formHojaDiaria',
             'class' 	=> 	'form-horizontal')) }}
         <fieldset>
-            <div class="col-xs-12 col-md-3">
-                <legend>Edición de hoja diaria</legend>
-                <div class="input-group" id="fecha_div">
-                    {{ Form::text('fecha', $hoja->fecha, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha', 'required' => 'required']) }}
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                </div>
-                <div class="help-block" id="fecha_error"></div>
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="col-md-3">Fecha</th>
+                        <th class="col-md-3">Grupo</th>
+                        <th class="col-md-3">Sector</th>
+                        <th class="col-md-3">Block</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="input-group" id="fecha_div">
+                                {{ Form::text('fecha', $hoja->fecha, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha', 'required' => 'required']) }}
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                            <div class="help-block" id="fecha_error"></div>
+                        </td>
+                        <td>
+                            <div id="selectgrupos_div">
+                                <div class="controls">
+                                    <select name="selectgrupos" id="selectgrupos" class="form-control">
+                                        @foreach($grupos as $grupo)
+                                            @if($hoja->grupo_trabajo_id == $grupo->id)
+                                                <option value="{{ $grupo->id }}" selected="selected">{{ $grupo->base }}</option>
+                                            @else
+                                                <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
 
-            </div>
-            <div class="col-xs-12 col-md-12">
-                {{-- Select sector
-                ===================================================== --}}
-                <div id="selectsector_div" class="form-group col-xs-12 col-md-4">
-                    {{ Form::label('selectsector', 'Sector', array('class' => 'control-label')) }}
-                    <div class="controls">
-                        <select name="selectsector" id="selectsector" class="myselect">
-                            <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
-                            @foreach($sectores as $sector)
-                                @if($hoja->detalle_hoja_diaria[0]->block->sector_id == $sector->id)
-                                    <option selected="selected" value="{{ $sector->id }}">{{ $sector->nombre }}</option>
-                                @else
-                                    <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                                    <div class="help-block" id="selectgrupos_error"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="selectsector_div">
+                                <div class="controls">
+                                    <select name="selectsector" id="selectsector" class="form-control">
+                                        <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
+                                        @foreach($sectores as $sector)
+                                            @if($hoja->detalle_hoja_diaria[0]->block->sector_id == $sector->id)
+                                                <option selected="selected" value="{{ $sector->id }}">{{ $sector->nombre }}</option>
+                                            @else
+                                                <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
 
-                        <div class="help-block" id="selectsector_error"></div>
-                    </div>
-                </div>
-                {{-- Select block
-                ===================================================== --}}
-                <div id="selectblock_div" class="form-group col-xs-12 col-md-4">
-                    {{ Form::label('selectblock', 'Block', array('class' => 'control-label')) }}
-                    <div class="controls">
-                        <select name="selectblock" id="selectblock" class="myselect">
-                            <option selected="selected"
-                                    value="{{ $hoja->detalle_hoja_diaria[0]->block->id }}"> {{ $hoja->detalle_hoja_diaria[0]->block->estacion }}</option>
-                        </select>
+                                    <div class="help-block" id="selectsector_error"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="selectblock_div">
+                                <div class="controls">
+                                    <select name="selectblock" id="selectblock" class="form-control">
+                                        <option selected="selected"
+                                                value="{{ $hoja->detalle_hoja_diaria[0]->block->id }}"> {{ $hoja->detalle_hoja_diaria[0]->block->estacion }}</option>
+                                    </select>
 
-                        <div class="help-block" id="selectblock_error"></div>
-                    </div>
-                </div>
-                {{-- Grupo Vía
-                ===================================================== --}}
-                <div id="selectgrupos_div" class="form-group col-xs-12 col-md-4">
-                    {{ Form::label('selectgrupos', 'Grupo Vía', array('class' => 'control-label')) }}
-                    <div class="controls">
-                        <select name="selectgrupos" id="selectgrupos" class="myselect">
-                            {{--<option selected="selected" disabled="disabled"> Seleccione un Grupo</option>--}}
-                            @foreach($grupos as $grupo)
-                                @if($hoja->grupo_trabajo_id == $grupo->id)
-                                    <option value="{{ $grupo->id }}" selected="selected">{{ $grupo->base }}</option>
-                                @else
-                                    <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-
-                        <div class="help-block" id="selectgrupos_error"></div>
-                    </div>
-                </div>
+                                    <div class="help-block" id="selectblock_error"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             {{-- Tabla trabajos realizados
             ===================================================== --}}
@@ -196,8 +204,8 @@
             </div>
             {{-- Tabla materiales colocados
             ===================================================== --}}
-            <div class="col-md-12 form-group">
-                <div class="col-xs-12 col-md-6 ">
+            <div class="col-md-12">
+                <div class="col-md-6 form-group">
                     <table class="table table-bordered table-striped" id="tab_material_colocado">
                         <thead>
                         <tr>
@@ -242,7 +250,7 @@
                 </div>
                 {{-- Tabla materiales retirados
                 ===================================================== --}}
-                <div class="col-xs-12 col-md-6">
+                <div class="col-md-6 form-group pull-right">
                     <table class="table table-bordered table-striped" id="tab_material_retirado">
                         <thead>
                         <tr>
@@ -308,8 +316,8 @@
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js') }}
     {{ HTML::script('js/calendar/calendar.min.js') }}
 
-    {{--{{ HTML::script('js/hd/create/table.js') }}--}}
-    {{ HTML::script('js/min/1424470502873.min.js') }}
+    {{ HTML::script('js/hd/create/table.js') }}
+    {{--{{ HTML::script('js/min/1424470502873.min.js') }}--}}
 
     {{ HTML::script('js/hd/create/create.js') }}
     {{--{{ HTML::script('js/min/1425312083058.min.js') }}--}}
@@ -318,10 +326,13 @@
     {{ HTML::script('js/min/1425396779231.min.js') }}
 @stop
 
+@if (Sentry::getUser()->hasAccess(['editor']))
 @section('modals')
+    @include('modal.modalEditor')
     @include('modal.formDesviador')
     @include('modal.formDesvio')
     @include('modal.formMaterialColocado')
     @include('modal.formMaterialRetirado')
     @include('modal.formTrabajo')
 @stop
+@endif

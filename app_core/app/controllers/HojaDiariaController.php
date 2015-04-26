@@ -440,6 +440,7 @@ class HojaDiariaController extends \BaseController
         }
 
         $hojaDiaria = HojaDiaria::find($idHoja);
+        $hojaDiaria->touch();
 
         $hojaDiaria->detalleHojaDiaria()->forceDelete();
         $hojaDiaria->detalleMaterialColocado()->forceDelete();
@@ -455,7 +456,6 @@ class HojaDiariaController extends \BaseController
         $hojaDiaria->observaciones = $input['obs'];
         $hojaDiaria->grupo_trabajo_id = $input['selectgrupos'];
         $hojaDiaria->user_id = Sentry::getUser()->id;
-
         $hojaDiaria->save();
 
         foreach ($input['trabajos'] as $key => $value) {

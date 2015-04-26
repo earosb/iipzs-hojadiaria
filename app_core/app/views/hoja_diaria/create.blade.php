@@ -14,98 +14,84 @@
 @stop
 @section('content')
     <div class="row">
-        @if (Sentry::getUser()->hasAccess(['editor']))
-            {{-- Botón "flotante"
-            ===================================================== --}}
-            <div class="btn-group pull-right">
-                <button type="button" class="btn btn-default dropdown-toggle glyphicon glyphicon-cog"
-                        data-toggle="dropdown" aria-expanded="false">
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li class="dropdown-header">Ubicaciones</li>
-                    <li><a data-toggle="modal" data-target="#modalDesviador" href="#">Nuevo desviador</a></li>
-                    <li><a data-toggle="modal" data-target="#modalDesvio" href="#">Nuevo desvío</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Trabajos</li>
-                    <li><a data-toggle="modal" data-target="#modalTrabajo" href="#">Nuevo trabajo</a></li>
-                    <li class="divider"></li>
-                    <li class="dropdown-header">Materiales</li>
-                    <li><a data-toggle="modal" data-target="#modalMaterialCol" href="#">Nuevo material colocado</a>
-                    </li>
-                    <li><a data-toggle="modal" data-target="#modalMaterialRet" href="#">Nuevo material retirado</a>
-                    </li>
-                </ul>
-            </div>
-        @endif
         {{ Form::open(array(
             'url' 		=>	'hd',
             'method' 	=>	'post',
             'id'		=>	'formHojaDiaria',
             'class' 	=> 	'form-horizontal')) }}
         <fieldset>
-            <div class="col-xs-12 col-md-3">
-                <legend>Nueva hoja diaria de trabajo</legend>
-                <div class="input-group" id="fecha_div">
-                    {{ Form::text('fecha', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha', 'required' => 'required']) }}
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                </div>
-                <div class="help-block" id="fecha_error"></div>
+            <div class="col-md-12">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th class="col-md-3">Fecha</th>
+                        <th class="col-md-3">Grupo</th>
+                        <th class="col-md-3">Sector</th>
+                        <th class="col-md-3">Block</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="input-group" id="fecha_div">
+                                {{ Form::text('fecha', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'fecha', 'required' => 'required']) }}
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                            </div>
+                            <div class="help-block" id="fecha_error"></div>
+                        </td>
+                        <td>
+                            <div id="selectgrupos_div">
+                                <div class="controls">
+                                    <select name="selectgrupos" id="selectgrupos" class="form-control">
+                                        <option selected="selected" disabled="disabled"> Seleccione un Grupo</option>
+                                        @foreach($grupos as $grupo)
+                                            <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
+                                        @endforeach
+                                    </select>
 
-            </div>
-            <div class="col-xs-12 col-md-12">
-                {{-- Select sector
-                ===================================================== --}}
-                <div id="selectsector_div" class="form-group col-xs-12 col-md-4">
-                    {{ Form::label('selectsector', 'Sector', array('class' => 'control-label')) }}
-                    <div class="controls">
-                        <select name="selectsector" id="selectsector" class="myselect">
-                            <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
-                            @foreach($sectores as $sector)
-                                <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
-                            @endforeach
-                        </select>
+                                    <div class="help-block" id="selectgrupos_error"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="selectsector_div">
+                                <div class="controls">
+                                    <select name="selectsector" id="selectsector" class="form-control">
+                                        <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
+                                        @foreach($sectores as $sector)
+                                            <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
+                                        @endforeach
+                                    </select>
 
-                        <div class="help-block" id="selectsector_error"></div>
-                    </div>
-                </div>
-                {{-- Select block
-                ===================================================== --}}
-                <div id="selectblock_div" class="form-group col-xs-12 col-md-4">
-                    {{ Form::label('selectblock', 'Block', array('class' => 'control-label')) }}
-                    <div class="controls">
-                        <select name="selectblock" id="selectblock" class="myselect">
-                            <option selected="selected" disabled="disabled" value="null"> Seleccione un Sector</option>
-                        </select>
+                                    <div class="help-block" id="selectsector_error"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div id="selectblock_div">
+                                <div class="controls">
+                                    <select name="selectblock" id="selectblock" class="form-control">
+                                        <option selected="selected" disabled="disabled" value="null"> Seleccione un Sector</option>
+                                    </select>
 
-                        <div class="help-block" id="selectblock_error"></div>
-                    </div>
-                </div>
-                {{-- Grupo Vía
-                ===================================================== --}}
-                <div id="selectgrupos_div" class="form-group col-xs-12 col-md-4">
-                    {{ Form::label('selectgrupos', 'Grupo Vía', array('class' => 'control-label')) }}
-                    <div class="controls">
-                        <select name="selectgrupos" id="selectgrupos" class="myselect">
-                            <option selected="selected" disabled="disabled"> Seleccione un Grupo</option>
-                            @foreach($grupos as $grupo)
-                                <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
-                            @endforeach
-                        </select>
-
-                        <div class="help-block" id="selectgrupos_error"></div>
-                    </div>
-                </div>
+                                    <div class="help-block" id="selectblock_error"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             {{-- Tabla trabajos realizados
             ===================================================== --}}
-            <div class="col-xs-12 col-md-12">
+            <div class="col-md-12">
                 <table class="table table-bordered table-striped" id="tab_trabajados">
                     <thead>
                     <tr>
-                        <th>Trabajos Ejecutados</th>
-                        <th>Desvío / Desviador</th>
-                        <th class="col-md-1">Km inicio</th>
-                        <th class="col-md-1">Km término</th>
+                        <th class="col-md-5">Trabajos Ejecutados</th>
+                        <th class="col-md-2">Tipo vía</th>
+                        <th>Km inicio</th>
+                        <th>Km término</th>
                         <th class="col-md-1">Cantidad</th>
                         <th class="text-center">
                             <a id="add_row_trabajos" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
@@ -133,7 +119,7 @@
                             </select>
                         </td>
                         <td data-name="trabajos" data-tipo="ubicacion" data-ubicacion="true">
-                            {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector y Block'], null, [ 'class'=>'form-control selectubicacion']) }}
+                            {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector'], null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
                             {{ Form::number('trabajos[0][km_inicio]', null, array('class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]', 'onblur' => 'onblurKmTermino(this);')) }}
@@ -151,7 +137,7 @@
             {{-- Tabla materiales colocados
             ===================================================== --}}
             <div class="col-md-12">
-                <div class="col-xs-12 col-md-6 form-group">
+                <div class="col-md-6 form-group">
                     <table class="table table-bordered table-striped" id="tab_material_colocado">
                         <thead>
                         <tr>
@@ -180,13 +166,13 @@
                 </div>
                 {{-- Tabla materiales retirados
                 ===================================================== --}}
-                <div class="col-xs-12 col-md-6">
+                <div class="col-md-6 form-group pull-right">
                     <table class="table table-bordered table-striped" id="tab_material_retirado">
                         <thead>
                         <tr>
                             <th class="">Materiales Retirados</th>
                             <th>Reempleo</th>
-                            <th class="col-md-2">Cantidad</th>
+                            <th class="tdkilometro">Cantidad</th>
                             <th class="text-center">
                                 <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                             </th>
@@ -210,7 +196,7 @@
             </div>
             {{-- Textarea Observaciones
             ===================================================== --}}
-            <div class="col-xs-12 col-md-6">
+            <div class="col-md-6">
                 {{ Form::label('obs', 'Observaciones', array('class' => 'control-label')) }}
                 <div class="controls">
                     {{ Form::textarea('obs', null, ['rows' => '3']) }}
@@ -218,7 +204,7 @@
             </div>
             {{-- Botones
             ===================================================== --}}
-            <div class="col-xs-12 col-md-12">
+            <div class="col-md-12">
                 {{ Form::submit('Guardar', array('class' => 'btn btn-primary pull-right')) }}
             </div>
         </fieldset>
@@ -240,10 +226,13 @@
     {{--{{ HTML::script('js/min/1425396779231.min.js') }}--}}
 @stop
 
-@section('modals')
-    @include('modal.formDesviador')
-    @include('modal.formDesvio')
-    @include('modal.formMaterialColocado')
-    @include('modal.formMaterialRetirado')
-    @include('modal.formTrabajo')
-@stop
+@if (Sentry::getUser()->hasAccess(['editor']))
+    @section('modals')
+        @include('modal.modalEditor')
+        @include('modal.formDesviador')
+        @include('modal.formDesvio')
+        @include('modal.formMaterialColocado')
+        @include('modal.formMaterialRetirado')
+        @include('modal.formTrabajo')
+    @stop
+@endif
