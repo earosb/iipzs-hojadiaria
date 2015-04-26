@@ -112,10 +112,10 @@
                 <table class="table table-bordered table-striped" id="tab_trabajados">
                     <thead>
                     <tr>
-                        <th>Trabajos Ejecutados</th>
-                        <th>Desvío / Desviador</th>
-                        <th class="col-md-1">Km inicio</th>
-                        <th class="col-md-1">Km término</th>
+                        <th class="col-md-5">Trabajos Ejecutados</th>
+                        <th class="col-md-2">Tipo vía</th>
+                        <th>Km inicio</th>
+                        <th>Km término</th>
                         <th class="col-md-1">Cantidad</th>
                         <th class="text-center">
                             <a id="add_row_trabajos" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
