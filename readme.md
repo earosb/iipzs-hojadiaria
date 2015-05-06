@@ -1,7 +1,7 @@
 #Icil Icafal Proyecto Zona Sur S.A.
 Sistema Icil Icafal Proyecto Zona Sur S.A.
 
-- <Laravel 4.2.x>
+- Laravel 4.2.x
 ##Librerías utilizadas
 ###Backend
 
@@ -33,7 +33,7 @@ Sistema Icil Icafal Proyecto Zona Sur S.A.
 ###Aplicación
 - Dentro de app_core ejecutar
 ```
-../iipzs/app_core$ composer install
+$ composer update
 ```
 - Crear manualmente bbdd llamada icilicaf_db (iipzs en homestead)
 ```
@@ -41,23 +41,23 @@ $ mysql> CREATE DATABASE icilicaf_db;
 ```
 - Instalar Syntara
 ```
-../iipzs/app_core$ php artisan syntara:install
+$ php artisan syntara:install
 ```
 - Crear usuario administrador
 ```
-../iipzs/app_core$ php artisan create:user [username] [email] [password] Admin
+$ php artisan create:user [username] [email] [password] Admin
 ```
 ```
-../iipzs/app_core$ php artisan syntara:update
+$ php artisan syntara:update
 ```
 `nota:`Por defecto el login se realiza con el email, leer manual de [syntara](https://github.com/MrJuliuss/syntara) para cambiar email por username.
 - Migrar base de datos
 ```
-../iipzs/app_core$ php artisan migrate
+$ php artisan migrate
 ```
 - Poblar bbdd
 ```
-../iipzs/app_core$ php artisan db:seed
+$ php artisan db:seed
 ```
 
 Enjoy!
