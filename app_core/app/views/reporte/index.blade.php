@@ -11,7 +11,7 @@
 
 @section('css')
     {{ HTML::style('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css') }}
-    {{ HTML::style('css/awesome-bootstrap-checkbox.min.css') }}
+    {{--{{ HTML::style('css/awesome-bootstrap-checkbox.min.css') }}--}}
 @stop
 
 @section('content')

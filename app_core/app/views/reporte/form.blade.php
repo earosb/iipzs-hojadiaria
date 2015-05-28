@@ -9,6 +9,10 @@
     Generar formulario 2-3-4
 @stop
 
+@section('css')
+    {{ HTML::style('css/awesome-bootstrap-checkbox.min.css') }}
+@stop
+
 @section('content')
     <div class="row">
         <div class="col-xs-12 col-md-12">
@@ -68,6 +72,19 @@
 
             </div>
 
+            {{-- Checkboxes tipo de vía --}}
+            <div class="col-md-12">
+                <div class="col-xs-12 col-md-3">
+                    <div>
+                        {{ Form::label('') }}
+                    </div>
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        {{ Form::checkbox('generador', 'true', false, array('id' => 'generador')) }}
+                        <label for="generador"> Descargar Generadores </label>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         {{-- Botones --}}
@@ -89,7 +106,7 @@
 @stop
 
 @section('js')
-    {{-- Cambia el mes en select hasta al seleccionar algo en select desde --}}
+    {{-- Cambia el mes en 'select hasta' al seleccionar algo en 'select desde' --}}
     <script>
         function changeMonth(val) {
             document.getElementById("hasta").value = val;

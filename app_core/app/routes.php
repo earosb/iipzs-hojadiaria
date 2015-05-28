@@ -198,3 +198,54 @@ if (!Config::get('app.debug')) {
             $code);
     });
 }
+
+Route::get('test', function () {
+    $mes = 1;
+    $agno = 2015;
+
+    $desdeQuery = date('Y-m-01', strtotime($agno . '-' . $mes . '-01'));
+    $hastaQuery = date('Y-m-t', strtotime($agno . '-' . $mes . '-01'));
+
+    $sector = Sector::find(1);
+    $blocks = $sector->blocks;
+
+    Excel::create('Generadores', function ($excel) use ($sector, $blocks, $desdeQuery, $hastaQuery) {
+        foreach ($blocks as $block) {
+            $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
+                ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
+                ->whereBetween('fecha', array($desdeQuery, $hastaQuery), 'and')
+                ->where('block.id', '=', $block->id)
+                ->select(
+                    array(
+                        'block.id',
+                        'block.estacion',
+                        'detalle_hoja_diaria.km_inicio',
+                        'detalle_hoja_diaria.km_termino',
+                        'trabajo.nombre',
+                        'trabajo.unidad',
+                        'detalle_hoja_diaria.cantidad'))
+                ->orderBy('trabajo.nombre')
+                ->orderBy('detalle_hoja_diaria.km_inicio')
+                ->get();
+            if (!$trabajos->isEmpty()) {
+                $excel->sheet($block->estacion, function ($sheet) use ($sector, $block, $trabajos) {
+                    $sheet->setStyle(array(
+                        'font' => array(
+                            'name'      =>  'Arial',
+                            'size'      =>  12,
+                        )
+                    ));
+                    $sheet->setAutoSize(true);
+                    $sheet->loadView('reporte.generador')
+                        ->with('sector', $sector->nombre)
+                        ->with('block', $block->estacion)
+                        ->with('trabajos', $trabajos);
+                });
+            }
+        }
+    })->download('xls');
+
+    return 'done';
+});
