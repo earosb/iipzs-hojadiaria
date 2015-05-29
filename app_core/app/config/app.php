@@ -122,11 +122,11 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Cartalyst\Sentry\SentryServiceProvider',
-    'Mrjuliuss\Syntara\SyntaraServiceProvider',
-    'Way\Generators\GeneratorsServiceProvider',
-    'Barryvdh\Debugbar\ServiceProvider',
+        'Mrjuliuss\Syntara\SyntaraServiceProvider',
+        'Way\Generators\GeneratorsServiceProvider',
+        'Barryvdh\Debugbar\ServiceProvider',
 		'Fitztrev\LaravelHtmlMinify\LaravelHtmlMinifyServiceProvider',
-    'Maatwebsite\Excel\ExcelServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
 
 	),
 
@@ -194,8 +194,8 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
-		'Sentry'						=> 'Cartalyst\Sentry\Facades\Laravel\Sentry',
-    'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
+		'Sentry'			=> 'Cartalyst\Sentry\Facades\Laravel\Sentry',
+        'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
 
 	),
 

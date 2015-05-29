@@ -16,9 +16,7 @@
 
 <table>
     <tr>
-        <td class="cell">*</td>
-        <td class="cell"><h1>TITULO BRIGIDO</h1></td>
-        <td class="cell">*</td>
+        <td class="cell"><h1>TÍTULO BRIGIDO</h1></td>
     </tr>
     <tr>
         <td class="cell"><strong>SECTOR</strong></td>
@@ -28,7 +26,7 @@
     <tr>
         <td class="cell"><strong>{{ $sector }}</strong></td>
         <td class="cell"><strong>{{ $block }}</strong></td>
-        <td class="cell"><strong></strong></td>
+        <td class="cell"><strong>23/05/2014</strong></td>
     </tr>
     <tr>
         <td></td>
