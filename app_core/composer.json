@@ -2,6 +2,12 @@
 	"name": "earosb/iipzs",
 	"description": "Sistema Icil Icafal Proyecto Zona Sur S.A., icilicafalpzs.cl",
 	"type": "project",
+    "authors": [
+      {
+        "name": "Eduardo Aros",
+        "email": "earosb@gmail.com"
+      }
+    ],
 	"require": {
 		"laravel/framework": "4.2.*",
 		"mrjuliuss/syntara": "1.2.*",
