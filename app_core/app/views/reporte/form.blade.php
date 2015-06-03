@@ -1,7 +1,7 @@
 @extends('layout.landing')
 
 @section('meta')
-    <meta name="description" content="Paŕametros para la creación de un formulario 2-3-4">
+    <meta name="description" content="Parámetros para la creación de un formulario 2-3-4">
     <meta name="author" content="earosb">
 @stop
 
@@ -58,11 +58,11 @@
                 {{-- Checkbox generadores --}}
                 <div class="col-xs-12 col-md-3">
                     <div>
-                        {{ Form::label('') }}
+                        {{ Form::label('g', 'Generadores') }}
                     </div>
                     <div class="checkbox checkbox-primary checkbox-inline">
-                        {{ Form::checkbox('generador', 'true', false, array('id' => 'generador')) }}
-                        <label for="generador"> Descargar generadores </label>
+                        {{ Form::checkbox('g', 'true', false, array('id' => 'g')) }}
+                        <label for="g"> Descargar generadores </label>
                     </div>
                 </div>
 

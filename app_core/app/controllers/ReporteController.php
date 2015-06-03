@@ -8,6 +8,9 @@ use Carbon\Carbon;
 
 class ReporteController extends \BaseController
 {
+    private $months = [1 => 'Ene', 2 => 'Feb', 3 => 'Mar', 4 => 'Abr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Ago', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dic'];
+    private $months_fullname = [1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Nov', 12 => 'Diciembre'];
+
     /**
      * Fomulario con los parámetros de la búsqueda
      * GET /r/param
@@ -51,7 +54,7 @@ class ReporteController extends \BaseController
         $validator = Validator::make($input, $rules, $messages);
 
         if ($validator->fails()) {
-            return Redirect::to('r/param')->withInput()->withErrors($validator->messages());
+            return $this->redirectBackWithErrors($validator);
         }
 
         $desde = Carbon::createFromFormat('d/m/Y H', $input['fecha_desde'] . '00');
@@ -257,11 +260,11 @@ class ReporteController extends \BaseController
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withInput()->withErrors($validator->messages());
+            return $this->redirectBackWithErrors($validator);
         }
 
         $sector = Sector::find($input['sector']);
-        $mes_nombre = strftime("%B", mktime(0, 0, 0, $mes, 1, $year));
+        $mes_nombre = $this->months[$mes];
         // Nombre del archivo
         $filename = 'Form2-3-4[' . $sector->nombre . '][' . $mes_nombre . '][' . $year . ']';
 
@@ -491,13 +494,16 @@ class ReporteController extends \BaseController
 
         })->store('xls', public_path('excel/' . $filename));
 
-        $this->createGenerador($sector, $year, $mes, 'mayor', $filename);
+        // Checkbox descargar generadores
+        if (Input::has('g')) $this->createGenerador($sector, $year, $mes, 'mayor', $filename);
 
+        // Crear el zip
         $this->createZip($filename);
 
-        $sectores = Sector::all(array('id', 'nombre'));
-        $year = Carbon::today()->year;
-        return View::make('reporte.form')->with('sectores', $sectores)->with('year', $year);
+        // Borra la carpeta
+        $this->deleteFolder('excel/' . $filename);
+
+        return Response::download('excel/' . $filename . '.zip');
 
     }
 
@@ -509,27 +515,26 @@ class ReporteController extends \BaseController
     {
         $input = Input::all();
 
-        $desde = $input['desde'];
-        $hasta = $input['hasta'];
+        $mes = $input['mes'];
         $year = $input['year'];
 
-        $rules = array('desde' => 'required|numeric|between:1,12',
-            'hasta' => 'required|numeric|between:' . $input['desde'] . ',12',
+        $rules = array('mes' => 'required|numeric|between:1,12',
             'year' => 'required|numeric|between:2015,' . $year,
             'sector' => 'required|exists:sector,id',);
 
         $validator = Validator::make($input, $rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withInput()->withErrors($validator->messages());
+            return $this->redirectBackWithErrors($validator);
         }
 
         $sector = Sector::find($input['sector']);
+        $mes_nombre = $this->months[$mes];
 
         // Nombre del archivo
-        $filename = 'Form 2 ' . $sector->nombre . ' Año ' . $year . ' [Mantenimiento Menor]';
+        $filename = 'Form2[' . $sector->nombre . '][' . $year . '][' . $mes_nombre . '][Menor]';
 
-        Excel::create($filename, function ($excel) use ($sector, $year, $desde, $hasta) {
+        Excel::create($filename, function ($excel) use ($sector, $year, $mes, $mes_nombre) {
 
             $excel->setTitle('Formulario 2');
             $excel->setCreator('Icil-Icafal PZS');
@@ -538,72 +543,78 @@ class ReporteController extends \BaseController
             $excel->setDescription('Formulario 2');
 
             $blocks = $sector->blocks;
-            foreach (range($desde, $hasta) as $month) {
 
-                // Nombre de cada hoja
-                $monthName = date("M", mktime(0, 0, 0, $month, 1, $year)) . ' \'' . $year;
-                $desdeQuery = date('Y-m-01', strtotime($year . '-' . $month . '-01'));
-                $hastaQuery = date('Y-m-t', strtotime($year . '-' . $month . '-01'));
+            // Nombre de cada hoja
+            $desdeQuery = date('Y-m-01', strtotime($year . '-' . $mes . '-01'));
+            $hastaQuery = date('Y-m-t', strtotime($year . '-' . $mes . '-01'));
 
-                $excel->sheet($monthName, function ($sheet) use ($sector, $blocks, $desdeQuery, $hastaQuery) {
+            $excel->sheet($mes_nombre, function ($sheet) use ($sector, $blocks, $desdeQuery, $hastaQuery) {
 
-                    // Ancho de columnas automático
-                    $sheet->setAutoSize(true);
+                // Ancho de columnas automático
+                $sheet->setAutoSize(true);
 
-                    $sheet->mergeCells('A1:C1');
-                    $sheet->mergeCells('B2:C2');
+                $sheet->mergeCells('A1:C1');
+                $sheet->mergeCells('B2:C2');
 
-                    // Título formulario 2
-                    $sheet->cell('A1', 'Form. 2 Mantenimiento menor');
+                // Título formulario 2
+                $sheet->cell('A1', 'Form. 2 Mantenimiento menor');
 
-                    // Cabecera
-                    $sheet->appendRow(2, array('PART.', 'DESIGNACION', null, 'BLOCK'));
+                // Cabecera
+                $sheet->appendRow(2, array('PART.', 'DESIGNACION', null, 'BLOCK'));
 
-                    // Blocks en cabecera
+                // Blocks en cabecera
+                $columna = 'E';
+                $fila = 2;
+                foreach ($blocks as $block) {
+                    $sheet->cell($columna . ($fila), $block->estacion);
+                    $columna++;
+                }
+
+                // Trabajos
+                $trabajos = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+                    ->where('tipo_mantenimiento.cod', '=', 'menor')
+                    ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                    ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+                    ->orderBy('orden', 'desc')
+                    ->get();
+
+                $fila = $fila + 1;
+                foreach ($trabajos as $cont => $trabajo) {
+                    $tmp = 'B' . $fila . ':' . 'C' . $fila;
+                    $sheet->mergeCells($tmp);
+                    $sheet->appendRow($fila, array(($cont + 1), $trabajo->nombre, null, $trabajo->unidad));
+
+                    $dataTrabajo = Trabajo::where('sector.id', '=', $sector->id)->where('trabajo.id', '=', $trabajo->id)->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))->join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')->join('sector', 'sector.id', '=', 'block.sector_id')->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))->groupBy('block.id')->get();
+
                     $columna = 'E';
-                    $fila = 2;
                     foreach ($blocks as $block) {
-                        $sheet->cell($columna . ($fila), $block->estacion);
+                        foreach ($dataTrabajo as $data) {
+                            if ($block->id == $data->id) {
+                                $styleCell = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '66B2FF')));
+                                $sheet->cell($columna . $fila, $data->cantidad);
+                                $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
+                                break 1;
+                            }
+                        }
                         $columna++;
                     }
+                    $fila++;
+                }
+            });
 
-                    // Trabajos
-                    $trabajos = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
-                        ->where('tipo_mantenimiento.cod', '=', 'menor')
-                        ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-                        ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
-                        ->orderBy('orden', 'desc')
-                        ->get();
+        })->store('xls', public_path('excel/' . $filename));
 
-                    $fila = $fila + 1;
-                    foreach ($trabajos as $cont => $trabajo) {
-                        $tmp = 'B' . $fila . ':' . 'C' . $fila;
-                        $sheet->mergeCells($tmp);
-                        $sheet->appendRow($fila, array(($cont + 1), $trabajo->nombre, null, $trabajo->unidad));
+        // Checkbox descargar generadores
+        if (Input::has('g')) $this->createGenerador($sector, $year, $mes, 'menor', $filename);
+        // Crear el zip
+        $this->createZip($filename);
+        // Borra la carpeta
+        $this->deleteFolder('excel/' . $filename);
 
-                        $dataTrabajo = Trabajo::where('sector.id', '=', $sector->id)->where('trabajo.id', '=', $trabajo->id)->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))->join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')->join('sector', 'sector.id', '=', 'block.sector_id')->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))->groupBy('block.id')->get();
-
-                        $columna = 'E';
-                        foreach ($blocks as $block) {
-                            foreach ($dataTrabajo as $data) {
-                                if ($block->id == $data->id) {
-                                    $styleCell = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '66B2FF')));
-                                    $sheet->cell($columna . $fila, $data->cantidad);
-                                    $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
-                                    break 1;
-                                }
-                            }
-                            $columna++;
-                        }
-                        $fila++;
-                    }
-                });
-            }
-
-        })->export('xls');
+        return Response::download('excel/' . $filename . '.zip');
     }
 
-    public function createGenerador($sector, $year, $mes, $tipoTrabajo, $path)
+    private function createGenerador($sector, $year, $mes, $tipoTrabajo, $path)
     {
         $desdeQuery = date('Y-m-01', strtotime($year . '-' . $mes . '-01'));
         $hastaQuery = date('Y-m-t', strtotime($year . '-' . $mes . '-01'));
@@ -617,7 +628,7 @@ class ReporteController extends \BaseController
             ->get();
 
         foreach ($partidas as $partida) {
-            Excel::create($partida->nombre, function ($excel) use ($sector, $blocks, $partida, $desdeQuery, $hastaQuery) {
+            Excel::create($partida->nombre, function ($excel) use ($sector, $blocks, $partida, $desdeQuery, $hastaQuery, $year, $mes) {
                 foreach ($blocks as $block) {
                     $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                         ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
@@ -632,6 +643,8 @@ class ReporteController extends \BaseController
                                 'block.estacion',
                                 'detalle_hoja_diaria.km_inicio',
                                 'detalle_hoja_diaria.km_termino',
+                                'detalle_hoja_diaria.desviador_id',
+                                'detalle_hoja_diaria.desvio_id',
                                 'trabajo.nombre',
                                 'trabajo.unidad',
                                 'detalle_hoja_diaria.cantidad'))
@@ -639,7 +652,29 @@ class ReporteController extends \BaseController
                         ->orderBy('detalle_hoja_diaria.km_inicio')
                         ->get();
                     if (!$trabajos->isEmpty()) {
-                        $excel->sheet($block->estacion, function ($sheet) use ($sector, $block, $trabajos) {
+                        $excel->sheet($block->estacion, function ($sheet) use ($sector, $block, $trabajos, $year, $mes, $partida) {
+                            /*$sheet->row(1, function($row) {
+
+                                // call cell manipulation methods
+                                $row->setBackground('#000000');
+
+                            });
+                            $trabajosArray = array();
+                            foreach ($trabajos as $t) {
+                                if ($t->desvio_id) $tipo_via = 'DV';
+                                elseif ($t->desviador_if) $tipo_via = 'DVR';
+                                else $tipo_via = 'LP';
+                                $trabajosArray[] = [
+                                    'Km Inicio' => $t->km_inicio,
+                                    'Km Término' => $t->km_termino,
+                                    'Tipo Vía' => $tipo_via,
+                                    'Unidad' => $t->unidad,
+                                    'Cantidad' => $t->cantidad,
+                                    'Observaciones de la ITO' => ''
+                                ];
+                            }
+
+                            $sheet->fromArray($trabajosArray, null, 5);*/
                             $sheet->setStyle(array(
                                 'font' => array(
                                     'name' => 'Arial',
@@ -650,7 +685,10 @@ class ReporteController extends \BaseController
                             $sheet->loadView('reporte.generador')
                                 ->with('sector', $sector->nombre)
                                 ->with('block', $block->estacion)
-                                ->with('trabajos', $trabajos);
+                                ->with('trabajos', $trabajos)
+                                ->with('partida', $partida->nombre)
+                                ->with('month', $this->months_fullname[$mes])
+                                ->with('year', $year);
                         });
                     }
                 }
@@ -660,6 +698,9 @@ class ReporteController extends \BaseController
 
     private static function createZip($path)
     {
+        // Borra el archivo si es que existe
+        if (file_exists(public_path('excel/' . $path) . '.zip')) unlink(public_path('excel/' . $path) . '.zip');
+
         $pathInfo = pathInfo(public_path('excel/' . $path));
         $parentPath = $pathInfo['dirname'];
         $dirName = $pathInfo['basename'];
@@ -690,4 +731,20 @@ class ReporteController extends \BaseController
         }
         closedir($handle);
     }
+
+    private static function deleteFolder($dir)
+    {
+        $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it,
+            RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($files as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getRealPath());
+            } else {
+                unlink($file->getRealPath());
+            }
+        }
+        rmdir($dir);
+    }
+
 }
