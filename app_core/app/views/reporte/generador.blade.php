@@ -9,28 +9,31 @@
     }
 
     td {
-        alignment: center;
+        text-align: center;
+        vertical-align: middle;
     }
 </style>
 
 <table>
     <tr>
-        <td class="cell" colspan="2"><strong>PARTIDA</strong></td>
+        <td class="cell" colspan="2">PARTIDA</td>
         <td class="cell" colspan="3"><strong>{{ $partida }}</strong></td>
     </tr>
     <tr>
+        <td class="cell" colspan="2">FECHA</td>
+        <td class="cell" colspan="3"><strong>{{ $month }} - {{ $year }}</strong></td>
+    </tr>
+    <tr>
         <td></td>
         <td></td>
     </tr>
     <tr>
-        <td class="cell" colspan="2"><strong>SECTOR</strong></td>
-        <td class="cell" colspan="2"><strong>BLOCK</strong></td>
-        <td class="cell" colspan="2"><strong>FECHA</strong></td>
+        <td class="cell" colspan="2">SECTOR</td>
+        <td class="cell" colspan="3"><strong>{{ $sector }}</strong></td>
     </tr>
     <tr>
-        <td class="cell" colspan="2"><strong>{{ $sector }}</strong></td>
-        <td class="cell" colspan="2"><strong>{{ $block }}</strong></td>
-        <td class="cell" colspan="2"><strong>{{ $month }} - {{ $year }}</strong></td>
+        <td class="cell" colspan="2">BLOCK</td>
+        <td class="cell" colspan="3"><strong>{{ $block }}</strong></td>
     </tr>
     <tr>
         <td></td>
@@ -41,7 +44,7 @@
         <td class="cell" rowspan="2"><strong>TIPO VÍA</strong></td>
         <td class="cell" rowspan="2"><strong>UNIDAD</strong></td>
         <td class="cell" rowspan="2"><strong>CANTIDAD</strong></td>
-        <td class="cell" colspan="2" rowspan="2"><strong>OBSERVACIONES DE LA ITO</strong></td>
+        <td class="cell" rowspan="2"><strong>OBSERVACIONES DE LA ITO</strong></td>
     </tr>
     <tr>
         <td class="cell"><strong>KM.</strong></td>
@@ -60,23 +63,32 @@
             @endif
             <td class="cell">{{ $t->unidad }}</td>
             <td class="cell">{{ $t->cantidad }}</td>
-            <td class="cell" colspan="2"></td>
+            <td class="cell"></td>
         </tr>
     @endforeach
-{{--
-
     <tr>
-        <td class="cell" colspan="2">____________________</td>
-        <td class="cell" colspan="2">____________________</td>
-        <td class="cell" colspan="2">____________________</td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell"></td>
+        <td class="cell">TOTAL</td>
+        <td class="cell">{{ $trabajos_total }}</td>
+        <td class="cell"></td>
     </tr>
     <tr>
-        <td class="cell" colspan="2">NOMBRE T FIRMA CONTRATISTA PZS</td>
-        <td class="cell" colspan="2">NOMBRE Y FIRMA  ITO</td>
-        <td class="cell" colspan="2">NOMBRE Y FIRMA SUBCONTRATISTA</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="2">____________________</td>
+        <td colspan="2">____________________</td>
+        <td colspan="2">____________________</td>
+    </tr>
+    <tr>
+        <td colspan="2">NOMBRE T FIRMA CONTRATISTA PZS</td>
+        <td colspan="2">NOMBRE Y FIRMA ITO</td>
+        <td colspan="2">NOMBRE Y FIRMA SUBCONTRATISTA</td>
     </tr>
 
---}}
 </table>
 
 </html>

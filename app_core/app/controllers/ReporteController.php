@@ -653,29 +653,14 @@ class ReporteController extends \BaseController
                         ->orderBy('detalle_hoja_diaria.km_inicio')
                         ->get();
                     if (!$trabajos->isEmpty()) {
-                        $excel->sheet($block->estacion, function ($sheet) use ($sector, $block, $trabajos, $year, $mes, $partida) {
-                            /*$sheet->row(1, function($row) {
+                        // tratamiendo lógico del arreglo
+                        $trabajos_total = 0;
+                        foreach ($trabajos as $cont => $t) {
+                            if ($t[$cont+1])
+                            $trabajos_total += $t->cantidad;
+                        }
 
-                                // call cell manipulation methods
-                                $row->setBackground('#000000');
-
-                            });
-                            $trabajosArray = array();
-                            foreach ($trabajos as $t) {
-                                if ($t->desvio_id) $tipo_via = 'DV';
-                                elseif ($t->desviador_if) $tipo_via = 'DVR';
-                                else $tipo_via = 'LP';
-                                $trabajosArray[] = [
-                                    'Km Inicio' => $t->km_inicio,
-                                    'Km Término' => $t->km_termino,
-                                    'Tipo Vía' => $tipo_via,
-                                    'Unidad' => $t->unidad,
-                                    'Cantidad' => $t->cantidad,
-                                    'Observaciones de la ITO' => ''
-                                ];
-                            }
-
-                            $sheet->fromArray($trabajosArray, null, 5);*/
+                        $excel->sheet($block->estacion, function ($sheet) use ($sector, $block, $trabajos, $year, $mes, $partida, $trabajos_total) {
                             $sheet->setStyle(array(
                                 'font' => array(
                                     'name' => 'Arial',
@@ -687,6 +672,7 @@ class ReporteController extends \BaseController
                                 ->with('sector', $sector->nombre)
                                 ->with('block', $block->estacion)
                                 ->with('trabajos', $trabajos)
+                                ->with('trabajos_total', $trabajos_total)
                                 ->with('partida', $partida->nombre)
                                 ->with('month', $this->months_fullname[$mes])
                                 ->with('year', $year);
