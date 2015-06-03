@@ -628,7 +628,8 @@ class ReporteController extends \BaseController
             ->get();
 
         foreach ($partidas as $partida) {
-            Excel::create($partida->nombre, function ($excel) use ($sector, $blocks, $partida, $desdeQuery, $hastaQuery, $year, $mes) {
+            $nom_partida = $this->normaliza($partida->nombre);
+            Excel::create($nom_partida, function ($excel) use ($sector, $blocks, $partida, $desdeQuery, $hastaQuery, $year, $mes) {
                 foreach ($blocks as $block) {
                     $trabajos = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                         ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
@@ -745,6 +746,21 @@ class ReporteController extends \BaseController
             }
         }
         rmdir($dir);
+    }
+
+    /**
+     * Quita los tildes y caracteres especiales
+     * @param $cadena
+     * @return string
+     */
+    private static function normaliza($cadena)
+    {
+        $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕñÑ';
+        $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRrnN';
+        $cadena = utf8_decode($cadena);
+        $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+        $cadena = strtolower($cadena);
+        return utf8_encode($cadena);
     }
 
 }
