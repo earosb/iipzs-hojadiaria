@@ -15,4 +15,14 @@ class BaseController extends Controller {
 		}
 	}
 
+    /**
+     * Redirect back with errors
+     * @param $validator
+     * @return $this
+     */
+    protected function redirectBackWithErrors($validator)
+    {
+        return Redirect::back()->withInput()->withErrors($validator->messages());
+    }
+
 }

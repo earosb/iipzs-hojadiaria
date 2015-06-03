@@ -24,7 +24,7 @@ class UserController extends BaseController
         $validator = Validator::make(Input::all(), $rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return $this->redirectBackWithErrors($validator);
         }
 
         try {
@@ -83,7 +83,7 @@ class UserController extends BaseController
             $usuario = Sentry::authenticate($cmredenciales, false);
 
             if ($usuario) {
-                return Redirect::to('/');
+                return Redirect::to('/r/param');
             }
         } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
             return Redirect::to('login')->withErrors(array('login' => 'Nombre de usuario requerido.'));
