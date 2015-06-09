@@ -606,8 +606,10 @@ class ReporteController extends \BaseController
 
         // Checkbox descargar generadores
         if (Input::has('g')) $this->createGenerador($sector, $year, $mes, 'menor', $filename);
+
         // Crear el zip
         $this->createZip($filename);
+
         // Borra la carpeta
         $this->deleteFolder('excel/' . $filename);
 
@@ -655,8 +657,16 @@ class ReporteController extends \BaseController
                     if (!$trabajos->isEmpty()) {
                         // tratamiendo lógico del arreglo
                         $trabajos_total = 0;
-                        foreach ($trabajos as $cont => $t) {
-                            if ($t[$cont+1])
+//                        $length = $trabajos->all();
+//                        Log::info($trabajos->lists('km_inicio'));
+                        foreach ($trabajos as $index => $t) {
+                            /*if ($index < $length) {
+                                $t_aux = $trabajos[$index + 1];
+                                if ($t->km_inicio == $t_aux->km_inicio && $t->km_termino == $t_aux->km_termino) {
+                                    $trabajos[$index]->cantidad = $trabajos[$index]->cantidad + $t_aux->cantidad;
+                                    $trabajos->forget($index + 1);
+                                }
+                            }*/
                             $trabajos_total += $t->cantidad;
                         }
 
@@ -735,7 +745,7 @@ class ReporteController extends \BaseController
     }
 
     /**
-     * Quita los tildes y caracteres especiales
+     * Quita los tíldes y caracteres especiales
      * @param $cadena
      * @return string
      */

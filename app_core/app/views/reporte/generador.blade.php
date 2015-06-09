@@ -17,11 +17,11 @@
 <table>
     <tr>
         <td class="cell" colspan="2">PARTIDA</td>
-        <td class="cell" colspan="3"><strong>{{ $partida }}</strong></td>
+        <td class="cell" colspan="4"><strong>{{ $trabajosMeta['nombre'] }}</strong></td>
     </tr>
     <tr>
         <td class="cell" colspan="2">FECHA</td>
-        <td class="cell" colspan="3"><strong>{{ $month }} - {{ $year }}</strong></td>
+        <td class="cell" colspan="4"><strong>{{ $trabajosMeta['fecha'] }}</strong></td>
     </tr>
     <tr>
         <td></td>
@@ -29,11 +29,11 @@
     </tr>
     <tr>
         <td class="cell" colspan="2">SECTOR</td>
-        <td class="cell" colspan="3"><strong>{{ $sector }}</strong></td>
+        <td class="cell" colspan="4"><strong>{{ $trabajosMeta['sector'] }}</strong></td>
     </tr>
     <tr>
         <td class="cell" colspan="2">BLOCK</td>
-        <td class="cell" colspan="3"><strong>{{ $block }}</strong></td>
+        <td class="cell" colspan="4"><strong>{{ $block }}</strong></td>
     </tr>
     <tr>
         <td></td>
@@ -70,8 +70,8 @@
         <td class="cell"></td>
         <td class="cell"></td>
         <td class="cell"></td>
-        <td class="cell">TOTAL</td>
-        <td class="cell">{{ $trabajos_total }}</td>
+        <td class="cell"><strong>TOTAL</strong></td>
+        <td class="cell"><strong>{{ $trabajosMeta['total'] }}</strong></td>
         <td class="cell"></td>
     </tr>
     <tr>
