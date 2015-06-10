@@ -6,6 +6,7 @@
 <style>
     .cell {
         border: 1px solid #000000;
+        height: 16px;
     }
 
     td {
