@@ -662,7 +662,7 @@ class ReporteController extends \BaseController
                 }
             }
             if (!empty($trabajos)) {
-                Excel::create($trabajosMeta['nombre'], function ($excel) use ($trabajosMeta, $trabajos) {
+                Excel::create($this->normaliza($trabajosMeta['nombre']), function ($excel) use ($trabajosMeta, $trabajos) {
                     foreach ($trabajos as $index => $t) {
                         $trabajosMeta['total'] = 0;
                         foreach ($t as $cont => $aux) {
