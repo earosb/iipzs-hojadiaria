@@ -618,6 +618,8 @@ class ReporteController extends \BaseController
 
     private function createGenerador($sector, $year, $mes, $tipoTrabajo, $path)
     {
+        ini_set('max_execution_time', 300);
+
         $desdeQuery = date('Y-m-01', strtotime($year . '-' . $mes . '-01'));
         $hastaQuery = date('Y-m-t', strtotime($year . '-' . $mes . '-01'));
 
@@ -629,7 +631,7 @@ class ReporteController extends \BaseController
         $partidas = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
             ->where('tipo_mantenimiento.cod', '=', $tipoTrabajo)
             ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-            ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+            ->select('trabajo.id', 'trabajo.nombre')
             ->get();
 
         foreach ($partidas as $partida) {
@@ -638,44 +640,40 @@ class ReporteController extends \BaseController
             foreach ($blocks as $block) {
                 $trabajosQuery = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
                     ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                    ->join('block', 'detalle_hoja_diaria.block_id', '=', 'block.id')
-                    ->join('grupo_trabajo', 'hoja_diaria.grupo_trabajo_id', '=', 'grupo_trabajo.id')
-                    ->whereBetween('fecha', array($desdeQuery, $hastaQuery), 'and')
-                    ->where('block.id', '=', $block->id)
-                    ->where('trabajo.id', '=', $partida->id)
+                    ->whereBetween('fecha', [$desdeQuery, $hastaQuery])
+                    ->where('detalle_hoja_diaria.block_id', '=', $block->id)
+                    ->where('detalle_hoja_diaria.trabajo_id', '=', $partida->id)
                     ->select(
                         array(
-                            'block.id',
-                            'block.estacion',
+                            'detalle_hoja_diaria.block_id',
                             'detalle_hoja_diaria.km_inicio',
                             'detalle_hoja_diaria.km_termino',
                             'detalle_hoja_diaria.desviador_id',
                             'detalle_hoja_diaria.desvio_id',
-                            'trabajo.nombre',
                             'trabajo.unidad',
                             'detalle_hoja_diaria.cantidad'))
                     ->orderBy('detalle_hoja_diaria.km_inicio')
                     ->get();
                 if (!$trabajosQuery->isEmpty()) {
-                    $trabajos[] = $trabajosQuery;
-                    $trabajosMeta['block'][] = $block->estacion;
+                    $trabajos[$block->id] = $trabajosQuery;
+                    $trabajosMeta['block'][$block->id] = $block->estacion;
                 }
             }
             if (!empty($trabajos)) {
                 Excel::create($this->normaliza($trabajosMeta['nombre']), function ($excel) use ($trabajosMeta, $trabajos) {
                     foreach ($trabajos as $index => $t) {
                         $trabajosMeta['total'] = 0;
-                        foreach ($t as $cont => $aux) {
-                            $trabajosMeta['total'] += $aux->cantidad;
-                        }
 
-                        $excel->sheet($trabajosMeta['block'][$index], function ($sheet) use ($trabajosMeta, $t, $index) {
+                        $tmp = $this->sumarPorLimites($t);
+                        $trabajosMeta['total'] = $tmp['total'];
+                        $trabajosOrdenados = $tmp['trabajos'];
+
+                        $excel->sheet($trabajosMeta['block'][$index], function ($sheet) use ($trabajosMeta, $trabajosOrdenados, $index) {
                             $sheet->setStyle(array('font' => array('name' => 'Arial', 'size' => 12)));
-                            $sheet->setAutoSize(true);
                             $sheet->loadView('reporte.generador')
                                 ->with('block', $trabajosMeta['block'][$index])
                                 ->with('trabajosMeta', $trabajosMeta)
-                                ->with('trabajos', $t);
+                                ->with('trabajos', $trabajosOrdenados);
                         });
                     }
                 })->store('xls', public_path('excel/' . $path));
@@ -684,6 +682,9 @@ class ReporteController extends \BaseController
         }
     }
 
+    /**
+     * @param $path
+     */
     private static function createZip($path)
     {
         // Borra el archivo si es que existe
@@ -700,6 +701,11 @@ class ReporteController extends \BaseController
         $z->close();
     }
 
+    /**
+     * @param $folder
+     * @param $zipFile
+     * @param $exclusiveLength
+     */
     private static function folderToZip($folder, &$zipFile, $exclusiveLength)
     {
         $handle = opendir($folder);
@@ -720,6 +726,10 @@ class ReporteController extends \BaseController
         closedir($handle);
     }
 
+    /**
+     * Elimina un directorio
+     * @param $dir ruta del directorio
+     */
     private static function deleteFolder($dir)
     {
         $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
@@ -737,7 +747,7 @@ class ReporteController extends \BaseController
 
     /**
      * Quita los tíldes y caracteres especiales
-     * @param $cadena
+     * @param $cadena cadena a con tildes y cosas
      * @return string
      */
     private static function normaliza($cadena)
@@ -748,6 +758,47 @@ class ReporteController extends \BaseController
         $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
         $cadena = strtolower($cadena);
         return utf8_encode($cadena);
+    }
+
+    /**
+     * Suma las cantidades en trabajos realizados en los mismos o menores límites
+     * @param $json
+     * @return array
+     */
+    private function sumarPorLimites($json)
+    {
+        $array = json_decode($json, true);
+        $array_new = array();
+
+        $i = 0;
+        $total = 0;
+        //$length = count($array);
+        foreach ($array as $index => $item) {
+            if ($i == 0) {                      //Primero
+                $array_new[$i] = $item;
+                $total += $item['cantidad'];
+            }/*else if ($i == $length - 1) {    //Ultimo
+                $array_new[$i] = $item;
+            }*/
+            else {
+                $aux = $array_new[$i - 1];
+                if ($aux['km_inicio'] == $item['km_inicio'] && $aux['km_termino'] == $item['km_termino']) {
+                    Log::debug('Doble match!' . ($aux['cantidad'] + $item['cantidad']));
+                    $array_new[$i] = $item;
+                    $array_new[$i]['cantidad'] = (string)($aux['cantidad'] + $item['cantidad']);
+                    $total += $item['cantidad'];
+                    unset($array_new[$i - 1]);
+                } else {
+                    $array_new[$i] = $item;
+                    $total += $item['cantidad'];
+                }
+            }
+            $i++;
+        }
+        // Elimina las $keys del arreglo
+        $array_new = array_values($array_new);
+
+        return array('total' => $total, 'trabajos' => $array_new);
     }
 
 }

@@ -51,19 +51,19 @@
         <td class="cell"><strong>KM.</strong></td>
         <td class="cell"><strong>KM.</strong></td>
     </tr>
-    @foreach($trabajos as $t)
+    @foreach($trabajos as $trabajo)
         <tr>
-            <td class="cell">{{ $t->km_inicio }}</td>
-            <td class="cell">{{ $t->km_termino }}</td>
-            @if($t->desviador_id)
+            <td class="cell">{{ $trabajo['km_inicio'] }}</td>
+            <td class="cell">{{ $trabajo['km_termino'] }}</td>
+            @if($trabajo['desviador_id'])
                 <td class="cell">DVR</td>
-            @elseif($t->desvio_id)
+            @elseif($trabajo['desvio_id'])
                 <td class="cell">DV</td>
             @else
                 <td class="cell">LP</td>
             @endif
-            <td class="cell">{{ $t->unidad }}</td>
-            <td class="cell">{{ $t->cantidad }}</td>
+            <td class="cell">{{ $trabajo['unidad'] }}</td>
+            <td class="cell">{{ $trabajo['cantidad'] }}</td>
             <td class="cell"></td>
         </tr>
     @endforeach

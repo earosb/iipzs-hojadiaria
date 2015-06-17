@@ -23,7 +23,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'iipzs',
+			'database'  => 'icilicaf_db',
 			'username'  => 'homestead',
 			'password'  => 'secret',
 			'charset'   => 'utf8',
