@@ -7,8 +7,8 @@
     <meta name="owner" content="Icil-Icafal Proyecto Zona Sur S.A.">
 
     <!--[if lte IE 9]>
-    <script src='http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js'></script>
-    <script src='http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js'></script>
     <![endif]-->
 
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/apple-icon-57x57.png') }}">
@@ -35,7 +35,7 @@
         @yield('title') - Icil Icafal PZS S.A.
     </title>
 
-    {{ HTML::style('//maxcdn.bootstrapcdn.com/bootswatch/3.3.2/yeti/bootstrap.min.css') }}
+    {{ HTML::style('https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css') }}
     {{ HTML::style('css/alertify.core.css') }}
     {{ HTML::style('css/alertify.default.css') }}
     {{ HTML::style('css/landing.min.css') }}
@@ -70,8 +70,8 @@
 </div>
 
 {{-- Archivos js --}}
-{{ HTML::script('//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js') }}
-{{ HTML::script('//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js') }}
+{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js') }}
+{{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
 {{ HTML::script('js/alertify.min.js') }}
 {{ HTML::script('js/back_to_top.js') }}
 
