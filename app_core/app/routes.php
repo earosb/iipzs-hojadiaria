@@ -159,6 +159,16 @@ Route::group(array('before' => 'auth'), function () {
 
     });
 
+    /**
+     * Usuario logueado con permisos para planificar trabajos
+     */
+    Route::group(array('before' => 'hasAccess:planificar'), function () {
+        /**
+         * Rutas para planificar trabajos
+         */
+        Route::get('/planificar', 'UserController@getLogin');
+    });
+
 });
 
 

@@ -39,6 +39,16 @@
                         </ul>
                     </li>
                 @endif
+                @if (Sentry::getUser()->hasAccess(['planificar']))
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                    class="glyphicon glyphicon-pencil"></i><span> Planificar <b
+                                        class="caret"></b></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ URL::to('/planificar') }}">Planificar trabajos</a></li>
+                        </ul>
+                    </li>
+                @endif
                 @if (Sentry::getUser()->hasAccess(['mantencion']))
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
