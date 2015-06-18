@@ -653,6 +653,7 @@ class ReporteController extends \BaseController
                             'trabajo.unidad',
                             'detalle_hoja_diaria.cantidad'))
                     ->orderBy('detalle_hoja_diaria.km_inicio')
+                    ->orderBy('detalle_hoja_diaria.km_termino')
                     ->get();
                 if (!$trabajosQuery->isEmpty()) {
                     $trabajos[$block->id] = $trabajosQuery;
@@ -728,7 +729,7 @@ class ReporteController extends \BaseController
 
     /**
      * Elimina un directorio
-     * @param $dir ruta del directorio
+     * @param $dir String del directorio
      */
     private static function deleteFolder($dir)
     {
@@ -747,7 +748,7 @@ class ReporteController extends \BaseController
 
     /**
      * Quita los tíldes y caracteres especiales
-     * @param $cadena cadena a con tildes y cosas
+     * @param $cadena String a con tildes y cosas
      * @return string
      */
     private static function normaliza($cadena)
@@ -782,8 +783,7 @@ class ReporteController extends \BaseController
             }*/
             else {
                 $aux = $array_new[$i - 1];
-                if ($aux['km_inicio'] == $item['km_inicio'] && $aux['km_termino'] == $item['km_termino']) {
-                    Log::debug('Doble match!' . ($aux['cantidad'] + $item['cantidad']));
+                if ($aux['km_inicio'] <= $item['km_inicio'] && $aux['km_termino'] <= $item['km_termino']) {
                     $array_new[$i] = $item;
                     $array_new[$i]['cantidad'] = (string)($aux['cantidad'] + $item['cantidad']);
                     $total += $item['cantidad'];
