@@ -186,6 +186,7 @@ class HojaDiariaController extends \BaseController
                     $detHojaDiaria->block_id = $block->id;
                     $detHojaDiaria->km_inicio = $value['km_inicio'];
                     $detHojaDiaria->km_termino = $value['km_termino'];
+                    $detHojaDiaria->tipo_via = 'LP'; // Linea principal
                     break;
                 case 'desvio':
                     $desvio = Desvio::find($id);
@@ -193,12 +194,14 @@ class HojaDiariaController extends \BaseController
                     $detHojaDiaria->desvio_id = $desvio->id;
                     $detHojaDiaria->km_inicio = $value['km_inicio'];
                     $detHojaDiaria->km_termino = $value['km_termino'];
+                    $detHojaDiaria->tipo_via = $desvio->nombre; // Nombre del desvio
                     break;
                 case 'desviador':
                     $desviador = Desviador::find($id);
                     $detHojaDiaria->block_id = $desviador->block->id;
                     $detHojaDiaria->desviador_id = $desviador->id;
-                    $detHojaDiaria->km_inicio = $desviador->km_inicio;
+                    $detHojaDiaria->km_inicio = $value['km_inicio']; // $desviador->km_inicio;
+                    $detHojaDiaria->tipo_via = $desviador->nombre; // Nombre del desviador
                     break;
             }
             $detHojaDiaria->save();
@@ -341,12 +344,12 @@ class HojaDiariaController extends \BaseController
         $desvios = Block::find($idBlock)->desvios;
         $desviadores = Block::find($idBlock)->desviadores;
 
-        $blockTodo = ["block-".$idBlock => "Vía principal"];
-        foreach( $desvios as $desvio ){
-            $blockTodo += ["desvio-".$desvio->id => $desvio->nombre];
+        $blockTodo = ["block-" . $idBlock => "Vía principal"];
+        foreach ($desvios as $desvio) {
+            $blockTodo += ["desvio-" . $desvio->id => $desvio->nombre];
         }
-        foreach( $desviadores as $desviador ){
-            $blockTodo += ["desviador-".$desviador->id => $desviador->nombre];
+        foreach ($desviadores as $desviador) {
+            $blockTodo += ["desviador-" . $desviador->id => $desviador->nombre];
         }
 
 //        return $blockTodo;
@@ -473,6 +476,7 @@ class HojaDiariaController extends \BaseController
                     $detHojaDiaria->block_id = $block->id;
                     $detHojaDiaria->km_inicio = $value['km_inicio'];
                     $detHojaDiaria->km_termino = $value['km_termino'];
+                    $detHojaDiaria->tipo_via = 'LP'; // Linea principal
                     break;
                 case 'desvio':
                     $desvio = Desvio::find($id);
@@ -480,12 +484,14 @@ class HojaDiariaController extends \BaseController
                     $detHojaDiaria->desvio_id = $desvio->id;
                     $detHojaDiaria->km_inicio = $value['km_inicio'];
                     $detHojaDiaria->km_termino = $value['km_termino'];
+                    $detHojaDiaria->tipo_via = $desvio->nombre; // Nombre del desvio
                     break;
                 case 'desviador':
                     $desviador = Desviador::find($id);
                     $detHojaDiaria->block_id = $desviador->block->id;
                     $detHojaDiaria->desviador_id = $desviador->id;
-                    $detHojaDiaria->km_inicio = $desviador->km_inicio;
+                    $detHojaDiaria->km_inicio = $value['km_inicio']; // $desviador->km_inicio;
+                    $detHojaDiaria->tipo_via = $desviador->nombre; // Nombre del desviador
                     break;
             }
             $detHojaDiaria->save();

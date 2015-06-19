@@ -55,13 +55,7 @@
         <tr>
             <td class="cell">{{ $trabajo['km_inicio'] }}</td>
             <td class="cell">{{ $trabajo['km_termino'] }}</td>
-            @if($trabajo['desviador_id'])
-                <td class="cell">DVR</td>
-            @elseif($trabajo['desvio_id'])
-                <td class="cell">DV</td>
-            @else
-                <td class="cell">LP</td>
-            @endif
+            <td class="cell">{{ $trabajo['tipo_via'] }}</td>
             <td class="cell">{{ $trabajo['unidad'] }}</td>
             <td class="cell">{{ $trabajo['cantidad'] }}</td>
             <td class="cell"></td>

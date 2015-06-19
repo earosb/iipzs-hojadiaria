@@ -651,7 +651,8 @@ class ReporteController extends \BaseController
                             'detalle_hoja_diaria.desviador_id',
                             'detalle_hoja_diaria.desvio_id',
                             'trabajo.unidad',
-                            'detalle_hoja_diaria.cantidad'))
+                            'detalle_hoja_diaria.cantidad',
+                            'detalle_hoja_diaria.tipo_via'))
                     ->orderBy('detalle_hoja_diaria.km_inicio')
                     ->orderBy('detalle_hoja_diaria.km_termino')
                     ->get();
