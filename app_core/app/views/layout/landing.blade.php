@@ -60,12 +60,9 @@
             JavaScript habilitado. Aquí están las <a href="http://www.enable-javascript.com/es/" target="_blank">
                 instrucciones para habilitar JavaScript en tu navegador web</a>.</p>
     </noscript>
-    @if(isset($msg))
-        <div class="alert alert-dismissible alert-success">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <p><strong>{{ $msg }}</strong></p>
-        </div>
-    @endif
+
+    {{ Alert::render() }}
+    
     @yield('content')
 </div>
 

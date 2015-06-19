@@ -35,7 +35,8 @@ class UserController extends BaseController
             if ($user->checkResetPasswordCode($resetCode)) {
                 // Attempt to reset the user password
                 if ($user->attemptResetPassword($resetCode, $newPassword)) {
-                    return View::make('home')->with('msg', 'Contraseña modificada correctamente!');
+                    Alert::message('Contraseña modificada correctamente!', 'success');
+                    return View::make('home');
                 } else {
                     return Response::view('error.404');
                 }

@@ -127,6 +127,7 @@ return array(
         'Barryvdh\Debugbar\ServiceProvider',
 		'Fitztrev\LaravelHtmlMinify\LaravelHtmlMinifyServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
+        'Components\AlertProvider'
 
 	),
 
