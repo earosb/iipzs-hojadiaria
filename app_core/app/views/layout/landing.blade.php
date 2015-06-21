@@ -62,7 +62,7 @@
     </noscript>
 
     {{ Alert::render() }}
-    
+
     @yield('content')
 </div>
 
