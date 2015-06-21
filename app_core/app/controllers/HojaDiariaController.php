@@ -201,6 +201,7 @@ class HojaDiariaController extends \BaseController
                     $detHojaDiaria->block_id = $desviador->block->id;
                     $detHojaDiaria->desviador_id = $desviador->id;
                     $detHojaDiaria->km_inicio = $value['km_inicio']; // $desviador->km_inicio;
+                    $detHojaDiaria->km_termino = $value['km_inicio'];
                     $detHojaDiaria->tipo_via = $desviador->nombre; // Nombre del desviador
                     break;
             }
@@ -491,6 +492,7 @@ class HojaDiariaController extends \BaseController
                     $detHojaDiaria->block_id = $desviador->block->id;
                     $detHojaDiaria->desviador_id = $desviador->id;
                     $detHojaDiaria->km_inicio = $value['km_inicio']; // $desviador->km_inicio;
+                    $detHojaDiaria->km_termino = $value['km_inicio'];
                     $detHojaDiaria->tipo_via = $desviador->nombre; // Nombre del desviador
                     break;
             }
