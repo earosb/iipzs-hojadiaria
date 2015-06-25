@@ -45,7 +45,7 @@
         <td class="cell" rowspan="2"><strong>TIPO VÍA</strong></td>
         <td class="cell" rowspan="2"><strong>UNIDAD</strong></td>
         <td class="cell" rowspan="2"><strong>CANTIDAD</strong></td>
-        <td class="cell" rowspan="2"><strong>OBSERVACIONES DE LA ITO</strong></td>
+        <td class="cell" rowspan="2"><strong>OBSERVACIONES</strong></td>
     </tr>
     <tr>
         <td class="cell"><strong>KM.</strong></td>
@@ -74,14 +74,14 @@
         <td></td>
     </tr>
     <tr>
-        <td colspan="2">____________________</td>
-        <td colspan="2">____________________</td>
+        <td colspan="4">____________________</td>
+        <td colspan="1"></td>
         <td colspan="2">____________________</td>
     </tr>
     <tr>
-        <td colspan="2">NOMBRE T FIRMA CONTRATISTA PZS</td>
+        <td colspan="4">NOMBRE T FIRMA CONTRATISTA PZS</td>
+        <td colspan="1"></td>
         <td colspan="2">NOMBRE Y FIRMA ITO</td>
-        <td colspan="2">NOMBRE Y FIRMA SUBCONTRATISTA</td>
     </tr>
 
 </table>

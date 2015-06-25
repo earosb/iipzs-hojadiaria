@@ -784,7 +784,7 @@ class ReporteController extends \BaseController
             }*/
             else {
                 $aux = $array_new[$i - 1];
-                if ($aux['km_inicio'] <= $item['km_inicio'] && $aux['km_termino'] <= $item['km_termino']) {
+                if ($aux['km_inicio'] == $item['km_inicio'] && $aux['km_termino'] <= $item['km_termino']) {
                     $array_new[$i] = $item;
                     $array_new[$i]['cantidad'] = (string)($aux['cantidad'] + $item['cantidad']);
                     $total += $item['cantidad'];
