@@ -58,4 +58,12 @@ class Trabajo extends \Eloquent
     {
         return $this->hasMany('TrabajoMaterial');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function TrabajoPrograma()
+    {
+        return $this->hasMany('Programa', 'trabajo_id');
+    }
 }

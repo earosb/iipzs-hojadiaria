@@ -31,4 +31,12 @@ class GrupoTrabajo extends \Eloquent
         return $this->hasMany('HojaDiaria');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function GrupoPrograma()
+    {
+        return $this->hasMany('Programa', 'grupo_trabajo_id');
+    }
+
 }

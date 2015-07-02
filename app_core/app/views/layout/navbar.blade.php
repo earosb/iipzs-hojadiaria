@@ -39,13 +39,14 @@
                         </ul>
                     </li>
                 @endif
-                @if (Sentry::getUser()->hasAccess(['planificar']))
+                @if (Sentry::getUser()->hasAccess(['programar']))
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
-                                    class="glyphicon glyphicon-pencil"></i><span> Planificar <b
+                                    class="glyphicon glyphicon-pencil"></i><span> Programar <b
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ URL::to('/planificar') }}">Planificar trabajos</a></li>
+                            <li><a href="{{ URL::to('/programar') }}">Programar trabajos</a></li>
+                            <li><a href="{{ URL::to('/programar-angular') }}">Programar AngularJS</a></li>
                         </ul>
                     </li>
                 @endif

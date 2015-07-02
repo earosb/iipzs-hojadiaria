@@ -127,7 +127,8 @@ return array(
         'Barryvdh\Debugbar\ServiceProvider',
 		'Fitztrev\LaravelHtmlMinify\LaravelHtmlMinifyServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
-        'Components\AlertProvider'
+        'Components\AlertProvider',
+        'Barryvdh\Debugbar\ServiceProvider'
 
 	),
 
@@ -197,6 +198,7 @@ return array(
 		'View'              => 'Illuminate\Support\Facades\View',
 		'Sentry'			=> 'Cartalyst\Sentry\Facades\Laravel\Sentry',
         'Excel'             => 'Maatwebsite\Excel\Facades\Excel',
+        'Debugbar'          => 'Barryvdh\Debugbar\Facade',
 
 	),
 

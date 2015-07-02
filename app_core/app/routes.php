@@ -160,13 +160,15 @@ Route::group(array('before' => 'auth'), function () {
     });
 
     /**
-     * Usuario logueado con permisos para planificar trabajos
+     * Usuario logueado con permisos para programar trabajos
      */
-    Route::group(array('before' => 'hasAccess:planificar'), function () {
+    Route::group(array('before' => 'hasAccess:programar'), function () {
         /**
          * Rutas para planificar trabajos
          */
-        Route::get('/planificar', 'UserController@getLogin');
+        Route::get('programar', 'ProgramarController@index');
+        Route::get('programar/list', 'ProgramarController@listJson');
+        Route::post('programar', 'ProgramarController@store');
     });
 
 });
