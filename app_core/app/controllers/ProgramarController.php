@@ -26,7 +26,7 @@ class ProgramarController extends \BaseController
     public function listJson()
     {
         $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
-            ->get();
+            ->get(['programar.id', 'cantidad', 'causa', 'grupo_trabajo_id', 'unidad', 'km_inicio', 'km_termino', 'nombre', 'observaciones', 'programada', 'vencimiento']);
         return Response::json($trabajos);
     }
 
@@ -101,7 +101,8 @@ class ProgramarController extends \BaseController
      */
     public function destroy($id)
     {
-        //
+        Programar::destroy($id);
+        return Response::json(array('error' => false));
     }
 
 }

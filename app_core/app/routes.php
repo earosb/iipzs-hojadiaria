@@ -169,6 +169,7 @@ Route::group(array('before' => 'auth'), function () {
         Route::get('programar', 'ProgramarController@index');
         Route::get('programar/list', 'ProgramarController@listJson');
         Route::post('programar', 'ProgramarController@store');
+        Route::delete('programar/{id}', 'ProgramarController@destroy');
     });
 
 });

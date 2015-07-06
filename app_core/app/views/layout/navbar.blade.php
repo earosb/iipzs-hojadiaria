@@ -46,7 +46,6 @@
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/programar') }}">Programar trabajos</a></li>
-                            <li><a href="{{ URL::to('/programar-angular') }}">Programar AngularJS</a></li>
                         </ul>
                     </li>
                 @endif

@@ -1,11 +1,11 @@
 function TrabajoController($scope, $http) {
     $scope.trabajos = [];
     $scope.errors = [];
+    $scope.tAux = [];
 
     $http.get('programar/list').
         success(function (data) {
             $scope.trabajos = data;
-            $scope.loading = false;
         });
 
     $scope.getTotaltrabajos = function () {
@@ -35,6 +35,27 @@ function TrabajoController($scope, $http) {
         $scope.formData.km_inicio = '';
         $scope.formData.km_termino = '';
         $scope.formData.cantidad = '';
+    };
+
+    $scope.removeTrabajo = function () {
+        var id = this.t.id;
+        $http.delete('programar/' + id).
+            success(function (data) {
+                console.debug('data: ', data);
+                $scope.trabajos = _.filter($scope.trabajos, function(trabajo){
+                    return trabajo.id != id;
+                });
+            });
+    };
+
+    $scope.editModalTrabajo = function () {
+        $scope.tAux = this.t;
+        $('#modalPlanificarTrabajo').modal('toggle')
+    };
+
+    $scope.editTrabajo = function () {
+        $scope.tAux = this.t;
+        $('#modalPlanificarTrabajo').modal('toggle')
     };
 
 }
