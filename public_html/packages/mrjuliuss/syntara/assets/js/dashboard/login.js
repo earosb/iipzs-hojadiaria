@@ -8,7 +8,7 @@ $(document).ready(function()
             remember = true;
         }
         
-        var sArray = $(this).serializeArray()
+        var sArray = $(this).serializeArray();
         $.ajax({
             "type": "POST",
             "url": window.location.href.toString(),

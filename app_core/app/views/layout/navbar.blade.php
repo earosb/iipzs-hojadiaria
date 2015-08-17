@@ -46,6 +46,7 @@
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/programar') }}">Programar trabajos</a></li>
+                            <li><a href="{{ URL::to('/programar2') }}">Programar trabajos2</a></li>
                         </ul>
                     </li>
                 @endif

@@ -13,6 +13,10 @@ class GrupoTrabajoController extends \BaseController
     {
         $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array('id', 'base'));
 
+        if (Request::ajax()) {
+            return Response::json($grupos);
+        }
+
         return View::make('grupo_trabajo.index', compact('grupos'));
     }
 

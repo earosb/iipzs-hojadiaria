@@ -1,8 +1,9 @@
 <?php
 
+use Carbon\Carbon;
+
 class ProgramarController extends \BaseController
 {
-
     /**
      * Display a listing of the resource.
      * GET /programar
@@ -13,8 +14,10 @@ class ProgramarController extends \BaseController
     {
         //\Debugbar::disable();
         $trabajos = Trabajo::lists('nombre', 'id');
+        $grupos = GrupoTrabajo::lists('base', 'id');
         return View::make('programar.index-angular')
-            ->with('trabajos', $trabajos);
+            ->with('trabajos', $trabajos)
+            ->with('grupos', $grupos);
     }
 
     /**
@@ -25,8 +28,31 @@ class ProgramarController extends \BaseController
      */
     public function listJson()
     {
+        /*if (Input::get('semana')) {
+            $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
+            $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->where('programar.semana', '=', $semana)
+//                ->orWhere('programar.semana', '=', null)
+                ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                    'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+
+        } else {
+        }*/
         $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
-            ->get(['programar.id', 'cantidad', 'causa', 'grupo_trabajo_id', 'unidad', 'km_inicio', 'km_termino', 'nombre', 'observaciones', 'programada', 'vencimiento']);
+            //->join('grupo_trabajo', 'grupo_trabajo.id', '=', 'programar.grupo_trabajo_id')
+                ->orderBy('km_inicio')
+            ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+
+        foreach ($trabajos as $trabajo) {
+            $aux = $trabajo->semana;
+            if ($aux) {
+                $trabajo->semana = Carbon::parse($aux)->format('d/m/Y');
+            }
+        }
+
         return Response::json($trabajos);
     }
 
@@ -89,7 +115,38 @@ class ProgramarController extends \BaseController
      */
     public function update($id)
     {
-        //
+        $programa = Programar::find($id);
+
+        $input = Input::all();
+        Log::debug(Input::all());
+        $validator = Validator::make($input, Programar::$rules);
+
+//        if ($validator->fails()) {
+//            return Response::json(
+//                array('error' => true, 'msg' => $validator->messages()));
+//        }
+
+        $programa->semana = Carbon::createFromFormat('d/m/Y', $input['semana']);
+//        $programa->programa = json_encode($input['programa']);
+        $programa->lun = $input['lun'];
+        $programa->mar = $input['mar'];
+        $programa->mie = $input['mie'];
+        $programa->juv = $input['juv'];
+        $programa->vie = $input['vie'];
+        $programa->sab = $input['sab'];
+        $programa->dom = $input['dom'];
+//        $programa->fecha_inicio = Carbon::createFromFormat('d/m/Y', $input['fecha_inicio']);
+//        $programa->fecha_termino = Carbon::createFromFormat('d/m/Y', $input['fecha_termino']);
+        $programa->km_inicio = $input['km_inicio'];
+        $programa->km_termino = $input['km_termino'];
+        $programa->cantidad = $input['cantidad'];
+        $programa->observaciones = $input['observaciones'];
+        $programa->causa = $input['causa'];
+        $programa->grupo_trabajo_id = $input['grupo_trabajo_id'];
+
+        $programa->save();
+
+        return Response::json(['error' => false, 'programa' => $programa]);
     }
 
     /**

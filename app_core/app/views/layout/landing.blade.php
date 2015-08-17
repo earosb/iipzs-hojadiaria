@@ -67,7 +67,7 @@
 </div>
 
 {{-- Archivos js --}}
-{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js') }}
+{{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js') }}
 {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
 {{ HTML::script('js/alertify.min.js') }}
 {{ HTML::script('js/back_to_top.js') }}

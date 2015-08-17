@@ -1,0 +1,112 @@
+<form>
+    <fieldset>
+        <legend>{{ textButton }}</legend>
+        <div class="well">
+            {{ trabajo | json }}
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <label>Nombre</label>
+                <input type="text" placeholder="Nombre" ng-model="trabajo.nombre" class="form-control" disabled>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <label>Causa</label>
+                <input type="text" placeholder="Causa" ng-model="trabajo.causa" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                <label>Cantidad</label>
+                <input type="text" placeholder="Cantidad" ng-model="trabajo.cantidad" class="form-control" required>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <label>Km inicio</label>
+                <input type="text" placeholder="Km inicio" ng-model="trabajo.km_inicio" class="form-control" required>
+            </div>
+            <div class="col-md-3">
+                <label>Km término</label>
+                <input type="text" placeholder="Km término" ng-model="trabajo.km_termino" class="form-control" required>
+            </div>
+        </div>
+<!--
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <label>Fecha inicio</label>
+                <input type="text" placeholder="Fecha inicio" ng-model="trabajo.fecha_inicio" class="form-control"
+                       jqdatepicker>
+            </div>
+            <div class="col-md-3">
+                <label>Fecha término</label>
+                <input type="text" placeholder="Fecha término" ng-model="trabajo.fecha_termino" class="form-control"
+                       jqdatepicker>
+            </div>
+        </div>
+-->
+        <div class="col-md-12">
+            <div class="form-group col-md-3">
+                <label>Grupo</label>
+                <select ng-model="filtro.grupo" class="form-control">
+                    <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label>Semana</label>
+                <input type="text" placeholder="Semana" ng-model="trabajo.semana" class="form-control"
+                       jqdatepicker>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <label>Programa {{ trabajo.programa }}</label>
+
+                <div class="form-control">
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="lun" value="checked" ng-model="trabajo.lun" ng-true-value="'checked'"
+                               ng-false-value="'unchecked'" {{ trabajo.lun }}>
+                        <label for="lun">Lun</label>
+                    </div>
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="mar" value="checked" ng-model="trabajo.mar" ng-true-value="'checked'"
+                               ng-false-value="'unchecked'" {{ trabajo.mar }}>
+                        <label for="mar">Mar</label>
+                    </div>
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="mie" value="checked" ng-model="trabajo.mie" ng-true-value="'checked'"
+                               ng-false-value="'unchecked'" {{ trabajo.mie }}>
+                        <label for="mie">Mié</label>
+                    </div>
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="juv" value="checked" ng-model="trabajo.juv" ng-true-value="'checked'"
+                               ng-false-value="'unchecked'" {{ trabajo.juv }}>
+                        <label for="juv">Juv</label>
+                    </div>
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="vie" value="checked" ng-model="trabajo.vie" ng-true-value="'checked'"
+                               ng-false-value="'unchecked'" {{ trabajo.vie }}>
+                        <label for="vie">Vié</label>
+                    </div>
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="sab" value="checked" ng-model="trabajo.sab" ng-true-value="'checked'"
+                               ng-false-value="'unchecked'" {{ trabajo.sab }}>
+                        <label for="sab">Sáb</label>
+                    </div>
+                    <div class="checkbox checkbox-primary checkbox-inline">
+                        <input type="checkbox" id="dom" value="checked" ng-model="trabajo.dom" ng-true-value="'checked'"
+                               ng-false-value="'unchecked'" {{ trabajo.dom }}>
+                        <label for="dom">Dom</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6 btn-group">
+                <input type="submit" class="btn btn-primary pull-right" value="{{ textButton }}">
+                <!--<button type="submit" class="btn btn-primary pull-right">{{ textButton }}</button>-->
+                <a href="#/" class="btn btn-primary">Volver</a>
+            </div>
+        </div>
+    </fieldset>
+</form>

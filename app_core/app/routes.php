@@ -170,6 +170,19 @@ Route::group(array('before' => 'auth'), function () {
         Route::get('programar/list', 'ProgramarController@listJson');
         Route::post('programar', 'ProgramarController@store');
         Route::delete('programar/{id}', 'ProgramarController@destroy');
+        Route::put('programar/{id}', 'ProgramarController@update');
+
+        Route::get('grupos', 'GrupoTrabajoController@index');
+
+        Route::get('trabajo', 'TrabajoController@index');
+
+        Route::get('causas', 'CausasController@index');
+        Route::post('causas', 'CausasController@store');
+    });
+
+    Route::get('programar2', function () {
+        \Debugbar::disable();
+        return View::make('angular2');
     });
 
 });

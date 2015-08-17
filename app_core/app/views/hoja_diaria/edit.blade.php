@@ -25,7 +25,7 @@
                             })
             ).appendTo($(tr));
         }
-        ;
+
     </script>
 @stop
 @section('content')

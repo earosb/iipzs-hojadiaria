@@ -19,6 +19,10 @@ class TrabajoController extends \BaseController
             ->select('tipo_mantenimiento.nombre as mantenimiento', 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'trabajo.id')
             ->get();
 
+        if (Request::ajax()) {
+            return Response::json($trabajos);
+        }
+
         return View::make('trabajo.index', compact('trabajos'));
     }
 

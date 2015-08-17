@@ -129,7 +129,7 @@
                 }
             }
         }
-        ;
+
     </script>
     {{ HTML::script('js/ajaxBlocks.js') }}
     {{--{{ HTML::script('js/min/1425396779231.min.js') }}--}}

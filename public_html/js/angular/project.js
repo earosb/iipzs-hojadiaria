@@ -1,6 +1,5 @@
 function TrabajoController($scope, $http) {
     $scope.trabajos = [];
-    $scope.errors = [];
     $scope.tAux = [];
 
     $http.get('programar/list').
@@ -12,29 +11,27 @@ function TrabajoController($scope, $http) {
         return $scope.trabajos.length;
     };
 
-    $scope.addTrabajo = function () {
+    $scope.addTrabajo = function (programa) {
         var formData = {
-            'causa': $scope.formData.causa,
-            'trabajo_id': $scope.formData.trabajo_id,
-            'km_inicio': $scope.formData.km_inicio,
-            'km_termino': $scope.formData.km_termino,
-            'cantidad': $scope.formData.cantidad
+            'causa': programa.causa,
+            'trabajo_id': programa.trabajo_id,
+            'km_inicio': programa.km_inicio,
+            'km_termino': programa.km_termino,
+            'cantidad': programa.cantidad
         };
-
         $http.post('programar', formData).
             success(function (data) {
                 if (!data.error) {
+                    console.log(data);
                     $scope.trabajos.push(data.t);
-                } else {
-                    $scope.errors.push(data.msg);
                 }
             });
 
-        $scope.formData.causa = '';
-        $scope.formData.trabajo_id = '';
-        $scope.formData.km_inicio = '';
-        $scope.formData.km_termino = '';
-        $scope.formData.cantidad = '';
+        $scope.programa.causa = '';
+        $scope.programa.trabajo_id = '';
+        $scope.programa.km_inicio = '';
+        $scope.programa.km_termino = '';
+        $scope.programa.cantidad = '';
     };
 
     $scope.removeTrabajo = function () {
@@ -42,7 +39,7 @@ function TrabajoController($scope, $http) {
         $http.delete('programar/' + id).
             success(function (data) {
                 console.debug('data: ', data);
-                $scope.trabajos = _.filter($scope.trabajos, function(trabajo){
+                $scope.trabajos = _.filter($scope.trabajos, function (trabajo) {
                     return trabajo.id != id;
                 });
             });
@@ -50,12 +47,25 @@ function TrabajoController($scope, $http) {
 
     $scope.editModalTrabajo = function () {
         $scope.tAux = this.t;
+        console.debug('this.t', this.t);
         $('#modalPlanificarTrabajo').modal('toggle')
     };
 
-    $scope.editTrabajo = function () {
-        $scope.tAux = this.t;
-        $('#modalPlanificarTrabajo').modal('toggle')
+    $scope.editTrabajo = function (tAux) {
+        $('#modalPlanificarTrabajo').modal('toggle');
+        console.debug('tAux', tAux);
+    };
+
+    $scope.newCausa = function () {
+        var op = $scope.formData.causa;
+        if (op == 'new') {
+            $('#modalCausa').modal('toggle');
+        }
+    };
+
+    $scope.addCausa = function (causa) {
+        console.log(causa);
+        $scope.causas.push(causa);
     };
 
 }
