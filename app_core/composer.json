@@ -13,7 +13,8 @@
 		"mrjuliuss/syntara": "1.2.*",
 		"nesbot/Carbon": "*",
 		"fitztrev/laravel-html-minify": "1.*",
-		"maatwebsite/excel": "1.*"
+		"maatwebsite/excel": "1.*",
+	  	"barryvdh/laravel-dompdf": "0.4.*"
 	},
 	"require-dev": {
 		"way/generators": "~2.0",

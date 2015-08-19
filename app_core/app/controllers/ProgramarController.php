@@ -28,7 +28,7 @@ class ProgramarController extends \BaseController
      */
     public function listJson()
     {
-        /*if (Input::get('semana')) {
+        if (Input::get('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
             $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
                 ->where('programar.semana', '=', $semana)
@@ -38,13 +38,13 @@ class ProgramarController extends \BaseController
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
 
         } else {
-        }*/
-        $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
-            //->join('grupo_trabajo', 'grupo_trabajo.id', '=', 'programar.grupo_trabajo_id')
+            $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                //->join('grupo_trabajo', 'grupo_trabajo.id', '=', 'programar.grupo_trabajo_id')
                 ->orderBy('km_inicio')
-            ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
-                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+                ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                    'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+        }
 
         foreach ($trabajos as $trabajo) {
             $aux = $trabajo->semana;
@@ -160,6 +160,26 @@ class ProgramarController extends \BaseController
     {
         Programar::destroy($id);
         return Response::json(array('error' => false));
+    }
+
+    /**
+     * Generate pdf file.
+     * GET /programar/pdf
+     *
+     * @return Response
+     */
+    public function pdf()
+    {
+        $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+            ->orderBy('km_inicio')
+            ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+
+        $pdf = App::make('dompdf');
+        $html = View::make('programar.pdf')->with('trabajos', $trabajos);
+        $pdf->loadHTML($html)->setPaper('a4')->setOrientation('landscape'); // landscape | portrait
+        return $pdf->stream();
     }
 
 }
