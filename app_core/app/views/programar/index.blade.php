@@ -1,255 +1,75 @@
-@extends('layout.landing')
+<!DOCTYPE html>
+<html lang="es" ng-app="app">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="owner" content="Icil-Icafal Proyecto Zona Sur S.A.">
 
-@section('meta')
-    <meta name="description" content="Planificación de trabajos">
-    <meta name="author" content="earosb">
-@stop
+    <!--[if lte IE 9]>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js'></script>
+    <![endif]-->
 
-@section('css')
-    {{ HTML::style('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css') }}
-    {{ HTML::style('css/awesome-bootstrap-checkbox.min.css') }}
-@stop
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('img/apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('img/apple-icon-60x60.png')}}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('img/apple-icon-72x72.png')}}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('img/apple-icon-76x76.png')}}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('img/apple-icon-114x114.png')}}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('img/apple-icon-120x120.png')}}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('img/apple-icon-144x144.png')}}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('img/apple-icon-152x152.png')}}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/apple-icon-180x180.png')}}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('img/android-icon-192x192.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('img/favicon-96x96.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{ asset('img/manifest.json')}}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ asset('img/ms-icon-144x144.png') }}">
+    <meta name="theme-color" content="#ffffff">
 
-@section('title')
-    Planificar trabajos
-@stop
+    <title>
+        Angular2 - Icil Icafal PZS S.A.
+    </title>
 
-@section('content')
-    <div class="col-md-9">
-        <table class="table">
-            <thead>
-            <tr>
-                <th class="col-md-3">Semana</th>
-                <th class="col-md-3">Grupo</th>
-                <th class="col-md-3">Nuevo</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <div class="input-group" id="fecha_div">
-                        {{ Form::text('newsdate', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Fecha', 'id'=>'weekpicker', 'required' => 'required']) }}
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                    </div>
-                    <div class="help-block" id="fecha_error"></div>
-                </td>
-                <td>
-                    <div id="selectgrupos_div">
-                        <div class="controls">
-                            <select name="selectgrupos" id="selectgrupos" class="form-control">
-                                <option selected="selected" disabled="disabled"> Seleccione un Grupo</option>
-                                @foreach($grupos as $grupo)
-                                    <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
-                                @endforeach
-                            </select>
+    {{ HTML::style('angular2/bower_components/bootswatch/yeti/bootstrap.min.css') }}
+    {{ HTML::style('angular2/bower_components/jqueryui/themes/smoothness/jquery-ui.min.css') }}
+    {{ HTML::style('angular2/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
+    {{ HTML::style('css/landing.min.css') }}
 
-                            <div class="help-block" id="selectgrupos_error"></div>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#modalPlanificar">Nuevo</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+</head>
+<body>
+
+@include('layout.navbar')
+
+{{-- Container
+===================================================== --}}
+<div class="container-fluid">
+
+    <!--añadimos aquí el controlador appController ya que será donde mostremos los usuarios-->
+    <div class="row" ng-controller="appController">
+        <!--aquí es donde cargarán todas las vistas dependiendo de la url-->
+        <div ng-view></div>
     </div>
-    <div class="col-md-12">
-        <table class="table table-striped table-hover ">
-            <thead>
-            <tr>
-                <th></th>
-                <th class="col-md-1">Causal</th>
-                <th>[U] Partida</th>
-                <th class="col-md-1">Km inicio</th>
-                <th class="col-md-1">Km término</th>
-                <th class="col-md-1">Cantidad</th>
-                <th class="col-md-1">Vencimiento</th>
-                <th>Estado</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="danger">
-                <td>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="check[]" value="option1" checked="">
-                        <label for="check[]"></label>
-                    </div>
-                </td>
-                <td><input class="form-control input-sm" type="text" value="INC"></td>
-                <td>[NRO] Sustitución aislada de durmientes de madera</td>
-                <td><input class="form-control input-sm" type="number" value="503000"></td>
-                <td><input class="form-control input-sm" type="number" value="503100"></td>
-                <td><input class="form-control input-sm" type="number" value="23"></td>
-                <td><input class="form-control input-sm" type="date" value="21/06/2015"></td>
-                <td>Atrasada</td>
-            </tr>
-            <tr class="active">
-                <td>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        {{--<input type="checkbox" id="check[]" value="option1" checked="">
-                        <label for="check[]"></label>--}}
-                        {{ Form::checkbox('check[]', 'true', false) }}
-                        {{ Form::label('check[]') }}
-                    </div>
-                </td>
-                <td><input class="form-control input-sm" type="text" value="INC"></td>
-                <td>[MLV] Sanear vía colmatada</td>
-                <td><input class="form-control input-sm" type="number" value=""></td>
-                <td><input class="form-control input-sm" type="number" value=""></td>
-                <td><input class="form-control input-sm" type="number" value=""></td>
-                <td><input class="form-control input-sm" type="date" value=""></td>
-                <td>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="inlineCheckboxLun" value="option1" checked="">
-                        <label for="inlineCheckboxLun">Lun </label>
-                    </div>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="inlineCheckboxMar" value="option1" checked="">
-                        <label for="inlineCheckboxMar">Mar </label>
-                    </div>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="inlineCheckboxMie" value="option1" checked="">
-                        <label for="inlineCheckboxMie">Mié </label>
-                    </div>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="inlineCheckboxJuv" value="option1" checked="">
-                        <label for="inlineCheckboxJuv">Juv </label>
-                    </div>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="inlineCheckboxVie" value="option1" checked="">
-                        <label for="inlineCheckboxVie">Vie </label>
-                    </div>
-                </td>
-            </tr>
-            <tr class="active">
-                <td>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="check[]" value="option1" checked="">
-                        <label for="check[]"></label>
-                    </div>
-                </td>
-                <td><input class="form-control input-sm" type="text" value="OBS"></td>
-                <td>[MLV] Encajonar y perfilar vía</td>
-                <td><input class="form-control input-sm" type="number" value="503000"></td>
-                <td><input class="form-control input-sm" type="number" value="503100"></td>
-                <td><input class="form-control input-sm" type="number" value="23"></td>
-                <td><input class="form-control input-sm" type="date" value=""></td>
-                <td>Pendiente</td>
-            </tr>
-            <tr class="success">
-                <td>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="check[]" value="option1" checked="">
-                        <label for="check[]"></label>
-                    </div>
-                </td>
-                <td><input class="form-control input-sm" type="text" value="OBS"></td>
-                <td>[NRO] Sustitución aislada de durmientes de madera</td>
-                <td><input class="form-control input-sm" type="number" value="503000"></td>
-                <td><input class="form-control input-sm" type="number" value="503100"></td>
-                <td><input class="form-control input-sm" type="number" value="23"></td>
-                <td>21/06/2015</td>
-                <td>Planificado</td>
-            </tr>
-            <tr class="success">
-                <td>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="check[]" value="option1" checked="">
-                        <label for="check[]"></label>
-                    </div>
-                </td>
-                <td><input class="form-control input-sm" type="text" value="OBS"></td>
-                <td>[NRO] Sustitución aislada de durmientes de madera</td>
-                <td><input class="form-control input-sm" type="number" value="503000"></td>
-                <td><input class="form-control input-sm" type="number" value="503100"></td>
-                <td><input class="form-control input-sm" type="number" value="23"></td>
-                <td>21/06/2015</td>
-                <td>Planificado</td>
-            </tr>
-            <tr class="success">
-                <td>
-                    <div class="checkbox checkbox-primary checkbox-inline">
-                        <input type="checkbox" id="check[]" value="option1" checked="">
-                        <label for="check[]"></label>
-                    </div>
-                </td>
-                <td><input class="form-control input-sm" type="text" value="OBS"></td>
-                <td>[NRO] Apretar pernos rieleros</td>
-                <td><input class="form-control input-sm" type="number" value="503000"></td>
-                <td><input class="form-control input-sm" type="number" value="503100"></td>
-                <td><input class="form-control input-sm" type="number" value="23"></td>
-                <td>21/06/2015</td>
-                <td>Planificado</td>
-            </tr>
-            </tbody>
-        </table>
-        {{-- Botones
-            ===================================================== --}}
-        <div class="col-md-12">
-            {{ Form::submit('Guardar', array('class' => 'btn btn-primary pull-right')) }}
-        </div>
-    </div>
-@stop
 
-@section('js')
-    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js') }}
-    {{ HTML::script('js/calendar/calendar.min.js') }}
-    <script type="text/javascript">
-        $('#modalPlanificar').on('shown.bs.modal');
+</div>
 
-        $(function () {
-            var startDate;
-            var endDate;
+{{-- Archivos js --}}
+{{ HTML::script('angular2/bower_components/angularjs/angular.min.js') }}
+{{ HTML::script('angular2/bower_components/angular-route/angular-route.min.js') }}
+{{ HTML::script('angular2/bower_components/jquery/dist/jquery.min.js') }}
+{{ HTML::script('angular2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}
+{{ HTML::script('angular2/bower_components/jqueryui/jquery-ui.min.js') }}
+{{ HTML::script('angular2/js/app.js') }}
+{{ HTML::script('angular2/js/controllers.js') }}
+{{ HTML::script('js/calendar/calendar.min.js') }}
 
-            var selectCurrentWeek = function () {
-                window.setTimeout(function () {
-                    $('#weekpicker').datepicker('widget').find('.ui-datepicker-current-day a').addClass('ui-state-active')
-                }, 1);
-            };
+<footer class="footer">
+    <blockquote class="pull-right">
+        <small>Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A.</small>
+    </blockquote>
+</footer>
 
-            $('#weekpicker').datepicker({
-                showOtherMonths: false,
-                selectOtherMonths: false,
-                onSelect: function (dateText, inst) {
-                    var date = $(this).datepicker('getDate');
-                    console.log('date.getDate() ' + date.getDate());
-                    console.log('date.getDay() ' + date.getDay());
-                    startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
-                    endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 7);
-                    var dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
-                    $('#weekpicker').val($.datepicker.formatDate(dateFormat, startDate, inst.settings)
-                    + ' - ' + $.datepicker.formatDate(dateFormat, endDate, inst.settings));
-
-                    selectCurrentWeek();
-                },
-                beforeShow: function () {
-                    selectCurrentWeek();
-                },
-                beforeShowDay: function (date) {
-                    var cssClass = '';
-                    if (date >= startDate && date <= endDate)
-                        cssClass = 'ui-datepicker-current-day';
-                    return [true, cssClass];
-                },
-                onChangeMonthYear: function (year, month, inst) {
-                    selectCurrentWeek();
-                }
-            }).datepicker('widget').addClass('ui-weekpicker');
-
-            var aux = '.ui-weekpicker .ui-datepicker-calendar tr';
-            var td_a = 'td a';
-            $(aux).live('mousemove', function () {
-                $(this).find(td_a).addClass('ui-state-hover');
-            });
-            $(aux).live('mouseleave', function () {
-                $(this).find(td_a).removeClass('ui-state-hover');
-            });
-        });
-
-    </script>
-@stop
-
-@section('modals')
-    @include('modal.formPlanificarTrabajo')
-@stop
+</body>
+</html>

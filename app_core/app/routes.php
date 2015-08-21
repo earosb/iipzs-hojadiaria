@@ -167,7 +167,6 @@ Route::group(array('before' => 'auth'), function () {
          * Rutas para planificar trabajos
          */
         Route::get('programar', 'ProgramarController@index');
-        Route::get('programar/list', 'ProgramarController@listJson');
         Route::post('programar', 'ProgramarController@store');
         Route::delete('programar/{id}', 'ProgramarController@destroy');
         Route::put('programar/{id}', 'ProgramarController@update');
@@ -183,8 +182,12 @@ Route::group(array('before' => 'auth'), function () {
     });
 
     Route::get('programar2', function () {
-        \Debugbar::disable();
-        return View::make('angular2');
+        //\Debugbar::disable();
+       $trabajos = Trabajo::lists('nombre', 'id');
+       $grupos = GrupoTrabajo::lists('base', 'id');
+       return View::make('programar.index-angular')
+           ->with('trabajos', $trabajos)
+           ->with('grupos', $grupos);
     });
 
 });

@@ -80,6 +80,26 @@
             </form>
         </div>
 
+        <div>
+            <h4>Descargar</h4>
+
+            <form>
+                <div class="form-group col-md-2">
+                    <select name="" id="" class="form-control">
+                        <option value="">Renaico</option>
+                        <option value="">Temuco</option>
+                        <option value="">Victoria</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <input type="date" class="form-control" placeholder="Semana" required="required">
+                </div>
+                <div class="form-group col-md-1">
+                    <input class="btn btn-primary" type="submit" value="Filtrar"/>
+                </div>
+            </form>
+        </div>
+
         <table class="table table-condensed table-bordered table-striped table-hover">
             <tr>
                 <th></th>
