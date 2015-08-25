@@ -27,8 +27,7 @@ app.controller("appController", function appController($scope, $http) {
 
     //Filtrar
     $scope.filtrar = function(filtro) {
-        $location.path() == '/a';
-        $http.get('programar/list', {
+        $http.get('programar', {
             params: filtro
         }).success(function(data) {
             $scope.trabajos = data;

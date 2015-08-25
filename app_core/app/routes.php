@@ -120,15 +120,18 @@ Route::group(array('before' => 'auth'), function () {
          * Rutas para generar formulario
          */
         Route::get('/r/form', 'ReporteController@getForm');
-//        Route::post('/r/form', 'ReporteController@postForm');
+
         Route::post('/r/form', function () {
-            if (Input::get('action') == 'mayor') {
+            if (Input::get('tipo_mantenimiento') == 'mayor') {
                 $action = 'postFormMayor';
                 return App::make('ReporteController')->$action();
-            } elseif (Input::get('action') == 'menor') {
+            } elseif (Input::get('tipo_mantenimiento') == 'menor') {
                 $action = 'postFormMenor';
                 return App::make('ReporteController')->$action();
             }
+
+            Alert::message('Error al seleccionar el tipo de mantenimiento!', 'danger');
+            return Redirect::back();
         });
 
     });
@@ -183,11 +186,11 @@ Route::group(array('before' => 'auth'), function () {
 
     Route::get('programar2', function () {
         //\Debugbar::disable();
-       $trabajos = Trabajo::lists('nombre', 'id');
-       $grupos = GrupoTrabajo::lists('base', 'id');
-       return View::make('programar.index-angular')
-           ->with('trabajos', $trabajos)
-           ->with('grupos', $grupos);
+        $trabajos = Trabajo::lists('nombre', 'id');
+        $grupos = GrupoTrabajo::lists('base', 'id');
+        return View::make('programar.index-angular')
+            ->with('trabajos', $trabajos)
+            ->with('grupos', $grupos);
     });
 
 });

@@ -237,9 +237,22 @@ class ReporteController extends \BaseController
      */
     public function getForm()
     {
-        $sectores = Sector::all(array('id', 'nombre'));
+        $sectores = Sector::lists('nombre', 'id');
         $year = Carbon::today()->year;
-        return View::make('reporte.form')->with('sectores', $sectores)->with('year', $year);
+        $tipoMantenimiento['menor'] = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=', 'trabajo.tipo_mantenimiento_id')
+            ->where('tipo_mantenimiento.cod', '=', 'menor', 'and')
+            ->where('trabajo.es_oficial', '=', '1')
+            ->get(['trabajo.nombre', 'trabajo.id']);
+
+        $tipoMantenimiento['mayor'] = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=', 'trabajo.tipo_mantenimiento_id')
+            ->where('tipo_mantenimiento.cod', '=', 'mayor', 'and')
+            ->where('trabajo.es_oficial', '=', '1')
+            ->get(['trabajo.nombre', 'trabajo.id']);
+
+        return View::make('reporte.form')
+            ->with('sectores', $sectores)
+            ->with('year', $year)
+            ->with('tipo_mantenimiento', $tipoMantenimiento);
     }
 
     /**
@@ -495,7 +508,7 @@ class ReporteController extends \BaseController
         })->store('xls', public_path('excel/' . $filename));
 
         // Checkbox descargar generadores
-        if (Input::has('g')) $this->createGenerador($sector, $year, $mes, 'mayor', $filename);
+        if (Input::has('g_mayor')) $this->createGenerador($sector, $year, $mes, Input::get('g_mayor'), $filename);
 
         // Crear el zip
         $this->createZip($filename);
@@ -605,7 +618,7 @@ class ReporteController extends \BaseController
         })->store('xls', public_path('excel/' . $filename));
 
         // Checkbox descargar generadores
-        if (Input::has('g')) $this->createGenerador($sector, $year, $mes, 'menor', $filename);
+        if (Input::has('g_menor')) $this->createGenerador($sector, $year, $mes, Input::get('g_menor'), $filename);
 
         // Crear el zip
         $this->createZip($filename);
@@ -616,7 +629,7 @@ class ReporteController extends \BaseController
         return Response::download('excel/' . $filename . '.zip');
     }
 
-    private function createGenerador($sector, $year, $mes, $tipoTrabajo, $path)
+    private function createGenerador($sector, $year, $mes, $generadores, $path)
     {
         ini_set('max_execution_time', 300);
 
@@ -628,11 +641,19 @@ class ReporteController extends \BaseController
         $trabajosMeta['sector'] = $sector->nombre;
         $trabajosMeta['fecha'] = $this->months_fullname[$mes] . ' - ' . $year;
 
-        $partidas = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+        $partidas = array();
+        foreach ($generadores as $t) {
+            $partidas[] = Trabajo::find($t);
+        }
+
+        Log::debug($partidas);
+
+/*        $partidas = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
             ->where('tipo_mantenimiento.cod', '=', $tipoTrabajo)
             ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
             ->select('trabajo.id', 'trabajo.nombre')
             ->get();
+*/
 
         foreach ($partidas as $partida) {
             $trabajos = array();
