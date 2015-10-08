@@ -2,7 +2,6 @@
 
 class SectorController extends \BaseController
 {
-
     /**
      * Display a listing of sector
      *
