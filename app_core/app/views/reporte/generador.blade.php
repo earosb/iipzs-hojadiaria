@@ -79,7 +79,7 @@
         <td colspan="2">____________________</td>
     </tr>
     <tr>
-        <td colspan="4">NOMBRE T FIRMA CONTRATISTA PZS</td>
+        <td colspan="4">NOMBRE Y FIRMA CONTRATISTA PZS</td>
         <td colspan="1"></td>
         <td colspan="2">NOMBRE Y FIRMA ITO</td>
     </tr>
