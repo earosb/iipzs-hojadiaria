@@ -250,3 +250,23 @@ Route::group(array('before' => 'hasAccess:superadmin'), function () {
     Route::get('admin/refactor_dhd/tipo_via', 'AdminController@RefactorDHDTipoVia');
 
 });
+
+/**
+ * API
+ */
+Route::group(array('prefix' => 'api'), function () {
+
+    /**
+     * Trabajos
+     */
+    Route::get('trabajos', function(){
+        $t_mantenimiento = TipoMantenimiento::all();
+
+        foreach ($t_mantenimiento as $t) {
+            $t->trabajos;
+        }
+
+        return Response::json($t_mantenimiento);
+    });
+
+});
