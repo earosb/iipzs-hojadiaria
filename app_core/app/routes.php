@@ -257,9 +257,9 @@ Route::group(array('before' => 'hasAccess:superadmin'), function () {
 Route::group(array('prefix' => 'api'), function () {
 
     /**
-     * Trabajos
+     * Trabajos por tipo mantenimiento
      */
-    Route::get('trabajos', function(){
+    Route::get('trabajos/tipo', function(){
         $t_mantenimiento = TipoMantenimiento::all();
 
         foreach ($t_mantenimiento as $t) {
@@ -267,6 +267,15 @@ Route::group(array('prefix' => 'api'), function () {
         }
 
         return Response::json($t_mantenimiento);
+    });
+
+    /**
+     * Trabajos a granel
+     */
+    Route::get('trabajos', function(){
+        $trabajos = Trabajo::all();
+
+        return Response::json($trabajos);
     });
 
 });

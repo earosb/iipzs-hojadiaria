@@ -116,7 +116,7 @@ class ProgramarController extends \BaseController
 //        }
 
         $programa->semana = Carbon::createFromFormat('d/m/Y', $input['semana']);
-//        $programa->programa = json_encode($input['programa']);
+        // $programa->programa = json_encode($input['programa']);
         $programa->lun = $input['lun'];
         $programa->mar = $input['mar'];
         $programa->mie = $input['mie'];
@@ -124,14 +124,14 @@ class ProgramarController extends \BaseController
         $programa->vie = $input['vie'];
         $programa->sab = $input['sab'];
         $programa->dom = $input['dom'];
-//        $programa->fecha_inicio = Carbon::createFromFormat('d/m/Y', $input['fecha_inicio']);
-//        $programa->fecha_termino = Carbon::createFromFormat('d/m/Y', $input['fecha_termino']);
+        // $programa->fecha_inicio = Carbon::createFromFormat('d/m/Y', $input['fecha_inicio']);
+        // $programa->fecha_termino = Carbon::createFromFormat('d/m/Y', $input['fecha_termino']);
         $programa->km_inicio = $input['km_inicio'];
         $programa->km_termino = $input['km_termino'];
         $programa->cantidad = $input['cantidad'];
         $programa->observaciones = $input['observaciones'];
         $programa->causa = $input['causa'];
-        $programa->grupo_trabajo_id = $input['grupo_trabajo_id'];
+        $programa->grupo_trabajo_id = $input['grupo_trabajo_id']['id'];
 
         $programa->save();
 
