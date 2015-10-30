@@ -252,30 +252,17 @@ Route::group(array('before' => 'hasAccess:superadmin'), function () {
 });
 
 /**
- * API
+ * API v1
  */
-Route::group(array('prefix' => 'api'), function () {
+Route::group(array('prefix' => 'api/v1'), function () {
 
     /**
-     * Trabajos por tipo mantenimiento
+     * Login
      */
-    Route::get('trabajos/tipo', function(){
-        $t_mantenimiento = TipoMantenimiento::all();
-
-        foreach ($t_mantenimiento as $t) {
-            $t->trabajos;
-        }
-
-        return Response::json($t_mantenimiento);
-    });
-
+    Route::post('login', 'APIv1Controller@login');
     /**
      * Trabajos a granel
      */
-    Route::get('trabajos', function(){
-        $trabajos = Trabajo::all();
-
-        return Response::json($trabajos);
-    });
+    Route::get('trabajos', 'APIv1Controller@trabajos');
 
 });
