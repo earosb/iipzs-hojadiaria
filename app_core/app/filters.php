@@ -130,3 +130,20 @@ View::composer('syntara::layouts.dashboard.master', function($view)
     $view->with('favicon', asset('img/favicon.ico'));
     $view->with('faviconType', asset('img/favicon.ico'));
 });
+
+/**
+ * API Filter
+ * Filtro básico de autentificación,
+ * sólo para saber si el usuario está logueado
+ * @return Json
+ */
+
+Route::filter('auth_api', function () {
+
+    $user = User::where('username', Input::get('username'))->first();
+
+    $token = Input::get('token');
+    if ( $user->token_api != $token )
+        return Response::json(['error' => 'true', 'msg' => 'Token válido']);
+
+});

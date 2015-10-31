@@ -260,9 +260,15 @@ Route::group(array('prefix' => 'api/v1'), function () {
      * Login
      */
     Route::post('login', 'APIv1Controller@login');
-    /**
-     * Trabajos a granel
-     */
-    Route::get('trabajos', 'APIv1Controller@trabajos');
+
+    Route::group(array('before' => 'auth_api'), function(){
+        
+        /**
+         * Trabajos a granel
+         */
+        Route::get('trabajos', 'APIv1Controller@trabajos');
+
+    });
+
 
 });

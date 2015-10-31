@@ -34,24 +34,29 @@ class APIv1Controller extends \BaseController {
 
             if ($usuario) {
             	$token = bin2hex(openssl_random_pseudo_bytes(16));
-                return Response::json(['status' => 'ok', 
+            	
+            	$user = Sentry::getUser();
+            	$user->token_api = $token;
+                $user->save();
+
+                return Response::json(['error' => 'false', 
                 	'token' => $token]);
             }
         } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
-            return Response::json(['status' => 'no', 'msg' => 'Nombre de usuario requerido.']);
+            return Response::json(['error' => 'true', 'msg' => 'Nombre de usuario requerido.']);
         } catch (Cartalyst\Sentry\Users\PasswordRequiredException $e) {
-            return Response::json(['status' => 'no', 'msg' => 'La Contraseña es requerida.']);
+            return Response::json(['error' => 'true', 'msg' => 'La Contraseña es requerida.']);
         } catch (Cartalyst\Sentry\Users\WrongPasswordException $e) {
-            return Response::json(['status' => 'no', 'msg' => 'Contraseña incorrecta.']);
+            return Response::json(['error' => 'true', 'msg' => 'Contraseña incorrecta.']);
         } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
-            return Response::json(['status' => 'no', 'msg' => 'Usuario no encontrado.']);
+            return Response::json(['error' => 'true', 'msg' => 'Usuario no encontrado.']);
         } catch (Cartalyst\Sentry\Users\UserNotActivatedException $e) {
-            return Response::json(['status' => 'no', 'msg' => 'Usuario no activado.']);
+            return Response::json(['error' => 'true', 'msg' => 'Usuario no activado.']);
         } // The following is only required if the throttling is enabled
         catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e) {
-            return Response::json(['status' => 'no', 'msg' => 'Usuario suspendido.']);
+            return Response::json(['error' => 'true', 'msg' => 'Usuario suspendido.']);
         } catch (Cartalyst\Sentry\Throttling\UserBannedException $e) {
-            return Response::json(['status' => 'no', 'msg' => 'Usuario Baneado.']);
+            return Response::json(['error' => 'true', 'msg' => 'Usuario Baneado.']);
         }
 	}
 
