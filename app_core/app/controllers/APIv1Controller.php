@@ -40,7 +40,7 @@ class APIv1Controller extends \BaseController {
                 $user->save();
 
                 return Response::json(['error' => 'false', 
-                	'token' => $token]);
+                	'user' => $user]);
             }
         } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
             return Response::json(['error' => 'true', 'msg' => 'Nombre de usuario requerido.']);
