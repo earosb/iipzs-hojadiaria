@@ -261,14 +261,19 @@ Route::group(array('prefix' => 'api/v1'), function () {
      */
     Route::post('login', 'APIv1Controller@login');
 
-    Route::group(array('before' => 'auth_api'), function(){
+//    Route::group(array('before' => 'auth_api'), function(){
         
         /**
          * Trabajos a granel
          */
         Route::get('trabajos', 'APIv1Controller@trabajos');
 
-    });
+        /**
+         * Almacenar trabajos para programar
+         */
+        Route::post('programar', 'APIv1Controller@store');
+
+//    });
 
 
 });

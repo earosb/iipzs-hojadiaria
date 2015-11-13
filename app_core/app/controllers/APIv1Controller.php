@@ -34,12 +34,12 @@ class APIv1Controller extends \BaseController {
 
             if ($usuario) {
             	$token = bin2hex(openssl_random_pseudo_bytes(16));
-            	
+
             	$user = Sentry::getUser();
             	$user->token_api = $token;
                 $user->save();
 
-                return Response::json(['error' => 'false', 
+                return Response::json(['error' => 'false',
                 	'user' => $user]);
             }
         } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
@@ -60,4 +60,25 @@ class APIv1Controller extends \BaseController {
         }
 	}
 
+    /**
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store()
+    {
+        $trabajos = json_decode(Input::get('trabajos'));
+
+        foreach($trabajos as $p){
+            $programar = new Programar();
+            $programar->causa = $p->causa;
+            $programar->trabajo_id = $p->trabajo_id;
+            $programar->km_inicio = $p->km_inicio;
+            $programar->km_termino = $p->km_termino;
+            $programar->cantidad = $p->cantidad;
+            $programar->save();
+        }
+
+        return Response::json(
+            array('error' => false));
+    }
 }
