@@ -349,10 +349,10 @@ class ReporteController extends \BaseController
                     $sheet->setBorder($columna . ($fila + 3), 'thin');
 
                     // INFORMA/RECIBE
+                    $tmp = $columna . ($fila + 4) . ':' . $columnaSig . ($fila + 4);
+                    $sheet->mergeCells($tmp);
                     $sheet->cell($columna . ($fila + 4), 'INFORMA');
-                    $sheet->cell($columnaSig . ($fila + 4), 'RECIBE');
                     $sheet->setBorder($columna . ($fila + 4), 'thin');
-                    $sheet->setBorder($columnaSig . ($fila + 4), 'thin');
 
                     $columna++;
                     $columna++;
@@ -387,7 +387,10 @@ class ReporteController extends \BaseController
 
                     $styleCell = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '66B2FF')));
                     $columna = 'E';
+                    $columnaSig = 'F';
                     foreach ($blocks as $block) {
+                        $tmp = $columna . $fila . ':' . $columnaSig . $fila;
+                        $sheet->mergeCells($tmp);
                         foreach ($dataTrabajo as $data) {
                             if ($block->id == $data->id) {
                                 $sheet->cell($columna . $fila, $data->cantidad);
@@ -397,6 +400,8 @@ class ReporteController extends \BaseController
                         }
                         $columna++;
                         $columna++;
+                        $columnaSig++;
+                        $columnaSig++;
                     }
                     $fila++;
                 }
@@ -423,6 +428,7 @@ class ReporteController extends \BaseController
                     $sheet->appendRow($fila + 1, array(($cont + 1), $matCol->nombre, $matCol->proveedor, 'R'));
 
                     $columna = 'E';
+                    $columnaSig = 'F';
                     foreach ($blocks as $block) {
                         $query = "SELECT m.nombre, dmc.reempleo, sum(dmc.cantidad) AS cantidad
                                         FROM hoja_diaria hd, detalle_material_colocado dmc, material m
@@ -433,6 +439,11 @@ class ReporteController extends \BaseController
                                         AND hd.fecha BETWEEN '" . $desdeQuery . "' AND '" . $hastaQuery . "' GROUP BY  m.id, dmc.reempleo";
 
                         $dataMaterial = DB::select($query);
+
+                        $cellN = $columna . $fila . ':' . $columnaSig . $fila;
+                        $cellR = $columna . ($fila + 1) . ':' . $columnaSig . ($fila + 1);
+                        $sheet->mergeCells($cellN);
+                        $sheet->mergeCells($cellR);
                         foreach ($dataMaterial as $data) {
 
                             if ($data->reempleo == 0) {
@@ -448,6 +459,8 @@ class ReporteController extends \BaseController
                         }
                         $columna++;
                         $columna++;
+                        $columnaSig++;
+                        $columnaSig++;
                     }
                     $fila++;
                     $fila++;
@@ -477,6 +490,7 @@ class ReporteController extends \BaseController
                     $sheet->appendRow($fila + 1, array(($cont + 1), $matRet->nombre, null, 'R.'));
 
                     $columna = 'E';
+                    $columnaSig = 'F';
                     foreach ($blocks as $block) {
                         $query = "SELECT mr.nombre, dmr.reempleo, sum(dmr.cantidad) AS cantidad
                                         FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
@@ -487,6 +501,11 @@ class ReporteController extends \BaseController
                                         AND hd.fecha BETWEEN '" . $desdeQuery . "' AND '" . $hastaQuery . "' GROUP BY  mr.id, dmr.reempleo";
 
                         $dataMaterialR = DB::select($query);
+
+                        $cellN = $columna . $fila . ':' . $columnaSig . $fila;
+                        $cellR = $columna . ($fila + 1) . ':' . $columnaSig . ($fila + 1);
+                        $sheet->mergeCells($cellN);
+                        $sheet->mergeCells($cellR);
                         foreach ($dataMaterialR as $data) {
                             if ($data->reempleo == 0) {
                                 $sheet->cell($columna . $fila, $data->cantidad);
@@ -499,6 +518,8 @@ class ReporteController extends \BaseController
                         }
                         $columna++;
                         $columna++;
+                        $columnaSig++;
+                        $columnaSig++;
                     }
                     $fila++;
                     $fila++;
@@ -648,12 +669,12 @@ class ReporteController extends \BaseController
 
         Log::debug($partidas);
 
-/*        $partidas = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
-            ->where('tipo_mantenimiento.cod', '=', $tipoTrabajo)
-            ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-            ->select('trabajo.id', 'trabajo.nombre')
-            ->get();
-*/
+        /*        $partidas = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+                    ->where('tipo_mantenimiento.cod', '=', $tipoTrabajo)
+                    ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                    ->select('trabajo.id', 'trabajo.nombre')
+                    ->get();
+        */
 
         foreach ($partidas as $partida) {
             $trabajos = array();
