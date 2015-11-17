@@ -186,15 +186,6 @@ Route::group(array('before' => 'auth'), function () {
         Route::post('programar/edit-day/{id}', 'ProgramarController@updateDay');
     });
 
-    Route::get('programar2', function () {
-        //\Debugbar::disable();
-        $trabajos = Trabajo::lists('nombre', 'id');
-        $grupos = GrupoTrabajo::lists('base', 'id');
-        return View::make('programar.index-angular')
-            ->with('trabajos', $trabajos)
-            ->with('grupos', $grupos);
-    });
-
 });
 
 
