@@ -1,9 +1,6 @@
 <form>
     <fieldset>
         <legend>{{ textButton }}</legend>
-        <div class="well">
-            {{ trabajo | json }}
-        </div>
         <div class="col-md-12">
             <div class="col-md-6">
                 <label>Nombre</label>
@@ -88,9 +85,21 @@
         </div>
         <div class="col-md-12">
             <div class="col-md-6">
-                <input type="submit" class="btn btn-primary pull-right" value="{{ textButton }}">
+                <div class="form-group">
+                    <label for="obs">Observaciones:</label>
+                    <textarea class="form-control" rows="3" id="obs">{{ trabajo.observaciones }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <input type="submit" class="btn btn-primary pull-right" value="Guardar">
                 <a href="#/" class="btn btn-primary">Volver</a>
             </div>
         </div>
     </fieldset>
 </form>
+
+<div class="well">
+    {{ trabajo | json }}
+</div>
