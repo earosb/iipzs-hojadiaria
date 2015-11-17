@@ -1,85 +1,92 @@
 <div class="col-md-12">
     <div class="panel panel-default">
-        <div class="panel-heading">Nuevo trabajo</div>
-        <div class="panel-body">
-            <form>
-                <div class="form-group col-md-2">
-                    <input type="text" class="form-control" ng-model="programa.causa" placeholder="Causa" required="required">
-                </div>
-                <div class="form-group col-md-3">
-                    <select class="form-control" ng-model="programa.trabajo_id">
-                        <option selected="selected" disabled="disabled" value="default" style="display:none;"> Seleccione un Trabajo
-                        </option>
-                        <option ng-repeat="partida in partidas" value="{{ partida.id }}">{{ partida.nombre }}</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-2">
-                    <input type="number" class="form-control" ng-model="programa.km_inicio" placeholder="km inicio" required="required">
-                </div>
-                <div class="form-group col-md-2">
-                    <input type="number" class="form-control" ng-model="programa.km_termino" placeholder="km término" required="required">
-                </div>
-                <div class="form-group col-md-2">
-                    <input type="number" class="form-control" ng-model="programa.cantidad" placeholder="Cantidad" required="required">
-                </div>
-                <div class="form-group col-md-1">
-                    <input class="btn btn-primary" type="submit" ng-click="addTrabajo(programa)" value="Agregar" />
-                </div>
-            </form>
+        <div class="panel-heading" data-toggle="collapse" data-target="#body-form">
+            Nuevo trabajo
+        </div>
+        <div id="body-form" class="panel-collapse collapse">
+            <div class="panel-body">
+                <form>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" ng-model="programa.causa" placeholder="Causa" required="required">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <select class="form-control" ng-model="programa.trabajo_id">
+                            <option selected="selected" disabled="disabled" value="default" style="display:none;"> Seleccione un Trabajo
+                            </option>
+                            <option ng-repeat="partida in partidas" value="{{ partida.id }}">{{ partida.nombre }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="number" class="form-control" ng-model="programa.km_inicio" placeholder="km inicio" required="required">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="number" class="form-control" ng-model="programa.km_termino" placeholder="km término" required="required">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="number" class="form-control" ng-model="programa.cantidad" placeholder="Cantidad" required="required">
+                    </div>
+                    <div class="form-group col-md-1">
+                        <input class="btn btn-primary" type="submit" ng-click="addTrabajo(programa)" value="Agregar"/>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="col-md-6">
     <div class="panel panel-default">
-        <div class="panel-heading">Filtrar</div>
-        <div class="panel-body">
-            <form>
-                <div class="form-group col-xs-6">
-                    <select ng-model="filtro.grupo_trabajo_id" class="form-control">
-                        <option value="all" selected="selected">Todos</option>
-                        <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}
-                        </option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-4">
-                    <input type="text" placeholder="Semana" ng-model="filtro.semana" class="form-control" jqdatepicker>
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-primary" type="submit" value="Filtrar" ng-click="filtrar(filtro)" />
-                </div>
-            </form>
+        <div class="panel-heading" data-toggle="collapse" data-target="#body-filtro">Filtrar</div>
+        <div id="body-filtro" class="panel-collapse collapse">
+            <div class="panel-body">
+                <form>
+                    <div class="form-group col-xs-6">
+                        <select ng-model="filtro.grupo_trabajo_id" class="form-control">
+                            <option value="all" selected="selected">Todos</option>
+                            <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-4">
+                        <input type="text" placeholder="Semana" ng-model="filtro.semana" class="form-control" jqdatepicker>
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary" type="submit" value="Filtrar" ng-click="filtrar(filtro)"/>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 <div class="col-md-6">
     <div class="panel panel-default">
-        <div class="panel-heading">Descargar programa</div>
-        <div class="panel-body">
-            <form action="programar/pdf">
-                <div class="form-group col-xs-6">
-                    <select class="form-control" name="grupo_trabajo_id" required="required">
-                        <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}</option>
-                    </select>
-                </div>
-                <div class="form-group col-xs-4">
-                    <input type="text" placeholder="Semana" class="form-control" name="semana" ng-model="semana" jqdatepicker required="required">
-                </div>
-                <div class="form-group">
-                    <input class="btn btn-primary" type="submit" value="Descargar"/>
-                </div>
-            </form>
+        <div class="panel-heading" data-toggle="collapse" data-target="#body-pdf">Descargar programa</div>
+        <div id="body-pdf" class="panel-collapse collapse">
+            <div class="panel-body">
+                <form action="programar/pdf">
+                    <div class="form-group col-xs-6">
+                        <select class="form-control" name="grupo_trabajo_id" required="required">
+                            <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-xs-4">
+                        <input type="text" placeholder="Semana" class="form-control" name="semana" ng-model="semana" jqdatepicker required="required">
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary" type="submit" value="Descargar"/>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<div ng-show="trabajos.length == 0">
+<div class="col-md-12" ng-show="trabajos.length == 0">
     <h3>No hay trabajos para programar</h3>
 </div>
 
-<div>
-    <legend>Programa</legend>
-    <table id="main" class="table table-condensed table-bordered table-striped table-hover" ng-show="trabajos.length > 0">
+<div ng-show="trabajos.length > 0">
+    <table id="main" class="table table-condensed table-bordered table-striped table-hover">
         <tr>
             <th class="text-center">#</th>
             <th>Causa</th>
@@ -89,8 +96,14 @@
             <th>Cantidad</th>
             <th>Grupo</th>
             <th>Semana</th>
-            <th>Programa</th>
-            <th class="text-center">Herramientas</th>
+            <th class="text-center">L</th>
+            <th class="text-center">M</th>
+            <th class="text-center">M</th>
+            <th class="text-center">J</th>
+            <th class="text-center">V</th>
+            <th class="text-center">S</th>
+            <th class="text-center">D</th>
+            <th class="text-center">Opc.</th>
         </tr>
         <tr ng-repeat="(key, trabajo) in trabajos | orderBy:'km_inicio'" class="{{ trabajo.status }}">
             <td class="text-center">
@@ -105,43 +118,58 @@
             <td>{{ trabajo.cantidad }}</td>
             <td>{{ trabajo.grupo }}</td>
             <td>{{ trabajo.semana }}</td>
-            <td>
+            <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
-                    <input type="checkbox" name="lun{{ trabajo.id }}" ng-model="trabajo.lun" ng-true-value="'checked'" ng-false-value="'unchecked'" {{ trabajo.lun }} disabled>
-                    <label for="lun{{ trabajo.id }}">Lun</label>
-                </div>
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input type="checkbox" id="mar{{ trabajo.id }}" ng-model="trabajo.mar" ng-true-value="'checked'" ng-false-value="'unchecked'" {{ trabajo.mar }} disabled>
-                    <label for="mar{{ trabajo.id }}">Mar</label>
-                </div>
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input type="checkbox" id="mie{{ trabajo.id }}" ng-model="trabajo.mie" ng-true-value="'checked'" ng-false-value="'unchecked'" {{ trabajo.mie }} disabled>
-                    <label for="mie{{ trabajo.id }}">Mié</label>
-                </div>
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input type="checkbox" id="juv{{ trabajo.id }}" ng-model="trabajo.juv" ng-true-value="'checked'" ng-false-value="'unchecked'" {{ trabajo.juv }} disabled>
-                    <label for="juv{{ trabajo.id }}">Juv</label>
-                </div>
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input type="checkbox" id="vie{{ trabajo.id }}" ng-model="trabajo.vie" ng-true-value="'checked'" ng-false-value="'unchecked'" {{ trabajo.vie }} disabled>
-                    <label for="vie{{ trabajo.id }}">Vié</label>
-                </div>
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input type="checkbox" id="sab{{ trabajo.id }}" ng-model="trabajo.sab" ng-true-value="'checked'" ng-false-value="'unchecked'" {{ trabajo.sab }} disabled>
-                    <label for="sab{{ trabajo.id }}">Sáb</label>
-                </div>
-                <div class="checkbox checkbox-primary checkbox-inline">
-                    <input type="checkbox" id="dom{{ trabajo.id }}" ng-model="trabajo.dom" ng-true-value="'checked'" ng-false-value="'unchecked'" {{ trabajo.dom }} disabled>
-                    <label for="dom{{ trabajo.id }}">Dom</label>
+                    <input type="checkbox" name="lun{{ trabajo.id }}" ng-model="trabajo.lun" ng-true-value="'checked'" ng-false-value="'unchecked'"
+                           ng-change="updateDayTrabajo('lun', trabajo.id)">
+                    <label></label>
                 </div>
             </td>
             <td class="text-center">
-                <a href="#/edit/{{ key }}" class="btn btn-default btn-xs">
-                    <span class="glyphicon glyphicon-edit"></span>
-                    Editar</a>
-                <a href="#/remove/{{ key }}" class="btn btn-primary btn-xs">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    Borrar</a>
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" id="mar{{ trabajo.id }}" ng-model="trabajo.mar" ng-true-value="'checked'" ng-false-value="'unchecked'"
+                           ng-change="updateDayTrabajo('mar', trabajo.id)">
+                    <label></label>
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" id="mie{{ trabajo.id }}" ng-model="trabajo.mie" ng-true-value="'checked'" ng-false-value="'unchecked'"
+                           ng-change="updateDayTrabajo('mie', trabajo.id)">
+                    <label></label>
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" id="juv{{ trabajo.id }}" ng-model="trabajo.juv" ng-true-value="'checked'" ng-false-value="'unchecked'"
+                           ng-change="updateDayTrabajo('juv', trabajo.id)">
+                    <label></label>
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" id="vie{{ trabajo.id }}" ng-model="trabajo.vie" ng-true-value="'checked'" ng-false-value="'unchecked'"
+                           ng-change="updateDayTrabajo('vie', trabajo.id)">
+                    <label></label>
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" id="sab{{ trabajo.id }}" ng-model="trabajo.sab" ng-true-value="'checked'" ng-false-value="'unchecked'"
+                           ng-change="updateDayTrabajo('sab', trabajo.id)">
+                    <label></label>
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="checkbox checkbox-primary checkbox-inline">
+                    <input type="checkbox" id="dom{{ trabajo.id }}" ng-model="trabajo.dom" ng-true-value="'checked'" ng-false-value="'unchecked'"
+                           ng-change="updateDayTrabajo('dom', trabajo.id)">
+                    <label></label>
+                </div>
+            </td>
+            <td class="text-center">
+                <a href="#/edit/{{ key }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="#/remove/{{ key }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
             </td>
         </tr>
     </table>

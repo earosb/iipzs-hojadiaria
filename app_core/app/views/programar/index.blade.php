@@ -29,7 +29,7 @@
     <meta name="msapplication-TileImage" content="{{ asset('img/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
 
-    <title> Angular2 - Icil Icafal PZS S.A. </title>
+    <title> Programar trabajos - Icil Icafal PZS S.A. </title>
 
     @if(Config::get('app.debug'))
         {{ HTML::style('angular2/bower_components/bootswatch/yeti/bootstrap.min.css') }}

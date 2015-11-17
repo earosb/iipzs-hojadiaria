@@ -38,6 +38,21 @@ We have to alter it a bit:
 ````
 That's it. It will work. But it **will not** work if you nest input inside label or put label before input.
 
+If you want to enable **Opera 12** and earlier support  just add class `styled` to `input` element:
+````html
+...
+<input type="checkbox" id="checkbox1" class="styled">
+...
+````
+
+Browser support
+-----------
+- Firefox (_3.6+_)
+- Chrome  (_14+_)
+- IE      (_9+_)
+- Opera   (_11.6+_)
+- Safari  (_6+_)
+
 Radios
 ------------
 
@@ -85,6 +100,20 @@ If you want to use glyphicons instead of font-awesome then override `.checkbox` 
     font-size: 9px;
 }
 ````
+
+Using SASS
+----------
+
+As per example in the `demo` folder, to use these **awesome** you'll have to `@import` the following library parts:
+
+````scss
+@import "../bootstrap/bootstrap/variables";
+@import "../bootstrap/bootstrap/mixins";
+
+@import "../font-awesome/variables";
+````
+
+Adjust this to the path where your bootstrap and font-awesome files are located.
 
 Credits
 ------------

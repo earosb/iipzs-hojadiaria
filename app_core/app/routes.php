@@ -182,6 +182,8 @@ Route::group(array('before' => 'auth'), function () {
 
         Route::get('causas', 'CausasController@index');
         Route::post('causas', 'CausasController@store');
+
+        Route::post('programar/edit-day/{id}', 'ProgramarController@updateDay');
     });
 
     Route::get('programar2', function () {

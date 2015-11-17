@@ -13,6 +13,7 @@ class ProgramarController extends \BaseController
     public function index()
     {
         if (!Request::ajax()) {
+            \Debugbar::disable();
             return View::make('programar.index'); // \Debugbar::disable();
         }
 
@@ -187,6 +188,38 @@ class ProgramarController extends \BaseController
             ->with('trabajos', $trabajos)->with('grupo', $grupo)->with('semana', $input['semana']);
         $pdf->loadHTML($html)->setPaper('a4')->setOrientation('landscape'); // landscape | portrait
         return $pdf->stream();
+    }
+
+
+    public function updateDay($id)
+    {
+        $trabajo = Programar::find($id);
+        $dia = Input::get('dia');
+        switch ($dia) {
+            case 'lun':
+                $trabajo->lun == 'checked' ? $trabajo->lun = 'unchecked' : $trabajo->lun = 'checked';
+                break;
+            case 'mar':
+                $trabajo->mar == 'checked' ? $trabajo->mar = 'unchecked' : $trabajo->mar = 'checked';
+                break;
+            case 'mie':
+                $trabajo->mie == 'checked' ? $trabajo->mie = 'unchecked' : $trabajo->mie = 'checked';
+                break;
+            case 'juv':
+                $trabajo->juv == 'checked' ? $trabajo->juv = 'unchecked' : $trabajo->juv = 'checked';
+                break;
+            case 'vie':
+                $trabajo->vie == 'checked' ? $trabajo->vie = 'unchecked' : $trabajo->vie = 'checked';
+                break;
+            case 'sab':
+                $trabajo->sab == 'checked' ? $trabajo->sab = 'unchecked' : $trabajo->sab = 'checked';
+                break;
+            case 'dom':
+                $trabajo->dom == 'checked' ? $trabajo->dom = 'unchecked' : $trabajo->dom = 'checked';
+                break;
+        }
+        $trabajo->save();
+        return Response::json(['error' => false]);
     }
 
 }
