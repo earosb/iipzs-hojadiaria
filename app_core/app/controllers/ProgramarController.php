@@ -35,7 +35,7 @@ class ProgramarController extends \BaseController
         $trabajos = $query->select('programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
             'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
             'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
-            'grupo_trabajo.base as grupo')
+            'grupo_trabajo.id as grupo_trabajo_id')
             ->orderBy('km_inicio')
             ->get();
 

@@ -76,6 +76,7 @@
 {{ HTML::script('angular2/js/app.js') }}
 {{ HTML::script('angular2/js/controllers.js') }}
 {{ HTML::script('js/calendar/calendar.min.js') }}
+{{ HTML::script('js/back_to_top.js') }}
 
 <footer class="footer">
     <blockquote class="pull-right">

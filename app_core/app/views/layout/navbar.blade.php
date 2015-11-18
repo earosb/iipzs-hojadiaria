@@ -46,9 +46,6 @@
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/programar') }}">Programar trabajos</a></li>
-                            @if (Sentry::getUser()->hasAccess(['superadmin']))
-                                <li><a href="{{ URL::to('/programar2') }}">Programar trabajos2</a></li>
-                            @endif
                         </ul>
                     </li>
                 @endif
