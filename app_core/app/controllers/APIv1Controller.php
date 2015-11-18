@@ -1,27 +1,31 @@
 <?php
 
-class APIv1Controller extends \BaseController {
+class APIv1Controller extends \BaseController
+{
+    /**
+     * GET /api/v1/trabajos
+     *
+     * @return Response
+     */
+    public function trabajos()
+    {
+        try {
+            $trabajos = Trabajo::orderby('nombre')
+                ->get(array('id as remote_id', 'nombre', 'unidad'));
+            return Response::json(['error' => false, 'data' => $trabajos]);
+        } catch (Exception $e) {
+            return Response::json(['error' => true, 'msg' => 'Se produjo un error en la base de datos']);
+        }
+    }
 
-	/**
-	 * GET /api/v1/trabajos
-	 *
-	 * @return Response
-	 */
-	public function trabajos()
-	{
-		$trabajos = Trabajo::orderby('nombre')
-            ->get(array('id as remote_id', 'nombre', 'unidad'));
-        return Response::json($trabajos);
-	}
-
-	/**
-	 * POST /api/v1/login
-	 *
-	 * @return Response
-	 */
-	public function login()
-	{
-		$username = Input::get('username');
+    /**
+     * POST /api/v1/login
+     *
+     * @return Response
+     */
+    public function login()
+    {
+        $username = Input::get('username');
         $password = Input::get('password');
 
         // Credenciales
@@ -33,14 +37,14 @@ class APIv1Controller extends \BaseController {
             $usuario = Sentry::authenticate($cmredenciales, false);
 
             if ($usuario) {
-            	$token = bin2hex(openssl_random_pseudo_bytes(16));
+                $token = bin2hex(openssl_random_pseudo_bytes(16));
 
-            	$user = Sentry::getUser();
-            	$user->token_api = $token;
+                $user = Sentry::getUser();
+                $user->token_api = $token;
                 $user->save();
 
                 return Response::json(['error' => 'false',
-                	'user' => $user]);
+                    'user' => $user]);
             }
         } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
             return Response::json(['error' => 'true', 'msg' => 'Nombre de usuario requerido.']);
@@ -58,27 +62,30 @@ class APIv1Controller extends \BaseController {
         } catch (Cartalyst\Sentry\Throttling\UserBannedException $e) {
             return Response::json(['error' => 'true', 'msg' => 'Usuario Baneado.']);
         }
-	}
+    }
 
     /**
+     * POST /api/v1/programar
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store()
     {
-        $trabajos = json_decode(Input::get('trabajos'));
-
-        foreach($trabajos as $p){
-            $programar = new Programar();
-            $programar->causa = $p->causa;
-            $programar->trabajo_id = $p->trabajo_id;
-            $programar->km_inicio = $p->km_inicio;
-            $programar->km_termino = $p->km_termino;
-            $programar->cantidad = $p->cantidad;
-            $programar->save();
+        try {
+            $trabajos = json_decode(Input::get('trabajos'));
+            foreach ($trabajos as $p) {
+                $programar = new Programar();
+                $programar->causa = $p->causa;
+                $programar->trabajo_id = $p->trabajo_id;
+                $programar->km_inicio = $p->km_inicio;
+                $programar->km_termino = $p->km_termino;
+                $programar->cantidad = $p->cantidad;
+                $programar->observaciones = $p->obs;
+                $programar->save();
+            }
+            return Response::json(['error' => false]);
+        } catch (Exception $e) {
+            return Response::json(['error' => true, 'msg' => 'Se produjo un error en la base de datos']);
         }
-
-        return Response::json(
-            array('error' => false));
     }
 }

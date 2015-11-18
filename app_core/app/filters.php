@@ -32,7 +32,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function () {
 
-    if ( !Sentry::check() )
+    if (!Sentry::check())
         return Redirect::guest('login');
 
 });
@@ -50,10 +50,10 @@ Route::filter('hasAccess', function ($route, $request, $value) {
     try {
         $user = Sentry::getUser();
 
-        if ( !$user->hasAccess($value) ) {
+        if (!$user->hasAccess($value)) {
             App::abort(401);
         }
-    } catch ( Cartalyst\Sentry\Users\UserNotFoundException $e ) {
+    } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
         return Response::view('error', array('code' => 'Error Desconocido', 'message' => 'Usuario no encontrado.'), 401);
     }
 
@@ -116,7 +116,7 @@ Route::filter('guest', function()
 */
 
 Route::filter('csrf', function () {
-    if ( Session::token() !== Input::get('_token') ) {
+    if (Session::token() !== Input::get('_token')) {
         throw new Illuminate\Session\TokenMismatchException;
     }
 });
@@ -124,8 +124,7 @@ Route::filter('csrf', function () {
 /**
  * Cambiar nombre del sitio en Syntara
  */
-View::composer('syntara::layouts.dashboard.master', function($view)
-{
+View::composer('syntara::layouts.dashboard.master', function ($view) {
     $view->with('siteName', 'Icil Icafal PZS');
     $view->with('favicon', asset('img/favicon.ico'));
     $view->with('faviconType', asset('img/favicon.ico'));
@@ -137,13 +136,13 @@ View::composer('syntara::layouts.dashboard.master', function($view)
  * sólo para saber si el usuario está logueado
  * @return Json
  */
-
 Route::filter('auth_api', function () {
-
-    $user = User::where('username', Input::get('username'))->first();
-
-    $token = Input::get('token');
-    if ( $user->token_api != $token )
-        return Response::json(['error' => 'true', 'msg' => 'Token válido']);
-
+    try {
+        $user = User::where('username', Input::get('username'))->first();
+        $token = Input::get('token');
+        if ($user->token_api != $token)
+            return Response::json(['error' => 'true', 'msg' => 'Credenciales de usuario inválidas, inicie sesión nuevamente']);
+    } catch (Exception $e) {
+        return Response::json(['error' => 'true', 'msg' => 'Credenciales de usuario inválidas, inicie sesión nuevamente']);
+    }
 });

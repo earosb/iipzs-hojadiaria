@@ -248,14 +248,12 @@ Route::group(array('before' => 'hasAccess:superadmin'), function () {
  * API v1
  */
 Route::group(array('prefix' => 'api/v1'), function () {
-
     /**
      * Login
      */
     Route::post('login', 'APIv1Controller@login');
 
-//    Route::group(array('before' => 'auth_api'), function(){
-        
+    Route::group(array('before' => 'auth_api'), function () {
         /**
          * Trabajos a granel
          */
@@ -266,7 +264,7 @@ Route::group(array('prefix' => 'api/v1'), function () {
          */
         Route::post('programar', 'APIv1Controller@store');
 
-//    });
+    });
 
 
 });
