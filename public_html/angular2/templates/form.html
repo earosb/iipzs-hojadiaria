@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="form-group col-md-3">
+            <div class="col-md-3">
                 <label>Grupo</label>
                 <select ng-model="trabajo.grupo_trabajo_id" class="form-control"
                         ng-options="grupo.base for grupo in grupos track by grupo.id">
@@ -86,8 +86,8 @@
         <div class="col-md-12">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="obs">Observaciones:</label>
-                    <textarea class="form-control" rows="3" id="obs">{{ trabajo.observaciones }}</textarea>
+                    <label>Observaciones:</label>
+                    <textarea class="form-control" rows="3" ng-model="trabajo.observaciones">{{ trabajo.observaciones }}</textarea>
                 </div>
             </div>
         </div>
@@ -100,6 +100,7 @@
     </fieldset>
 </form>
 
+<br>
 <div class="well">
     {{ trabajo | json }}
 </div>

@@ -35,7 +35,7 @@ class ProgramarController extends \BaseController
         $trabajos = $query->select('programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
             'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
             'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
-            'grupo_trabajo.id as grupo_trabajo_id')
+            'grupo_trabajo.base as grupo_trabajo_base', 'grupo_trabajo.id as grupo_trabajo_id')
             ->orderBy('km_inicio')
             ->get();
 
@@ -70,30 +70,6 @@ class ProgramarController extends \BaseController
 
         return Response::json(
             array('error' => false, 't' => $trabajo));
-    }
-
-    /**
-     * Display the specified resource.
-     * GET /programar/{id}
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * GET /programar/{id}/edit
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -148,8 +124,12 @@ class ProgramarController extends \BaseController
      */
     public function destroy($id)
     {
-        Programar::destroy($id);
-        return Response::json(array('error' => false));
+        try {
+            Programar::destroy($id);
+            return Response::json(array('error' => false));
+        } catch (Exception $e) {
+            return Response::json(array('error' => true));
+        }
     }
 
     /**

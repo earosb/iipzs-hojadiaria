@@ -9,23 +9,13 @@ app.config(function ($routeProvider) {
     $routeProvider.when("/", {
         templateUrl: "angular2/templates/index.html"
     })
-        //esta es la forma de decirle a angular que vamos a pasar una variable por la url
-        .when('/info/:id', {
-            templateUrl: "angular2/templates/info.html",
-            controller: "infoController"
-        })
-        .when("/add", {
-            title: 'Añadir usuario',
-            templateUrl: "angular2/templates/add.html",
-            controller: "addController"
-        })
         .when("/edit/:id", {
-            title: 'Editar usuario',
+            title: 'Editar',
             templateUrl: "angular2/templates/edit.html",
             controller: "editController"
         })
         .when("/remove/:id", {
-            title: 'Eliminar usuario',
+            title: 'Eliminar',
             templateUrl: "angular2/templates/remove.html",
             controller: "removeController"
         })
