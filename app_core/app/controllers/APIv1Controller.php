@@ -12,7 +12,7 @@ class APIv1Controller extends \BaseController
         try {
             $trabajos = Trabajo::orderby('nombre')
                 ->get(array('id as remote_id', 'nombre', 'unidad'));
-            return Response::json(['error' => false, 'data' => $trabajos]);
+            return Response::json($trabajos);
         } catch (Exception $e) {
             return Response::json(['error' => true, 'msg' => 'Se produjo un error en la base de datos']);
         }
