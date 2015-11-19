@@ -30,8 +30,8 @@
         <div class="col-md-12">
             <div class="col-md-3">
                 <label>Grupo</label>
-                <select ng-model="trabajo.grupo_trabajo_id" class="form-control"
-                        ng-options="grupo.base for grupo in grupos track by grupo.id">
+                <select class="form-control" ng-model="trabajo.grupo_trabajo_id"
+                        ng-options="grupo.id as grupo.base for grupo in grupos">
                 </select>
             </div>
             <div class="col-md-3">

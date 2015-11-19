@@ -35,7 +35,7 @@ class ProgramarController extends \BaseController
         $trabajos = $query->select('programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
             'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
             'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
-            'grupo_trabajo.base as grupo_trabajo_base', 'grupo_trabajo.id as grupo_trabajo_id')
+            'grupo_trabajo.id as grupo_trabajo_id')
             ->orderBy('km_inicio')
             ->get();
 
@@ -108,7 +108,7 @@ class ProgramarController extends \BaseController
         $programa->cantidad = $input['cantidad'];
         $programa->observaciones = $input['observaciones'];
         $programa->causa = $input['causa'];
-        $programa->grupo_trabajo_id = $input['grupo_trabajo_id']['id'];
+        $programa->grupo_trabajo_id = $input['grupo_trabajo_id'];
 
         $programa->save();
 
@@ -200,6 +200,21 @@ class ProgramarController extends \BaseController
         }
         $trabajo->save();
         return Response::json(['error' => false]);
+    }
+
+    public function updateGrupoTrabajo($id)
+    {
+        try {
+            $id_grupo = Input::get('grupo_trabajo_id');
+
+            $trabajo = Programar::find($id);
+            $trabajo->grupo_trabajo_id = $id_grupo;
+            $trabajo->save();
+
+            return Response::json(['error' => false]);
+        } catch (Exception $e) {
+            return Response::json(['error' => true]);
+        }
     }
 
 }

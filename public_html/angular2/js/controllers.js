@@ -40,14 +40,19 @@ app.controller("appController", function appController($scope, $http) {
     };
 
     $scope.updateDayTrabajo = function (dia, id) {
-        $http.post('programar/edit-day/' + id, {dia: dia})
-            .success(function (data) {
-                console.log(data);
-            });
+        $http.get('programar/' + id + '/edit-day', {
+            params: {dia: dia}
+        }).success(function (data) {
+            console.log(data);
+        });
     };
 
     $scope.updateGrupoTrabajo = function (trabajo) {
-        console.log(trabajo);
+        $http.get('programar/' + trabajo.id + '/edit-grupo-trabajo', {
+            params: {grupo_trabajo_id: trabajo.grupo_trabajo_id}
+        }).success(function (data) {
+            console.log(data);
+        });
     };
 
 });
@@ -76,6 +81,7 @@ app.controller("removeController", function removeController($scope, $http, $rou
     $scope.removeTrabajo = function () {
         $http.delete('programar/' + $scope.trabajo.id)
             .success(function (data) {
+                console.log(data);
                 if (!data.error) {
                     $scope.trabajos.splice($routeParams.id, 1);
                     $location.url("/");

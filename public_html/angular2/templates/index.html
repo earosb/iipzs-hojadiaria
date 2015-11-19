@@ -120,20 +120,14 @@
                 <!--<input style="width: 60px;" type="number" value="{{ trabajo.cantidad }}">-->
             </td>
             <td>
-                <!--<select ng-model="trabajo.grupo_trabajo_id"-->
-                        <!--ng-options="grupo.base for grupo in grupos track by grupo.id">-->
-                <!--</select>-->
-                <!--<select ng-change="updateGrupoTrabajo(trabajo)"-->
-                        <!--ng-init="trabajo.grupo_trabajo_id"-->
-                        <!--ng-model="trabajo.grupo_trabajo_id" >-->
-                    <!--<option ng-repeat="grupo in grupos" value="{{grupo.id}}">{{grupo.base}}</option>-->
-                <!--</select>-->
-                <!--<br>{{trabajo.grupo_trabajo_id | json}}-->
-                {{ trabajo.grupo_trabajo_base }}
+                <select ng-model="trabajo.grupo_trabajo_id"
+                        ng-options="grupo.id as grupo.base for grupo in grupos"
+                        ng-change="updateGrupoTrabajo(trabajo)">
+                </select>
             </td>
             <td>
                 {{ trabajo.semana }}
-            <!--<input type="date" value="{{ trabajo.semana }}">-->
+                <!--<input type="date" value="{{ trabajo.semana }}">-->
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
