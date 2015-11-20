@@ -55,6 +55,19 @@ app.controller("appController", function appController($scope, $http) {
         });
     };
 
+    $scope.updateFechaTrabajo = function (trabajo) {
+        console.log(trabajo);
+        $http.put('programar/' + trabajo.id, trabajo).
+            success(function (data) {
+                console.debug(data);
+                if (!data.error) {
+                    //NO ERROR
+                } else {
+                    //ERROR
+                }
+            });
+    };
+
 });
 
 app.controller("editController", function editController($scope, $http, $routeParams, $location) {

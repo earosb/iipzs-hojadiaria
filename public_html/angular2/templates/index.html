@@ -126,8 +126,9 @@
                 </select>
             </td>
             <td>
-                {{ trabajo.semana }}
-                <!--<input type="date" value="{{ trabajo.semana }}">-->
+                <!--{{ trabajo.semana }}-->
+                <input type="text" placeholder="Semana" ng-model="trabajo.semana" style="width: 100px;"
+                       ng-change="updateFechaTrabajo(trabajo)" jqdatepickerweek>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">

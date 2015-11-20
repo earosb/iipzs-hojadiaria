@@ -42,6 +42,7 @@ app.directive('jqdatepicker', function () {
         }
     };
 });
+
 // Datepicker directive select week
 app.directive('jqdatepickerweek', function () {
     return {
@@ -49,46 +50,24 @@ app.directive('jqdatepickerweek', function () {
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelCtrl) {
             var startDate;
-            var endDate;
-
-            var selectCurrentWeek = function () {
-                window.setTimeout(function () {
-                    $(element).find('.ui-datepicker-current-day a').addClass('ui-state-active');
-                }, 1);
-            };
 
             $(element).datepicker({
                 showOtherMonths: true,
                 selectOtherMonths: true,
+                dateFormat: 'dd/mm/yy',
                 beforeShow: function () {
                     $(".ui-datepicker").css('font-size', 12);
                 },
                 onSelect: function (dateText, inst) {
                     var date = $(this).datepicker('getDate');
-                    startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
-                    endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 6);
+                    startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
                     var dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
-                    $('#startDate').text($.datepicker.formatDate(dateFormat, startDate, inst.settings));
-                    $('#endDate').text($.datepicker.formatDate(dateFormat, endDate, inst.settings));
-
-                    selectCurrentWeek();
-                },
-                beforeShowDay: function (date) {
-                    var cssClass = '';
-                    if (date >= startDate && date <= endDate)
-                        cssClass = 'ui-datepicker-current-day';
-                    return [true, cssClass];
-                },
-                onChangeMonthYear: function (year, month, inst) {
-                    selectCurrentWeek();
+                    var dateFinal = $.datepicker.formatDate(dateFormat, startDate, inst.settings);
+                    $(this).datepicker('setDate', dateFinal);
+                    scope.$apply(function () {
+                        ngModelCtrl.$setViewValue(dateFinal);
+                    });
                 }
-            });
-
-            $('.week-picker .ui-datepicker-calendar tr').live('mousemove', function () {
-                $(this).find('td a').addClass('ui-state-hover');
-            });
-            $('.week-picker .ui-datepicker-calendar tr').live('mouseleave', function () {
-                $(this).find('td a').removeClass('ui-state-hover');
             });
         }
     };
