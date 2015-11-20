@@ -37,7 +37,11 @@
     <table>
         <tr>
             <th>Grupo Vía</th>
-            <td>{{$grupo->base}}</td>
+            @if($grupo == null)
+                <td>Todos</td>
+            @else
+                <td>{{$grupo->base}}</td>
+            @endif
             <th>Semana</th>
             <td>{{$semana}}</td>
         </tr>
@@ -66,6 +70,7 @@
             <th rowspan="2">Vié</th>
             <th rowspan="2">Sáb</th>
             <th rowspan="2">Dom</th>
+            {{--<th rowspan="2">Obs.</th>--}}
         </tr>
         <tr>
             <th>Inicio</th>
@@ -114,6 +119,7 @@
                 @else
                     <td></td>
                 @endif
+                {{--<td>{{ $trabajo->observaciones }}</td>--}}
             </tr>
         @endforeach
     </table>

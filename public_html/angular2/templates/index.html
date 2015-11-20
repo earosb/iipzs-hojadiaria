@@ -66,11 +66,12 @@
                 <form action="programar/pdf">
                     <div class="form-group col-xs-6">
                         <select class="form-control" name="grupo_trabajo_id" required="required">
+                            <option value="all" selected="selected">Todos</option>
                             <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}</option>
                         </select>
                     </div>
                     <div class="form-group col-xs-4">
-                        <input type="text" placeholder="Semana" class="form-control" name="semana" ng-model="semana" jqdatepicker required="required">
+                        <input type="text" placeholder="Semana" class="form-control" name="semana" ng-model="semana" jqdatepickerweek required="required">
                     </div>
                     <div class="form-group">
                         <input class="btn btn-primary" type="submit" value="Descargar"/>
@@ -84,11 +85,11 @@
 <div class="col-md-12" ng-show="trabajos.length == 0">
     <h3>No hay trabajos para programar</h3>
 </div>
-
+<!--<div class="col-md-12">{{selection}}</div>-->
 <div ng-show="trabajos.length > 0">
     <table id="main" class="table table-condensed table-bordered table-striped table-hover">
         <tr>
-            <th class="text-center">#</th>
+            <th class="text-center"><input type="checkbox" ng-model="selectedAll" ng-click="selectAll()" /></th>
             <th>Causa</th>
             <th>Trabajo</th>
             <th>Km Inicio</th>
@@ -107,7 +108,8 @@
         </tr>
         <tr ng-repeat="(key, trabajo) in trabajos | orderBy:'km_inicio'" class="{{ trabajo.status }}">
             <td class="text-center">
-                <input type="checkbox" name="check" value="{{ trabajo.id }}">
+                <input type="checkbox" value="{{trabajo.id}}" ng-checked="selection.indexOf(trabajo) > -1"
+                       ng-click="toggleSelection(trabajo)"/>
             </td>
             <td>{{ trabajo.causa }}</td>
             <td>{{ trabajo.nombre }}
@@ -117,7 +119,6 @@
             <td>{{ trabajo.km_termino }}</td>
             <td>
                 {{ trabajo.cantidad }}
-                <!--<input style="width: 60px;" type="number" value="{{ trabajo.cantidad }}">-->
             </td>
             <td>
                 <select ng-model="trabajo.grupo_trabajo_id"
@@ -181,8 +182,13 @@
             </td>
             <td class="text-center">
                 <a href="#/edit/{{ key }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
-                <a href="#/remove/{{ key }}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
+                <a ng-click="deleteTrabajo(trabajo, $index)"
+                   href="" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
             </td>
         </tr>
     </table>
+</div>
+
+<div ng-show="loading_div > 0" style="position: fixed; bottom: 5px; left: 5px;">
+    <span>Guardando</span>
 </div>

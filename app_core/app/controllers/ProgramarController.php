@@ -112,7 +112,7 @@ class ProgramarController extends \BaseController
 
         $programa->save();
 
-        return Response::json(['error' => false, 'programa' => $programa]);
+        return Response::json(['error' => false]);
     }
 
     /**
@@ -142,31 +142,41 @@ class ProgramarController extends \BaseController
     {
         $input = Input::all();
 
-        $rules = array(
-            'grupo_trabajo_id' => 'required|exists:grupo_trabajo,id',
-            'semana' => 'required|date_format:d/m/Y'
-        );
-
-        $validator = Validator::make($input, $rules);
-
-        if ($validator->fails()) {
-            return Redirect::back();
-        }
+//        $rules = array(
+//            'grupo_trabajo_id' => 'required|exists:grupo_trabajo,id',
+//            'semana' => 'required|date_format:d/m/Y'
+//        );
+//
+//        $validator = Validator::make($input, $rules);
+//
+//        if ($validator->fails()) {
+//            return Redirect::back();
+//        }
         $semana = Carbon::createFromFormat('d/m/Y', $input['semana'])->toDateString();
-        $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
-            ->where('programar.grupo_trabajo_id', '=', $input['grupo_trabajo_id'])
-            ->where('programar.semana', '=', $semana)
-            ->orderBy('km_inicio')
-            ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
-                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
 
-        $grupo = GrupoTrabajo::find($input['grupo_trabajo_id']);
+        if ($input['grupo_trabajo_id'] == 'all') {
+            $grupo = null;
+            $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->where('programar.semana', '=', $semana)
+                ->orderBy('km_inicio')
+                ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                    'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+        } else {
+            $grupo = GrupoTrabajo::find($input['grupo_trabajo_id']);
+            $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->where('programar.grupo_trabajo_id', '=', $grupo->id)
+                ->where('programar.semana', '=', $semana)
+                ->orderBy('km_inicio')
+                ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                    'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+        }
 
         $pdf = App::make('dompdf');
         $html = View::make('programar.pdf')
             ->with('trabajos', $trabajos)->with('grupo', $grupo)->with('semana', $input['semana']);
-        $pdf->loadHTML($html)->setPaper('a4')->setOrientation('landscape'); // landscape | portrait
+        $pdf->loadHTML($html)->setPaper('a4')->setOrientation('portrait'); // landscape | portrait
         return $pdf->stream();
     }
 

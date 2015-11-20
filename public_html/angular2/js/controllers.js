@@ -1,5 +1,7 @@
 app.controller("appController", function appController($scope, $http) {
     $scope.trabajos = [];
+    $scope.selection = [];
+    $scope.loading_div = 0;
 
     $http.get('programar')
         .success(function (data) {
@@ -25,6 +27,17 @@ app.controller("appController", function appController($scope, $http) {
             });
     };
 
+    $scope.deleteTrabajo = function (trabajo, index) {
+        if (confirm('¿Eliminar ' + trabajo.nombre + '?')) {
+            $http.delete('programar/' + trabajo.id)
+                .success(function (data) {
+                    if (!data.error) {
+                        $scope.trabajos.splice(index, 1);
+                    }
+                });
+        }
+    };
+
     //Filtrar
     $scope.filtrar = function (filtro) {
         $http.get('programar', {
@@ -36,41 +49,65 @@ app.controller("appController", function appController($scope, $http) {
 
     $scope.pdf = function (pdf) {
         var url = "/programar/pdf?g=" + pdf.g.id + '&s=' + pdf.s;
-        window.open(url, '_blank');
+        window.open(url);
     };
 
     $scope.updateDayTrabajo = function (dia, id) {
+        $scope.loading_div = +1;
         $http.get('programar/' + id + '/edit-day', {
             params: {dia: dia}
         }).success(function (data) {
-            console.log(data);
+            if (!data.error) $scope.loading_div = -1;
         });
     };
 
     $scope.updateGrupoTrabajo = function (trabajo) {
+        $scope.loading_div = +1;
         $http.get('programar/' + trabajo.id + '/edit-grupo-trabajo', {
             params: {grupo_trabajo_id: trabajo.grupo_trabajo_id}
         }).success(function (data) {
-            console.log(data);
+            if (!data.error) $scope.loading_div = -1;
         });
     };
 
     $scope.updateFechaTrabajo = function (trabajo) {
-        console.log(trabajo);
+        $scope.loading_div = +1;
         $http.put('programar/' + trabajo.id, trabajo).
             success(function (data) {
-                console.debug(data);
-                if (!data.error) {
-                    //NO ERROR
-                } else {
-                    //ERROR
-                }
+                if (!data.error) $scope.loading_div = -1;
             });
     };
+    // Select all
+    $scope.selectAll = function () {
+        $scope.selection.length = 0;
+        if ($scope.selectedAll) {
+            $scope.selectedAll = true;
+        } else {
+            $scope.selectedAll = false;
+        }
+        console.log($scope.selectedAll);
+        //angular.forEach($scope.Items, function (item) {
+        //    item.Selected = $scope.selectedAll;
+        //});
+    };
+    // Toggle selection
+    $scope.toggleSelection = function toggleSelection(trabajo) {
+        var idx = $scope.selection.indexOf(trabajo.id);
+        // is currently selected
+        if (idx > -1) {
+            $scope.selection.splice(idx, 1);
+        }
+        // is newly selected
+        else {
+            $scope.selection.push(trabajo.id);
+        }
+    };
+
 
 });
 
 app.controller("editController", function editController($scope, $http, $routeParams, $location) {
+    $scope.loading_div = +1;
     $scope.textButton = "Editar programa trabajo";
     $scope.trabajo = $scope.trabajos[$routeParams.id];
     $scope.editTrabajo = function () {
@@ -79,17 +116,13 @@ app.controller("editController", function editController($scope, $http, $routePa
         $location.url("/");
         $http.put('programar/' + $scope.trabajo.id, $scope.trabajo).
             success(function (data) {
-                console.debug(data);
-                if (!data.error) {
-                    //NO ERROR
-                } else {
-                    //ERROR
-                }
+                if (!data.error) $scope.loading_div = -1;
             });
     };
 });
 
 app.controller("removeController", function removeController($scope, $http, $routeParams, $location) {
+    $scope.loading_div = +1;
     $scope.trabajo = $scope.trabajos[$routeParams.id];
     $scope.removeTrabajo = function () {
         $http.delete('programar/' + $scope.trabajo.id)
@@ -98,6 +131,7 @@ app.controller("removeController", function removeController($scope, $http, $rou
                 if (!data.error) {
                     $scope.trabajos.splice($routeParams.id, 1);
                     $location.url("/");
+                    $scope.loading_div = -1;
                 } else {
                     console.log(data);
                 }
