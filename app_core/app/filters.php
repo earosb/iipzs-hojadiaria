@@ -137,12 +137,12 @@ View::composer('syntara::layouts.dashboard.master', function ($view) {
  * @return Json
  */
 Route::filter('auth_api', function () {
-    try {
-        $user = User::where('username', Input::get('username'))->first();
-        $token = Input::get('token');
-        if ($user->token_api != $token)
-            return Response::json(['error' => 'true', 'msg' => 'Credenciales de usuario inválidas, inicie sesión nuevamente']);
-    } catch (Exception $e) {
-        return Response::json(['error' => 'true', 'msg' => 'Credenciales de usuario inválidas, inicie sesión nuevamente']);
-    }
+//    try {
+//        $user = User::where('username', Input::get('username'))->first();
+//        $token = Input::get('token');
+//        if ($user->token_api != $token)
+//            return Response::json(['error' => 'true', 'msg' => 'Credenciales de usuario inválidas, inicie sesión nuevamente']);
+//    } catch (Exception $e) {
+//        return Response::json(['error' => 'true', 'msg' => 'Credenciales de usuario inválidas, inicie sesión nuevamente']);
+//    }
 });

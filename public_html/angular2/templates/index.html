@@ -1,3 +1,24 @@
+<!-- Por alguna razón la directiva no esta funcionando bien
+http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
+<div class="col-md-12">
+    &lt;!&ndash; Nav tabs &ndash;&gt;
+    <ul class="nav nav-tabs" role="tablist">
+        <li showTab class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
+        <li showTab><a href="#profile" role="tab" data-toggle="tab">Profile</a></li>
+        <li showTab><a href="#messages" role="tab" data-toggle="tab">Messages</a></li>
+        <li showTab><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
+    </ul>
+
+    &lt;!&ndash; Tab panes &ndash;&gt;
+    <div class="tab-content">
+        <div class="tab-pane active" id="home">home...</div>
+        <div class="tab-pane" id="profile">profile...</div>
+        <div class="tab-pane" id="messages">messages...</div>
+        <div class="tab-pane" id="settings">settings...</div>
+    </div>
+</div>
+-->
+
 <div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-form">
@@ -5,28 +26,37 @@
         </div>
         <div id="body-form" class="panel-collapse collapse">
             <div class="panel-body">
-                <form>
+                <form name="formTrabajo" ng-submit="createTrabajo(nTrabajo)">
                     <div class="form-group col-md-2">
-                        <input type="text" class="form-control" ng-model="programa.causa" placeholder="Causa" required="required">
+                        <input type="text" class="form-control" ng-model="nTrabajo.causa" placeholder="Causa" required="required">
+
+                        <p ng-repeat="msg in errors.causa" class="text-danger">{{msg}}</p>
                     </div>
                     <div class="form-group col-md-3">
-                        <select class="form-control" ng-model="programa.trabajo_id">
-                            <option selected="selected" disabled="disabled" value="default" style="display:none;"> Seleccione un Trabajo
-                            </option>
+                        <select class="form-control" ng-model="nTrabajo.trabajo_id">
+                            <!--<option selected="selected" disabled="disabled" value="default" style="display:none;"> Seleccione un Trabajo</option>-->
                             <option ng-repeat="partida in partidas" value="{{ partida.id }}">{{ partida.nombre }}</option>
                         </select>
+
+                        <p ng-repeat="msg in errors.trabajo_id" class="text-danger">{{msg}}</p>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="number" class="form-control" ng-model="programa.km_inicio" placeholder="km inicio" required="required">
+                        <input type="number" class="form-control" ng-model="nTrabajo.km_inicio" placeholder="km inicio" required="required">
+
+                        <p ng-repeat="msg in errors.km_inicio" class="text-danger">{{msg}}</p>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="number" class="form-control" ng-model="programa.km_termino" placeholder="km término" required="required">
+                        <input type="number" class="form-control" ng-model="nTrabajo.km_termino" placeholder="km término" required="required">
+
+                        <p ng-repeat="msg in errors.km_termino" class="text-danger">{{msg}}</p>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="number" class="form-control" ng-model="programa.cantidad" placeholder="Cantidad" required="required">
+                        <input type="number" class="form-control" ng-model="nTrabajo.cantidad" placeholder="Cantidad" required="required">
+
+                        <p ng-repeat="msg in errors.cantidad" class="text-danger">{{msg}}</p>
                     </div>
                     <div class="form-group col-md-1">
-                        <input class="btn btn-primary" type="submit" ng-click="addTrabajo(programa)" value="Agregar"/>
+                        <input class="btn btn-primary" type="submit" value="Agregar"/>
                     </div>
                 </form>
             </div>
@@ -58,6 +88,7 @@
         </div>
     </div>
 </div>
+
 <div class="col-md-6">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-pdf">Descargar programa</div>
@@ -89,14 +120,58 @@
 <div ng-show="trabajos.length > 0">
     <table id="main" class="table table-condensed table-bordered table-striped table-hover">
         <tr>
-            <th class="text-center"><input type="checkbox" ng-model="selectedAll" ng-click="selectAll()" /></th>
-            <th>Causa</th>
-            <th>Trabajo</th>
-            <th>Km Inicio</th>
-            <th>Km Término</th>
+            <th class="text-center">
+                # <!--<input type="checkbox" ng-model="selectedAll" ng-click="selectAll()" />-->
+            </th>
+            <th>
+                <a ng-click="orderByField='causa'; reverseSort = !reverseSort" href="">Causa
+                    <span ng-show="orderByField == 'causa'">
+                        <span class="glyphicon glyphicon-sort-by-alphabet" ng-show="!reverseSort"></span>
+                        <span class="glyphicon glyphicon-sort-by-alphabet-alt" ng-show="reverseSort"></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='nombre'; reverseSort = !reverseSort" href="">Trabajo
+                <span ng-show="orderByField == 'nombre'">
+                    <span class="glyphicon glyphicon-sort-by-alphabet" ng-show="!reverseSort"></span>
+                    <span class="glyphicon glyphicon-sort-by-alphabet-alt" ng-show="reverseSort"></span>
+                </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='km_inicio'; reverseSort = !reverseSort" href="">Km Inicio
+                <span ng-show="orderByField == 'km_inicio'">
+                    <span class="glyphicon glyphicon-sort-by-attributes" ng-show="!reverseSort"></span>
+                    <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="reverseSort"></span>
+                </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='km_termino'; reverseSort = !reverseSort" href="">Km Término
+                    <span ng-show="orderByField == 'km_termino'">
+                        <span class="glyphicon glyphicon-sort-by-attributes" ng-show="!reverseSort"></span>
+                        <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="reverseSort"></span>
+                    </span>
+                </a>
+            </th>
             <th>Cantidad</th>
-            <th>Grupo</th>
-            <th>Semana</th>
+            <th>
+                <a ng-click="orderByField='grupo_trabajo_id'; reverseSort = !reverseSort" href="">Grupo
+                    <span ng-show="orderByField == 'grupo_trabajo_id'">
+                        <span class="glyphicon glyphicon-sort-by-alphabet" ng-show="!reverseSort"></span>
+                        <span class="glyphicon glyphicon-sort-by-alphabet-alt" ng-show="reverseSort"></span>
+                    </span>
+                </a>
+            </th>
+            <th>
+                <a ng-click="orderByField='semana'; reverseSort = !reverseSort" href="">Semana
+                <span ng-show="orderByField == 'semana'">
+                    <span class="glyphicon glyphicon-sort-by-attributes" ng-show="!reverseSort"></span>
+                    <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="reverseSort"></span>
+                </span>
+                </a>
+            </th>
             <th class="text-center">L</th>
             <th class="text-center">M</th>
             <th class="text-center">M</th>
@@ -106,82 +181,81 @@
             <th class="text-center">D</th>
             <th class="text-center">Opc.</th>
         </tr>
-        <tr ng-repeat="(key, trabajo) in trabajos | orderBy:'km_inicio'" class="{{ trabajo.status }}">
+        <tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort" class="{{ trabajo.status }}">
             <td class="text-center">
-                <input type="checkbox" value="{{trabajo.id}}" ng-checked="selection.indexOf(trabajo) > -1"
-                       ng-click="toggleSelection(trabajo)"/>
+                <input type="checkbox" value="{{trabajo.id}}" ng-click="toggleSelection(trabajo)"/>
             </td>
-            <td>{{ trabajo.causa }}</td>
-            <td>{{ trabajo.nombre }}
+            <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
+            <td ng-class="orderByField == 'nombre' ? 'active' : ''">{{ trabajo.nombre }}
                 <span class="pull-right">{{ trabajo.unidad }}</span>
             </td>
-            <td>{{ trabajo.km_inicio }}</td>
-            <td>{{ trabajo.km_termino }}</td>
-            <td>
-                {{ trabajo.cantidad }}
-            </td>
-            <td>
+            <td ng-class="orderByField == 'km_inicio' ? 'active' : ''">{{ trabajo.km_inicio }}</td>
+            <td ng-class="orderByField == 'km_termino' ? 'active' : ''">{{ trabajo.km_termino }}</td>
+            <td>{{ trabajo.cantidad }}</td>
+            <td ng-class="orderByField == 'semana' ? 'active' : ''">
                 <select ng-model="trabajo.grupo_trabajo_id"
                         ng-options="grupo.id as grupo.base for grupo in grupos"
-                        ng-change="updateGrupoTrabajo(trabajo)">
+                        ng-change="updateTrabajo(trabajo)">
                 </select>
             </td>
-            <td>
-                <!--{{ trabajo.semana }}-->
-                <input type="text" placeholder="Semana" ng-model="trabajo.semana" style="width: 100px;"
-                       ng-change="updateFechaTrabajo(trabajo)" jqdatepickerweek>
+            <td ng-class="orderByField == 'semana' ? 'active' : ''">
+                <input type="text" placeholder="dd/mm/aa" ng-model="trabajo.semana" style="width: 100px;"
+                       ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
                     <input type="checkbox" name="lun{{ trabajo.id }}" ng-model="trabajo.lun" ng-true-value="'checked'" ng-false-value="'unchecked'"
-                           ng-change="updateDayTrabajo('lun', trabajo.id)">
+                           ng-change="updateTrabajo(trabajo)">
                     <label></label>
                 </div>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
                     <input type="checkbox" id="mar{{ trabajo.id }}" ng-model="trabajo.mar" ng-true-value="'checked'" ng-false-value="'unchecked'"
-                           ng-change="updateDayTrabajo('mar', trabajo.id)">
+                           ng-change="updateTrabajo(trabajo)">
                     <label></label>
                 </div>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
                     <input type="checkbox" id="mie{{ trabajo.id }}" ng-model="trabajo.mie" ng-true-value="'checked'" ng-false-value="'unchecked'"
-                           ng-change="updateDayTrabajo('mie', trabajo.id)">
+                           ng-change="updateTrabajo(trabajo)">
                     <label></label>
                 </div>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
                     <input type="checkbox" id="juv{{ trabajo.id }}" ng-model="trabajo.juv" ng-true-value="'checked'" ng-false-value="'unchecked'"
-                           ng-change="updateDayTrabajo('juv', trabajo.id)">
+                           ng-change="updateTrabajo(trabajo)">
                     <label></label>
                 </div>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
                     <input type="checkbox" id="vie{{ trabajo.id }}" ng-model="trabajo.vie" ng-true-value="'checked'" ng-false-value="'unchecked'"
-                           ng-change="updateDayTrabajo('vie', trabajo.id)">
+                           ng-change="updateTrabajo(trabajo)">
                     <label></label>
                 </div>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
                     <input type="checkbox" id="sab{{ trabajo.id }}" ng-model="trabajo.sab" ng-true-value="'checked'" ng-false-value="'unchecked'"
-                           ng-change="updateDayTrabajo('sab', trabajo.id)">
+                           ng-change="updateTrabajo(trabajo)">
                     <label></label>
                 </div>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
                     <input type="checkbox" id="dom{{ trabajo.id }}" ng-model="trabajo.dom" ng-true-value="'checked'" ng-false-value="'unchecked'"
-                           ng-change="updateDayTrabajo('dom', trabajo.id)">
+                           ng-change="updateTrabajo(trabajo)">
                     <label></label>
                 </div>
             </td>
             <td class="text-center">
-                <a href="#/edit/{{ key }}" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
+                <a href="#/edit/{{ key }}" ng-class="trabajo.observaciones ? 'btn btn-primary btn-xs' : 'btn btn-default btn-xs'"
+                   title="{{trabajo.observaciones}}" data-toggle="tooltip">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
                 <a ng-click="deleteTrabajo(trabajo, $index)"
                    href="" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></a>
             </td>
@@ -189,6 +263,19 @@
     </table>
 </div>
 
-<div ng-show="loading_div > 0" style="position: fixed; bottom: 5px; left: 5px;">
-    <span>Guardando</span>
+<div ng-show="loading_div > 0" style="position: fixed; top: 10px; right: 15px;">
+    <svg width="24px" height="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="uil-ring">
+        <rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect>
+        <circle cx="50" cy="50" r="40" stroke-dasharray="163.36281798666926 87.9645943005142" stroke="#fb8c00" fill="none" stroke-width="20"
+                transform="rotate(54.1788 50 50)">
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;180 50 50;360 50 50;" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite"
+                              begin="0s"></animateTransform>
+        </circle>
+    </svg>
+</div>
+
+<div ng-show="selection.length > 0" style="position: fixed; bottom: 5px; left: 5px;">
+    <a href="" class="btn btn-success btn-xs" ng-click=""><span class="glyphicon glyphicon-ok"></span></a>
+    <a href="" class="btn btn-default btn-xs" ng-click=""><span class="glyphicon glyphicon-pencil"></span></a>
+    <a href="" class="btn btn-danger btn-xs" ng-click="deleteSelected()"><span class="glyphicon glyphicon-trash"></span></a>
 </div>

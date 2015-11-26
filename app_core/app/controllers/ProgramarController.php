@@ -56,7 +56,10 @@ class ProgramarController extends \BaseController
     public function store()
     {
         $input = Input::all();
-        $validator = Validator::make($input, Programar::$rules);
+        $messages = array(
+            'trabajo_id.required' => 'El campo trabajo es requerido.',
+        );
+        $validator = Validator::make($input, Programar::$rules, $messages);
 
         if ($validator->fails()) {
             return Response::json(
@@ -64,12 +67,22 @@ class ProgramarController extends \BaseController
         }
 
         $t = Programar::create($input);
-        $trabajo = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+
+        $trabajo = DB::table('programar')
+            ->join('trabajo', 'trabajo.id', '=', 'programar.trabajo_id')
+            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programar.grupo_trabajo_id')
+            ->select('programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
+                'grupo_trabajo.id as grupo_trabajo_id')
             ->where('programar.id', '=', $t->id)
             ->first();
 
+        $aux = $trabajo->semana;
+        if ($aux) $trabajo->semana = Carbon::parse($aux)->format('d/m/Y');
+
         return Response::json(
-            array('error' => false, 't' => $trabajo));
+            array('error' => false, 'trabajo' => $trabajo));
     }
 
     /**
@@ -84,15 +97,14 @@ class ProgramarController extends \BaseController
         $programa = Programar::find($id);
 
         $input = Input::all();
-        Log::debug(Input::all());
-        $validator = Validator::make($input, Programar::$rules);
+//        Log::debug(Input::all());
 
-//        if ($validator->fails()) {
-//            return Response::json(
-//                array('error' => true, 'msg' => $validator->messages()));
-//        }
+        if ($input['semana']) {
+            try {
+                $programa->semana = Carbon::createFromFormat('d/m/Y', $input['semana']);
+            } catch (Exception $e) {}
+        }
 
-        $programa->semana = Carbon::createFromFormat('d/m/Y', $input['semana']);
         // $programa->programa = json_encode($input['programa']);
         $programa->lun = $input['lun'];
         $programa->mar = $input['mar'];
@@ -101,8 +113,7 @@ class ProgramarController extends \BaseController
         $programa->vie = $input['vie'];
         $programa->sab = $input['sab'];
         $programa->dom = $input['dom'];
-        // $programa->fecha_inicio = Carbon::createFromFormat('d/m/Y', $input['fecha_inicio']);
-        // $programa->fecha_termino = Carbon::createFromFormat('d/m/Y', $input['fecha_termino']);
+
         $programa->km_inicio = $input['km_inicio'];
         $programa->km_termino = $input['km_termino'];
         $programa->cantidad = $input['cantidad'];

@@ -31,15 +31,9 @@
 
     <title> Programar trabajos - Icil Icafal PZS S.A. </title>
 
-    @if(Config::get('app.debug'))
-        {{ HTML::style('angular2/bower_components/bootswatch/yeti/bootstrap.min.css') }}
-        {{ HTML::style('angular2/bower_components/jqueryui/themes/smoothness/jquery-ui.min.css') }}
-        {{ HTML::style('angular2/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
-    @else
-        {{ HTML::style('https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css') }}
-        {{ HTML::style('https//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.min.css') }}
-        {{ HTML::style('https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.5/awesome-bootstrap-checkbox.min.css') }}
-    @endif
+    {{ HTML::style('angular2/bower_components/bootswatch/yeti/bootstrap.min.css') }}
+    {{ HTML::style('angular2/bower_components/jqueryui/themes/smoothness/jquery-ui.min.css') }}
+    {{ HTML::style('angular2/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
     {{ HTML::style('css/landing.min.css') }}
 
 </head>
@@ -60,29 +54,22 @@
 </div>
 
 {{-- Archivos js --}}
-@if(Config::get('app.debug'))
-    {{ HTML::script('angular2/bower_components/angularjs/angular.min.js') }}
-    {{ HTML::script('angular2/bower_components/angular-route/angular-route.min.js') }}
-    {{ HTML::script('angular2/bower_components/jquery/dist/jquery.min.js') }}
-    {{ HTML::script('angular2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}
-    {{ HTML::script('angular2/bower_components/jqueryui/jquery-ui.min.js') }}
-@else
-    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js') }}
-    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.min.js') }}
-    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js') }}
-    {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
-    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js') }}
-@endif
+{{ HTML::script('angular2/bower_components/angularjs/angular.min.js') }}
+{{ HTML::script('angular2/bower_components/angular-route/angular-route.min.js') }}
+{{ HTML::script('angular2/bower_components/jquery/dist/jquery.min.js') }}
+{{ HTML::script('angular2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}
+{{ HTML::script('angular2/bower_components/jqueryui/jquery-ui.min.js') }}
+
 {{ HTML::script('angular2/js/app.js') }}
 {{ HTML::script('angular2/js/controllers.js') }}
 {{ HTML::script('js/calendar/calendar.min.js') }}
 {{ HTML::script('js/back_to_top.js') }}
 
-<footer class="footer">
-    <blockquote class="pull-right">
-        <small>Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A.</small>
-    </blockquote>
-</footer>
+{{--<footer class="footer">--}}
+{{--<blockquote class="pull-right">--}}
+{{--<small>Copyright © 2014 Icil Icafal Proyecto Zona Sur S.A.</small>--}}
+{{--</blockquote>--}}
+{{--</footer>--}}
 
 </body>
 </html>

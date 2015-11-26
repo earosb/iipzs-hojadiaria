@@ -17,6 +17,7 @@ class TrabajoController extends \BaseController
     {
         $trabajos = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=', 'trabajo.tipo_mantenimiento_id')
             ->select('tipo_mantenimiento.nombre as mantenimiento', 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'trabajo.id')
+            ->orderBy('trabajo.nombre', 'ASC')
             ->get();
 
         if (Request::ajax()) {

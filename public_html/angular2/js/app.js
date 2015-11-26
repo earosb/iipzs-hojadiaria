@@ -7,8 +7,8 @@ var app = angular.module("app", ['ngRoute'])
 //hacemos el ruteo de nuestra aplicación
 app.config(function ($routeProvider) {
     $routeProvider.when("/", {
-        templateUrl: "angular2/templates/index.html"
-    })
+            templateUrl: "angular2/templates/index.html"
+        })
         .when("/edit/:id", {
             title: 'Editar',
             templateUrl: "angular2/templates/edit.html",
@@ -72,3 +72,51 @@ app.directive('jqdatepickerweek', function () {
         }
     };
 });
+
+// Tabs with panels directive
+/*
+app.directive('showTab', function () {
+    return {
+        link: function (scope, element, attrs) {
+            element.on('click', function (e) {
+                e.preventDefault();
+                $(element).tab('show');
+            });
+        }
+    };
+});
+*/
+
+// bootstrap tooltip directive
+/*
+app.directive('tooltip', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            $(element).hover(function(){
+                // on mouseenter
+                $(element).tooltip('show');
+            }, function(){
+                // on mouseleave
+                $(element).tooltip('hide');
+            });
+        }
+    };
+});
+*/
+// bootstrap tooltip directive #2
+/*
+app.directive('tooltip', function(){
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs){
+            if (attrs.toggle=="tooltip"){
+                $(element).tooltip();
+            }
+            if (attrs.toggle=="popover"){
+                $(element).popover();
+            }
+        }
+    };
+})
+*/

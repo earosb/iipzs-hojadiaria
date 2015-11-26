@@ -2,42 +2,53 @@ app.controller("appController", function appController($scope, $http) {
     $scope.trabajos = [];
     $scope.selection = [];
     $scope.loading_div = 0;
+    $scope.orderByField = 'km_inicio';
+    $scope.reverseSort = false;
 
-    $http.get('programar')
-        .success(function (data) {
-            $scope.trabajos = data;
-        });
+    $http.get('programar').success(function (data) {
+        $scope.trabajos = data;
+    });
 
-    $http.get('grupos')
-        .success(function (data) {
-            $scope.grupos = data;
-        });
+    $http.get('grupos').success(function (data) {
+        $scope.grupos = data;
+    });
 
-    $http.get('trabajo')
-        .success(function (data) {
-            $scope.partidas = data;
-        });
+    $http.get('trabajo').success(function (data) {
+        $scope.partidas = data;
+    });
 
-    $scope.addTrabajo = function (programa) {
-        $http.post('programar', programa)
+    $scope.createTrabajo = function (nTrabajo) {
+        $scope.loading_div = +1;
+        $http.post('programar', nTrabajo)
             .success(function (data) {
                 if (!data.error) {
-                    $scope.trabajos.push(data.t);
-                }
+                    $scope.trabajos.push(data.trabajo);
+                    $scope.errors = [];
+                    $scope.loading_div = -1;
+                } else $scope.errors = data.msg;
             });
     };
 
     $scope.deleteTrabajo = function (trabajo, index) {
         if (confirm('¿Eliminar ' + trabajo.nombre + '?')) {
+            $scope.loading_div = +1;
             $http.delete('programar/' + trabajo.id)
                 .success(function (data) {
                     if (!data.error) {
                         $scope.trabajos.splice(index, 1);
+                        $scope.loading_div = -1;
                     }
                 });
         }
     };
 
+    $scope.updateTrabajo = function (trabajo) {
+        $scope.loading_div = +1;
+        $http.put('programar/' + trabajo.id, trabajo).
+        success(function (data) {
+            if (!data.error) $scope.loading_div = -1;
+        });
+    };
     //Filtrar
     $scope.filtrar = function (filtro) {
         $http.get('programar', {
@@ -52,44 +63,21 @@ app.controller("appController", function appController($scope, $http) {
         window.open(url);
     };
 
-    $scope.updateDayTrabajo = function (dia, id) {
-        $scope.loading_div = +1;
-        $http.get('programar/' + id + '/edit-day', {
-            params: {dia: dia}
-        }).success(function (data) {
-            if (!data.error) $scope.loading_div = -1;
-        });
-    };
-
-    $scope.updateGrupoTrabajo = function (trabajo) {
-        $scope.loading_div = +1;
-        $http.get('programar/' + trabajo.id + '/edit-grupo-trabajo', {
-            params: {grupo_trabajo_id: trabajo.grupo_trabajo_id}
-        }).success(function (data) {
-            if (!data.error) $scope.loading_div = -1;
-        });
-    };
-
-    $scope.updateFechaTrabajo = function (trabajo) {
-        $scope.loading_div = +1;
-        $http.put('programar/' + trabajo.id, trabajo).
-            success(function (data) {
-                if (!data.error) $scope.loading_div = -1;
-            });
-    };
     // Select all
-    $scope.selectAll = function () {
-        $scope.selection.length = 0;
-        if ($scope.selectedAll) {
-            $scope.selectedAll = true;
-        } else {
-            $scope.selectedAll = false;
-        }
-        console.log($scope.selectedAll);
-        //angular.forEach($scope.Items, function (item) {
-        //    item.Selected = $scope.selectedAll;
-        //});
-    };
+    /*
+     $scope.selectAll = function () {
+     $scope.selection.length = 0;
+     if ($scope.selectedAll) {
+     $scope.selectedAll = true;
+     } else {
+     $scope.selectedAll = false;
+     }
+     console.log($scope.selectedAll);
+     angular.forEach($scope.Items, function (item) {
+     item.Selected = $scope.selectedAll;
+     });
+     };
+     */
     // Toggle selection
     $scope.toggleSelection = function toggleSelection(trabajo) {
         var idx = $scope.selection.indexOf(trabajo.id);
@@ -103,6 +91,21 @@ app.controller("appController", function appController($scope, $http) {
         }
     };
 
+    $scope.deleteSelected = function () {
+        console.log($scope.selection.length);
+        if (confirm('¿Eliminar trabajos seleccionados?')) {
+            angular.forEach($scope.selection, function (value, key) {
+                console.log('value ' + value + ' key ' + key);
+                $http.delete('programar/' + value)
+                    .success(function (data) {
+                        if (!data.error) {
+                            //$scope.trabajos.splice(index, 1);
+                        }
+                    });
+            });
+        }
+    }
+
 
 });
 
@@ -115,9 +118,9 @@ app.controller("editController", function editController($scope, $http, $routePa
         $scope.trabajos[$routeParams.id] = $scope.trabajo;
         $location.url("/");
         $http.put('programar/' + $scope.trabajo.id, $scope.trabajo).
-            success(function (data) {
-                if (!data.error) $scope.loading_div = -1;
-            });
+        success(function (data) {
+            if (!data.error) $scope.loading_div = -1;
+        });
     };
 });
 
