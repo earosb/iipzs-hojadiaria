@@ -60,7 +60,8 @@ app.directive('jqdatepickerweek', function () {
                 },
                 onSelect: function (dateText, inst) {
                     var date = $(this).datepicker('getDate');
-                    startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + 1);
+                    var dayFlag = date.getDay() != 0 ? 7 : 0;
+                    startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay() + dayFlag);
                     var dateFormat = inst.settings.dateFormat || $.datepicker._defaults.dateFormat;
                     var dateFinal = $.datepicker.formatDate(dateFormat, startDate, inst.settings);
                     $(this).datepicker('setDate', dateFinal);
@@ -75,17 +76,17 @@ app.directive('jqdatepickerweek', function () {
 
 // Tabs with panels directive
 /*
-app.directive('showTab', function () {
-    return {
-        link: function (scope, element, attrs) {
-            element.on('click', function (e) {
-                e.preventDefault();
-                $(element).tab('show');
-            });
-        }
-    };
-});
-*/
+ app.directive('showTab', function () {
+ return {
+ link: function (scope, element, attrs) {
+ element.on('click', function (e) {
+ e.preventDefault();
+ $(element).tab('show');
+ });
+ }
+ };
+ });
+ */
 
 // Bootstrap tooltip and popover directive
 app.directive('toggle', function () {
