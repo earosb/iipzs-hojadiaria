@@ -87,36 +87,17 @@ app.directive('showTab', function () {
 });
 */
 
-// bootstrap tooltip directive
-/*
-app.directive('tooltip', function(){
+// Bootstrap tooltip and popover directive
+app.directive('toggle', function () {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs){
-            $(element).hover(function(){
-                // on mouseenter
-                $(element).tooltip('show');
-            }, function(){
-                // on mouseleave
-                $(element).tooltip('hide');
-            });
-        }
-    };
-});
-*/
-// bootstrap tooltip directive #2
-/*
-app.directive('tooltip', function(){
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs){
-            if (attrs.toggle=="tooltip"){
+        link: function (scope, element, attrs) {
+            if (attrs.toggle == "tooltip") {
                 $(element).tooltip();
             }
-            if (attrs.toggle=="popover"){
+            if (attrs.toggle == "popover") {
                 $(element).popover();
             }
         }
     };
-})
-*/
+});
