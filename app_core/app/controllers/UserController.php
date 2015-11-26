@@ -89,7 +89,7 @@ class UserController extends BaseController
         } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
             return Redirect::to('login')->withErrors(array('login' => 'Nombre de usuario requerido.'));
         } catch (Cartalyst\Sentry\Users\PasswordRequiredException $e) {
-            return Redirect::to('login')->withErrors(array('login' => 'La Contraseña es requerida.'));
+            return Redirect::to('login')->withErrors(array('login' => 'La contraseña es requerida.'));
         } catch (Cartalyst\Sentry\Users\WrongPasswordException $e) {
             return Redirect::to('login')->withErrors(array('login' => 'Contraseña incorrecta.'));
         } catch (Cartalyst\Sentry\Users\UserNotFoundException $e) {
@@ -100,7 +100,7 @@ class UserController extends BaseController
         catch (Cartalyst\Sentry\Throttling\UserSuspendedException $e) {
             return Redirect::to('login')->withErrors(array('login' => 'Usuario suspendido.'));
         } catch (Cartalyst\Sentry\Throttling\UserBannedException $e) {
-            return Redirect::to('login')->withErrors(array('login' => 'Usuario Baneado.'));
+            return Redirect::to('login')->withErrors(array('login' => 'Usuario desactivado/baneado.'));
         }
 
     }
