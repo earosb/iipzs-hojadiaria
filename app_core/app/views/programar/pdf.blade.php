@@ -31,7 +31,7 @@
 </head>
 
 <body>
-<h3>Hoja Semanal de Trabajo </h3>
+<h3>Programa Semanal de Trabajo </h3>
 
 <div>
     <table>
@@ -43,7 +43,7 @@
                 <td>{{$grupo->base}}</td>
             @endif
             <th>Semana</th>
-            <td>{{$semana}}</td>
+            <td>{{ $startOfWeek }} al {{ $endOfWeek }}</td>
         </tr>
     </table>
 </div>
@@ -52,13 +52,12 @@
 <div>
     <table>
         <tr>
-            <th></th>
-            <th colspan="5">Programa Semanal</th>
-            <th colspan="7">Trabajo Ejecutado</th>
+            <th colspan="6">Trabajo</th>
+            <th colspan="7">Programa</th>
         </tr>
         <tr>
             <th rowspan="2">#</th>
-            <th width="40%" rowspan="2">Descripción Trabajo</th>
+            <th rowspan="2" width="40%">Descripción del Trabajo</th>
             <th colspan="2">Kilometraje</th>
             <th rowspan="2">Uni.</th>
             <th rowspan="2">Cant.</th>

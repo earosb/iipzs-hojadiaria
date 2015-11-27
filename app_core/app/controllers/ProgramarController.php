@@ -153,22 +153,28 @@ class ProgramarController extends \BaseController
     {
         $input = Input::all();
 
-//        $rules = array(
-//            'grupo_trabajo_id' => 'required|exists:grupo_trabajo,id',
-//            'semana' => 'required|date_format:d/m/Y'
-//        );
-//
-//        $validator = Validator::make($input, $rules);
-//
-//        if ($validator->fails()) {
-//            return Redirect::back();
-//        }
-        $semana = Carbon::createFromFormat('d/m/Y', $input['semana'])->toDateString();
+        $rules = array(
+            //'grupo_trabajo_id' => 'required|exists:grupo_trabajo,id',
+            'semana' => 'required|date_format:d/m/Y'
+        );
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->fails()) {
+            return Redirect::back();
+        }
+
+        $weekQuery = Carbon::createFromFormat('d/m/Y', $input['semana'])->toDateString();
+
+        $startOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->startOfWeek()->toDateString();
+        $startOfWeek = Carbon::parse($startOfWeek)->format('d-m-Y');
+        $endOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->endOfWeek()->toDateString();
+        $endOfWeek = Carbon::parse($endOfWeek)->format('d-m-Y');
 
         if ($input['grupo_trabajo_id'] == 'all') {
             $grupo = null;
             $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
-                ->where('programar.semana', '=', $semana)
+                ->where('programar.semana', '=', $weekQuery)
                 ->orderBy('km_inicio')
                 ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
                     'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
@@ -177,7 +183,7 @@ class ProgramarController extends \BaseController
             $grupo = GrupoTrabajo::find($input['grupo_trabajo_id']);
             $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
                 ->where('programar.grupo_trabajo_id', '=', $grupo->id)
-                ->where('programar.semana', '=', $semana)
+                ->where('programar.semana', '=', $weekQuery)
                 ->orderBy('km_inicio')
                 ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
                     'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
@@ -186,7 +192,9 @@ class ProgramarController extends \BaseController
 
         $pdf = App::make('dompdf');
         $html = View::make('programar.pdf')
-            ->with('trabajos', $trabajos)->with('grupo', $grupo)->with('semana', $input['semana']);
+            ->with('trabajos', $trabajos)->with('grupo', $grupo)
+            ->with('startOfWeek', $startOfWeek)
+            ->with('endOfWeek', $endOfWeek);
         $pdf->loadHTML($html)->setPaper('a4')->setOrientation('portrait'); // landscape | portrait
         return $pdf->stream();
     }
