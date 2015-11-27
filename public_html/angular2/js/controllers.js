@@ -1,7 +1,6 @@
 app.controller("appController", function appController($scope, $http) {
     $scope.trabajos = [];
     $scope.selection = [];
-    $scope.loading_div = 0;
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
 
@@ -18,64 +17,54 @@ app.controller("appController", function appController($scope, $http) {
     });
 
     $scope.createTrabajo = function (nTrabajo) {
-        $scope.loading_div = +1;
         $http.post('programar', nTrabajo)
             .success(function (data) {
                 if (!data.error) {
                     $scope.trabajos.push(data.trabajo);
                     $scope.errors = [];
-                    $scope.loading_div = -1;
                 } else $scope.errors = data.msg;
             });
     };
 
     $scope.deleteTrabajo = function (trabajo, index) {
         if (confirm('¿Eliminar ' + trabajo.nombre + '?')) {
-            $scope.loading_div = +1;
             $http.delete('programar/' + trabajo.id)
                 .success(function (data) {
                     if (!data.error) {
                         $scope.trabajos.splice(index, 1);
-                        $scope.loading_div = -1;
                     }
                 });
         }
     };
 
     $scope.updateTrabajo = function (trabajo) {
-        $scope.loading_div = +1;
         $http.put('programar/' + trabajo.id, trabajo).
         success(function (data) {
-            if (!data.error) $scope.loading_div = -1;
         });
     };
 
     //Filtrar
     $scope.filtrar = function (filtro) {
-        $scope.loading_div = +1;
         $http.get('programar', {
             params: filtro
         }).success(function (data) {
             $scope.trabajos = data;
             filtro.submit = true;
-            $scope.loading_div = -1;
         });
     };
     // Clear filter
-/*
-    $scope.clearFiltro = function (filtro) {
-        $scope.loading_div = +1;
-        $http.get('programar').success(function (data) {
-            $scope.trabajos = data;
-            filtro.submit = false;
-            filtro.causa = '';
-            filtro.grupo_trabajo_id = '';
-            filtro.semana = '';
-            filtro.vencimiento = '';
-            $scope.loading_div = -1;
-        });
-    };
-*/
+    /*
+     $scope.clearFiltro = function (filtro) {
+     $http.get('programar').success(function (data) {
+     $scope.trabajos = data;
+     filtro.submit = false;
+     filtro.causa = '';
+     filtro.grupo_trabajo_id = '';
+     filtro.semana = '';
+     filtro.vencimiento = '';
+     });
+     };
+     */
 
     $scope.pdf = function (pdf) {
         var url = "/programar/pdf?g=" + pdf.g.id + '&s=' + pdf.s;
@@ -128,7 +117,6 @@ app.controller("appController", function appController($scope, $http) {
 });
 
 app.controller("editController", function editController($scope, $http, $routeParams, $location) {
-    $scope.loading_div = +1;
     $scope.textButton = "Editar programa trabajo";
     $scope.trabajo = $scope.trabajos[$routeParams.id];
     $scope.editTrabajo = function () {
@@ -137,13 +125,11 @@ app.controller("editController", function editController($scope, $http, $routePa
         $location.url("/");
         $http.put('programar/' + $scope.trabajo.id, $scope.trabajo).
         success(function (data) {
-            if (!data.error) $scope.loading_div = -1;
         });
     };
 });
 
 app.controller("removeController", function removeController($scope, $http, $routeParams, $location) {
-    $scope.loading_div = +1;
     $scope.trabajo = $scope.trabajos[$routeParams.id];
     $scope.removeTrabajo = function () {
         $http.delete('programar/' + $scope.trabajo.id)
@@ -152,7 +138,6 @@ app.controller("removeController", function removeController($scope, $http, $rou
                 if (!data.error) {
                     $scope.trabajos.splice($routeParams.id, 1);
                     $location.url("/");
-                    $scope.loading_div = -1;
                 } else {
                     console.log(data);
                 }

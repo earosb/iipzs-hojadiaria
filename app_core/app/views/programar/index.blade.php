@@ -54,11 +54,11 @@
 </div>
 
 {{-- Archivos js --}}
+{{ HTML::script('angular2/bower_components/jquery/dist/jquery.min.js') }}
+{{ HTML::script('angular2/bower_components/jqueryui/jquery-ui.min.js') }}
+{{ HTML::script('angular2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}
 {{ HTML::script('angular2/bower_components/angularjs/angular.min.js') }}
 {{ HTML::script('angular2/bower_components/angular-route/angular-route.min.js') }}
-{{ HTML::script('angular2/bower_components/jquery/dist/jquery.min.js') }}
-{{ HTML::script('angular2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}
-{{ HTML::script('angular2/bower_components/jqueryui/jquery-ui.min.js') }}
 
 {{ HTML::script('angular2/js/app.js') }}
 {{ HTML::script('angular2/js/controllers.js') }}
