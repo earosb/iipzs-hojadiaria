@@ -19,6 +19,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 </div>
 -->
 
+<!--Formulario-->
 <div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-form">
@@ -28,13 +29,12 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             <div class="panel-body">
                 <form name="formTrabajo" ng-submit="createTrabajo(nTrabajo)">
                     <div class="form-group col-md-2">
-                        <input type="text" class="form-control" ng-model="nTrabajo.causa" placeholder="Causa" required="required">
+                        <input type="text" class="form-control" ng-model="nTrabajo.causa" placeholder="Causa" required="required" capitalize>
 
                         <p ng-repeat="msg in errors.causa" class="text-danger">{{msg}}</p>
                     </div>
                     <div class="form-group col-md-3">
                         <select class="form-control" ng-model="nTrabajo.trabajo_id">
-                            <!--<option selected="selected" disabled="disabled" value="default" style="display:none;"> Seleccione un Trabajo</option>-->
                             <option ng-repeat="partida in partidas" value="{{ partida.id }}">{{ partida.nombre }}</option>
                         </select>
 
@@ -64,24 +64,32 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
     </div>
 </div>
 
-<div class="col-md-6">
+<!--Filtro-->
+<div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-filtro">Filtrar</div>
         <div id="body-filtro" class="panel-collapse collapse">
             <div class="panel-body">
-                <form>
-                    <div class="form-group col-xs-6">
+                <form ng-submit="filtrar(filtro)">
+                    <div class="form-group col-md-2">
+                        <input type="text" placeholder="Causa" ng-model="filtro.causa" class="form-control" capitalize>
+                    </div>
+                    <div class="form-group col-md-5">
                         <select ng-model="filtro.grupo_trabajo_id" class="form-control">
                             <option value="all" selected="selected">Todos</option>
                             <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}
                             </option>
                         </select>
                     </div>
-                    <div class="form-group col-xs-4">
-                        <input type="text" placeholder="Semana" ng-model="filtro.semana" class="form-control" jqdatepicker>
+                    <div class="form-group col-md-2">
+                        <input type="text" placeholder="Semana" ng-model="filtro.semana" class="form-control" jqdatepickerweek>
                     </div>
-                    <div class="form-group">
-                        <input class="btn btn-primary" type="submit" value="Filtrar" ng-click="filtrar(filtro)"/>
+                    <div class="form-group col-md-2">
+                        <input type="text" placeholder="Vencimiento" ng-model="filtro.vencimiento" class="form-control" jqdatepickerweek>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <!--<button class="btn btn-default" ng-click="clearFiltro(filtro)">Limpiar</button>-->
+                        <input class="btn btn-primary" type="submit" value="Filtrar"/>
                     </div>
                 </form>
             </div>
@@ -89,6 +97,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
     </div>
 </div>
 
+<!--PDF-->
 <div class="col-md-6">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-pdf">Descargar programa</div>
@@ -115,12 +124,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 
 <!--No data-->
 <div class="col-md-12" ng-show="trabajos.length == 0">
-    <h3>No hay trabajos para programar</h3>
-</div>
-
-<!--Test Test Test Test -->
-<div class="col-md-12">
-    <!--{{ selection }}-->
+    <h4>No hay trabajos para programar</h4>
 </div>
 
 <!--Main table-->

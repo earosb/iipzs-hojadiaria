@@ -49,14 +49,33 @@ app.controller("appController", function appController($scope, $http) {
             if (!data.error) $scope.loading_div = -1;
         });
     };
+
     //Filtrar
     $scope.filtrar = function (filtro) {
+        $scope.loading_div = +1;
         $http.get('programar', {
             params: filtro
         }).success(function (data) {
             $scope.trabajos = data;
+            filtro.submit = true;
+            $scope.loading_div = -1;
         });
     };
+    // Clear filter
+/*
+    $scope.clearFiltro = function (filtro) {
+        $scope.loading_div = +1;
+        $http.get('programar').success(function (data) {
+            $scope.trabajos = data;
+            filtro.submit = false;
+            filtro.causa = '';
+            filtro.grupo_trabajo_id = '';
+            filtro.semana = '';
+            filtro.vencimiento = '';
+            $scope.loading_div = -1;
+        });
+    };
+*/
 
     $scope.pdf = function (pdf) {
         var url = "/programar/pdf?g=" + pdf.g.id + '&s=' + pdf.s;

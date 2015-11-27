@@ -1,10 +1,12 @@
 //creamos nuestro modulo llamado app
-var app = angular.module("app", ['ngRoute'])
-    .config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-    }]);
+var app = angular.module("app", ['ngRoute']);
 
-//hacemos el ruteo de nuestra aplicación
+// Sobreescribe headers para detectar AJAX en laravel
+app.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+}]);
+
+// Route provider
 app.config(function ($routeProvider) {
     $routeProvider.when("/", {
             templateUrl: "angular2/templates/index.html"
@@ -99,6 +101,26 @@ app.directive('toggle', function () {
             if (attrs.toggle == "popover") {
                 $(element).popover();
             }
+        }
+    };
+});
+
+// capitalize input (mayúsculas) directive
+app.directive('capitalize', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, modelCtrl) {
+            var capitalize = function (inputValue) {
+                if (inputValue == undefined) inputValue = '';
+                var capitalized = inputValue.toUpperCase();
+                if (capitalized !== inputValue) {
+                    modelCtrl.$setViewValue(capitalized);
+                    modelCtrl.$render();
+                }
+                return capitalized;
+            };
+            modelCtrl.$parsers.push(capitalize);
+            capitalize(scope[attrs.ngModel]);  // capitalize initial value
         }
     };
 });

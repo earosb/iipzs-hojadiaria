@@ -17,25 +17,33 @@ class ProgramarController extends \BaseController
             return View::make('programar.index'); // \Debugbar::disable();
         }
 
-        $query = DB::table('programa')
-            ->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
-            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id');
+        $query = DB::table('programa');
+
+        if (Input::get('causa'))
+            $query->where('programa.causa', '=', Input::get('causa'));
 
         if (Input::get('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
-            $query->where('programa.semana', '=', $semana)
-                ->orWhere('programa.semana', '=', null);
+            $query->where('programa.semana', '=', $semana);
+            $query->orWhereNull('programa.semana');
         }
 
-        if (Input::get('grupo')) {
-            $query->where('programa.grupo_trabajo_id', '=', Input::get('grupo'));
-            $query->where('programa.grupo_trabajo_id', '=', null);
+        if (Input::get('vencimiento')) {
+            $vencimiento = Carbon::createFromFormat('d/m/Y', Input::get('vencimiento'))->toDateString();
+            $query->where('programa.vencimiento', '=', $vencimiento);
+            $query->orWhereNull('programa.vencimiento');
         }
 
-        $trabajos = $query->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-            'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
-            'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
-            'grupo_trabajo.id as grupo_trabajo_id')
+        if (Input::get('grupo_trabajo_id') && Input::get('grupo_trabajo_id') != 'all') {
+            $query->where('programa.grupo_trabajo_id', '=', Input::get('grupo_trabajo_id'));
+            $query->orWhereNull('programa.grupo_trabajo_id');
+        }
+
+        $trabajos = $query->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
+            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
+            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
+                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
             ->orderBy('km_inicio')
             ->get();
 
