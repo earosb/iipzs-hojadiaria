@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateProgramarTable extends Migration {
+class CreateProgramaTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,15 @@ class CreateProgramarTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('programar', function(Blueprint $table)
+		Schema::create('programa', function(Blueprint $table)
 		{
 			$table->increments('id');
             $table->date('semana')->nullable();
-            $table->string('programa')->nullable();
+            $table->date('vencimiento')->nullable();
+			$table->string('causa');
+            $table->integer('km_inicio');
+            $table->integer('km_termino');
+            $table->decimal('cantidad', 10, 2);
             $table->string('lun')->nullable();
             $table->string('mar')->nullable();
             $table->string('mie')->nullable();
@@ -24,16 +28,7 @@ class CreateProgramarTable extends Migration {
             $table->string('vie')->nullable();
             $table->string('sab')->nullable();
             $table->string('dom')->nullable();
-            $table->date('fecha_inicio')->nullable();
-            $table->date('fecha_termino')->nullable();
-            $table->integer('km_inicio');
-            $table->integer('km_termino');
-            $table->decimal('cantidad', 10, 2);
             $table->text('observaciones')->nullable();
-
-			/*$table->integer('causa_id')->unsigned();
-			$table->foreign('causa_id')->references('id')->on('causa');*/
-			$table->string('causa');
 
 			$table->integer('trabajo_id')->unsigned();
             $table->foreign('trabajo_id')->references('id')->on('trabajo');
@@ -53,7 +48,7 @@ class CreateProgramarTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('programar');
+		Schema::drop('programa');
 	}
 
 }

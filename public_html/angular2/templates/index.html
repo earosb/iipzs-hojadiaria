@@ -179,6 +179,14 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                 </span>
                 </a>
             </th>
+            <th>
+                <a ng-click="orderByField='vencimiento'; reverseSort = !reverseSort" href="">Vencimiento
+                <span ng-show="orderByField == 'vencimiento'">
+                    <span class="glyphicon glyphicon-sort-by-attributes" ng-show="!reverseSort"></span>
+                    <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="reverseSort"></span>
+                </span>
+                </a>
+            </th>
             <th class="text-center">L</th>
             <th class="text-center">M</th>
             <th class="text-center">M</th>
@@ -207,6 +215,10 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             </td>
             <td ng-class="orderByField == 'semana' ? 'active' : ''">
                 <input type="text" placeholder="dd/mm/aa" ng-model="trabajo.semana" style="width: 100px;"
+                       ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
+            </td>
+            <td ng-class="orderByField == 'vencimiento' ? 'active' : ''">
+                <input type="text" placeholder="dd/mm/aa" ng-model="trabajo.vencimiento" style="width: 100px;"
                        ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
             </td>
             <td class="text-center">

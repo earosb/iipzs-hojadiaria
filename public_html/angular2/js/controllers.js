@@ -106,7 +106,6 @@ app.controller("appController", function appController($scope, $http) {
         }
     }
 
-
 });
 
 app.controller("editController", function editController($scope, $http, $routeParams, $location) {

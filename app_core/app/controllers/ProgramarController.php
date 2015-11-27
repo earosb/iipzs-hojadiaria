@@ -17,23 +17,23 @@ class ProgramarController extends \BaseController
             return View::make('programar.index'); // \Debugbar::disable();
         }
 
-        $query = DB::table('programar')
-            ->join('trabajo', 'trabajo.id', '=', 'programar.trabajo_id')
-            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programar.grupo_trabajo_id');
+        $query = DB::table('programa')
+            ->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
+            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id');
 
         if (Input::get('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
-            $query->where('programar.semana', '=', $semana)
-                ->orWhere('programar.semana', '=', null);
+            $query->where('programa.semana', '=', $semana)
+                ->orWhere('programa.semana', '=', null);
         }
 
         if (Input::get('grupo')) {
-            $query->where('programar.grupo_trabajo_id', '=', Input::get('grupo'));
-            $query->where('programar.grupo_trabajo_id', '=', null);
+            $query->where('programa.grupo_trabajo_id', '=', Input::get('grupo'));
+            $query->where('programa.grupo_trabajo_id', '=', null);
         }
 
-        $trabajos = $query->select('programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-            'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+        $trabajos = $query->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+            'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
             'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
             'grupo_trabajo.id as grupo_trabajo_id')
             ->orderBy('km_inicio')
@@ -42,6 +42,8 @@ class ProgramarController extends \BaseController
         foreach ($trabajos as $trabajo) {
             $aux = $trabajo->semana;
             if ($aux) $trabajo->semana = Carbon::parse($aux)->format('d/m/Y');
+            $aux2 = $trabajo->vencimiento;
+            if ($aux2) $trabajo->vencimiento = Carbon::parse($aux2)->format('d/m/Y');
         }
 
         return Response::json($trabajos);
@@ -59,27 +61,29 @@ class ProgramarController extends \BaseController
         $messages = array(
             'trabajo_id.required' => 'El campo trabajo es requerido.',
         );
-        $validator = Validator::make($input, Programar::$rules, $messages);
+        $validator = Validator::make($input, Programa::$rules, $messages);
 
         if ($validator->fails()) {
             return Response::json(
                 array('error' => true, 'msg' => $validator->messages()));
         }
 
-        $t = Programar::create($input);
+        $t = Programa::create($input);
 
-        $trabajo = DB::table('programar')
-            ->join('trabajo', 'trabajo.id', '=', 'programar.trabajo_id')
-            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programar.grupo_trabajo_id')
-            ->select('programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+        $trabajo = DB::table('programa')
+            ->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
+            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
+            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
                 'grupo_trabajo.id as grupo_trabajo_id')
-            ->where('programar.id', '=', $t->id)
+            ->where('programa.id', '=', $t->id)
             ->first();
 
         $aux = $trabajo->semana;
         if ($aux) $trabajo->semana = Carbon::parse($aux)->format('d/m/Y');
+        $aux2 = $trabajo->vencimiento;
+        if ($aux2) $trabajo->vencimiento = Carbon::parse($aux2)->format('d/m/Y');
 
         return Response::json(
             array('error' => false, 'trabajo' => $trabajo));
@@ -94,18 +98,24 @@ class ProgramarController extends \BaseController
      */
     public function update($id)
     {
-        $programa = Programar::find($id);
+        $programa = Programa::find($id);
 
         $input = Input::all();
-//        Log::debug(Input::all());
 
         if ($input['semana']) {
             try {
                 $programa->semana = Carbon::createFromFormat('d/m/Y', $input['semana']);
-            } catch (Exception $e) {}
-        }
+            } catch (Exception $e) {
+            }
+        } else $programa->semana = null;
 
-        // $programa->programa = json_encode($input['programa']);
+        if ($input['vencimiento']) {
+            try {
+                $programa->vencimiento = Carbon::createFromFormat('d/m/Y', $input['vencimiento']);
+            } catch (Exception $e) {
+            }
+        } else $programa->vencimiento = null;
+
         $programa->lun = $input['lun'];
         $programa->mar = $input['mar'];
         $programa->mie = $input['mie'];
@@ -136,7 +146,7 @@ class ProgramarController extends \BaseController
     public function destroy($id)
     {
         try {
-            Programar::destroy($id);
+            Programa::destroy($id);
             return Response::json(array('error' => false));
         } catch (Exception $e) {
             return Response::json(array('error' => true));
@@ -167,26 +177,26 @@ class ProgramarController extends \BaseController
         $weekQuery = Carbon::createFromFormat('d/m/Y', $input['semana'])->toDateString();
 
         $startOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->startOfWeek()->toDateString();
-        $startOfWeek = Carbon::parse($startOfWeek)->format('d-m-Y');
+        $startOfWeek = Carbon::parse($startOfWeek)->format('d/m/Y');
         $endOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->endOfWeek()->toDateString();
-        $endOfWeek = Carbon::parse($endOfWeek)->format('d-m-Y');
+        $endOfWeek = Carbon::parse($endOfWeek)->format('d/m/Y');
 
         if ($input['grupo_trabajo_id'] == 'all') {
             $grupo = null;
-            $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
-                ->where('programar.semana', '=', $weekQuery)
+            $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->where('programa.semana', '=', $weekQuery)
                 ->orderBy('km_inicio')
-                ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                    'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'nombre', 'semana',
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
         } else {
             $grupo = GrupoTrabajo::find($input['grupo_trabajo_id']);
-            $trabajos = Programar::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
-                ->where('programar.grupo_trabajo_id', '=', $grupo->id)
-                ->where('programar.semana', '=', $weekQuery)
+            $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->where('programa.grupo_trabajo_id', '=', $grupo->id)
+                ->where('programa.semana', '=', $weekQuery)
                 ->orderBy('km_inicio')
-                ->get(['programar.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                    'grupo_trabajo_id', 'unidad', 'nombre', 'fecha_inicio', 'fecha_termino', 'semana', 'programa',
+                ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'nombre', 'semana',
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
         }
 
@@ -197,53 +207,6 @@ class ProgramarController extends \BaseController
             ->with('endOfWeek', $endOfWeek);
         $pdf->loadHTML($html)->setPaper('a4')->setOrientation('portrait'); // landscape | portrait
         return $pdf->stream();
-    }
-
-
-    public function updateDay($id)
-    {
-        $trabajo = Programar::find($id);
-        $dia = Input::get('dia');
-        switch ($dia) {
-            case 'lun':
-                $trabajo->lun == 'checked' ? $trabajo->lun = 'unchecked' : $trabajo->lun = 'checked';
-                break;
-            case 'mar':
-                $trabajo->mar == 'checked' ? $trabajo->mar = 'unchecked' : $trabajo->mar = 'checked';
-                break;
-            case 'mie':
-                $trabajo->mie == 'checked' ? $trabajo->mie = 'unchecked' : $trabajo->mie = 'checked';
-                break;
-            case 'juv':
-                $trabajo->juv == 'checked' ? $trabajo->juv = 'unchecked' : $trabajo->juv = 'checked';
-                break;
-            case 'vie':
-                $trabajo->vie == 'checked' ? $trabajo->vie = 'unchecked' : $trabajo->vie = 'checked';
-                break;
-            case 'sab':
-                $trabajo->sab == 'checked' ? $trabajo->sab = 'unchecked' : $trabajo->sab = 'checked';
-                break;
-            case 'dom':
-                $trabajo->dom == 'checked' ? $trabajo->dom = 'unchecked' : $trabajo->dom = 'checked';
-                break;
-        }
-        $trabajo->save();
-        return Response::json(['error' => false]);
-    }
-
-    public function updateGrupoTrabajo($id)
-    {
-        try {
-            $id_grupo = Input::get('grupo_trabajo_id');
-
-            $trabajo = Programar::find($id);
-            $trabajo->grupo_trabajo_id = $id_grupo;
-            $trabajo->save();
-
-            return Response::json(['error' => false]);
-        } catch (Exception $e) {
-            return Response::json(['error' => true]);
-        }
     }
 
 }

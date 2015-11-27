@@ -167,7 +167,7 @@ Route::group(array('before' => 'auth'), function () {
      */
     Route::group(array('before' => 'hasAccess:programar'), function () {
         /**
-         * Rutas para planificar trabajos
+         * Rutas para programar trabajos
          */
         Route::get('programar', 'ProgramarController@index');
         Route::post('programar', 'ProgramarController@store');
@@ -180,11 +180,6 @@ Route::group(array('before' => 'auth'), function () {
 
         Route::get('trabajo', 'TrabajoController@index');
 
-        Route::get('causas', 'CausasController@index');
-        Route::post('causas', 'CausasController@store');
-
-        Route::get('programar/{id}/edit-day', 'ProgramarController@updateDay');
-        Route::get('programar/{id}/edit-grupo-trabajo', 'ProgramarController@updateGrupoTrabajo');
     });
 
 });

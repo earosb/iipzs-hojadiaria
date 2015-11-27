@@ -1,13 +1,13 @@
 <?php
 
-class Programar extends \Eloquent
+class Programa extends \Eloquent
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'programar';
+    protected $table = 'programa';
 
     /**
      * @var array
