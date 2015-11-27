@@ -51,7 +51,17 @@ class ProgramarController extends \BaseController
             $aux = $trabajo->semana;
             if ($aux) $trabajo->semana = Carbon::parse($aux)->format('d/m/Y');
             $aux2 = $trabajo->vencimiento;
-            if ($aux2) $trabajo->vencimiento = Carbon::parse($aux2)->format('d/m/Y');
+            if ($aux2) {
+                $trabajo->vencimiento = Carbon::parse($aux2)->format('d/m/Y');
+                $status = Carbon::parse($aux2)->diffInDays(null, false);
+
+                // Una semana para la fecha de vencimiento
+                if ($status >= -8) $trabajo->status = 'danger';
+                // Dos semanas para la fecha de vencimiento
+                elseif ($status >= -15 && $status < -8) $trabajo->status = 'warning';
+                // Más de dos semanas para la fecha de vencimiento
+                else $trabajo->status = 'success';
+            }
         }
 
         return Response::json($trabajos);
