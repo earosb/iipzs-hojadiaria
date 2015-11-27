@@ -38,9 +38,10 @@ app.controller("appController", function appController($scope, $http) {
     };
 
     $scope.updateTrabajo = function (trabajo) {
-        $http.put('programar/' + trabajo.id, trabajo).
-        success(function (data) {
-        });
+        $http.put('programar/' + trabajo.id, trabajo)
+            .success(function (data) {
+                if (!data.error) trabajo.status = data.status;
+            });
     };
 
     //Filtrar

@@ -130,9 +130,20 @@ class ProgramarController extends \BaseController
         if ($input['vencimiento']) {
             try {
                 $programa->vencimiento = Carbon::createFromFormat('d/m/Y', $input['vencimiento']);
+                $days = Carbon::parse($programa->vencimiento)->diffInDays(null, false);
+
+                // Una semana para la fecha de vencimiento
+                if ($days >= -8) $status = 'danger';
+                // Dos semanas para la fecha de vencimiento
+                elseif ($days >= -16 && $days < -8) $status = 'warning';
+                // Más de dos semanas para la fecha de vencimiento
+                else $status = 'success';
             } catch (Exception $e) {
             }
-        } else $programa->vencimiento = null;
+        } else {
+            $programa->vencimiento = null;
+            $status = '';
+        }
 
         $programa->lun = $input['lun'];
         $programa->mar = $input['mar'];
@@ -151,7 +162,7 @@ class ProgramarController extends \BaseController
 
         $programa->save();
 
-        return Response::json(['error' => false]);
+        return Response::json(['error' => false, 'status' => $status]);
     }
 
     /**
