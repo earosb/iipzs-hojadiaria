@@ -89,14 +89,15 @@ app.controller("appController", function appController($scope, $http) {
      */
     // Toggle selection
     $scope.toggleSelection = function toggleSelection(trabajo) {
-        var idx = $scope.selection.indexOf(trabajo.id);
+        console.log(trabajo);
+        var idx = $scope.selection.indexOf(trabajo);
         // is currently selected
         if (idx > -1) {
             $scope.selection.splice(idx, 1);
         }
         // is newly selected
         else {
-            $scope.selection.push(trabajo.id);
+            $scope.selection.push(trabajo);
         }
     };
 
