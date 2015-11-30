@@ -16,7 +16,7 @@ class ProgramarController extends \BaseController
             \Debugbar::disable();
             return View::make('programar.index'); // \Debugbar::disable();
         }
-        Log::debug(Input::all());
+//        Log::debug(Input::all());
         $query = DB::table('programa');
 
         if (Input::get('causa'))
@@ -121,18 +121,19 @@ class ProgramarController extends \BaseController
      */
     public function update($id)
     {
+        Log::debug('update', ['id' => $id, 'input' => Input::all()]);
         $programa = Programa::find($id);
 
         $input = Input::all();
 
-        if ($input['semana']) {
+        if (Input::has('semana')) {
             try {
                 $programa->semana = Carbon::createFromFormat('d/m/Y', $input['semana']);
             } catch (Exception $e) {
             }
         } else $programa->semana = null;
 
-        if ($input['vencimiento']) {
+        if (Input::has('vencimiento')) {
             try {
                 $programa->vencimiento = Carbon::createFromFormat('d/m/Y', $input['vencimiento']);
                 $days = Carbon::parse($programa->vencimiento)->diffInDays(null, false);
@@ -150,8 +151,14 @@ class ProgramarController extends \BaseController
             $status = '';
         }
 
-        if ($input['realizado'])
+        if (Input::has('realizado'))
             $programa->realizado = $input['realizado'];
+
+        if (Input::has('causa'))
+            $programa->causa = $input['causa'];
+
+        if (Input::has('grupo_trabajo_id'))
+            $programa->grupo_trabajo_id = $input['grupo_trabajo_id'];
 
         $programa->lun = $input['lun'];
         $programa->mar = $input['mar'];
@@ -165,8 +172,6 @@ class ProgramarController extends \BaseController
         $programa->km_termino = $input['km_termino'];
         $programa->cantidad = $input['cantidad'];
         $programa->observaciones = $input['observaciones'];
-        $programa->causa = $input['causa'];
-        $programa->grupo_trabajo_id = $input['grupo_trabajo_id'];
 
         $programa->save();
 

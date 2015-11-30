@@ -139,7 +139,8 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 
 <!--Test Test Test Test-->
 <div class="col-md-12">
-    <p>{{ selection }}</p>
+    <p>Modal: {{ showModal }}</p>
+    <p>selection : {{ selection | json }}</p>
 </div>
 <!--Main table-->
 <div ng-show="trabajos.length > 0">
@@ -220,7 +221,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             </td>
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
             <td ng-class="orderByField == 'nombre' ? 'active' : ''">{{ trabajo.nombre }}
-                <span class="pull-right">{{ trabajo.unidad }}</span>
+                <span class="pull-right">{{ trabajo.id }}</span><!--<span class="pull-right">{{ trabajo.unidad }}</span>-->
             </td>
             <td ng-class="orderByField == 'km_inicio' ? 'active' : ''">{{ trabajo.km_inicio }}</td>
             <td ng-class="orderByField == 'km_termino' ? 'active' : ''">{{ trabajo.km_termino }}</td>
@@ -319,4 +320,4 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
     <a href="" class="btn btn-danger btn-xs" ng-click="deleteSelected()"><span class="glyphicon glyphicon-trash"></span></a>
 </div>
 
-<span ng-include="'angular2/templates/modal.html'"></span>
+<div ng-include="'angular2/templates/modal.html'"></div>

@@ -111,16 +111,21 @@ app.controller("appController", function appController($scope, $http) {
         }
     };
 
-    $scope.updateSelected = function () {
+    $scope.updateSelected = function (modal) {
         angular.forEach($scope.selection, function (trabajo) {
+            trabajo.causa = modal.causa;
+            trabajo.grupo_trabajo_id = modal.grupo_trabajo_id;
+            trabajo.semana = modal.semana;
+            trabajo.vencimiento = modal.vencimiento;
             $http.put('programar/' + trabajo.id, trabajo)
                 .success(function (data) {
                     if (!data.error) trabajo.status = data.status;
                 });
+            $scope.showModal = !$scope.showModal;
         });
     };
 
-    $scope.toggleModal = function(){
+    $scope.toggleModal = function () {
         $scope.showModal = !$scope.showModal;
     };
 
