@@ -16,11 +16,16 @@ class ProgramarController extends \BaseController
             \Debugbar::disable();
             return View::make('programar.index'); // \Debugbar::disable();
         }
-
+        Log::debug(Input::all());
         $query = DB::table('programa');
 
         if (Input::get('causa'))
             $query->where('programa.causa', '=', Input::get('causa'));
+
+        if (Input::get('realizado'))
+            $query->where('programa.realizado', Input::get('realizado'));
+        else
+            $query->where('programa.realizado', false);
 
         if (Input::get('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
@@ -144,6 +149,9 @@ class ProgramarController extends \BaseController
             $programa->vencimiento = null;
             $status = '';
         }
+
+        if ($input['realizado'])
+            $programa->realizado = $input['realizado'];
 
         $programa->lun = $input['lun'];
         $programa->mar = $input['mar'];

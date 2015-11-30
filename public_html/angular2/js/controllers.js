@@ -3,6 +3,7 @@ app.controller("appController", function appController($scope, $http) {
     $scope.selection = [];
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
+    $scope.showModal = false;
 
     $http.get('programar').success(function (data) {
         $scope.trabajos = data;
@@ -26,12 +27,13 @@ app.controller("appController", function appController($scope, $http) {
             });
     };
 
-    $scope.deleteTrabajo = function (trabajo, index) {
+    $scope.deleteTrabajo = function (trabajo) {
         if (confirm('¿Eliminar ' + trabajo.nombre + '?')) {
             $http.delete('programar/' + trabajo.id)
                 .success(function (data) {
                     if (!data.error) {
-                        $scope.trabajos.splice(index, 1);
+                        var idx = $scope.trabajos.indexOf(trabajo);
+                        $scope.trabajos.splice(idx, 1);
                     }
                 });
         }
@@ -89,32 +91,38 @@ app.controller("appController", function appController($scope, $http) {
      */
     // Toggle selection
     $scope.toggleSelection = function toggleSelection(trabajo) {
-        console.log(trabajo);
         var idx = $scope.selection.indexOf(trabajo);
-        // is currently selected
-        if (idx > -1) {
-            $scope.selection.splice(idx, 1);
-        }
-        // is newly selected
-        else {
-            $scope.selection.push(trabajo);
-        }
+        if (idx > -1) $scope.selection.splice(idx, 1);
+        else $scope.selection.push(trabajo);
     };
 
     $scope.deleteSelected = function () {
-        console.log($scope.selection.length);
-        if (confirm('¿Eliminar trabajos seleccionados?')) {
-            angular.forEach($scope.selection, function (value, key) {
-                console.log('value ' + value + ' key ' + key);
-                $http.delete('programar/' + value)
+        if (confirm('¿Eliminar ' + $scope.selection.length + ' trabajos seleccionados?')) {
+            angular.forEach($scope.selection, function (trabajo) {
+                $http.delete('programar/' + trabajo.id)
                     .success(function (data) {
                         if (!data.error) {
-                            //$scope.trabajos.splice(index, 1);
+                            var idx = $scope.trabajos.indexOf(trabajo);
+                            $scope.trabajos.splice(idx, 1);
+                            $scope.selection.length = 0;
                         }
                     });
             });
         }
-    }
+    };
+
+    $scope.updateSelected = function () {
+        angular.forEach($scope.selection, function (trabajo) {
+            $http.put('programar/' + trabajo.id, trabajo)
+                .success(function (data) {
+                    if (!data.error) trabajo.status = data.status;
+                });
+        });
+    };
+
+    $scope.toggleModal = function(){
+        $scope.showModal = !$scope.showModal;
+    };
 
 });
 

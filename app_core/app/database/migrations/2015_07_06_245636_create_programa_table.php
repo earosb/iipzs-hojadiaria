@@ -18,6 +18,7 @@ class CreateProgramaTable extends Migration {
             $table->date('semana')->nullable();
             $table->date('vencimiento')->nullable();
 			$table->string('causa');
+			$table->boolean('realizado')->default(false);
             $table->integer('km_inicio');
             $table->integer('km_termino');
             $table->decimal('cantidad', 10, 2);
