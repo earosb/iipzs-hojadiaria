@@ -52,7 +52,6 @@ app.controller("appController", function appController($scope, $http) {
             params: filtro
         }).success(function (data) {
             $scope.trabajos = data;
-            filtro.submit = true;
         });
     };
     // Clear filter
@@ -128,6 +127,17 @@ app.controller("appController", function appController($scope, $http) {
     $scope.toggleModal = function () {
         $scope.showModal = !$scope.showModal;
     };
+
+    $scope.markAsDone = function() {
+        angular.forEach($scope.selection, function (trabajo) {
+            trabajo.realizado = true;
+            trabajo.status = 'success';
+            $http.put('programar/' + trabajo.id, trabajo)
+                .success(function (data) {
+                    if (!data.error) trabajo.status = data.status;
+                });
+        });
+    }
 
 });
 

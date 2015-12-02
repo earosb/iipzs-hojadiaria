@@ -7,7 +7,7 @@ app.config(['$httpProvider', function ($httpProvider) {
 }]);
 
 // Route provider
-app.config(function ($routeProvider) {
+app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when("/", {
             templateUrl: "angular2/templates/index.html"
         })
@@ -22,7 +22,7 @@ app.config(function ($routeProvider) {
             controller: "removeController"
         })
         .otherwise({redirectTo: "/"});
-});
+}]);
 
 // Datepicker directive
 app.directive('jqdatepicker', function () {
@@ -182,6 +182,21 @@ app.directive('modal', function () {
                 scope.$apply(function () {
                     scope.$parent[attrs.visible] = false;
                 });
+            });
+        }
+    };
+});
+
+// Alert confirm message directive
+app.directive('ngConfirmClick', function () {
+    return {
+        link: function (scope, element, attr) {
+            var msg = attr.ngConfirmClick || "¿Confirmar acción?";
+            var clickAction = attr.confirmedClick;
+            element.bind('click', function (event) {
+                if (window.confirm(msg)) {
+                    scope.$apply(clickAction)
+                }
             });
         }
     };

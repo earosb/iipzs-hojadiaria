@@ -140,7 +140,6 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 <!--Test Test Test Test-->
 <div class="col-md-12">
     <p>Modal: {{ showModal }}</p>
-    <p>selection : {{ selection | json }}</p>
 </div>
 <!--Main table-->
 <div ng-show="trabajos.length > 0">
@@ -220,8 +219,10 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                 <input type="checkbox" value="{{trabajo.id}}" ng-click="toggleSelection(trabajo)"/>
             </td>
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
-            <td ng-class="orderByField == 'nombre' ? 'active' : ''">{{ trabajo.nombre }}
-                <span class="pull-right">{{ trabajo.id }}</span><!--<span class="pull-right">{{ trabajo.unidad }}</span>-->
+            <td ng-class="orderByField == 'nombre' ? 'active' : ''">
+                {{ trabajo.nombre }}
+                <span class="pull-right"><span ng-if="trabajo.realizado" class="label label-success" title="Trabajo realizado"><span class="glyphicon glyphicon-ok"></span></span></span>
+                <span ng-if="!trabajo.realizado" class="pull-right">{{ trabajo.unidad }}</span>
             </td>
             <td ng-class="orderByField == 'km_inicio' ? 'active' : ''">{{ trabajo.km_inicio }}</td>
             <td ng-class="orderByField == 'km_termino' ? 'active' : ''">{{ trabajo.km_termino }}</td>
@@ -315,7 +316,9 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 
 <!--Floating toolbar-->
 <div ng-show="selection.length > 0" style="position: fixed; bottom: 5px; left: 5px;">
-    <a href="" class="btn btn-success btn-xs" ng-click=""><span class="glyphicon glyphicon-ok"></span></a>
+    <a href="" class="btn btn-success btn-xs" confirmed-click="markAsDone()" ng-confirm-click="¿Marcar trabajos como realizados?">
+        <span class="glyphicon glyphicon-ok"></span>
+    </a>
     <a href="" class="btn btn-default btn-xs" ng-click="toggleModal()"><span class="glyphicon glyphicon-pencil"></span></a>
     <a href="" class="btn btn-danger btn-xs" ng-click="deleteSelected()"><span class="glyphicon glyphicon-trash"></span></a>
 </div>

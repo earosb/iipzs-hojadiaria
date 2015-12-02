@@ -12,34 +12,36 @@ class ProgramarController extends \BaseController
      */
     public function index()
     {
+        Log::debug('ProgramarController@index', ['input' => Input::all()]);
+
         if (!Request::ajax()) {
             \Debugbar::disable();
             return View::make('programar.index'); // \Debugbar::disable();
         }
-//        Log::debug(Input::all());
+
         $query = DB::table('programa');
 
-        if (Input::get('causa'))
+        if (Input::has('causa'))
             $query->where('programa.causa', '=', Input::get('causa'));
 
-        if (Input::get('realizado'))
-            $query->where('programa.realizado', Input::get('realizado'));
+        if (Input::has('realizado') && Input::get('realizado') == 'true')
+            $query->where('programa.realizado', true);
         else
             $query->where('programa.realizado', false);
 
-        if (Input::get('semana')) {
+        if (Input::has('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
             $query->where('programa.semana', '=', $semana);
             $query->orWhereNull('programa.semana');
         }
 
-        if (Input::get('vencimiento')) {
+        if (Input::has('vencimiento')) {
             $vencimiento = Carbon::createFromFormat('d/m/Y', Input::get('vencimiento'))->toDateString();
             $query->where('programa.vencimiento', '=', $vencimiento);
             $query->orWhereNull('programa.vencimiento');
         }
 
-        if (Input::get('grupo_trabajo_id') && Input::get('grupo_trabajo_id') != 'all') {
+        if (Input::has('grupo_trabajo_id') && Input::get('grupo_trabajo_id') != 'all') {
             $query->where('programa.grupo_trabajo_id', '=', Input::get('grupo_trabajo_id'));
             $query->orWhereNull('programa.grupo_trabajo_id');
         }
@@ -47,7 +49,7 @@ class ProgramarController extends \BaseController
         $trabajos = $query->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
             ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
             ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
+                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento', 'realizado',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
             ->orderBy('km_inicio')
             ->get();
@@ -121,7 +123,7 @@ class ProgramarController extends \BaseController
      */
     public function update($id)
     {
-        Log::debug('update', ['id' => $id, 'input' => Input::all()]);
+        Log::debug('ProgramarController@update', ['id' => $id, 'input' => Input::all()]);
         $programa = Programa::find($id);
 
         $input = Input::all();
