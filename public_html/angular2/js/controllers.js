@@ -23,6 +23,11 @@ app.controller("appController", function appController($scope, $http) {
                 if (!data.error) {
                     $scope.trabajos.push(data.trabajo);
                     $scope.errors = [];
+                    nTrabajo.causa = '';
+                    nTrabajo.trabajo_id = '';
+                    nTrabajo.km_inicio = '';
+                    nTrabajo.km_termino = '';
+                    nTrabajo.cantidad = '';
                 } else $scope.errors = data.msg;
             });
     };
