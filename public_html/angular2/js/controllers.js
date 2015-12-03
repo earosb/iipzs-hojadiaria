@@ -142,11 +142,6 @@ app.controller("appController", function appController($scope, $http) {
         });
     };
 
-    $scope.noProgramable = function (trabajo) {
-        //trabajo.no_programable = !trabajo.no_programable;
-        console.log(trabajo);
-    };
-
 });
 
 app.controller("editController", function editController($scope, $http, $routeParams, $location) {
