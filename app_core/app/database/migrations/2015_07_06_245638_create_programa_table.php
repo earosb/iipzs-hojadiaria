@@ -16,6 +16,7 @@ class CreateProgramaTable extends Migration {
 		{
 			$table->increments('id');
             $table->date('semana')->nullable();
+			$table->boolean('no_programable')->default(false);
             $table->date('vencimiento')->nullable();
 			$table->string('causa');
 			$table->boolean('realizado')->default(false);

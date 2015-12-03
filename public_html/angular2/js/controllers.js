@@ -42,7 +42,10 @@ app.controller("appController", function appController($scope, $http) {
     $scope.updateTrabajo = function (trabajo) {
         $http.put('programar/' + trabajo.id, trabajo)
             .success(function (data) {
-                if (!data.error) trabajo.status = data.status;
+                if (!data.error){
+                    trabajo.status = data.status;
+                    if (trabajo.no_programable) trabajo.semana = '';
+                }
             });
     };
 
@@ -137,7 +140,12 @@ app.controller("appController", function appController($scope, $http) {
                     if (!data.error) trabajo.status = data.status;
                 });
         });
-    }
+    };
+
+    $scope.noProgramable = function (trabajo) {
+        //trabajo.no_programable = !trabajo.no_programable;
+        console.log(trabajo);
+    };
 
 });
 

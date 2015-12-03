@@ -49,7 +49,7 @@ class ProgramarController extends \BaseController
         $trabajos = $query->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
             ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
             ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento', 'realizado',
+                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'no_programable', 'vencimiento', 'realizado',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
             ->orderBy('km_inicio')
             ->get();
@@ -69,6 +69,7 @@ class ProgramarController extends \BaseController
                 // Más de dos semanas para la fecha de vencimiento
                 else $trabajo->status = 'success';
             }
+            $trabajo->no_programable = $trabajo->no_programable == 1 ? true : false;
         }
 
         return Response::json($trabajos);
@@ -155,6 +156,11 @@ class ProgramarController extends \BaseController
 
         if (Input::has('realizado'))
             $programa->realizado = $input['realizado'];
+
+        if (Input::has('no_programable')){
+            $programa->no_programable = $input['no_programable'];
+            $programa->semana = null;
+        }
 
         if (Input::has('causa'))
             $programa->causa = $input['causa'];

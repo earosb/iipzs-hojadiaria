@@ -139,7 +139,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 
 <!--Test Test Test Test-->
 <div class="col-md-12">
-    <p>Modal: {{ showModal }}</p>
+
 </div>
 <!--Main table-->
 <div ng-show="trabajos.length > 0">
@@ -234,8 +234,11 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                 </select>
             </td>
             <td ng-class="orderByField == 'semana' ? 'active' : ''">
-                <input type="text" placeholder=" dd/mm/aa" ng-model="trabajo.semana" style="width: 100px;"
+                <input ng-show="!trabajo.no_programable" type="text" placeholder=" dd/mm/aa" ng-model="trabajo.semana" style="width: 100px;"
                        ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
+                <!--<span ng-show="trabajo.no_programable" class="label label-warning"> No Programable</span>-->
+                <span ng-show="trabajo.no_programable" class="text-danger">No Programable.</span>
+                <input ng-change="updateTrabajo(trabajo)" ng-model="trabajo.no_programable" ng-true-value="true" ng-false-value="false" type="checkbox" class="pull-right" title="No programable">
             </td>
             <td ng-class="orderByField == 'vencimiento' ? 'active' : ''">
                 <input type="text" placeholder=" dd/mm/aa" ng-model="trabajo.vencimiento" style="width: 100px;"
