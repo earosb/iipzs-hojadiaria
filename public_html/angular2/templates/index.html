@@ -140,6 +140,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
     <span ng-show="filtro.realizado" class="label label-default">Realizado: <strong>{{ filtro.realizado }}</strong></span>
     </p>
 </div>
+
 <!--No data-->
 <div class="col-md-12" ng-show="trabajos.length == 0">
     <h4>No hay trabajos para programar</h4>
@@ -240,7 +241,6 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             <td ng-class="orderByField == 'semana' ? 'active' : ''">
                 <input ng-show="!trabajo.no_programable" type="text" placeholder=" dd/mm/aa" ng-model="trabajo.semana" style="width: 100px;"
                        ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
-                <!--<span ng-show="trabajo.no_programable" class="label label-warning"> No Programable</span>-->
                 <span ng-show="trabajo.no_programable" class="text-danger"><strong>No Programable</strong></span>
             </td>
             <td ng-class="orderByField == 'vencimiento' ? 'active' : ''">
