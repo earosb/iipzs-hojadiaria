@@ -235,6 +235,7 @@ class ProgramarController extends \BaseController
             $grupo = null;
             $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
                 ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
                 ->orderBy('km_inicio')
                 ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
                     'grupo_trabajo_id', 'unidad', 'nombre', 'semana',
@@ -244,6 +245,7 @@ class ProgramarController extends \BaseController
             $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
                 ->where('programa.grupo_trabajo_id', '=', $grupo->id)
                 ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
                 ->orderBy('km_inicio')
                 ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
                     'grupo_trabajo_id', 'unidad', 'nombre', 'semana',
