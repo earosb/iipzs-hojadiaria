@@ -3,7 +3,6 @@ app.controller("appController", function appController($scope, $http) {
     $scope.selection = [];
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
-    $scope.showModal = false;
 
     $http.get('programar').success(function (data) {
         $scope.trabajos = data;
@@ -76,6 +75,7 @@ app.controller("appController", function appController($scope, $http) {
         else $scope.selection.push(trabajo);
     };
 
+    // Elimina trabajos seleccionados
     $scope.deleteSelected = function () {
         if (confirm('¿Eliminar ' + $scope.selection.length + ' trabajos seleccionados?')) {
             angular.forEach($scope.selection, function (trabajo) {
@@ -91,6 +91,7 @@ app.controller("appController", function appController($scope, $http) {
         }
     };
 
+    // Actualiza trabajos seleccionados
     $scope.updateSelected = function (modal) {
         angular.forEach($scope.selection, function (trabajo) {
             trabajo.causa = modal.causa;
@@ -101,14 +102,10 @@ app.controller("appController", function appController($scope, $http) {
                 .success(function (data) {
                     if (!data.error) trabajo.status = data.status;
                 });
-            $scope.showModal = !$scope.showModal;
         });
     };
 
-    $scope.toggleModal = function () {
-        $scope.showModal = !$scope.showModal;
-    };
-
+    // Marca como realizados trabajos seleccionados
     $scope.markAsDone = function() {
         angular.forEach($scope.selection, function (trabajo) {
             trabajo.realizado = true;
@@ -122,6 +119,7 @@ app.controller("appController", function appController($scope, $http) {
 
 });
 
+// Edita un trabajo seleccionado en vista completa
 app.controller("editController", function editController($scope, $http, $routeParams, $location) {
     $scope.textButton = "Editar programa trabajo";
     var i, item, length = $scope.trabajos.length;
