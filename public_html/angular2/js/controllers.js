@@ -151,29 +151,18 @@ app.controller("appController", function appController($scope, $http) {
 
 app.controller("editController", function editController($scope, $http, $routeParams, $location) {
     $scope.textButton = "Editar programa trabajo";
-    $scope.trabajo = $scope.trabajos[$routeParams.id];
+    var i, item, length = $scope.trabajos.length;
+    for (i = 0; i < length; i++) {
+        item = $scope.trabajos[i];
+        if (item.id == $routeParams.id)
+            break;
+    }
+    $scope.trabajo = item;
     $scope.editTrabajo = function () {
-        //actualizamos la información del usuario con la id que lleva $routeParams
-        $scope.trabajos[$routeParams.id] = $scope.trabajo;
         $location.url("/");
-        $http.put('programar/' + $scope.trabajo.id, $scope.trabajo).
-        success(function (data) {
-        });
-    };
-});
-
-app.controller("removeController", function removeController($scope, $http, $routeParams, $location) {
-    $scope.trabajo = $scope.trabajos[$routeParams.id];
-    $scope.removeTrabajo = function () {
-        $http.delete('programar/' + $scope.trabajo.id)
+        $http.put('programar/' + $scope.trabajo.id, $scope.trabajo)
             .success(function (data) {
-                console.log(data);
-                if (!data.error) {
-                    $scope.trabajos.splice($routeParams.id, 1);
-                    $location.url("/");
-                } else {
-                    console.log(data);
-                }
+                if (!data.error) $scope.trabajos[i] = $scope.trabajo;
             });
     };
 });

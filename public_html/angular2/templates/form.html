@@ -10,33 +10,48 @@
         <div class="col-md-12">
             <div class="col-md-3">
                 <label>Causa</label>
-                <input type="text" placeholder="Causa" ng-model="trabajo.causa" class="form-control" required>
+                <input type="text" placeholder="Causa" ng-model="trabajo.causa" class="form-control" capitalize required="required">
             </div>
             <div class="col-md-3">
                 <label>Cantidad</label>
-                <input type="text" placeholder="Cantidad" ng-model="trabajo.cantidad" class="form-control" required>
+                <input type="number" placeholder="Cantidad" ng-model="trabajo.cantidad" string-to-number step="any" min="0" class="form-control" required="required">
             </div>
         </div>
         <div class="col-md-12">
             <div class="col-md-3">
                 <label>Km inicio</label>
-                <input type="text" placeholder="Km inicio" ng-model="trabajo.km_inicio" class="form-control" required>
+                <input type="text" placeholder="Km inicio" ng-model="trabajo.km_inicio" class="form-control" required="required">
             </div>
             <div class="col-md-3">
                 <label>Km término</label>
-                <input type="text" placeholder="Km término" ng-model="trabajo.km_termino" class="form-control" required>
+                <input type="text" placeholder="Km término" ng-model="trabajo.km_termino" class="form-control" required="required">
             </div>
         </div>
         <div class="col-md-12">
+            <div class="col-md-3">
+                <label>Semana</label>
+                <input type="text" placeholder="Fecha de programación" ng-model="trabajo.semana" class="form-control" jqdatepickerweek>
+            </div>
+            <div class="col-md-3">
+                <label></label>
+                <div class="checkbox">
+                    <input ng-model="trabajo.no_programable" ng-true-value="true" ng-false-value="false" id="checkbox1" class="styled" type="checkbox">
+                    <label for="checkbox1">
+                        No programable
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-3">
+                <label>Vencimiento</label>
+                <input type="text" placeholder="Fecha de vencimiento" ng-model="trabajo.vencimiento" class="form-control" jqdatepickerweek>
+            </div>
             <div class="col-md-3">
                 <label>Grupo</label>
                 <select class="form-control" ng-model="trabajo.grupo_trabajo_id"
                         ng-options="grupo.id as grupo.base for grupo in grupos">
                 </select>
-            </div>
-            <div class="col-md-3">
-                <label>Semana</label>
-                <input type="text" placeholder="Semana" ng-model="trabajo.semana" class="form-control" jqdatepickerweek>
             </div>
         </div>
         <div class="col-md-12">
@@ -98,8 +113,3 @@
         </div>
     </fieldset>
 </form>
-
-<br>
-<div class="well">
-    {{ trabajo | json }}
-</div>

@@ -16,11 +16,6 @@ app.config(['$routeProvider', function ($routeProvider) {
             templateUrl: "angular2/templates/edit.html",
             controller: "editController"
         })
-        .when("/remove/:id", {
-            title: 'Eliminar',
-            templateUrl: "angular2/templates/remove.html",
-            controller: "removeController"
-        })
         .otherwise({redirectTo: "/"});
 }]);
 
@@ -197,6 +192,21 @@ app.directive('ngConfirmClick', function () {
                 if (window.confirm(msg)) {
                     scope.$apply(clickAction)
                 }
+            });
+        }
+    };
+});
+
+// Convierte strings en numeros para inputs de tipo number
+app.directive('stringToNumber', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return '' + value;
+            });
+            ngModel.$formatters.push(function(value) {
+                return parseFloat(value, 2);
             });
         }
     };

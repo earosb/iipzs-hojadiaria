@@ -157,10 +157,10 @@ class ProgramarController extends \BaseController
         if (Input::has('realizado'))
             $programa->realizado = $input['realizado'];
 
-        if (Input::has('no_programable')){
+        if (Input::get('no_programable')) {
             $programa->no_programable = $input['no_programable'];
             $programa->semana = null;
-        }
+        } else $programa->no_programable = false;
 
         if (Input::has('causa'))
             $programa->causa = $input['causa'];
