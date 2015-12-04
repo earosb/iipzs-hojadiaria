@@ -62,40 +62,13 @@ app.controller("appController", function appController($scope, $http) {
             $scope.trabajos = data;
         });
     };
-    // Clear filter
-    /*
-     $scope.clearFiltro = function (filtro) {
-     $http.get('programar').success(function (data) {
-     $scope.trabajos = data;
-     filtro.submit = false;
-     filtro.causa = '';
-     filtro.grupo_trabajo_id = '';
-     filtro.semana = '';
-     filtro.vencimiento = '';
-     });
-     };
-     */
 
+    //Generar PDF
     $scope.pdf = function (pdf) {
         var url = "/programar/pdf?g=" + pdf.g.id + '&s=' + pdf.s;
-        window.open(url);
+        window.open(url, '_blank');
     };
 
-    // Select all
-    /*
-     $scope.selectAll = function () {
-     $scope.selection.length = 0;
-     if ($scope.selectedAll) {
-     $scope.selectedAll = true;
-     } else {
-     $scope.selectedAll = false;
-     }
-     console.log($scope.selectedAll);
-     angular.forEach($scope.Items, function (item) {
-     item.Selected = $scope.selectedAll;
-     });
-     };
-     */
     // Toggle selection
     $scope.toggleSelection = function toggleSelection(trabajo) {
         var idx = $scope.selection.indexOf(trabajo);
