@@ -259,4 +259,16 @@ class ProgramarController extends \BaseController
         return $pdf->stream();
     }
 
+    /**
+     * Download Android App
+     * GET /programar/download-app
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadApp()
+    {
+        $pathToFile = storage_path('static/iipzs-release.apk');
+        return Response::download($pathToFile);
+    }
+
 }

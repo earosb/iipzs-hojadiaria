@@ -180,6 +180,8 @@ Route::group(array('before' => 'auth'), function () {
 
         Route::get('trabajo', 'TrabajoController@index');
 
+        Route::get('programar/download-app', 'ProgramarController@downloadApp');
+
     });
 
 });
