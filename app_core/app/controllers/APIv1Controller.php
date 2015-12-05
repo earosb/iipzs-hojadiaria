@@ -71,17 +71,19 @@ class APIv1Controller extends \BaseController
      */
     public function store()
     {
+        Log::debug('AndroidApp', ['input' => Input::all()]);
         try {
             $trabajos = json_decode(Input::get('trabajos'));
             foreach ($trabajos as $p) {
-                $programar = new Programar();
-                $programar->causa = $p->causa;
-                $programar->trabajo_id = $p->trabajo_id;
-                $programar->km_inicio = $p->km_inicio;
-                $programar->km_termino = $p->km_termino;
-                $programar->cantidad = $p->cantidad;
-                $programar->observaciones = $p->obs;
-                $programar->save();
+                $programa = new Programa();
+                $programa->causa = $p->causa;
+                $programa->trabajo_id = $p->trabajo_id;
+                $programa->km_inicio = $p->km_inicio;
+                $programa->km_termino = $p->km_termino;
+                $programa->cantidad = $p->cantidad;
+                $programa->obs_ce = $p->obs_ce;
+                $programa->observaciones = $p->obs;
+                $programa->save();
             }
             return Response::json(['error' => false]);
         } catch (Exception $e) {

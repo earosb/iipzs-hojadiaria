@@ -148,7 +148,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 
 <!--Main table-->
 <div ng-show="trabajos.length > 0">
-    <table id="main" class="table table-condensed table-bordered table-hover">
+    <table id="main" class="table table-condensed table-bordered">
         <tr>
             <th class="text-center">
                 # <!--<input type="checkbox" ng-model="selectedAll" ng-click="selectAll()" />-->
@@ -187,6 +187,15 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             </th>
             <th>Cantidad</th>
             <th>
+                <a ng-click="orderByField='vencimiento'; reverseSort = !reverseSort" href="">Vencimiento
+                <span ng-show="orderByField == 'vencimiento'">
+                    <span class="glyphicon glyphicon-sort-by-attributes" ng-show="!reverseSort"></span>
+                    <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="reverseSort"></span>
+                </span>
+                </a>
+            </th>
+
+            <th>
                 <a ng-click="orderByField='grupo_trabajo_id'; reverseSort = !reverseSort" href="">Grupo
                     <span ng-show="orderByField == 'grupo_trabajo_id'">
                         <span class="glyphicon glyphicon-sort-by-alphabet" ng-show="!reverseSort"></span>
@@ -197,14 +206,6 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             <th>
                 <a ng-click="orderByField='semana'; reverseSort = !reverseSort" href="">Semana
                 <span ng-show="orderByField == 'semana'">
-                    <span class="glyphicon glyphicon-sort-by-attributes" ng-show="!reverseSort"></span>
-                    <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="reverseSort"></span>
-                </span>
-                </a>
-            </th>
-            <th>
-                <a ng-click="orderByField='vencimiento'; reverseSort = !reverseSort" href="">Vencimiento
-                <span ng-show="orderByField == 'vencimiento'">
                     <span class="glyphicon glyphicon-sort-by-attributes" ng-show="!reverseSort"></span>
                     <span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show="reverseSort"></span>
                 </span>
@@ -232,6 +233,11 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             <td ng-class="orderByField == 'km_inicio' ? 'active' : ''">{{ trabajo.km_inicio }}</td>
             <td ng-class="orderByField == 'km_termino' ? 'active' : ''">{{ trabajo.km_termino }}</td>
             <td>{{ trabajo.cantidad }}</td>
+            <td ng-class="orderByField == 'vencimiento' ? 'active' : ''">
+                <input type="text" placeholder=" dd/mm/aa" ng-model="trabajo.vencimiento" style="width: 100px;"
+                       ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
+            </td>
+
             <td ng-class="orderByField == 'semana' ? 'active' : ''">
                 <select ng-model="trabajo.grupo_trabajo_id"
                         ng-options="grupo.id as grupo.base for grupo in grupos"
@@ -242,10 +248,6 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                 <input ng-show="!trabajo.no_programable" type="text" placeholder=" dd/mm/aa" ng-model="trabajo.semana" style="width: 100px;"
                        ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
                 <span ng-show="trabajo.no_programable" class="text-danger"><strong>No Programable</strong></span>
-            </td>
-            <td ng-class="orderByField == 'vencimiento' ? 'active' : ''">
-                <input type="text" placeholder=" dd/mm/aa" ng-model="trabajo.vencimiento" style="width: 100px;"
-                       ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
             </td>
             <td class="text-center">
                 <div class="checkbox checkbox-primary checkbox-inline">
@@ -329,6 +331,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
     <a href="" class="btn btn-danger btn-xs" ng-click="deleteSelected()"><span class="glyphicon glyphicon-trash"></span></a>
 </div>
 
+<!--Modal-->
 <div modal-show="showDialog" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">

@@ -30,6 +30,7 @@ class CreateProgramaTable extends Migration {
             $table->string('vie')->nullable();
             $table->string('sab')->nullable();
             $table->string('dom')->nullable();
+            $table->text('obs_ce')->nullable();
             $table->text('observaciones')->nullable();
 
 			$table->integer('trabajo_id')->unsigned();
