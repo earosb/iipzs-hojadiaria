@@ -19,7 +19,7 @@ app.config(['$routeProvider', function ($routeProvider) {
         .otherwise({redirectTo: "/"});
 }]);
 
-// Datepicker directive
+// Datepicker directive select day
 app.directive('jqdatepicker', function () {
     return {
         restrict: 'A',

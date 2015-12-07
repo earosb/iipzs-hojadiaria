@@ -85,7 +85,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                         <input type="text" placeholder="Semana" ng-model="filtro.semana" class="form-control" jqdatepickerweek>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="text" placeholder="Vencimiento" ng-model="filtro.vencimiento" class="form-control" jqdatepickerweek>
+                        <input type="text" placeholder="Vencimiento" ng-model="filtro.vencimiento" class="form-control" jqdatepicker>
                     </div>
                     <div class="form-group col-md-1">
                         <div class="checkbox">
@@ -131,6 +131,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 </div>
 
 <!--Labels Filtro-->
+<!--
 <div ng-show="filtro" class="col-md-12">
     <p>
     <span ng-show="filtro.causa" class="label label-default">Causa: <strong>{{ filtro.causa }}</strong></span>
@@ -140,6 +141,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
     <span ng-show="filtro.realizado" class="label label-default">Realizado: <strong>{{ filtro.realizado }}</strong></span>
     </p>
 </div>
+-->
 
 <!--No data-->
 <div class="col-md-12" ng-show="trabajos.length == 0">
@@ -227,7 +229,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
             <td ng-class="orderByField == 'nombre' ? 'active' : ''">
                 {{ trabajo.nombre }}
-                <span class="pull-right"><span ng-if="trabajo.realizado" class="label label-success" title="Trabajo realizado"><span class="glyphicon glyphicon-ok"></span></span></span>
+                <span ng-if="trabajo.realizado" class="pull-right"><span class="label label-success" title="Trabajo realizado"><span class="glyphicon glyphicon-ok"></span></span></span>
                 <span ng-if="!trabajo.realizado" class="pull-right">{{ trabajo.unidad }}</span>
             </td>
             <td ng-class="orderByField == 'km_inicio' ? 'active' : ''">{{ trabajo.km_inicio }}</td>
@@ -235,7 +237,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             <td>{{ trabajo.cantidad }}</td>
             <td ng-class="orderByField == 'vencimiento' ? 'active' : ''">
                 <input type="text" placeholder=" dd/mm/aa" ng-model="trabajo.vencimiento" style="width: 100px;"
-                       ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
+                       ng-change="updateTrabajo(trabajo)" jqdatepicker>
             </td>
 
             <td ng-class="orderByField == 'semana' ? 'active' : ''">
@@ -299,8 +301,11 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                 </div>
             </td>
             <td class="text-center">
-                <a href="#/edit/{{ trabajo.id }}" ng-class="trabajo.observaciones ? 'btn btn-primary btn-xs' : 'btn btn-default btn-xs'"
+                <a href="#/edit/{{ trabajo.id }}" ng-if="trabajo.observaciones" class="btn btn-primary btn-xs"
                    title="Observaciones:" data-toggle="popover" data-content="{{trabajo.observaciones}}" data-trigger="hover" data-placement="left">
+                    <span class="glyphicon glyphicon-edit"></span>
+                </a>
+                <a href="#/edit/{{ trabajo.id }}" ng-if="!trabajo.observaciones" class="btn btn-default btn-xs">
                     <span class="glyphicon glyphicon-edit"></span>
                 </a>
                 <a ng-click="deleteTrabajo(trabajo)"
@@ -324,11 +329,14 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 
 <!--Floating toolbar-->
 <div ng-show="selection.length > 0" style="position: fixed; bottom: 5px; left: 5px;">
-    <a href="" class="btn btn-success btn-xs" confirmed-click="markAsDone()" ng-confirm-click="¿Marcar trabajos como realizados?">
+    <a href="" class="btn btn-success btn-xs" confirmed-click="markAsDone()" ng-confirm-click="¿Marcar trabajos como realizados?"
+       data-toggle="popover" data-content="Marcar como realizado" data-trigger="hover" data-placement="top">
         <span class="glyphicon glyphicon-ok"></span>
     </a>
-    <a href="" class="btn btn-default btn-xs" ng-click="showDialog = true"><span class="glyphicon glyphicon-pencil"></span></a>
-    <a href="" class="btn btn-danger btn-xs" ng-click="deleteSelected()"><span class="glyphicon glyphicon-trash"></span></a>
+    <a href="" class="btn btn-default btn-xs" ng-click="showDialog = true"
+       data-toggle="popover" data-content="Editar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-pencil"></span></a>
+    <a href="" class="btn btn-danger btn-xs" ng-click="deleteSelected()"
+       data-toggle="popover" data-content="Eliminar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a>
 </div>
 
 <!--Modal-->

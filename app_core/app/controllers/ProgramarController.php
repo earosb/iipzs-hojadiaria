@@ -22,7 +22,7 @@ class ProgramarController extends \BaseController
         $query = DB::table('programa');
 
         if (Input::has('causa'))
-            $query->where('programa.causa', '=', Input::get('causa'));
+            $query->where('programa.causa', 'LIKE', '%'.Input::get('causa').'%');
 
         if (Input::has('realizado') && Input::get('realizado') == 'true')
             $query->where('programa.realizado', true);
@@ -63,9 +63,9 @@ class ProgramarController extends \BaseController
                 $status = Carbon::parse($aux2)->diffInDays(null, false);
 
                 // Una semana para la fecha de vencimiento
-                if ($status >= -8) $trabajo->status = 'danger';
+                if ($status >= -7) $trabajo->status = 'danger';
                 // Dos semanas para la fecha de vencimiento
-                elseif ($status >= -15 && $status < -8) $trabajo->status = 'warning';
+                elseif ($status >= -14 && $status < -7) $trabajo->status = 'warning';
                 // Más de dos semanas para la fecha de vencimiento
                 else $trabajo->status = 'success';
             }
@@ -142,9 +142,9 @@ class ProgramarController extends \BaseController
                 $days = Carbon::parse($programa->vencimiento)->diffInDays(null, false);
 
                 // Una semana para la fecha de vencimiento
-                if ($days >= -8) $status = 'danger';
+                if ($days >= -7) $status = 'danger';
                 // Dos semanas para la fecha de vencimiento
-                elseif ($days >= -16 && $days < -8) $status = 'warning';
+                elseif ($days >= -14 && $days < -7) $status = 'warning';
                 // Más de dos semanas para la fecha de vencimiento
                 else $status = 'success';
             } catch (Exception $e) {
