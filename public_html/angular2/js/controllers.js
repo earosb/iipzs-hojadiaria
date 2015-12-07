@@ -63,8 +63,9 @@ app.controller("appController", function appController($scope, $http) {
     };
 
     //Generar PDF
-    $scope.pdf = function (pdf) {
-        var url = "/programar/pdf?g=" + pdf.g.id + '&s=' + pdf.s;
+    $scope.downloadPDF = function (pdf) {
+        console.log(pdf);
+        var url = "/programar/pdf?grupo_trabajo_id=" + pdf.grupo + '&semana=' + pdf.semana;
         window.open(url, '_blank');
     };
 
