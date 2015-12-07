@@ -48,7 +48,7 @@ class ProgramarController extends \BaseController
 
         $trabajos = $query->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
             ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
-            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones', 'obs_ce',
                 'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'no_programable', 'vencimiento', 'realizado',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
             ->orderBy('km_inicio')
