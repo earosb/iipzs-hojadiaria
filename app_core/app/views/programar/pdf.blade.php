@@ -69,7 +69,9 @@
             <th rowspan="2">Vié</th>
             <th rowspan="2">Sáb</th>
             <th rowspan="2">Dom</th>
-            {{--<th rowspan="2">Obs.</th>--}}
+            @if($showObs)
+                <th rowspan="2">Obs.</th>
+            @endif
         </tr>
         <tr>
             <th>Inicio</th>
@@ -118,7 +120,9 @@
                 @else
                     <td></td>
                 @endif
-                {{--<td>{{ $trabajo->observaciones }}</td>--}}
+                @if($showObs)
+                    <td>{{ $trabajo->observaciones }}</td>
+                @endif
             </tr>
         @endforeach
     </table>

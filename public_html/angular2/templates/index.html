@@ -1,25 +1,153 @@
-<!-- Por alguna razón la directiva no esta funcionando bien
-http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
 <div class="col-md-12">
-    &lt;!&ndash; Nav tabs &ndash;&gt;
+    <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li showTab class="active"><a href="#home" role="tab" data-toggle="tab">Home</a></li>
-        <li showTab><a href="#profile" role="tab" data-toggle="tab">Profile</a></li>
-        <li showTab><a href="#messages" role="tab" data-toggle="tab">Messages</a></li>
-        <li showTab><a href="#settings" role="tab" data-toggle="tab">Settings</a></li>
+        <li class="active"><a show-tab href="#tab-nuevo-trabajo" role="tab" data-toggle="tab">Nuevo trabajo</a></li>
+        <li><a show-tab href="#tab-filtro" role="tab" data-toggle="tab">Filtrar</a></li>
+        <li><a show-tab href="#tab-pdf" role="tab" data-toggle="tab">Descargar programa</a></li>
     </ul>
 
-    &lt;!&ndash; Tab panes &ndash;&gt;
+    <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane active" id="home">home...</div>
-        <div class="tab-pane" id="profile">profile...</div>
-        <div class="tab-pane" id="messages">messages...</div>
-        <div class="tab-pane" id="settings">settings...</div>
+        <div class="tab-pane fade in active" id="tab-nuevo-trabajo">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form name="formTrabajo" ng-submit="createTrabajo(nTrabajo)">
+                        <div class="form-group col-md-2">
+                            <label>Causa</label>
+                            <input type="text" class="form-control" ng-model="nTrabajo.causa" placeholder="Ej. ITPFM MES-AÑO" required="required" capitalize>
+
+                            <p ng-repeat="msg in errors.causa" class="text-danger">{{msg}}</p>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Trabajo</label>
+                            <select class="form-control" ng-model="nTrabajo.trabajo_id">
+                                <option ng-repeat="partida in partidas" value="{{ partida.id }}">{{ partida.nombre }}</option>
+                            </select>
+
+                            <p ng-repeat="msg in errors.trabajo_id" class="text-danger">{{msg}}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Km Inicio</label>
+                            <input type="number" class="form-control" ng-model="nTrabajo.km_inicio" placeholder="Ej. 564200" required="required">
+
+                            <p ng-repeat="msg in errors.km_inicio" class="text-danger">{{msg}}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Km Término</label>
+                            <input type="number" class="form-control" ng-model="nTrabajo.km_termino" placeholder="Ej. 564300" required="required">
+
+                            <p ng-repeat="msg in errors.km_termino" class="text-danger">{{msg}}</p>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Cantidad</label>
+                            <input type="number" class="form-control" ng-model="nTrabajo.cantidad" string-to-number step="any" min="0"
+                                   required="required">
+
+                            <p ng-repeat="msg in errors.cantidad" class="text-danger">{{msg}}</p>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label></label>
+                            <input class="btn btn-primary" type="submit" value="Guardar"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tab-filtro">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form ng-submit="filtrar(filtro)">
+                        <div class="form-group col-md-2">
+                            <label>Causa</label>
+                            <input type="text" placeholder="Ej. ITPFM MES-AÑO" ng-model="filtro.causa" class="form-control" capitalize>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Grupo</label>
+                            <select ng-model="filtro.grupo_trabajo_id" class="form-control">
+                                <option value="all" selected="selected">Todos</option>
+                                <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Semana</label>
+                            <input type="text" placeholder="dd/mm/aaaa" ng-model="filtro.semana" class="form-control" jqdatepickerweek>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Vencimiento</label>
+                            <input type="text" placeholder="dd/mm/aaaa" ng-model="filtro.vencimiento" class="form-control" jqdatepicker>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label>Realizados</label>
+                            <div class="checkbox">
+                                <input ng-model="filtro.realizado" ng-value="true" id="checkboxR" class="styled" type="checkbox">
+                                <label for="checkboxR">
+                                    Incluir
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label></label>
+                            <input class="btn btn-primary" type="submit" value="Filtrar"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tab-pdf">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form action="programar/pdf" target="_blank">
+                        <div class="form-group col-md-3">
+                            <label>Grupo</label>
+                            <select class="form-control" required="required" name="grupo">
+                                <option value="all" selected="selected">Todos</option>
+                                <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Semana</label>
+                            <input name="semana" ng-model="pdf.semana" type="text" placeholder="dd/mm/aaaa" class="form-control" jqdatepickerweek
+                                   required="required">
+                        </div>
+                        <!--
+                                                <div class="form-group col-md-1">
+                                                    <label>Observaciones</label>
+                                                    <div class="checkbox">
+                                                        <input name="obs" id="obs" value="true" class="styled" type="checkbox">
+                                                        <label for="obs">
+                                                            Incluir
+                                                        </label>
+                                                    </div>
+                                                </div>
+                        -->
+                        <div class="form-group col-md-2">
+                            <label>Orientación</label>
+                            <select name="orientation" class="form-control" required>
+                                <option value="portrait" selected="selected">Vertical</option>
+                                <option value="landscape">Horizontal</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Tipo de papel</label>
+                            <select name="paper" class="form-control" required>
+                                <option value="a4" selected>Oficio (A4)</option>
+                                <option value="letter">Carta (letter)</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-1">
+                            <label></label>
+                            <input class="btn btn-primary" type="submit" value="Descargar"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
--->
 
 <!--Formulario-->
+<!--
 <div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-form">
@@ -51,7 +179,8 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                         <p ng-repeat="msg in errors.km_termino" class="text-danger">{{msg}}</p>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="number" class="form-control" ng-model="nTrabajo.cantidad" string-to-number step="any" min="0" placeholder="Cantidad" required="required">
+                        <input type="number" class="form-control" ng-model="nTrabajo.cantidad" string-to-number step="any" min="0" placeholder="Cantidad"
+                               required="required">
 
                         <p ng-repeat="msg in errors.cantidad" class="text-danger">{{msg}}</p>
                     </div>
@@ -63,8 +192,10 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
         </div>
     </div>
 </div>
+-->
 
 <!--Filtro-->
+<!--
 <div class="col-md-12">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-filtro">Filtrar</div>
@@ -96,7 +227,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                         </div>
                     </div>
                     <div class="form-group col-md-1">
-                        <!--<button class="btn btn-default" ng-click="clearFiltro(filtro)">Limpiar</button>-->
+                        &lt;!&ndash;<button class="btn btn-default" ng-click="clearFiltro(filtro)">Limpiar</button>&ndash;&gt;
                         <input class="btn btn-primary" type="submit" value="Filtrar"/>
                     </div>
                 </form>
@@ -104,8 +235,10 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
         </div>
     </div>
 </div>
+-->
 
 <!--PDF-->
+<!--
 <div class="col-md-6">
     <div class="panel panel-default">
         <div class="panel-heading" data-toggle="collapse" data-target="#body-pdf">Descargar programa</div>
@@ -119,7 +252,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                         </select>
                     </div>
                     <div class="form-group col-xs-4">
-                        <input ng-model="pdf.semana"  type="text" placeholder="Semana" class="form-control" jqdatepickerweek required="required">
+                        <input ng-model="pdf.semana" type="text" placeholder="Semana" class="form-control" jqdatepickerweek required="required">
                     </div>
                     <div class="form-group">
                         <input class="btn btn-primary" type="submit" value="Descargar"/>
@@ -129,6 +262,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
         </div>
     </div>
 </div>
+-->
 
 <!--Labels Filtro-->
 <!--
@@ -229,14 +363,15 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
             <td ng-class="orderByField == 'nombre' ? 'active' : ''">
                 {{ trabajo.nombre }}
-                <span ng-if="trabajo.realizado" class="pull-right"><span class="label label-success" title="Trabajo realizado"><span class="glyphicon glyphicon-ok"></span></span></span>
+                <span ng-if="trabajo.realizado" class="pull-right"><span class="label label-success" title="Trabajo realizado"><span
+                        class="glyphicon glyphicon-ok"></span></span></span>
                 <span ng-if="!trabajo.realizado" class="pull-right">{{ trabajo.unidad }}</span>
             </td>
             <td ng-class="orderByField == 'km_inicio' ? 'active' : ''">{{ trabajo.km_inicio }}</td>
             <td ng-class="orderByField == 'km_termino' ? 'active' : ''">{{ trabajo.km_termino }}</td>
             <td>{{ trabajo.cantidad }}</td>
             <td ng-class="orderByField == 'vencimiento' ? 'active' : ''">
-                <input type="text" placeholder=" dd/mm/aa" ng-model="trabajo.vencimiento" style="width: 100px;"
+                <input type="text" placeholder=" dd/mm/aaaa" ng-model="trabajo.vencimiento" style="width: 100px;"
                        ng-change="updateTrabajo(trabajo)" jqdatepicker>
             </td>
 
@@ -247,7 +382,7 @@ http://www.grobmeier.de/bootstrap-tabs-with-angular-js-25112012.html
                 </select>
             </td>
             <td ng-class="orderByField == 'semana' ? 'active' : ''">
-                <input ng-show="!trabajo.no_programable" type="text" placeholder=" dd/mm/aa" ng-model="trabajo.semana" style="width: 100px;"
+                <input ng-show="!trabajo.no_programable" type="text" placeholder=" dd/mm/aaaa" ng-model="trabajo.semana" style="width: 100px;"
                        ng-change="updateTrabajo(trabajo)" jqdatepickerweek>
                 <span ng-show="trabajo.no_programable" class="text-danger"><strong>No Programable</strong></span>
             </td>

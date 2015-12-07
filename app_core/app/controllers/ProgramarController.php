@@ -231,7 +231,7 @@ class ProgramarController extends \BaseController
         $endOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->endOfWeek()->toDateString();
         $endOfWeek = Carbon::parse($endOfWeek)->format('d/m/Y');
 
-        if ($input['grupo_trabajo_id'] == 'all') {
+        if (!Input::has('grupo') || $input['grupo'] == 'all') {
             $grupo = null;
             $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
                 ->where('programa.semana', '=', $weekQuery)
@@ -241,7 +241,7 @@ class ProgramarController extends \BaseController
                     'grupo_trabajo_id', 'unidad', 'nombre', 'semana',
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
         } else {
-            $grupo = GrupoTrabajo::find($input['grupo_trabajo_id']);
+            $grupo = GrupoTrabajo::find($input['grupo']);
             $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
                 ->where('programa.grupo_trabajo_id', '=', $grupo->id)
                 ->where('programa.semana', '=', $weekQuery)
@@ -252,12 +252,21 @@ class ProgramarController extends \BaseController
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
         }
 
+        $showObs = Input::has('obs') ? true : false;
+
+        if (Input::has('orientation')) $orientation = $input['orientation'];
+        else $orientation = 'portrait';
+
+        if (Input::has('paper')) $paper = $input['paper'];
+        else $paper = 'a4';
+
         $pdf = App::make('dompdf');
         $html = View::make('programar.pdf')
             ->with('trabajos', $trabajos)->with('grupo', $grupo)
             ->with('startOfWeek', $startOfWeek)
-            ->with('endOfWeek', $endOfWeek);
-        $pdf->loadHTML($html)->setPaper('a4')->setOrientation('portrait'); // landscape | portrait
+            ->with('endOfWeek', $endOfWeek)
+            ->with('showObs', $showObs);
+        $pdf->loadHTML($html)->setPaper($paper)->setOrientation($orientation); // landscape | portrait
         return $pdf->stream();
     }
 

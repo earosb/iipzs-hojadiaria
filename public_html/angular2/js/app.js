@@ -72,18 +72,16 @@ app.directive('jqdatepickerweek', function () {
 });
 
 // Tabs with panels directive
-/*
- app.directive('showTab', function () {
- return {
- link: function (scope, element, attrs) {
- element.on('click', function (e) {
- e.preventDefault();
- $(element).tab('show');
- });
- }
- };
- });
- */
+app.directive('showTab', function () {
+    return {
+        link: function (scope, element, attrs) {
+            element.on('click', function (e) {
+                e.preventDefault();
+                $(element).tab('show');
+            });
+        }
+    };
+});
 
 // Bootstrap tooltip and popover directive
 app.directive('toggle', function () {
