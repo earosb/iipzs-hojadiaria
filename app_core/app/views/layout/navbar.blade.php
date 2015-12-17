@@ -70,8 +70,21 @@
                 @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ URL::to('profile') }}">Bienvenido, <strong>{{ Sentry::getUser()->first_name }}</strong></a>
-                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                        class="glyphicon glyphicon-question-sign"></i><span> Ayuda <b
+                            class="caret"></b></span></a>
+                            <ul class="dropdown-menu">
+                                @if(Sentry::getUser()->hasAccess(['create-user']))
+                                    <li><a href="{{ URL::to('/manual/admin') }}" target="_blank">Manual admin</a></li>
+                                @endif
+                                @if(Sentry::getUser()->hasAccess(['programar']))
+                                    <li><a href="{{ URL::to('/manual/programar') }}" target="_blank">Manual programar</a></li>
+                                    <li><a href="{{ URL::to('/manual/android') }}" target="_blank">Manual Android</a></li>
+                                @endif
+                            </ul>
+                        </li>
+                <li><a href="{{ URL::to('profile') }}">Bienvenido, <strong>{{ Sentry::getUser()->first_name }}</strong></a></li>
                 <li><a href="{{ URL::to('logout') }}"><i class="glyphicon glyphicon-share-alt"></i> Salir</a></li>
             </ul>
         </div>

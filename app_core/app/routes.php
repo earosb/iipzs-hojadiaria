@@ -264,5 +264,19 @@ Route::group(array('prefix' => 'api/v1'), function () {
 
     });
 
+});
 
+/**
+ * Descarga de manuales
+ */
+Route::group(array('prefix' => 'manual'), function () {
+    Route::get('admin', function (){
+        return Response::download(storage_path('static/manual-mantencion.pdf'));
+    });
+    Route::get('programar', function (){
+        return Response::download(storage_path('static/manual-programar.pdf'));
+    });
+    Route::get('android', function (){
+        return Response::download(storage_path('static/manual-android.pdf'));
+    });
 });
