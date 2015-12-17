@@ -17,6 +17,7 @@ class TrabajoController extends \BaseController
     {
         $trabajos = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=', 'trabajo.tipo_mantenimiento_id')
             ->select('tipo_mantenimiento.nombre as mantenimiento', 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'trabajo.id')
+            ->whereNull('trabajo.deleted_at')
             ->orderBy('trabajo.nombre', 'ASC')
             ->get();
 
@@ -208,14 +209,11 @@ class TrabajoController extends \BaseController
     public function destroy($id)
     {
         try {
-            $trabajo = Trabajo::find($id);
-            $trabajo->trabajoMaterial()->forceDelete();
-            $trabajo->forceDelete();
+            Trabajo::destroy($id);
         } catch (\Exception $e) {
             return Response::json(array('error' => true,
                 'msg' => $e->getMessage()));
         }
-
         return Response::json(array('error' => false));
     }
 

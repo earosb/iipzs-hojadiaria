@@ -1,11 +1,17 @@
 <?php
 
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
 /**
  *
  * @author earosb
  */
 class Block extends \Eloquent
 {
+    use SoftDeletingTrait;
+
+    protected $dates = ['deleted_at'];
+
     /**
      * Add your validation rules here
      * @var [type]

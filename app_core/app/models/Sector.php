@@ -1,7 +1,13 @@
 <?php
 
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
 class Sector extends \Eloquent
 {
+    use SoftDeletingTrait;
+
+    protected $dates = ['deleted_at'];
+
     /**
      * Add your validation rules here
      * @var [type]

@@ -1,11 +1,17 @@
 <?php
 
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
 /**
  *
  * @author earosb
  */
 class GrupoTrabajo extends \Eloquent
 {
+    use SoftDeletingTrait;
+
+    protected $dates = ['deleted_at'];
+
     /**
      * Add your validation rules here
      */

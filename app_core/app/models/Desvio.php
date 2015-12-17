@@ -1,11 +1,17 @@
 <?php
 
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
 /**
  *
  * @author earosb
  */
 class Desvio extends \Eloquent
 {
+    use SoftDeletingTrait;
+
+    protected $dates = ['deleted_at'];
+
     /**
      * @var array con reglas de validación
      */
