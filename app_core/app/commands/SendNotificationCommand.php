@@ -5,9 +5,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Carbon\Carbon;
 
-class SendEmailTestCommand extends Command
+class SendNotificationCommand extends Command
 {
-    /** Comando cpanel
+    /**
+     * Envía una notificación por email de los trabajos que se encuentran por vencer, a los usuarios con permiso programar
+     *
      * $ /usr/bin/php-cli /home/icilicaf/app_core/artisan email:send
      */
 
@@ -16,17 +18,18 @@ class SendEmailTestCommand extends Command
      *
      * @var string
      */
-    protected $name = 'email:send';
+    protected $name = 'programar:notify';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Test email.';
+    protected $description = 'Envia una notificacion de trabajos por vencer.';
 
     /**
-     * SendEmailTestCommand constructor.
+     * Create a new command instance.
+     * SendNotificationCommand constructor.
      */
     public function __construct()
     {
@@ -46,14 +49,14 @@ class SendEmailTestCommand extends Command
             ->orderBy('vencimiento')
             ->get(['causa', 'nombre', 'km_inicio', 'km_termino', 'cantidad', 'vencimiento']);
 
-        foreach($trabajos as $trabajo){
+        foreach ($trabajos as $trabajo) {
             $trabajo->vencimiento = Carbon::parse($trabajo->vencimiento)->format('d/m/Y');
         }
 
         if (0 < $trabajos->count()) {
             $users = Sentry::findAllUsers();
             foreach ($users as $user) {
-                if ($user->hasAccess(['programar'])){
+                if ($user->hasAccess(['programar'])) {
                     Mail::send('emails.programar', ['user' => $user, 'trabajos' => $trabajos], function ($message) use ($user) {
                         $message->to($user->email, $user->username)->subject('Aviso de trabajos por vencer');
                     });

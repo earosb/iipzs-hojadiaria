@@ -11,7 +11,4 @@
 |
 */
 
-/**
- * Test email
- */
-Artisan::add(new SendEmailTestCommand);
+Artisan::add(new SendNotificationCommand);
