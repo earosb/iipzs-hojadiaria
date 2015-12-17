@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'noreply@icilicafalpzs.cl', 'name' => 'icilicafalpzs.cl'),
+	'from' => array('address' => 'noreply@icilicafalpzs.cl', 'name' => 'Icil Icafal PZS S.A.'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -119,6 +119,6 @@ return array(
 	|
 	*/
 
-	'pretend' => false,
+	'pretend' => true,
 
 );

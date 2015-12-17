@@ -11,3 +11,7 @@
 |
 */
 
+/**
+ * Test email
+ */
+Artisan::add(new SendEmailTestCommand);
