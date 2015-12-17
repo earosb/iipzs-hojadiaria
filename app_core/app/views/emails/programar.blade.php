@@ -18,7 +18,7 @@
             <td>{{ $trabajo->km_inicio }}</td>
             <td>{{ $trabajo->km_inicio }}</td>
             <td>{{ $trabajo->cantidad }}</td>
-            <td>{{ $trabajo->vencimiento }}</td>
+            <td style="color: #FF0000;">{{ $trabajo->vencimiento }}</td>
         </tr>
     @endforeach
 </table>
