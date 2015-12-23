@@ -1,6 +1,5 @@
 app.controller("appController", function appController($scope, $http) {
     $scope.trabajos = [];
-    $scope.selection = [];
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
 
@@ -62,46 +61,74 @@ app.controller("appController", function appController($scope, $http) {
         });
     };
 
+    // Select all
+    $scope.selectAll = function () {
+        var toggleStatus = !$scope.isAllSelected;
+        angular.forEach($scope.trabajos, function(trabajo){ trabajo.selected = toggleStatus; });
+        $scope.isAllSelected = toggleStatus;
+    };
+
+    function isAllSelected(elemento, indice, arrreglo) {
+        return elemento.selected == true;
+    }
+
     // Toggle selection
-    $scope.toggleSelection = function toggleSelection(trabajo) {
-        var idx = $scope.selection.indexOf(trabajo);
-        if (idx > -1) $scope.selection.splice(idx, 1);
-        else $scope.selection.push(trabajo);
+    $scope.toggleSelection = function () {
+        $scope.isAllSelected = $scope.trabajos.every(isAllSelected);
     };
 
     // Elimina trabajos seleccionados
     $scope.deleteSelected = function () {
-        if (confirm('¿Eliminar ' + $scope.selection.length + ' trabajos seleccionados?')) {
-            angular.forEach($scope.selection, function (trabajo) {
-                $http.delete('programar/' + trabajo.id)
-                    .success(function (data) {
-                        if (!data.error) {
-                            var idx = $scope.trabajos.indexOf(trabajo);
-                            $scope.trabajos.splice(idx, 1);
-                            $scope.selection.length = 0;
-                        }
-                    });
-            });
-        }
+        var selected = [];
+        angular.forEach($scope.trabajos, function(trabajo){
+            if (trabajo.selected){
+                selected.push(trabajo);
+            }
+        });
+        selected.forEach(function(trabajo){
+            $http.delete('programar/' + trabajo.id)
+                .success(function (data) {
+                    if (!data.error) {
+                        var idx = $scope.trabajos.indexOf(trabajo);
+                        $scope.trabajos.splice(idx, 1);
+                    }
+                });
+        });
     };
 
     // Actualiza trabajos seleccionados
     $scope.updateSelected = function (modal) {
-        angular.forEach($scope.selection, function (trabajo) {
-            trabajo.causa = modal.causa;
-            trabajo.grupo_trabajo_id = modal.grupo_trabajo_id;
-            trabajo.semana = modal.semana;
-            trabajo.vencimiento = modal.vencimiento;
+        var selected = [];
+        angular.forEach($scope.trabajos, function(trabajo){
+           if (trabajo.selected){
+               selected.push(trabajo);
+           }
+        });
+        selected.forEach(function (trabajo) {
+            if (modal.causa) trabajo.causa = modal.causa;
+            if (modal.grupo_trabajo_id) trabajo.grupo_trabajo_id = modal.grupo_trabajo_id;
+            if (modal.semana) trabajo.semana = modal.semana;
+            if (modal.vencimiento) trabajo.vencimiento = modal.vencimiento;
             $http.put('programar/' + trabajo.id, trabajo)
                 .success(function (data) {
                     if (!data.error) trabajo.status = data.status;
                 });
         });
+        modal.causa = null;
+        modal.grupo_trabajo_id = null;
+        modal.semana = null;
+        modal.vencimiento = null;
     };
 
-    // Marca como realizados trabajos seleccionados
-    $scope.markAsDone = function() {
-        angular.forEach($scope.selection, function (trabajo) {
+    // Archiva trabajos seleccionados
+    $scope.archiveSelected = function() {
+        var selected = [];
+        angular.forEach($scope.trabajos, function(trabajo){
+            if (trabajo.selected){
+                selected.push(trabajo);
+            }
+        });
+        selected.forEach(function(trabajo){
             trabajo.realizado = true;
             trabajo.status = 'success';
             $http.put('programar/' + trabajo.id, trabajo)

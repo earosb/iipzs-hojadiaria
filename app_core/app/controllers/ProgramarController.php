@@ -55,6 +55,7 @@ class ProgramarController extends \BaseController
             ->get();
 
         foreach ($trabajos as $trabajo) {
+            $trabajo->selected = false;
             $aux = $trabajo->semana;
             if ($aux) $trabajo->semana = Carbon::parse($aux)->format('d/m/Y');
             $aux2 = $trabajo->vencimiento;

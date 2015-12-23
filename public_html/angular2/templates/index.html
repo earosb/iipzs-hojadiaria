@@ -287,7 +287,7 @@
     <table id="main" class="table table-condensed table-bordered">
         <tr>
             <th class="text-center">
-                # <!--<input type="checkbox" ng-model="selectedAll" ng-click="selectAll()" />-->
+                <input type="checkbox" ng-model="isAllSelected" ng-click="selectAll()"/>
             </th>
             <th>
                 <a ng-click="orderByField='causa'; reverseSort = !reverseSort" href="">Causa
@@ -321,7 +321,9 @@
                     </span>
                 </a>
             </th>
-            <th>Cantidad</th>
+            <th>
+                Cantidad
+            </th>
             <th>
                 <a ng-click="orderByField='vencimiento'; reverseSort = !reverseSort" href="">Vencimiento
                 <span ng-show="orderByField == 'vencimiento'">
@@ -330,7 +332,6 @@
                 </span>
                 </a>
             </th>
-
             <th>
                 <a ng-click="orderByField='grupo_trabajo_id'; reverseSort = !reverseSort" href="">Grupo
                     <span ng-show="orderByField == 'grupo_trabajo_id'">
@@ -358,7 +359,7 @@
         </tr>
         <tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort" class="{{ trabajo.status }}">
             <td class="text-center">
-                <input type="checkbox" value="{{trabajo.id}}" ng-click="toggleSelection(trabajo)"/>
+                <input type="checkbox" ng-model="trabajo.selected" ng-change="toggleSelection()" />
             </td>
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
             <td ng-class="orderByField == 'nombre' ? 'active' : ''">
@@ -463,14 +464,14 @@
 </div>
 
 <!--Floating toolbar-->
-<div ng-show="selection.length > 0" style="position: fixed; bottom: 5px; left: 5px;">
-    <a href="" class="btn btn-success btn-xs" confirmed-click="markAsDone()" ng-confirm-click="¿Marcar trabajos como realizados?"
-       data-toggle="popover" data-content="Marcar como realizado" data-trigger="hover" data-placement="top">
+<div style="position: fixed; bottom: 5px; left: 5px;">
+    <a href="" class="btn btn-success btn-xs" confirmed-click="archiveSelected()" ng-confirm-click="¿Archivar trabajos seleccionados?"
+       data-toggle="popover" data-content="Archivar" data-trigger="hover" data-placement="top">
         <span class="glyphicon glyphicon-ok"></span>
     </a>
     <a href="" class="btn btn-default btn-xs" ng-click="showDialog = true"
        data-toggle="popover" data-content="Editar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-pencil"></span></a>
-    <a href="" class="btn btn-danger btn-xs" ng-click="deleteSelected()"
+    <a href="" class="btn btn-danger btn-xs" confirmed-click="deleteSelected()" ng-confirm-click="¿Eliminar trabajos seleccionados?"
        data-toggle="popover" data-content="Eliminar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a>
 </div>
 
@@ -480,7 +481,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Editar {{ selection.length }} trabajo(s) seleccionado(s)</h4>
+                <h4 class="modal-title">Editar trabajo(s) seleccionado(s)</h4>
             </div>
             <form role="form" ng-submit="updateSelected(modal)">
                 <div class="modal-body">
@@ -504,10 +505,51 @@
                             <label>Vencimiento</label>
                             <input ng-model="modal.vencimiento" type="text" class="form-control" placeholder="Vencimiento" jqdatepickerweek>
                         </div>
+<!--                        <div class="form-group col-sm-12">
+                            <label>Programa</label>
+
+                            <div class="form-control">
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input type="checkbox" id="lun" value="checked" ng-model="modal.lun" ng-true-value="'checked'"
+                                           ng-false-value="'unchecked'" {{ modal.lun }}>
+                                    <label for="lun">Lun</label>
+                                </div>
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input type="checkbox" id="mar" value="checked" ng-model="modal.mar" ng-true-value="'checked'"
+                                           ng-false-value="'unchecked'" {{ modal.mar }}>
+                                    <label for="mar">Mar</label>
+                                </div>
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input type="checkbox" id="mie" value="checked" ng-model="modal.mie" ng-true-value="'checked'"
+                                           ng-false-value="'unchecked'" {{ modal.mie }}>
+                                    <label for="mie">Mié</label>
+                                </div>
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input type="checkbox" id="juv" value="checked" ng-model="modal.juv" ng-true-value="'checked'"
+                                           ng-false-value="'unchecked'" {{ modal.juv }}>
+                                    <label for="juv">Juv</label>
+                                </div>
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input type="checkbox" id="vie" value="checked" ng-model="modal.vie" ng-true-value="'checked'"
+                                           ng-false-value="'unchecked'" {{ modal.vie }}>
+                                    <label for="vie">Vié</label>
+                                </div>
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input type="checkbox" id="sab" value="checked" ng-model="modal.sab" ng-true-value="'checked'"
+                                           ng-false-value="'unchecked'" {{ modal.sab }}>
+                                    <label for="sab">Sáb</label>
+                                </div>
+                                <div class="checkbox checkbox-primary checkbox-inline">
+                                    <input type="checkbox" id="dom" value="checked" ng-model="modal.dom" ng-true-value="'checked'"
+                                           ng-false-value="'unchecked'" {{ modal.dom }}>
+                                    <label for="dom">Dom</label>
+                                </div>
+                            </div>
+                        </div>
+-->
                     </fieldset>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary" ng-click="showDialog = false">Guardar</button>
                 </div>
             </form>
