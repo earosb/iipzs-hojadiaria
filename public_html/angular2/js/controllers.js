@@ -109,6 +109,13 @@ app.controller("appController", function appController($scope, $http) {
             if (modal.grupo_trabajo_id) trabajo.grupo_trabajo_id = modal.grupo_trabajo_id;
             if (modal.semana) trabajo.semana = modal.semana;
             if (modal.vencimiento) trabajo.vencimiento = modal.vencimiento;
+            if (modal.lun) trabajo.lun = modal.lun;
+            if (modal.mar) trabajo.mar = modal.mar;
+            if (modal.mie) trabajo.mie = modal.mie;
+            if (modal.juv) trabajo.juv = modal.juv;
+            if (modal.vie) trabajo.vie = modal.vie;
+            if (modal.sab) trabajo.sab = modal.sab;
+            if (modal.dom) trabajo.dom = modal.dom;
             $http.put('programar/' + trabajo.id, trabajo)
                 .success(function (data) {
                     if (!data.error) trabajo.status = data.status;
@@ -118,6 +125,13 @@ app.controller("appController", function appController($scope, $http) {
         modal.grupo_trabajo_id = null;
         modal.semana = null;
         modal.vencimiento = null;
+        modal.lun = null;
+        modal.mar = null;
+        modal.mie = null;
+        modal.juv = null;
+        modal.vie = null;
+        modal.sab = null;
+        modal.dom = null;
     };
 
     // Archiva trabajos seleccionados
