@@ -28,13 +28,13 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label>Km Inicio</label>
-                            <input type="number" class="form-control" ng-model="nTrabajo.km_inicio" placeholder="Ej. 564200" required="required">
+                            <input type="number" class="form-control" ng-model="nTrabajo.km_inicio" placeholder="Ej. 564200" required="required" min="0">
 
                             <p ng-repeat="msg in errors.km_inicio" class="text-danger">{{msg}}</p>
                         </div>
                         <div class="form-group col-md-2">
                             <label>Km Término</label>
-                            <input type="number" class="form-control" ng-model="nTrabajo.km_termino" placeholder="Ej. 564300" required="required">
+                            <input type="number" class="form-control" ng-model="nTrabajo.km_termino" placeholder="Ej. 564300" required="required" min="0">
 
                             <p ng-repeat="msg in errors.km_termino" class="text-danger">{{msg}}</p>
                         </div>
@@ -284,6 +284,22 @@
 
 <!--Main table-->
 <div ng-show="trabajos.length > 0">
+
+    <div class="pull-right">
+        <select ng-model="pageSize">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="trabajos.length">Todos</option>
+        </select>
+
+        <button type="button" class="btn btn-default btn-xs" ng-disabled="currentPage <= 0" ng-click="currentPage=currentPage-1">&lt;&lt;</button>
+        <span>Pág. {{currentPage+1}} de {{numberOfPages() + 1}}</span>
+        <button type="button" name="button" class="btn btn-default btn-xs" ng-disabled="currentPage >= numberOfPages()" ng-click="currentPage=currentPage+1">
+            &gt;&gt;</button>
+    </div>
+
     <table id="main" class="table table-condensed table-bordered">
         <tr>
             <th class="text-center">
@@ -357,7 +373,7 @@
             <th class="text-center">D</th>
             <th class="text-center">Opc.</th>
         </tr>
-        <tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort" class="{{ trabajo.status }}">
+        <tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort | startFrom:currentPage*pageSize | limitTo:pageSize" class="{{ trabajo.status }}">
             <td class="text-center">
                 <input type="checkbox" ng-model="trabajo.selected" ng-change="toggleSelection()" />
             </td>

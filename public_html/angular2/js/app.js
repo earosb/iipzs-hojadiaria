@@ -19,6 +19,14 @@ app.config(['$routeProvider', function ($routeProvider) {
         .otherwise({redirectTo: "/"});
 }]);
 
+// Filtro que permite paginar la tabla principal
+app.filter('startFrom', function() {
+    return function(input, start) {
+        start = +start;
+        return input.slice(start);
+    };
+});
+
 // Datepicker directive select day
 app.directive('jqdatepicker', function () {
     return {

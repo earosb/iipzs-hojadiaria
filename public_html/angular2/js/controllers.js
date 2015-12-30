@@ -2,6 +2,8 @@ app.controller("appController", function appController($scope, $http) {
     $scope.trabajos = [];
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
+    $scope.currentPage = 0;
+    $scope.pageSize = 1;
 
     $http.get('programar').success(function (data) {
         $scope.trabajos = data;
@@ -69,7 +71,7 @@ app.controller("appController", function appController($scope, $http) {
     };
 
     function isAllSelected(elemento, indice, arrreglo) {
-        return elemento.selected == true;
+        return elemento.selected === true;
     }
 
     // Toggle selection
@@ -152,6 +154,10 @@ app.controller("appController", function appController($scope, $http) {
         });
     };
 
+    // Calcula el número de páginas
+    $scope.numberOfPages = function() {
+        return Math.floor($scope.trabajos.length/$scope.pageSize);
+    };
 });
 
 // Edita un trabajo seleccionado en vista completa
