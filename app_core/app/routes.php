@@ -173,6 +173,7 @@ Route::group(array('before' => 'auth'), function () {
         Route::post('programar', 'ProgramarController@store');
         Route::delete('programar/{id}', 'ProgramarController@destroy');
         Route::put('programar/{id}', 'ProgramarController@update');
+        Route::post('programar/selected', 'ProgramarController@updateSelected');
 
         Route::get('programar/pdf', 'ProgramarController@pdf');
 

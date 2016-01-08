@@ -12,11 +12,9 @@ class ProgramarController extends \BaseController
      */
     public function index()
     {
-        Log::debug('ProgramarController@index', ['input' => Input::all()]);
-
         if (!Request::ajax()) {
             \Debugbar::disable();
-            return View::make('programar.index'); // \Debugbar::disable();
+            return View::make('programar.index');
         }
 
         $query = DB::table('programa');
@@ -125,7 +123,6 @@ class ProgramarController extends \BaseController
      */
     public function update($id)
     {
-        Log::debug('ProgramarController@update', ['id' => $id, 'input' => Input::all()]);
         $programa = Programa::find($id);
 
         $input = Input::all();
@@ -184,6 +181,70 @@ class ProgramarController extends \BaseController
 
         $programa->save();
 
+        return Response::json(['error' => false, 'status' => $status]);
+    }
+
+    public function updateSelected(){
+        $input = Input::all();
+
+        $modal = $input['modal'];
+        $trabajos = $input['trabajos'];
+        $status = array();
+
+        foreach ($trabajos as $trabajo) {
+            $programa = Programa::find($trabajo['id']);
+
+            if (isset($modal['causa']))
+                $programa->causa = $modal['causa'];
+
+            if (isset($modal['grupo_trabajo_id']))
+                $programa->grupo_trabajo_id = $modal['grupo_trabajo_id'];
+
+            if (isset($modal['semana'])) {
+                try {
+                    $programa->semana = Carbon::createFromFormat('d/m/Y', $modal['semana']);
+                } catch (Exception $e) {}
+            }
+
+            if (isset($modal['vencimiento'])) {
+                try {
+                    $programa->vencimiento = Carbon::createFromFormat('d/m/Y', $modal['vencimiento']);
+                    $days = Carbon::parse($programa->vencimiento)->diffInDays(null, false);
+
+                    // Una semana para la fecha de vencimiento
+                    if ($days >= -7) $class = 'danger';
+                    // Dos semanas para la fecha de vencimiento
+                    elseif ($days >= -14 && $days < -7) $class = 'warning';
+                    // Más de dos semanas para la fecha de vencimiento
+                    else $class = 'success';
+
+                    array_push($status, ['id' => $programa->id, 'class' => $class]);
+                } catch (Exception $e) {}
+            }
+
+            if (isset($modal['lun']))
+                $programa->lun = $modal['lun'];
+
+            if (isset($modal['mar']))
+                $programa->mar = $modal['mar'];
+
+            if (isset($modal['mie']))
+                $programa->mie = $modal['mie'];
+
+            if (isset($modal['juv']))
+                $programa->juv = $modal['juv'];
+
+            if (isset($modal['vie']))
+                $programa->vie = $modal['vie'];
+
+            if (isset($modal['sab']))
+                $programa->sab = $modal['sab'];
+
+            if (isset($modal['dom']))
+                $programa->dom = $modal['dom'];
+
+            $programa->save();
+        }
         return Response::json(['error' => false, 'status' => $status]);
     }
 
