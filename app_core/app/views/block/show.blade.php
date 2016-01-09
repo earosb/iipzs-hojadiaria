@@ -12,6 +12,9 @@
 
 @section('content')
     <div class="row">
+        <div class="col-md-12">
+            <legend>{{ $block->estacion }}</legend>
+        </div>
         {{-- Desviadores --}}
         <div class="col-xs-12 col-md-6">
             <div class="panel panel-default">
@@ -71,7 +74,7 @@
                                 {{ $desvio->nombre }}
                             </td>
                             <td>
-                                @if($desvio->desviador_norte_id) {{ $desvio->desviador_norte_id }}
+                                @if($desvio->desviador_norte_id) {{ $desvio->desviadorNorte->nombre }}
                                 @else N/A
                                 @endif
                             </td>

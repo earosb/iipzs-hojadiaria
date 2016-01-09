@@ -125,6 +125,54 @@
                 @endif
             </tr>
         @endforeach
+        @foreach($autocontrol as $i => $trabajo)
+            <tr>
+                <td class="center"></td>
+                <td>{{ $trabajo->nombre }}</td>
+                <td class="center">{{ $trabajo->km_inicio }}</td>
+                <td class="center">{{ $trabajo->km_termino }}</td>
+                <td class="center">{{ $trabajo->unidad }}</td>
+                <td class="center">{{ $trabajo->cantidad }}</td>
+                @if($trabajo->lun == 'checked')
+                    <td class="checked"></td>
+                @else
+                    <td></td>
+                @endif
+                @if($trabajo->mar == 'checked')
+                    <td class="checked"></td>
+                @else
+                    <td></td>
+                @endif
+                @if($trabajo->mie == 'checked')
+                    <td class="checked"></td>
+                @else
+                    <td></td>
+                @endif
+                @if($trabajo->juv == 'checked')
+                    <td class="checked"></td>
+                @else
+                    <td></td>
+                @endif
+                @if($trabajo->vie == 'checked')
+                    <td class="checked"></td>
+                @else
+                    <td></td>
+                @endif
+                @if($trabajo->sab == 'checked')
+                    <td class="checked"></td>
+                @else
+                    <td></td>
+                @endif
+                @if($trabajo->dom == 'checked')
+                    <td class="checked"></td>
+                @else
+                    <td></td>
+                @endif
+                @if($showObs)
+                    <td>{{ $trabajo->observaciones }}</td>
+                @endif
+            </tr>
+        @endforeach
     </table>
 </div>
 </body>

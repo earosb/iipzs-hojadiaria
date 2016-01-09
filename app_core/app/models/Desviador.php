@@ -52,7 +52,7 @@ class Desviador extends \Eloquent
      */
     public function desvioNorte()
     {
-        return $this->belongsTo('Block');
+        return $this->hasOne('Desvio');
     }
 
     /**
@@ -60,7 +60,7 @@ class Desviador extends \Eloquent
      */
     public function desvioSur()
     {
-        return $this->belongsTo('Block');
+        return $this->hasOne('Desvio');
     }
 
 }

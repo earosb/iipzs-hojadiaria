@@ -135,6 +135,7 @@ app.controller("appController", function appController($scope, $http) {
                 var status = response.status;
                 angular.forEach($scope.trabajos, function (trabajo) {
                     if (trabajo.selected) {
+                        trabajo.selected = false;
                         status.forEach(function (s) {
                             if (trabajo.id == s.id) {
                                 trabajo.status = s.class;

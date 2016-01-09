@@ -273,6 +273,8 @@ class ProgramarController extends \BaseController
      */
     public function pdf()
     {
+        ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+
         $input = Input::all();
 
         $rules = array(
@@ -296,21 +298,44 @@ class ProgramarController extends \BaseController
         if (!Input::has('grupo') || $input['grupo'] == 'all') {
             $grupo = null;
             $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '!=', 'autoc')
                 ->where('programa.semana', '=', $weekQuery)
                 ->where('programa.realizado', false)
                 ->orderBy('km_inicio')
                 ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                    'grupo_trabajo_id', 'unidad', 'nombre', 'semana',
+                    'grupo_trabajo_id', 'unidad', 'trabajo.nombre', 'semana',
+                    'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+            $autocontrol = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '=', 'autoc')
+                ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
+                ->orderBy('km_inicio')
+                ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'trabajo.nombre', 'semana',
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
         } else {
             $grupo = GrupoTrabajo::find($input['grupo']);
             $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '!=', 'autoc')
                 ->where('programa.grupo_trabajo_id', '=', $grupo->id)
                 ->where('programa.semana', '=', $weekQuery)
                 ->where('programa.realizado', false)
                 ->orderBy('km_inicio')
                 ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                    'grupo_trabajo_id', 'unidad', 'nombre', 'semana',
+                    'grupo_trabajo_id', 'unidad', 'trabajo.nombre', 'semana',
+                    'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
+            $autocontrol = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '=', 'autoc')
+                ->where('programa.grupo_trabajo_id', '=', $grupo->id)
+                ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
+                ->orderBy('km_inicio')
+                ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                    'grupo_trabajo_id', 'unidad', 'trabajo.nombre', 'semana',
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
         }
 
@@ -324,7 +349,9 @@ class ProgramarController extends \BaseController
 
         $pdf = App::make('dompdf');
         $html = View::make('programar.pdf')
-            ->with('trabajos', $trabajos)->with('grupo', $grupo)
+            ->with('trabajos', $trabajos)
+            ->with('autocontrol', $autocontrol)
+            ->with('grupo', $grupo)
             ->with('startOfWeek', $startOfWeek)
             ->with('endOfWeek', $endOfWeek)
             ->with('showObs', $showObs);
