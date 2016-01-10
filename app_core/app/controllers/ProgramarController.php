@@ -273,7 +273,8 @@ class ProgramarController extends \BaseController
      */
     public function pdf()
     {
-        ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+        //300 seconds = 5 minutes
+        ini_set('max_execution_time', 300);
 
         $input = Input::all();
 
@@ -311,7 +312,7 @@ class ProgramarController extends \BaseController
                 ->where('tipo_mantenimiento.cod', '=', 'autoc')
                 ->where('programa.semana', '=', $weekQuery)
                 ->where('programa.realizado', false)
-                ->orderBy('km_inicio')
+                ->orderBy('km_inicio', 'asc')
                 ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
                     'grupo_trabajo_id', 'unidad', 'trabajo.nombre', 'semana',
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
@@ -333,7 +334,8 @@ class ProgramarController extends \BaseController
                 ->where('programa.grupo_trabajo_id', '=', $grupo->id)
                 ->where('programa.semana', '=', $weekQuery)
                 ->where('programa.realizado', false)
-                ->orderBy('km_inicio')
+                ->orderBy('trabajo.nombre', 'asc')
+                ->orderBy('km_inicio', 'asc')
                 ->get(['programa.id', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
                     'grupo_trabajo_id', 'unidad', 'trabajo.nombre', 'semana',
                     'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom']);
