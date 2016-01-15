@@ -20,7 +20,7 @@ class ProgramarController extends \BaseController
         $query = DB::table('programa');
 
         if (Input::has('causa'))
-            $query->where('programa.causa', 'LIKE', '%'.Input::get('causa').'%');
+            $query->where('programa.causa', 'LIKE', '%' . Input::get('causa') . '%');
 
         if (Input::has('realizado') && Input::get('realizado') == 'true')
             $query->where('programa.realizado', true);
@@ -184,7 +184,8 @@ class ProgramarController extends \BaseController
         return Response::json(['error' => false, 'status' => $status]);
     }
 
-    public function updateSelected(){
+    public function updateSelected()
+    {
         $input = Input::all();
 
         $modal = $input['modal'];
@@ -350,7 +351,7 @@ class ProgramarController extends \BaseController
         else $paper = 'a4';
 
         $pdf = App::make('dompdf');
-        $html = View::make('programar.pdf')
+        $html = View::make('programar.pdf.' . $orientation)
             ->with('trabajos', $trabajos)
             ->with('autocontrol', $autocontrol)
             ->with('grupo', $grupo)

@@ -53,7 +53,11 @@
     <table>
         <tr>
             <th colspan="6">Trabajo</th>
-            <th colspan="7">Programa</th>
+            @if($showObs)
+                <th colspan="8">Programa</th>
+            @else
+                <th colspan="7">Programa</th>
+            @endif
         </tr>
         <tr>
             <th rowspan="2">#</th>

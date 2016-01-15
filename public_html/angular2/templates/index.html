@@ -79,6 +79,7 @@
                         </div>
                         <div class="form-group col-md-1">
                             <label>Realizados</label>
+
                             <div class="checkbox">
                                 <input ng-model="filtro.realizado" ng-value="true" id="checkboxR" class="styled" type="checkbox">
                                 <label for="checkboxR">
@@ -110,17 +111,16 @@
                             <input name="semana" ng-model="pdf.semana" type="text" placeholder="dd/mm/aaaa" class="form-control" jqdatepickerweek
                                    required="required">
                         </div>
-                        <!--
-                                                <div class="form-group col-md-1">
-                                                    <label>Observaciones</label>
-                                                    <div class="checkbox">
-                                                        <input name="obs" id="obs" value="true" class="styled" type="checkbox">
-                                                        <label for="obs">
-                                                            Incluir
-                                                        </label>
-                                                    </div>
-                                                </div>
-                        -->
+                        <div class="form-group col-md-1">
+                            <label>Observaciones</label>
+
+                            <div class="checkbox">
+                                <input name="obs" id="obs" value="true" class="styled" type="checkbox">
+                                <label for="obs">
+                                    Incluir
+                                </label>
+                            </div>
+                        </div>
                         <div class="form-group col-md-2">
                             <label>Orientación</label>
                             <select name="orientation" class="form-control" required>
@@ -230,7 +230,7 @@
         <!--<tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort | startFrom:currentPage*pageSize | limitTo:pageSize" class="{{ trabajo.status }}">-->
         <tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort" class="{{ trabajo.status }}">
             <td class="text-center">
-                <input type="checkbox" ng-model="trabajo.selected" ng-change="toggleSelection()" />
+                <input type="checkbox" ng-model="trabajo.selected" ng-change="toggleSelection()"/>
             </td>
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
             <td ng-class="orderByField == 'nombre' ? 'active' : ''">
