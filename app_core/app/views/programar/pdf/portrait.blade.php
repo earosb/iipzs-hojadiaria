@@ -61,7 +61,11 @@
         </tr>
         <tr>
             <th rowspan="2">#</th>
-            <th rowspan="2" width="40%">Descripción del Trabajo</th>
+            @if($showObs)
+                <th rowspan="2" width="40%">Descripción del Trabajo</th>
+            @else
+                <th rowspan="2" width="55%">Descripción del Trabajo</th>
+            @endif
             <th colspan="2">Kilometraje</th>
             <th rowspan="2">Uni.</th>
             <th rowspan="2">Cant.</th>

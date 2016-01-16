@@ -1,0 +1,14 @@
+{
+  "name": "modulo-programar-trabajos",
+  "version": "1.0.0",
+  "description": "Módulo angularjs para programación de trabajos iipzs",
+  "author": "Eduardo Aros",
+  "private": true,
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-angular-templatecache": "^1.8.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-htmlmin": "^1.3.0",
+    "gulp-uglify": "^1.5.1"
+  }
+}

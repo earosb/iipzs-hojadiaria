@@ -1,4 +1,4 @@
-app.controller("appController", function appController($scope, $http) {
+app.controller("appController", ['$scope', '$http', function appController($scope, $http) {
     $scope.trabajos = [];
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
@@ -50,7 +50,7 @@ app.controller("appController", function appController($scope, $http) {
     $scope.updateTrabajo = function (trabajo) {
         $http.put('programar/' + trabajo.id, trabajo)
             .success(function (data) {
-                if (!data.error){
+                if (!data.error) {
                     trabajo.status = data.status;
                     if (trabajo.no_programable) trabajo.semana = '';
                 }
@@ -69,7 +69,9 @@ app.controller("appController", function appController($scope, $http) {
     // Select all
     $scope.selectAll = function () {
         var toggleStatus = !$scope.isAllSelected;
-        angular.forEach($scope.trabajos, function(trabajo){ trabajo.selected = toggleStatus; });
+        angular.forEach($scope.trabajos, function (trabajo) {
+            trabajo.selected = toggleStatus;
+        });
         $scope.isAllSelected = toggleStatus;
     };
 
@@ -85,12 +87,12 @@ app.controller("appController", function appController($scope, $http) {
     // Elimina trabajos seleccionados
     $scope.deleteSelected = function () {
         var selected = [];
-        angular.forEach($scope.trabajos, function(trabajo){
-            if (trabajo.selected){
+        angular.forEach($scope.trabajos, function (trabajo) {
+            if (trabajo.selected) {
                 selected.push(trabajo);
             }
         });
-        selected.forEach(function(trabajo){
+        selected.forEach(function (trabajo) {
             $http.delete('programar/' + trabajo.id)
                 .success(function (data) {
                     if (!data.error) {
@@ -104,10 +106,10 @@ app.controller("appController", function appController($scope, $http) {
     // Actualiza trabajos seleccionados
     $scope.updateSelected = function (modal) {
         var selected = [];
-        angular.forEach($scope.trabajos, function(trabajo){
-           if (trabajo.selected){
-               selected.push(trabajo);
-           }
+        angular.forEach($scope.trabajos, function (trabajo) {
+            if (trabajo.selected) {
+                selected.push(trabajo);
+            }
         });
 
         var t = {};
@@ -170,14 +172,14 @@ app.controller("appController", function appController($scope, $http) {
     };
 
     // Archiva trabajos seleccionados
-    $scope.archiveSelected = function() {
+    $scope.archiveSelected = function () {
         var selected = [];
-        angular.forEach($scope.trabajos, function(trabajo){
-            if (trabajo.selected){
+        angular.forEach($scope.trabajos, function (trabajo) {
+            if (trabajo.selected) {
                 selected.push(trabajo);
             }
         });
-        selected.forEach(function(trabajo){
+        selected.forEach(function (trabajo) {
             trabajo.realizado = true;
             trabajo.status = 'success';
             $http.put('programar/' + trabajo.id, trabajo)
@@ -188,13 +190,13 @@ app.controller("appController", function appController($scope, $http) {
     };
 
     // Calcula el número de páginas
-    $scope.numberOfPages = function() {
-        return Math.floor($scope.trabajos.length/$scope.pageSize);
+    $scope.numberOfPages = function () {
+        return Math.floor($scope.trabajos.length / $scope.pageSize);
     };
-});
+}]);
 
 // Edita un trabajo seleccionado en vista completa
-app.controller("editController", function editController($scope, $http, $routeParams, $location) {
+app.controller("editController", ['$scope', '$http', '$routeParams', '$location', function editController($scope, $http, $routeParams, $location) {
     $scope.textButton = "Editar programa trabajo";
     var i, item, length = $scope.trabajos.length;
     for (i = 0; i < length; i++) {
@@ -210,4 +212,4 @@ app.controller("editController", function editController($scope, $http, $routePa
                 if (!data.error) $scope.trabajos[i] = $scope.trabajo;
             });
     };
-});
+}]);

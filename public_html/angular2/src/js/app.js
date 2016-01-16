@@ -9,19 +9,19 @@ app.config(['$httpProvider', function ($httpProvider) {
 // Route provider
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when("/", {
-            templateUrl: "angular2/templates/index.html"
+            templateUrl: "angular2/src/templates/index.html"
         })
         .when("/edit/:id", {
             title: 'Editar',
-            templateUrl: "angular2/templates/edit.html",
+            templateUrl: "angular2/src/templates/edit.html",
             controller: "editController"
         })
         .otherwise({redirectTo: "/"});
 }]);
 
 // Filtro que permite paginar la tabla principal
-app.filter('startFrom', function() {
-    return function(input, start) {
+app.filter('startFrom', function () {
+    return function (input, start) {
         start = +start;
         return input.slice(start);
     };
@@ -146,7 +146,7 @@ app.directive('loading', ['$http', function ($http) {
 }]);
 
 // Bootstrap modal directive
-app.directive("modalShow", function ($parse) {
+app.directive("modalShow", ['$parse', function ($parse) {
     return {
         restrict: "A",
         link: function (scope, element, attrs) {
@@ -173,7 +173,7 @@ app.directive("modalShow", function ($parse) {
         }
 
     };
-});
+}]);
 
 // Alert confirm message directive
 app.directive('ngConfirmClick', function () {
@@ -191,14 +191,14 @@ app.directive('ngConfirmClick', function () {
 });
 
 // Convierte strings en numeros para inputs de tipo number
-app.directive('stringToNumber', function() {
+app.directive('stringToNumber', function () {
     return {
         require: 'ngModel',
-        link: function(scope, element, attrs, ngModel) {
-            ngModel.$parsers.push(function(value) {
+        link: function (scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function (value) {
                 return '' + value;
             });
-            ngModel.$formatters.push(function(value) {
+            ngModel.$formatters.push(function (value) {
                 return parseFloat(value, 2);
             });
         }

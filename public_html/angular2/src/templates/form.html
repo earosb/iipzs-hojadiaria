@@ -3,16 +3,12 @@
         <div class="container-page">
             <form>
                 <div class="col-md-6">
-                <legend>{{ textButton }}
-                    <span ng-show="!trabajo.realizado" ng-click="trabajo.realizado = true" ng-model="trabajo.realizado" class="pull-right"><a class="btn btn-primary btn-xs">Archivar</a></span>
-                    <span ng-show="trabajo.realizado" ng-click="trabajo.realizado = false" ng-model="trabajo.realizado" class="pull-right"><a class="btn btn-success btn-xs">Desarchivar</a></span>
-                </legend>
-<!--
-                    <div class="form-group col-lg-12">
-                        <label>Nombre</label>
-                        <input type="text" placeholder="Nombre" ng-model="trabajo.nombre" class="form-control" disabled>
-                    </div>
--->
+                    <legend>{{ textButton }}
+                        <span ng-show="!trabajo.realizado" ng-click="trabajo.realizado = true" ng-model="trabajo.realizado" class="pull-right"><a
+                                class="btn btn-primary btn-xs">Archivar</a></span>
+                        <span ng-show="trabajo.realizado" ng-click="trabajo.realizado = false" ng-model="trabajo.realizado" class="pull-right"><a
+                                class="btn btn-success btn-xs">Desarchivar</a></span>
+                    </legend>
                     <div class="form-group col-lg-12">
                         <label>Nombre</label>
                         <input type="text" placeholder="Nombre" ng-model="trabajo.nombre" class="form-control" disabled>
