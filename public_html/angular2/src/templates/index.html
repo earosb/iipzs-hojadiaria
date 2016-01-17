@@ -98,46 +98,56 @@
         <div class="tab-pane fade" id="tab-pdf">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form action="programar/pdf" target="_blank">
-                        <div class="form-group col-md-3">
-                            <label>Grupo</label>
-                            <select class="form-control" required="required" name="grupo">
-                                <option value="all" selected="selected">Todos</option>
-                                <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Semana</label>
-                            <input name="semana" ng-model="pdf.semana" type="text" placeholder="dd/mm/aaaa" class="form-control" jqdatepickerweek
-                                   required="required">
-                        </div>
-                        <div class="form-group col-md-1">
-                            <label>Observaciones</label>
+                    <form action="programar/getprograma" target="_blank">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label>Grupo</label>
+                                <select class="form-control" required="required" name="grupo">
+                                    <option value="all" selected="selected">Todos</option>
+                                    <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Semana</label>
+                                <input name="semana" ng-model="pdf.semana" type="text" placeholder="dd/mm/aaaa" class="form-control" jqdatepickerweek
+                                       required="required">
+                            </div>
+                            <div class="form-group col-md-1">
+                                <label>Observaciones</label>
 
-                            <div class="checkbox">
-                                <input name="obs" id="obs" value="true" class="styled" type="checkbox">
-                                <label for="obs">
-                                    Incluir
-                                </label>
+                                <div class="checkbox">
+                                    <input name="obs" id="obs" value="true" class="styled" type="checkbox">
+                                    <label for="obs">
+                                        Incluir
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group col-md-2">
-                            <label>Orientación</label>
-                            <select name="orientation" class="form-control" required>
-                                <option value="portrait" selected="selected">Vertical</option>
-                                <option value="landscape">Horizontal</option>
-                            </select>
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>Orientación</label>
+                                <select name="orientation" class="form-control" required>
+                                    <option value="portrait" selected="selected">Vertical</option>
+                                    <option value="landscape">Horizontal</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Tipo de papel</label>
+                                <select name="paper" class="form-control" required>
+                                    <option value="letter" selected>Carta (letter)</option>
+                                    <option value="a4">Oficio (A4)</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group col-md-2">
-                            <label>Tipo de papel</label>
-                            <select name="paper" class="form-control" required>
-                                <option value="a4" selected>Oficio (A4)</option>
-                                <option value="letter">Carta (letter)</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-1">
-                            <label></label>
-                            <input class="btn btn-primary" type="submit" value="Descargar"/>
+                        <div>
+                            <div class="btn-group">
+                                <!--<input class="btn btn-primary" type="submit" value="Descargar PDF"/>-->
+                                <button class="btn btn-primary" type="submit" name="action" value="pdf">Descargar PDF</button>
+                            </div>
+                            <div class="btn-group">
+                                <!--<input class="btn btn-primary" type="submit" value="Descargar CSV"/>-->
+                                <button class="btn btn-primary" type="submit" name="action" value="csv">Descargar CSV</button>
+                            </div>
                         </div>
                     </form>
                 </div>

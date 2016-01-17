@@ -175,7 +175,7 @@ Route::group(array('before' => 'auth'), function () {
         Route::put('programar/{id}', 'ProgramarController@update');
         Route::post('programar/selected', 'ProgramarController@updateSelected');
 
-        Route::get('programar/pdf', 'ProgramarController@pdf');
+        Route::get('programar/getprograma', 'ProgramarController@getPrograma');
 
         Route::get('grupos', 'GrupoTrabajoController@index');
 
