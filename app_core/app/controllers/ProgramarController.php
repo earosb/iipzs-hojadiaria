@@ -285,6 +285,8 @@ class ProgramarController extends \BaseController
             return $this->pdf($input);
         } elseif ($input['action'] == 'csv') {
             return $this->csv($input);
+        } elseif ($input['action'] == 'excel') {
+            return $this->excel($input);
         } else {
             return Redirect::back();
         }
@@ -374,12 +376,12 @@ class ProgramarController extends \BaseController
     public function csv($input)
     {
         $headers = [
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0'
-            , 'Content-type' => 'text/csv'
-            , 'Content-Disposition' => 'attachment; filename=programa.csv'
-            , 'Expires' => '0'
-            , 'Pragma' => 'public'
-            , 'charset' => 'UTF-8'
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Content-type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename=programa.txt',
+            'Expires' => '0',
+            'Pragma' => 'public',
+            'Charset' => 'UTF-8'
         ];
 
         $weekQuery = Carbon::createFromFormat('d/m/Y', $input['semana'])->toDateString();
@@ -388,7 +390,8 @@ class ProgramarController extends \BaseController
         $endOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->endOfWeek()->toDateString();
         $endOfWeek = Carbon::parse($endOfWeek)->format('d/m/Y');
 
-        $fields = ['trabajo.nombre as Trabajo', 'km_inicio as Km_Inicio', 'Km_termino as Km_Término', 'unidad as Unidad', 'cantidad as Cantidad'];
+        $fields = ['trabajo.nombre as Trabajo', 'km_inicio as Km_Inicio', 'Km_termino as Km_Término', 'unidad as Unidad', 'cantidad as Cantidad',
+            'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom'];
         Input::has('obs') ? array_push($fields, 'observaciones as Observaciones') : null;
 
         if (!Input::has('grupo') || $input['grupo'] == 'all') {
@@ -440,15 +443,85 @@ class ProgramarController extends \BaseController
             $header = ['Semana', $startOfWeek . ' al ' . $endOfWeek, 'Grupo', isset($grupo) ? $grupo->base : 'Todos'];
             fputcsv($FH, $header);
             foreach ($trabajos as $row) {
-                fputcsv($FH, $row);
+                $aux = $this->parseDays($row);
+                fputcsv($FH, $aux);
             }
             foreach ($autocontrol as $row) {
-                fputcsv($FH, $row);
+                $aux = $this->parseDays($row);
+                fputcsv($FH, $aux);
             }
             fclose($FH);
         };
 
         return Response::stream($callback, 200, $headers);
+
+    }
+    /**
+     * @param $input
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function excel($input)
+    {
+        $weekQuery = Carbon::createFromFormat('d/m/Y', $input['semana'])->toDateString();
+        $startOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->startOfWeek()->toDateString();
+        $startOfWeek = Carbon::parse($startOfWeek)->format('d/m/Y');
+        $endOfWeek = Carbon::createFromFormat('d/m/Y', $input['semana'])->endOfWeek()->toDateString();
+        $endOfWeek = Carbon::parse($endOfWeek)->format('d/m/Y');
+
+        $fields = ['trabajo.nombre as Trabajo', 'km_inicio as Km_Inicio', 'Km_termino as Km_Término', 'unidad as Unidad', 'cantidad as Cantidad',
+            'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom'];
+        Input::has('obs') ? array_push($fields, 'observaciones as Observaciones') : null;
+
+        if (!Input::has('grupo') || $input['grupo'] == 'all') {
+            $grupo = null;
+            $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '!=', 'autoc')
+                ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
+                ->orderBy('km_inicio')
+                ->get($fields)
+                ->toArray();
+            $autocontrol = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '=', 'autoc')
+                ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
+                ->orderBy('km_inicio', 'asc')
+                ->get($fields)
+                ->toArray();
+        } else {
+            $grupo = GrupoTrabajo::find($input['grupo']);
+            $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '!=', 'autoc')
+                ->where('programa.grupo_trabajo_id', '=', $grupo->id)
+                ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
+                ->orderBy('km_inicio')
+                ->get($fields)
+                ->toArray();
+            $autocontrol = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
+                ->join('tipo_mantenimiento', 'tipo_mantenimiento.id', '=', 'tipo_mantenimiento_id')
+                ->where('tipo_mantenimiento.cod', '=', 'autoc')
+                ->where('programa.grupo_trabajo_id', '=', $grupo->id)
+                ->where('programa.semana', '=', $weekQuery)
+                ->where('programa.realizado', false)
+                ->orderBy('trabajo.nombre', 'asc')
+                ->orderBy('km_inicio', 'asc')
+                ->get($fields)
+                ->toArray();
+        }
+
+        $header = ['Semana', $startOfWeek . ' al ' . $endOfWeek, 'Grupo', isset($grupo) ? $grupo->base : 'Todos'];
+        array_unshift($trabajos, array_keys($trabajos[0]));
+        array_unshift($trabajos, $header);
+
+        Excel::create('Programa', function($excel) use($trabajos) {
+            $excel->sheet('Sheetname', function($sheet) use($trabajos) {
+                $sheet->fromArray($trabajos);
+            });
+        })->export('xls');
 
     }
 
@@ -464,4 +537,43 @@ class ProgramarController extends \BaseController
         return Response::download($pathToFile);
     }
 
+    /**
+     * Transforma los dias de semana
+     * 'Checked' a x y el resto en blanco
+     * @param $row
+     * @return mixed
+     */
+    private function parseDays($row)
+    {
+        if (isset($row['lun']) && $row['lun'] == 'checked')
+            $row['lun'] = 'x';
+        else
+            $row['lun'] = null;
+        if (isset($row['mar']) && $row['mar'] == 'checked')
+            $row['mar'] = 'x';
+        else
+            $row['mar'] = null;
+        if (isset($row['mie']) && $row['mie'] == 'checked')
+            $row['mie'] = 'x';
+        else
+            $row['mie'] = null;
+        if (isset($row['juv']) && $row['juv'] == 'checked')
+            $row['juv'] = 'x';
+        else
+            $row['juv'] = null;
+        if (isset($row['vie']) && $row['vie'] == 'checked')
+            $row['vie'] = 'x';
+        else
+            $row['vie'] = null;
+        if (isset($row['sab']) && $row['sab'] == 'checked')
+            $row['sab'] = 'x';
+        else
+            $row['sab'] = null;
+        if (isset($row['dom']) && $row['dom'] == 'checked')
+            $row['dom'] = 'x';
+        else
+            $row['dom'] = null;
+
+        return $row;
+    }
 }
