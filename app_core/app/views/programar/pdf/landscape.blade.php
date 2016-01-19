@@ -88,11 +88,11 @@
         @foreach($trabajos as $i => $trabajo)
             <tr>
                 <td class="center">{{ $i + 1 }}</td>
-                <td>{{ $trabajo->nombre }}</td>
-                <td class="center">{{ $trabajo->km_inicio }}</td>
-                <td class="center">{{ $trabajo->km_termino }}</td>
-                <td class="center">{{ $trabajo->unidad }}</td>
-                <td class="center">{{ $trabajo->cantidad }}</td>
+                <td>{{ $trabajo->Trabajo }}</td>
+                <td class="center">{{ $trabajo->Km_Inicio }}</td>
+                <td class="center">{{ $trabajo->Km_Termino }}</td>
+                <td class="center">{{ $trabajo->Unidad }}</td>
+                <td class="center">{{ $trabajo->Cantidad }}</td>
                 @if($trabajo->lun == 'checked')
                     <td class="checked"></td>
                 @else
@@ -129,18 +129,18 @@
                     <td></td>
                 @endif
                 @if($showObs)
-                    <td>{{ $trabajo->observaciones }}</td>
+                    <td>{{ $trabajo->Observaciones }}</td>
                 @endif
             </tr>
         @endforeach
         @foreach($autocontrol as $i => $trabajo)
             <tr>
                 <td class="center"></td>
-                <td>{{ $trabajo->nombre }}</td>
-                <td class="center">{{ $trabajo->km_inicio }}</td>
-                <td class="center">{{ $trabajo->km_termino }}</td>
-                <td class="center">{{ $trabajo->unidad }}</td>
-                <td class="center">{{ $trabajo->cantidad }}</td>
+                <td>{{ $trabajo->Trabajo }}</td>
+                <td class="center">{{ $trabajo->Km_Inicio }}</td>
+                <td class="center">{{ $trabajo->Km_Termino }}</td>
+                <td class="center">{{ $trabajo->Unidad }}</td>
+                <td class="center">{{ $trabajo->Cantidad }}</td>
                 @if($trabajo->lun == 'checked')
                     <td class="checked"></td>
                 @else
@@ -177,7 +177,7 @@
                     <td></td>
                 @endif
                 @if($showObs)
-                    <td>{{ $trabajo->observaciones }}</td>
+                    <td>{{ $trabajo->Observaciones }}</td>
                 @endif
             </tr>
         @endforeach

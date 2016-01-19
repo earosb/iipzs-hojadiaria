@@ -138,15 +138,18 @@
                                     <option value="a4">Oficio (A4)</option>
                                 </select>
                             </div>
+                            <div class="form-group col-md-2">
+                                <label>Formato</label>
+                                <select name="format" class="form-control" required>
+                                    <option value="pdf" selected>PDF</option>
+                                    <option value="csv">CSV</option>
+                                    <option value="excel">Excel</option>
+                                </select>
+                            </div>
                         </div>
                         <div>
                             <div class="btn-group">
-                                <!--<input class="btn btn-primary" type="submit" value="Descargar PDF"/>-->
-                                <button class="btn btn-primary" type="submit" name="action" value="pdf">Descargar PDF</button>
-                            </div>
-                            <div class="btn-group">
-                                <!--<input class="btn btn-primary" type="submit" value="Descargar CSV"/>-->
-                                <button class="btn btn-primary" type="submit" name="action" value="csv">Descargar CSV</button>
+                                <input class="btn btn-primary" type="submit" value="Descargar"/>
                             </div>
                         </div>
                     </form>
