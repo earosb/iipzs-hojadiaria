@@ -43,6 +43,8 @@ class SendNotificationCommand extends Command
      */
     public function fire()
     {
+        $time = Carbon::parse(Carbon::now('America/Santiago'))->format('d-m-Y h:i:s');
+
         $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
             ->where('vencimiento', '<', Carbon::now()->addWeeks(2))
             ->where('realizado', false)
@@ -57,7 +59,7 @@ class SendNotificationCommand extends Command
             $users = Sentry::findAllUsers();
             foreach ($users as $user) {
                 if ($user->hasAccess(['programar'])) {
-                    Mail::send('emails.programar', ['user' => $user, 'trabajos' => $trabajos], function ($message) use ($user) {
+                    Mail::send('emails.programar', ['time' => $time, 'user' => $user, 'trabajos' => $trabajos], function ($message) use ($user) {
                         $message->to($user->email, $user->username)->subject('Aviso de trabajos por vencer');
                     });
                 }
