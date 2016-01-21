@@ -16,7 +16,7 @@
             <ul class="nav navbar-nav">
                 @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
                                     class="glyphicon glyphicon-file"></i><span> Hoja diaria<b class="caret"></b></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/hd/create') }}">Ingresar hoja diaria</a></li>
@@ -26,7 +26,7 @@
                 @endif
                 @if (Sentry::getUser()->hasAccess(['reporte']))
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
                                     class="glyphicon glyphicon-list-alt"></i><span> Reportes <b
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
@@ -41,7 +41,7 @@
                 @endif
                 @if (Sentry::getUser()->hasAccess(['programar']))
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
                                     class="glyphicon glyphicon-tasks"></i><span> Programar <b
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
@@ -52,7 +52,7 @@
                 @endif
                 @if (Sentry::getUser()->hasAccess(['mantencion']))
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
                                     class="glyphicon glyphicon-wrench"></i><span> Mantención <b
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
@@ -71,7 +71,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
                         class="glyphicon glyphicon-question-sign"></i><span> Ayuda <b
                             class="caret"></b></span></a>
                             <ul class="dropdown-menu">
