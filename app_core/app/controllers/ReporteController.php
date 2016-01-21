@@ -85,7 +85,8 @@ class ReporteController extends \BaseController
             $query = DB::table('hoja_diaria');
 
             if ($avanzada)
-                $query->select(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base')); else
+                $query->select(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad', 'base'));
+            else
                 $query->select(array('fecha', 'block.estacion', 'detalle_hoja_diaria.km_inicio', 'detalle_hoja_diaria.km_termino', 'trabajo.nombre', 'trabajo.unidad', 'cantidad'));
 
             if ($grupoVia)
@@ -541,6 +542,200 @@ class ReporteController extends \BaseController
 
     }
 
+    private function createGenerador($sector, $year, $mes, $generadores, $path)
+    {
+        ini_set('max_execution_time', 300);
+
+        $desdeQuery = date('Y-m-01', strtotime($year . '-' . $mes . '-01'));
+        $hastaQuery = date('Y-m-t', strtotime($year . '-' . $mes . '-01'));
+
+        $blocks = $sector->blocks;
+
+        $trabajosMeta['sector'] = $sector->nombre;
+        $trabajosMeta['fecha'] = $this->months_fullname[$mes] . ' - ' . $year;
+
+        $partidas = array();
+        foreach ($generadores as $t) {
+            $partidas[] = Trabajo::find($t);
+        }
+
+        Log::debug($partidas);
+
+        /*        $partidas = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+                    ->where('tipo_mantenimiento.cod', '=', $tipoTrabajo)
+                    ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                    ->select('trabajo.id', 'trabajo.nombre')
+                    ->get();
+        */
+
+        foreach ($partidas as $partida) {
+            $trabajos = array();
+            $trabajosMeta['nombre'] = $partida->nombre;
+            foreach ($blocks as $block) {
+                $trabajosQuery = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
+                    ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
+                    ->whereBetween('fecha', [$desdeQuery, $hastaQuery])
+                    ->where('detalle_hoja_diaria.block_id', '=', $block->id)
+                    ->where('detalle_hoja_diaria.trabajo_id', '=', $partida->id)
+                    ->select(
+                        array(
+                            'detalle_hoja_diaria.block_id',
+                            'detalle_hoja_diaria.km_inicio',
+                            'detalle_hoja_diaria.km_termino',
+                            'detalle_hoja_diaria.desviador_id',
+                            'detalle_hoja_diaria.desvio_id',
+                            'trabajo.unidad',
+                            'detalle_hoja_diaria.cantidad',
+                            'detalle_hoja_diaria.tipo_via'))
+                    ->orderBy('detalle_hoja_diaria.km_inicio')
+                    ->orderBy('detalle_hoja_diaria.km_termino')
+                    ->get();
+                if (!$trabajosQuery->isEmpty()) {
+                    $trabajos[$block->id] = $trabajosQuery;
+                    $trabajosMeta['block'][$block->id] = $block->estacion;
+                }
+            }
+            if (!empty($trabajos)) {
+                Excel::create($this->normaliza($trabajosMeta['nombre']), function ($excel) use ($trabajosMeta, $trabajos) {
+                    foreach ($trabajos as $index => $t) {
+                        $trabajosMeta['total'] = 0;
+
+                        $tmp = $this->sumarPorLimites($t);
+                        $trabajosMeta['total'] = $tmp['total'];
+                        $trabajosOrdenados = $tmp['trabajos'];
+
+                        $excel->sheet($trabajosMeta['block'][$index], function ($sheet) use ($trabajosMeta, $trabajosOrdenados, $index) {
+                            $sheet->setStyle(array('font' => array('name' => 'Arial', 'size' => 12)));
+                            $sheet->loadView('reporte.generador')
+                                ->with('block', $trabajosMeta['block'][$index])
+                                ->with('trabajosMeta', $trabajosMeta)
+                                ->with('trabajos', $trabajosOrdenados);
+                        });
+                    }
+                })->store('xls', public_path('excel/' . $path));
+            }
+            unset($trabajos);
+        }
+    }
+
+    /**
+     * Quita los tíldes y caracteres especiales
+     * @param $cadena String a con tildes y cosas
+     * @return string
+     */
+    private static function normaliza($cadena)
+    {
+        $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕñÑ';
+        $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRrnN';
+        $cadena = utf8_decode($cadena);
+        $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
+        $cadena = strtolower($cadena);
+        return utf8_encode($cadena);
+    }
+
+    /**
+     * Suma las cantidades en trabajos realizados en los mismos o menores límites
+     * @param $json
+     * @return array
+     */
+    private function sumarPorLimites($json)
+    {
+        $array = json_decode($json, true);
+        $array_new = array();
+
+        $i = 0;
+        $total = 0;
+        //$length = count($array);
+        foreach ($array as $index => $item) {
+            if ($i == 0) {                      //Primero
+                $array_new[$i] = $item;
+                $total += $item['cantidad'];
+            }/*else if ($i == $length - 1) {    //Ultimo
+                $array_new[$i] = $item;
+            }*/
+            else {
+                $aux = $array_new[$i - 1];
+                if ($aux['km_inicio'] == $item['km_inicio'] && $aux['km_termino'] <= $item['km_termino']) {
+                    $array_new[$i] = $item;
+                    $array_new[$i]['cantidad'] = (string)($aux['cantidad'] + $item['cantidad']);
+                    $total += $item['cantidad'];
+                    unset($array_new[$i - 1]);
+                } else {
+                    $array_new[$i] = $item;
+                    $total += $item['cantidad'];
+                }
+            }
+            $i++;
+        }
+        // Elimina las $keys del arreglo
+        $array_new = array_values($array_new);
+
+        return array('total' => $total, 'trabajos' => $array_new);
+    }
+
+    /**
+     * @param $path
+     */
+    private static function createZip($path)
+    {
+        // Borra el archivo si es que existe
+        if (file_exists(public_path('excel/' . $path) . '.zip')) unlink(public_path('excel/' . $path) . '.zip');
+
+        $pathInfo = pathInfo(public_path('excel/' . $path));
+        $parentPath = $pathInfo['dirname'];
+        $dirName = $pathInfo['basename'];
+
+        $z = new ZipArchive();
+        $z->open(public_path('excel/' . $path . '.zip'), ZIPARCHIVE::CREATE);
+        $z->addEmptyDir($dirName);
+        self::folderToZip(public_path('excel/' . $path), $z, strlen("$parentPath/"));
+        $z->close();
+    }
+
+    /**
+     * @param $folder
+     * @param $zipFile
+     * @param $exclusiveLength
+     */
+    private static function folderToZip($folder, &$zipFile, $exclusiveLength)
+    {
+        $handle = opendir($folder);
+        while (false !== $f = readdir($handle)) {
+            if ($f != '.' && $f != '..') {
+                $filePath = "$folder/$f";
+                // Remove prefix from file path before add to zip.
+                $localPath = substr($filePath, $exclusiveLength);
+                if (is_file($filePath)) {
+                    $zipFile->addFile($filePath, $localPath);
+                } elseif (is_dir($filePath)) {
+                    // Add sub-directory.
+                    $zipFile->addEmptyDir($localPath);
+                    self::folderToZip($filePath, $zipFile, $exclusiveLength);
+                }
+            }
+        }
+        closedir($handle);
+    }
+
+    /**
+     * Elimina un directorio
+     * @param $dir String del directorio
+     */
+    private static function deleteFolder($dir)
+    {
+        $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+        $files = new RecursiveIteratorIterator($it,
+            RecursiveIteratorIterator::CHILD_FIRST);
+        foreach ($files as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getRealPath());
+            } else {
+                unlink($file->getRealPath());
+            }
+        }
+        rmdir($dir);
+    }
+
     /**
      * Recibe parámetros y genera excel formulario 2-3-4 manteniminto mayor
      * @return $this
@@ -648,200 +843,6 @@ class ReporteController extends \BaseController
         $this->deleteFolder('excel/' . $filename);
 
         return Response::download('excel/' . $filename . '.zip');
-    }
-
-    private function createGenerador($sector, $year, $mes, $generadores, $path)
-    {
-        ini_set('max_execution_time', 300);
-
-        $desdeQuery = date('Y-m-01', strtotime($year . '-' . $mes . '-01'));
-        $hastaQuery = date('Y-m-t', strtotime($year . '-' . $mes . '-01'));
-
-        $blocks = $sector->blocks;
-
-        $trabajosMeta['sector'] = $sector->nombre;
-        $trabajosMeta['fecha'] = $this->months_fullname[$mes] . ' - ' . $year;
-
-        $partidas = array();
-        foreach ($generadores as $t) {
-            $partidas[] = Trabajo::find($t);
-        }
-
-        Log::debug($partidas);
-
-        /*        $partidas = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
-                    ->where('tipo_mantenimiento.cod', '=', $tipoTrabajo)
-                    ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
-                    ->select('trabajo.id', 'trabajo.nombre')
-                    ->get();
-        */
-
-        foreach ($partidas as $partida) {
-            $trabajos = array();
-            $trabajosMeta['nombre'] = $partida->nombre;
-            foreach ($blocks as $block) {
-                $trabajosQuery = HojaDiaria::join('detalle_hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')
-                    ->join('trabajo', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')
-                    ->whereBetween('fecha', [$desdeQuery, $hastaQuery])
-                    ->where('detalle_hoja_diaria.block_id', '=', $block->id)
-                    ->where('detalle_hoja_diaria.trabajo_id', '=', $partida->id)
-                    ->select(
-                        array(
-                            'detalle_hoja_diaria.block_id',
-                            'detalle_hoja_diaria.km_inicio',
-                            'detalle_hoja_diaria.km_termino',
-                            'detalle_hoja_diaria.desviador_id',
-                            'detalle_hoja_diaria.desvio_id',
-                            'trabajo.unidad',
-                            'detalle_hoja_diaria.cantidad',
-                            'detalle_hoja_diaria.tipo_via'))
-                    ->orderBy('detalle_hoja_diaria.km_inicio')
-                    ->orderBy('detalle_hoja_diaria.km_termino')
-                    ->get();
-                if (!$trabajosQuery->isEmpty()) {
-                    $trabajos[$block->id] = $trabajosQuery;
-                    $trabajosMeta['block'][$block->id] = $block->estacion;
-                }
-            }
-            if (!empty($trabajos)) {
-                Excel::create($this->normaliza($trabajosMeta['nombre']), function ($excel) use ($trabajosMeta, $trabajos) {
-                    foreach ($trabajos as $index => $t) {
-                        $trabajosMeta['total'] = 0;
-
-                        $tmp = $this->sumarPorLimites($t);
-                        $trabajosMeta['total'] = $tmp['total'];
-                        $trabajosOrdenados = $tmp['trabajos'];
-
-                        $excel->sheet($trabajosMeta['block'][$index], function ($sheet) use ($trabajosMeta, $trabajosOrdenados, $index) {
-                            $sheet->setStyle(array('font' => array('name' => 'Arial', 'size' => 12)));
-                            $sheet->loadView('reporte.generador')
-                                ->with('block', $trabajosMeta['block'][$index])
-                                ->with('trabajosMeta', $trabajosMeta)
-                                ->with('trabajos', $trabajosOrdenados);
-                        });
-                    }
-                })->store('xls', public_path('excel/' . $path));
-            }
-            unset($trabajos);
-        }
-    }
-
-    /**
-     * @param $path
-     */
-    private static function createZip($path)
-    {
-        // Borra el archivo si es que existe
-        if (file_exists(public_path('excel/' . $path) . '.zip')) unlink(public_path('excel/' . $path) . '.zip');
-
-        $pathInfo = pathInfo(public_path('excel/' . $path));
-        $parentPath = $pathInfo['dirname'];
-        $dirName = $pathInfo['basename'];
-
-        $z = new ZipArchive();
-        $z->open(public_path('excel/' . $path . '.zip'), ZIPARCHIVE::CREATE);
-        $z->addEmptyDir($dirName);
-        self::folderToZip(public_path('excel/' . $path), $z, strlen("$parentPath/"));
-        $z->close();
-    }
-
-    /**
-     * @param $folder
-     * @param $zipFile
-     * @param $exclusiveLength
-     */
-    private static function folderToZip($folder, &$zipFile, $exclusiveLength)
-    {
-        $handle = opendir($folder);
-        while (false !== $f = readdir($handle)) {
-            if ($f != '.' && $f != '..') {
-                $filePath = "$folder/$f";
-                // Remove prefix from file path before add to zip.
-                $localPath = substr($filePath, $exclusiveLength);
-                if (is_file($filePath)) {
-                    $zipFile->addFile($filePath, $localPath);
-                } elseif (is_dir($filePath)) {
-                    // Add sub-directory.
-                    $zipFile->addEmptyDir($localPath);
-                    self::folderToZip($filePath, $zipFile, $exclusiveLength);
-                }
-            }
-        }
-        closedir($handle);
-    }
-
-    /**
-     * Elimina un directorio
-     * @param $dir String del directorio
-     */
-    private static function deleteFolder($dir)
-    {
-        $it = new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($it,
-            RecursiveIteratorIterator::CHILD_FIRST);
-        foreach ($files as $file) {
-            if ($file->isDir()) {
-                rmdir($file->getRealPath());
-            } else {
-                unlink($file->getRealPath());
-            }
-        }
-        rmdir($dir);
-    }
-
-    /**
-     * Quita los tíldes y caracteres especiales
-     * @param $cadena String a con tildes y cosas
-     * @return string
-     */
-    private static function normaliza($cadena)
-    {
-        $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕñÑ';
-        $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRrnN';
-        $cadena = utf8_decode($cadena);
-        $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
-        $cadena = strtolower($cadena);
-        return utf8_encode($cadena);
-    }
-
-    /**
-     * Suma las cantidades en trabajos realizados en los mismos o menores límites
-     * @param $json
-     * @return array
-     */
-    private function sumarPorLimites($json)
-    {
-        $array = json_decode($json, true);
-        $array_new = array();
-
-        $i = 0;
-        $total = 0;
-        //$length = count($array);
-        foreach ($array as $index => $item) {
-            if ($i == 0) {                      //Primero
-                $array_new[$i] = $item;
-                $total += $item['cantidad'];
-            }/*else if ($i == $length - 1) {    //Ultimo
-                $array_new[$i] = $item;
-            }*/
-            else {
-                $aux = $array_new[$i - 1];
-                if ($aux['km_inicio'] == $item['km_inicio'] && $aux['km_termino'] <= $item['km_termino']) {
-                    $array_new[$i] = $item;
-                    $array_new[$i]['cantidad'] = (string)($aux['cantidad'] + $item['cantidad']);
-                    $total += $item['cantidad'];
-                    unset($array_new[$i - 1]);
-                } else {
-                    $array_new[$i] = $item;
-                    $total += $item['cantidad'];
-                }
-            }
-            $i++;
-        }
-        // Elimina las $keys del arreglo
-        $array_new = array_values($array_new);
-
-        return array('total' => $total, 'trabajos' => $array_new);
     }
 
 }
