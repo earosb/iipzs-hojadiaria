@@ -58,7 +58,7 @@ class SendNotificationCommand extends Command
         if (0 < $trabajos->count()) {
             $users = Sentry::findAllUsers();
             foreach ($users as $user) {
-                if ($user->hasAccess(['programar'])) {
+                if ($user->hasAccess(['programar']) && $user->activated) {
                     Mail::send('emails.programar', ['time' => $time, 'user' => $user, 'trabajos' => $trabajos], function ($message) use ($user) {
                         $message->to($user->email, $user->username)->subject('Aviso de trabajos por vencer');
                     });
