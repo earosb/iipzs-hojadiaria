@@ -17,10 +17,20 @@ class ProgramarController extends \BaseController
             return View::make('programar.index');
         }
 
-        $query = DB::table('programa');
+        $query = Programa::join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
+            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id');
 
         if (Input::has('causa'))
             $query->where('programa.causa', 'LIKE', '%' . Input::get('causa') . '%');
+
+        if (Input::has('km_inicio'))
+            $query->where('programa.km_inicio', '>=', Input::get('km_inicio'));
+
+        if (Input::has('km_termino'))
+            $query->where('programa.km_termino', '<=', Input::get('km_termino'));
+
+        if (Input::has('trabajo_id') && Input::get('trabajo_id') != 'all')
+            $query->where('programa.trabajo_id', '=', Input::get('trabajo_id'));
 
         if (Input::has('realizado') && Input::get('realizado') == 'true')
             $query->where('programa.realizado', true);
@@ -29,7 +39,7 @@ class ProgramarController extends \BaseController
 
         if (Input::has('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
-            $query->where('programa.semana', '=', $semana);
+            $query->whereDate('programa.semana', '=', $semana);
             $query->orWhereNull('programa.semana');
         }
 
@@ -44,13 +54,11 @@ class ProgramarController extends \BaseController
             $query->orWhereNull('programa.grupo_trabajo_id');
         }
 
-        $trabajos = $query->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
-            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
-            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones', 'obs_ce',
+        $trabajos = $query->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones', 'obs_ce',
                 'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'no_programable', 'vencimiento', 'realizado',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
             ->orderBy('km_inicio')
-            ->get();
+            ->paginate(50);
 
         foreach ($trabajos as $trabajo) {
             $trabajo->selected = false;

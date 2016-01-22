@@ -3,11 +3,29 @@ app.controller("appController", ['$scope', '$http', function appController($scop
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
     $scope.currentPage = 0;
-    $scope.pageSize = 20;
+    $scope.pageTotal = 0;
+    $scope.nextPage = 0;
+    $scope.currentPage = 1;
+    $scope.lastPage = 1;
+    $scope.filtro = {
+        page: 1,
+        causa: null,
+        trabajo_id: null,
+        km_inicio: null,
+        km_termino: null,
+        grupo_trabajo_id: null,
+        semana: null,
+        vencimiento: null,
+        realizado: false
+    };
 
-    $http.get('programar').success(function (data) {
-        $scope.trabajos = data;
-        console.info('trabajos', data.length);
+    $http.get('programar', $scope.filtro).success(function (data) {
+        $scope.trabajos = data.data;
+        $scope.currentPage = data.current_page;
+        $scope.lastPage = data.last_page;
+        $scope.nextPage = data.current_page + 1;
+        $scope.pageTotal = data.total;
+        console.info('trabajos', data.data.length);
     });
 
     $http.get('grupos').success(function (data) {
@@ -19,6 +37,23 @@ app.controller("appController", ['$scope', '$http', function appController($scop
         $scope.partidas = data;
         console.info('partidas', data.length);
     });
+
+    $scope.loadMore = function () {
+        $scope.filtro.page = $scope.nextPage;
+        $http.get('programar', {
+            params: $scope.filtro
+        }).success(function (data) {
+            var trabajos = data.data;
+            trabajos.forEach(function (t) {
+                $scope.trabajos.push(t);
+            });
+            $scope.currentPage = data.current_page;
+            $scope.lastPage = data.last_page;
+            $scope.nextPage = data.current_page + 1;
+            $scope.pageTotal = data.total;
+            console.info('current_page', data.current_page);
+        });
+    };
 
     $scope.createTrabajo = function (nTrabajo) {
         $http.post('programar', nTrabajo)
@@ -58,11 +93,17 @@ app.controller("appController", ['$scope', '$http', function appController($scop
     };
 
     //Filtrar
-    $scope.filtrar = function (filtro) {
+    $scope.filtrar = function () {
+        $scope.filtro.page = 1;
         $http.get('programar', {
-            params: filtro
+            params: $scope.filtro
         }).success(function (data) {
-            $scope.trabajos = data;
+            console.info('filtro', $scope.filtro);
+            $scope.trabajos = data.data;
+            $scope.currentPage = data.current_page;
+            $scope.lastPage = data.last_page;
+            $scope.nextPage = data.current_page + 1;
+            $scope.pageTotal = data.total;
         });
     };
 

@@ -1,14 +1,14 @@
 <div class="col-md-12">
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a show-tab href="#tab-nuevo-trabajo" role="tab" data-toggle="tab">Nuevo trabajo</a></li>
-        <li><a show-tab href="#tab-filtro" role="tab" data-toggle="tab">Filtrar</a></li>
+        <li><a show-tab href="#tab-nuevo-trabajo" role="tab" data-toggle="tab">Agregar nuevo</a></li>
+        <li class="active"><a show-tab href="#tab-filtro" role="tab" data-toggle="tab">Filtrar listado</a></li>
         <li><a show-tab href="#tab-pdf" role="tab" data-toggle="tab">Descargar programa</a></li>
     </ul>
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="tab-nuevo-trabajo">
+        <div class="tab-pane fade" id="tab-nuevo-trabajo">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <form name="formTrabajo" ng-submit="createTrabajo(nTrabajo)">
@@ -53,43 +53,63 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="tab-filtro">
+        <div class="tab-pane fade  in active" id="tab-filtro">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form ng-submit="filtrar(filtro)">
-                        <div class="form-group col-md-2">
-                            <label>Causa</label>
-                            <input type="text" placeholder="Ej. ITPFM MES-AÑO" ng-model="filtro.causa" class="form-control" capitalize>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label>Grupo</label>
-                            <select ng-model="filtro.grupo_trabajo_id" class="form-control">
-                                <option value="all" selected="selected">Todos</option>
-                                <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Semana</label>
-                            <input type="text" placeholder="dd/mm/aaaa" ng-model="filtro.semana" class="form-control" jqdatepickerweek>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <label>Vencimiento</label>
-                            <input type="text" placeholder="dd/mm/aaaa" ng-model="filtro.vencimiento" class="form-control" jqdatepicker>
-                        </div>
-                        <div class="form-group col-md-1">
-                            <label>Realizados</label>
-
-                            <div class="checkbox">
-                                <input ng-model="filtro.realizado" ng-value="true" id="checkboxR" class="styled" type="checkbox">
-                                <label for="checkboxR">
-                                    Incluir
-                                </label>
+                    <form ng-submit="filtrar()">
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label>Causa</label>
+                                <input type="text" placeholder="Ej. ITPFM MES-AÑO" ng-model="filtro.causa" class="form-control" capitalize>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Trabajo</label>
+                                <select class="form-control" ng-model="filtro.trabajo_id">
+                                    <option value="all">Todos</option>
+                                    <option ng-repeat="partida in partidas" value="{{ partida.id }}">{{ partida.nombre }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Km inicio</label>
+                                <input type="number" min="0" placeholder="Ej. 499000" ng-model="filtro.km_inicio" class="form-control">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Km término</label>
+                                <input type="number" min="0" placeholder="Ej. 520000" ng-model="filtro.km_termino" class="form-control">
                             </div>
                         </div>
-                        <div class="form-group col-md-1">
-                            <label></label>
-                            <input class="btn btn-primary" type="submit" value="Filtrar"/>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label>Grupo</label>
+                                <select ng-model="filtro.grupo_trabajo_id" class="form-control">
+                                    <option value="all" selected="selected">Todos</option>
+                                    <option ng-repeat="grupo in grupos | orderBy:'base'" value="{{ grupo.id }}">{{ grupo.base }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Semana</label>
+                                <input type="text" placeholder="dd/mm/aaaa" ng-model="filtro.semana" class="form-control" jqdatepickerweek>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label>Vencimiento</label>
+                                <input type="text" placeholder="dd/mm/aaaa" ng-model="filtro.vencimiento" class="form-control" jqdatepicker>
+                            </div>
+                            <div class="form-group col-md-1">
+                                <label>Realizados</label>
+
+                                <div class="checkbox">
+                                    <input ng-model="filtro.realizado" ng-value="true" id="checkboxR" class="styled" type="checkbox">
+                                    <label for="checkboxR">
+                                        Incluir
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="btn-group">
+                                <input class="btn btn-primary" type="submit" value="Filtrar"/>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -166,7 +186,9 @@
 
 <!--Main table-->
 <div ng-show="trabajos.length > 0">
-
+    <div class="pull-right">
+        <span class="label label-default">{{ trabajos.length }} visibles de {{ pageTotal }}.</span>
+    </div>
     <table id="main" class="table table-condensed table-bordered">
         <tr>
             <th class="text-center">
@@ -333,6 +355,10 @@
             </td>
         </tr>
     </table>
+    <div ng-show="currentPage < lastPage" class="col-md-12">
+        <span ng-click="loadMore()"
+              class="btn btn-default btn-block">Cargar más ({{ trabajos.length}} de {{ pageTotal }})</span>
+    </div>
 </div>
 
 <!--Loading svg-->
