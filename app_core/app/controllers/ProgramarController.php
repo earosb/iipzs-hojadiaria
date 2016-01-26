@@ -40,24 +40,25 @@ class ProgramarController extends \BaseController
         if (Input::has('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
             $query->whereDate('programa.semana', '=', $semana);
-            $query->orWhereNull('programa.semana');
+            // $query->orWhereNull('programa.semana');
         }
 
         if (Input::has('vencimiento')) {
             $vencimiento = Carbon::createFromFormat('d/m/Y', Input::get('vencimiento'))->toDateString();
             $query->where('programa.vencimiento', '=', $vencimiento);
-            $query->orWhereNull('programa.vencimiento');
+            // $query->orWhereNull('programa.vencimiento');
         }
 
         if (Input::has('grupo_trabajo_id') && Input::get('grupo_trabajo_id') != 'all') {
             $query->where('programa.grupo_trabajo_id', '=', Input::get('grupo_trabajo_id'));
-            $query->orWhereNull('programa.grupo_trabajo_id');
+            // $query->orWhereNull('programa.grupo_trabajo_id');
         }
 
         $trabajos = $query->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones', 'obs_ce',
-                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'no_programable', 'vencimiento', 'realizado',
+                'grupo_trabajo_id', 'trabajo_id', 'unidad', 'nombre', 'semana', 'no_programable', 'vencimiento', 'realizado',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
             ->orderBy('km_inicio')
+            ->orderBy('trabajo.nombre', 'asc')
             ->paginate(50);
 
         foreach ($trabajos as $trabajo) {
@@ -107,7 +108,7 @@ class ProgramarController extends \BaseController
             ->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
             ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
             ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
-                'grupo_trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
+                'grupo_trabajo_id', 'trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
                 'grupo_trabajo.id as grupo_trabajo_id')
             ->where('programa.id', '=', $t->id)
@@ -255,6 +256,57 @@ class ProgramarController extends \BaseController
             $programa->save();
         }
         return Response::json(['error' => false, 'status' => $status]);
+    }
+
+    public function merge()
+    {
+        $trabajos = Input::get('trabajos');
+
+        $trabajo_ids = array();
+        $causa = 'merge';
+        $cantidad = 0;
+        $kmsInicio = array();
+        $kmsTermino = array();
+
+        foreach ($trabajos as $trabajo) {
+            array_push($trabajo_ids, $trabajo['trabajo_id']);
+            array_push($kmsInicio, $trabajo['km_inicio']);
+            array_push($kmsTermino, $trabajo['km_termino']);
+            $cantidad = $cantidad + $trabajo['cantidad'];
+            $causa = $trabajo['causa'];
+        }
+
+        if (count(array_unique($trabajo_ids)) != 1)
+            return Response::json(['error' => true, 'msg' => 'Los trabajos seleccionados no son iguales']);
+
+        $new = array(
+            'trabajo_id' => $trabajo_ids[0],
+            'causa' => $causa,
+            'km_inicio' => min($kmsInicio),
+            'km_termino' => max($kmsTermino),
+            'cantidad' => $cantidad);
+
+        $t = Programa::create($new);
+
+        $trabajo = DB::table('programa')
+            ->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
+            ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
+            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+                'grupo_trabajo_id', 'trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
+                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
+                'grupo_trabajo.id as grupo_trabajo_id')
+            ->where('programa.id', '=', $t->id)
+            ->first();
+
+        $aux = $trabajo->semana;
+        if ($aux) $trabajo->semana = Carbon::parse($aux)->format('d/m/Y');
+        $aux2 = $trabajo->vencimiento;
+        if ($aux2) $trabajo->vencimiento = Carbon::parse($aux2)->format('d/m/Y');
+
+        return Response::json([
+            'error' => false,
+            'trabajo' => $trabajo
+        ]);
     }
 
     /**

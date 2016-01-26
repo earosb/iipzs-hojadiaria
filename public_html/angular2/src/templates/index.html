@@ -262,7 +262,6 @@
             <th class="text-center">D</th>
             <th class="text-center">Opc.</th>
         </tr>
-        <!--<tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort | startFrom:currentPage*pageSize | limitTo:pageSize" class="{{ trabajo.status }}">-->
         <tr ng-repeat="(key, trabajo) in trabajos | orderBy:orderByField:reverseSort" class="{{ trabajo.status }}">
             <td class="text-center">
                 <input type="checkbox" ng-model="trabajo.selected" ng-change="toggleSelection()"/>
@@ -381,6 +380,10 @@
     </a>
     <a href="" class="btn btn-default btn-xs" ng-click="showDialog = true"
        data-toggle="popover" data-content="Editar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-pencil"></span></a>
+
+    <a href="" class="btn btn-primary btn-xs" confirmed-click="mergeSelected()" ng-confirm-click="¿Agrupar trabajos seleccionados?"
+       data-toggle="popover" data-content="Agrupar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-resize-small"></span></a>
+
     <a href="" class="btn btn-danger btn-xs" confirmed-click="deleteSelected()" ng-confirm-click="¿Eliminar trabajos seleccionados?"
        data-toggle="popover" data-content="Eliminar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a>
 </div>

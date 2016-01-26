@@ -1,5 +1,5 @@
 //creamos nuestro modulo llamado app
-var app = angular.module("app", ['ngRoute']);
+var app = angular.module("app", ['ngRoute', 'ngAlertify']);
 
 // Sobreescribe headers para detectar AJAX en laravel
 app.config(['$httpProvider', function ($httpProvider) {
@@ -18,14 +18,6 @@ app.config(['$routeProvider', function ($routeProvider) {
         })
         .otherwise({redirectTo: "/"});
 }]);
-
-// Filtro que permite paginar la tabla principal
-app.filter('startFrom', function () {
-    return function (input, start) {
-        start = +start;
-        return input.slice(start);
-    };
-});
 
 // Datepicker directive select day
 app.directive('jqdatepicker', function () {
@@ -55,11 +47,11 @@ app.directive('jqdatepickerweek', function () {
         require: 'ngModel',
         link: function (scope, element, attrs, ngModelCtrl) {
             var startDate;
-
             $(element).datepicker({
                 showOtherMonths: true,
                 selectOtherMonths: true,
                 dateFormat: 'dd/mm/yy',
+                showButtonPanel: true,
                 beforeShow: function () {
                     $(".ui-datepicker").css('font-size', 12);
                 },
@@ -127,7 +119,7 @@ app.directive('capitalize', function () {
 });
 
 // Loading view directive
-app.directive('loading', ['$http', function ($http) {
+app.directive('loading', ['$http', 'alertify', function ($http, alertify) {
     return {
         restrict: 'A',
         link: function (scope, elm, attrs) {

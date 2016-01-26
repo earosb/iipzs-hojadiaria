@@ -1,4 +1,5 @@
-app.controller("appController", ['$scope', '$http', function appController($scope, $http) {
+app.controller("appController", ['$scope', '$http', 'alertify', function appController($scope, $http, alertify) {
+    alertify.logPosition("bottom right");
     $scope.trabajos = [];
     $scope.orderByField = 'km_inicio';
     $scope.reverseSort = false;
@@ -230,6 +231,29 @@ app.controller("appController", ['$scope', '$http', function appController($scop
         });
     };
 
+    // Agrupa trabajos seleccionados
+    $scope.mergeSelected = function () {
+        var selected = [];
+        angular.forEach($scope.trabajos, function (trabajo) {
+            if (trabajo.selected) {
+                selected.push(trabajo);
+            }
+        });
+        if (selected.length <= 1){
+            alertify.error('Seleccione dos o más trabajos para agrupar');
+            return;
+        }
+        $http.post('programar/merge', {trabajos: selected})
+            .success(function (data) {
+                if (!data.error){
+                    $scope.trabajos.push(data.trabajo);
+                    $scope.deleteSelected();
+                } else {
+                    alertify.error(data.msg);
+                }
+            });
+    };
+
     // Calcula el número de páginas
     $scope.numberOfPages = function () {
         return Math.floor($scope.trabajos.length / $scope.pageSize);
@@ -237,7 +261,7 @@ app.controller("appController", ['$scope', '$http', function appController($scop
 }]);
 
 // Edita un trabajo seleccionado en vista completa
-app.controller("editController", ['$scope', '$http', '$routeParams', '$location', function editController($scope, $http, $routeParams, $location) {
+app.controller("editController", ['$scope', '$http', '$routeParams', '$location', 'alertify', function editController($scope, $http, $routeParams, $location, alertify) {
     $scope.textButton = "Editar programa trabajo";
     var i, item, length = $scope.trabajos.length;
     for (i = 0; i < length; i++) {

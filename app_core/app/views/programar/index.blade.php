@@ -20,6 +20,7 @@
     {{ HTML::style('angular2/bower_components/bootswatch/yeti/bootstrap.min.css') }}
     {{ HTML::style('angular2/bower_components/jqueryui/themes/smoothness/jquery-ui.min.css') }}
     {{ HTML::style('angular2/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
+    {{ HTML::style('angular2/bower_components/alertify.js/dist/css/alertify.css') }}
     {{ HTML::style('css/landing.min.css') }}
 
     <style>
@@ -55,6 +56,7 @@
 {{ HTML::script('angular2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}
 {{ HTML::script('angular2/bower_components/angularjs/angular.min.js') }}
 {{ HTML::script('angular2/bower_components/angular-route/angular-route.min.js') }}
+{{ HTML::script('angular2/bower_components/alertify.js/dist/js/ngAlertify.js') }}
 
 {{ HTML::script('angular2/dist/app.js') }}
 {{ HTML::script('js/calendar/calendar.min.js') }}

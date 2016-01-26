@@ -174,6 +174,7 @@ Route::group(array('before' => 'auth'), function () {
         Route::delete('programar/{id}', 'ProgramarController@destroy');
         Route::put('programar/{id}', 'ProgramarController@update');
         Route::post('programar/selected', 'ProgramarController@updateSelected');
+        Route::post('programar/merge', 'ProgramarController@merge');
 
         Route::get('programar/getprograma', 'ProgramarController@getPrograma');
 
