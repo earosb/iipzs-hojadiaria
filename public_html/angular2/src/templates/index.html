@@ -189,7 +189,7 @@
     <div class="pull-right">
         <span class="label label-default">{{ trabajos.length }} visibles de {{ pageTotal }}.</span>
     </div>
-    <table id="main" class="table table-condensed table-bordered">
+    <table id="main" class="table table-condensed table-bordered table-hover">
         <tr>
             <th class="text-center">
                 <input type="checkbox" ng-model="isAllSelected" ng-click="selectAll()"/>
@@ -267,7 +267,7 @@
                 <input type="checkbox" ng-model="trabajo.selected" ng-change="toggleSelection()"/>
             </td>
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
-            <td ng-class="orderByField == 'nombre' ? 'active' : ''">
+            <td ng-click="checkByClick(trabajo)" class="checkByClick" ng-class="orderByField == 'nombre' ? 'active' : ''">
                 {{ trabajo.nombre }}
                 <span ng-if="trabajo.realizado" class="pull-right"><span class="label label-success" title="Trabajo realizado"><span
                         class="glyphicon glyphicon-ok"></span></span></span>

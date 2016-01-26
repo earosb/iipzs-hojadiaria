@@ -134,6 +134,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
                 selected.push(trabajo);
             }
         });
+
+        if (!validateSelected(selected, 'eliminar')) return;
+
         selected.forEach(function (trabajo) {
             $http.delete('programar/' + trabajo.id)
                 .success(function (data) {
@@ -153,6 +156,8 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
                 selected.push(trabajo);
             }
         });
+
+        if (!validateSelected(selected, 'editar')) return;
 
         var t = {};
 
@@ -221,6 +226,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
                 selected.push(trabajo);
             }
         });
+
+        if (!validateSelected(selected, 'archivar')) return;
+
         selected.forEach(function (trabajo) {
             trabajo.realizado = true;
             trabajo.status = 'success';
@@ -239,13 +247,12 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
                 selected.push(trabajo);
             }
         });
-        if (selected.length <= 1){
-            alertify.error('Seleccione dos o más trabajos para agrupar');
-            return;
-        }
+
+        if (!validateSelected(selected, 'agrupar')) return;
+
         $http.post('programar/merge', {trabajos: selected})
             .success(function (data) {
-                if (!data.error){
+                if (!data.error) {
                     $scope.trabajos.push(data.trabajo);
                     $scope.deleteSelected();
                 } else {
@@ -258,6 +265,19 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
     $scope.numberOfPages = function () {
         return Math.floor($scope.trabajos.length / $scope.pageSize);
     };
+
+    $scope.checkByClick = function (t) {
+        t.selected = !t.selected;
+    };
+
+    function validateSelected(selected, functionName) {
+        if (selected.length <= 1) {
+            alertify.error('Seleccione dos o más trabajos para ' + functionName);
+            return false;
+        } else {
+            return true;
+        }
+    }
 }]);
 
 // Edita un trabajo seleccionado en vista completa

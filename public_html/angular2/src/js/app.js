@@ -51,7 +51,6 @@ app.directive('jqdatepickerweek', function () {
                 showOtherMonths: true,
                 selectOtherMonths: true,
                 dateFormat: 'dd/mm/yy',
-                showButtonPanel: true,
                 beforeShow: function () {
                     $(".ui-datepicker").css('font-size', 12);
                 },
