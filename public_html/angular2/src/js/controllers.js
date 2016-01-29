@@ -20,7 +20,7 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
         realizado: false
     };
 
-    $http.get('programar', $scope.filtro).success(function (data) {
+    $http.get('programar', $scope.filtro).success(function(data) {
         $scope.trabajos = data.data;
         $scope.currentPage = data.current_page;
         $scope.lastPage = data.last_page;
@@ -29,23 +29,23 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
         console.info('trabajos', data.data.length);
     });
 
-    $http.get('grupos').success(function (data) {
+    $http.get('grupos').success(function(data) {
         $scope.grupos = data;
         console.info('grupos', data.length);
     });
 
-    $http.get('trabajo').success(function (data) {
+    $http.get('trabajo').success(function(data) {
         $scope.partidas = data;
         console.info('partidas', data.length);
     });
 
-    $scope.loadMore = function () {
+    $scope.loadMore = function() {
         $scope.filtro.page = $scope.nextPage;
         $http.get('programar', {
             params: $scope.filtro
-        }).success(function (data) {
+        }).success(function(data) {
             var trabajos = data.data;
-            trabajos.forEach(function (t) {
+            trabajos.forEach(function(t) {
                 $scope.trabajos.push(t);
             });
             $scope.currentPage = data.current_page;
@@ -56,9 +56,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
         });
     };
 
-    $scope.createTrabajo = function (nTrabajo) {
+    $scope.createTrabajo = function(nTrabajo) {
         $http.post('programar', nTrabajo)
-            .success(function (data) {
+            .success(function(data) {
                 if (!data.error) {
                     $scope.trabajos.push(data.trabajo);
                     $scope.errors = [];
@@ -71,10 +71,10 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
             });
     };
 
-    $scope.deleteTrabajo = function (trabajo) {
+    $scope.deleteTrabajo = function(trabajo) {
         if (confirm('¿Eliminar ' + trabajo.nombre + '?')) {
             $http.delete('programar/' + trabajo.id)
-                .success(function (data) {
+                .success(function(data) {
                     if (!data.error) {
                         var idx = $scope.trabajos.indexOf(trabajo);
                         $scope.trabajos.splice(idx, 1);
@@ -83,9 +83,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
         }
     };
 
-    $scope.updateTrabajo = function (trabajo) {
+    $scope.updateTrabajo = function(trabajo) {
         $http.put('programar/' + trabajo.id, trabajo)
-            .success(function (data) {
+            .success(function(data) {
                 if (!data.error) {
                     trabajo.status = data.status;
                     if (trabajo.no_programable) trabajo.semana = '';
@@ -94,11 +94,11 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
     };
 
     //Filtrar
-    $scope.filtrar = function () {
+    $scope.filtrar = function() {
         $scope.filtro.page = 1;
         $http.get('programar', {
             params: $scope.filtro
-        }).success(function (data) {
+        }).success(function(data) {
             console.info('filtro', $scope.filtro);
             $scope.trabajos = data.data;
             $scope.currentPage = data.current_page;
@@ -109,9 +109,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
     };
 
     // Select all
-    $scope.selectAll = function () {
+    $scope.selectAll = function() {
         var toggleStatus = !$scope.isAllSelected;
-        angular.forEach($scope.trabajos, function (trabajo) {
+        angular.forEach($scope.trabajos, function(trabajo) {
             trabajo.selected = toggleStatus;
         });
         $scope.isAllSelected = toggleStatus;
@@ -122,14 +122,14 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
     }
 
     // Toggle selection
-    $scope.toggleSelection = function () {
+    $scope.toggleSelection = function() {
         $scope.isAllSelected = $scope.trabajos.every(isAllSelected);
     };
 
     // Elimina trabajos seleccionados
-    $scope.deleteSelected = function () {
+    $scope.deleteSelected = function() {
         var selected = [];
-        angular.forEach($scope.trabajos, function (trabajo) {
+        angular.forEach($scope.trabajos, function(trabajo) {
             if (trabajo.selected) {
                 selected.push(trabajo);
             }
@@ -137,9 +137,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
 
         if (!validateSelected(selected, 'eliminar')) return;
 
-        selected.forEach(function (trabajo) {
+        selected.forEach(function(trabajo) {
             $http.delete('programar/' + trabajo.id)
-                .success(function (data) {
+                .success(function(data) {
                     if (!data.error) {
                         var idx = $scope.trabajos.indexOf(trabajo);
                         $scope.trabajos.splice(idx, 1);
@@ -149,9 +149,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
     };
 
     // Actualiza trabajos seleccionados
-    $scope.updateSelected = function (modal) {
+    $scope.updateSelected = function(modal) {
         var selected = [];
-        angular.forEach($scope.trabajos, function (trabajo) {
+        angular.forEach($scope.trabajos, function(trabajo) {
             if (trabajo.selected) {
                 selected.push(trabajo);
             }
@@ -179,13 +179,13 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
         };
 
         $http.post('programar/selected', data)
-            .success(function (response) {
+            .success(function(response) {
                 if (response.error) return;
                 var status = response.status;
-                angular.forEach($scope.trabajos, function (trabajo) {
+                angular.forEach($scope.trabajos, function(trabajo) {
                     if (trabajo.selected) {
                         trabajo.selected = false;
-                        status.forEach(function (s) {
+                        status.forEach(function(s) {
                             if (trabajo.id == s.id) {
                                 trabajo.status = s.class;
                             }
@@ -219,9 +219,9 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
     };
 
     // Archiva trabajos seleccionados
-    $scope.archiveSelected = function () {
+    $scope.archiveSelected = function() {
         var selected = [];
-        angular.forEach($scope.trabajos, function (trabajo) {
+        angular.forEach($scope.trabajos, function(trabajo) {
             if (trabajo.selected) {
                 selected.push(trabajo);
             }
@@ -229,20 +229,20 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
 
         if (!validateSelected(selected, 'archivar')) return;
 
-        selected.forEach(function (trabajo) {
+        selected.forEach(function(trabajo) {
             trabajo.realizado = true;
             trabajo.status = 'success';
             $http.put('programar/' + trabajo.id, trabajo)
-                .success(function (data) {
+                .success(function(data) {
                     if (!data.error) trabajo.status = data.status;
                 });
         });
     };
 
     // Agrupa trabajos seleccionados
-    $scope.mergeSelected = function () {
+    $scope.mergeSelected = function() {
         var selected = [];
-        angular.forEach($scope.trabajos, function (trabajo) {
+        angular.forEach($scope.trabajos, function(trabajo) {
             if (trabajo.selected) {
                 selected.push(trabajo);
             }
@@ -250,8 +250,10 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
 
         if (!validateSelected(selected, 'agrupar')) return;
 
-        $http.post('programar/merge', {trabajos: selected})
-            .success(function (data) {
+        $http.post('programar/merge', {
+                trabajos: selected
+            })
+            .success(function(data) {
                 if (!data.error) {
                     $scope.trabajos.push(data.trabajo);
                     $scope.deleteSelected();
@@ -261,12 +263,35 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
             });
     };
 
+    // Limpia semana (Lun - Dom) trabajos seleccionados
+    $scope.clearSelected = function() {
+        var selected = [];
+        angular.forEach($scope.trabajos, function(trabajo) {
+            if (trabajo.selected) {
+                selected.push(trabajo);
+            }
+        });
+
+        if (!validateSelected(selected, 'limpiar')) return;
+
+        selected.forEach(function(trabajo) {
+            trabajo.lun = 'unchecked';
+            trabajo.mar = 'unchecked';
+            trabajo.mie = 'unchecked';
+            trabajo.juv = 'unchecked';
+            trabajo.vie = 'unchecked';
+            trabajo.sab = 'unchecked';
+            trabajo.dom = 'unchecked';
+            $scope.updateTrabajo(trabajo);
+        });
+    };
+
     // Calcula el número de páginas
-    $scope.numberOfPages = function () {
+    $scope.numberOfPages = function() {
         return Math.floor($scope.trabajos.length / $scope.pageSize);
     };
 
-    $scope.checkByClick = function (t) {
+    $scope.checkByClick = function(t) {
         t.selected = !t.selected;
     };
 
@@ -278,6 +303,23 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
             return true;
         }
     }
+
+    // Verifica la conexión con el servidor cada un minuto
+    // timeout: 10 segundos
+    // Buscar alternativas :/
+    setInterval(function() {
+        $http.get('/programar/connection_status', {
+                timeout: 10000
+            })
+            .then(function successCallback(response) {
+                if (response.data != 'ok')
+                    alertify.error('Problemas de conexión');
+            }, function errorCallback(response) {
+                alertify.error('Error de conexión');
+                console.error(response);
+            });
+    }, 60000);
+
 }]);
 
 // Edita un trabajo seleccionado en vista completa
@@ -290,10 +332,10 @@ app.controller("editController", ['$scope', '$http', '$routeParams', '$location'
             break;
     }
     $scope.trabajo = item;
-    $scope.editTrabajo = function () {
+    $scope.editTrabajo = function() {
         $location.url("/");
         $http.put('programar/' + $scope.trabajo.id, $scope.trabajo)
-            .success(function (data) {
+            .success(function(data) {
                 if (!data.error) $scope.trabajos[i] = $scope.trabajo;
             });
     };

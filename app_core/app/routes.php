@@ -184,6 +184,10 @@ Route::group(array('before' => 'auth'), function () {
 
         Route::get('programar/download-app', 'ProgramarController@downloadApp');
 
+        Route::get('programar/connection_status', function(){
+            return Response::json('ok');
+        });
+
     });
 
 });

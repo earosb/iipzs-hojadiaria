@@ -14,7 +14,7 @@
                     <form name="formTrabajo" ng-submit="createTrabajo(nTrabajo)">
                         <div class="form-group col-md-2">
                             <label>Causa</label>
-                            <input type="text" class="form-control" ng-model="nTrabajo.causa" placeholder="Ej. ITPFM MES-AÑO" required="required" capitalize>
+                            <input type="text" id="ncausa" name="ncausa" class="form-control" ng-model="nTrabajo.causa" placeholder="Ej. ITPFM MES-AÑO" required="required" capitalize>
 
                             <p ng-repeat="msg in errors.causa" class="text-danger">{{msg}}</p>
                         </div>
@@ -60,7 +60,7 @@
                         <div class="row">
                             <div class="form-group col-md-2">
                                 <label>Causa</label>
-                                <input type="text" placeholder="Ej. ITPFM MES-AÑO" ng-model="filtro.causa" class="form-control" capitalize>
+                                <input type="text" id="fcausa" name="fcausa" placeholder="Ej. ITPFM MES-AÑO" ng-model="filtro.causa" class="form-control" capitalize>
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Trabajo</label>
@@ -138,6 +138,16 @@
                                 <div class="checkbox">
                                     <input name="obs" id="obs" value="true" class="styled" type="checkbox">
                                     <label for="obs">
+                                        Incluir
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-1">
+                                <label>Archivados</label>
+
+                                <div class="checkbox">
+                                    <input name="arch" id="arch" value="true" class="styled" type="checkbox">
+                                    <label for="arch">
                                         Incluir
                                     </label>
                                 </div>
@@ -373,16 +383,20 @@
 </div>
 
 <!--Floating toolbar-->
-<div style="position: fixed; bottom: 5px; left: 5px;">
+<div class="btn btn-default" style="position: fixed; bottom: 5px; left: 5px;">
     <a href="" class="btn btn-success btn-xs" confirmed-click="archiveSelected()" ng-confirm-click="¿Archivar trabajos seleccionados?"
        data-toggle="popover" data-content="Archivar" data-trigger="hover" data-placement="top">
         <span class="glyphicon glyphicon-ok"></span>
     </a>
-    <a href="" class="btn btn-default btn-xs" ng-click="showDialog = true"
+    <a href="" class="btn btn-warning btn-xs" ng-click="showDialog = true"
        data-toggle="popover" data-content="Editar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-pencil"></span></a>
 
     <a href="" class="btn btn-primary btn-xs" confirmed-click="mergeSelected()" ng-confirm-click="¿Agrupar trabajos seleccionados?"
        data-toggle="popover" data-content="Agrupar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-resize-small"></span></a>
+
+        <a href="" class="btn btn-info btn-xs" confirmed-click="clearSelected()" ng-confirm-click="¿Limpiar trabajos seleccionados?"
+       data-toggle="popover" data-content="Limpiar días" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-erase
+"></span></a>
 
     <a href="" class="btn btn-danger btn-xs" confirmed-click="deleteSelected()" ng-confirm-click="¿Eliminar trabajos seleccionados?"
        data-toggle="popover" data-content="Eliminar" data-trigger="hover" data-placement="top"><span class="glyphicon glyphicon-trash"></span></a>

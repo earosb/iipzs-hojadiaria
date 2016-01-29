@@ -267,6 +267,7 @@ class ProgramarController extends \BaseController
         $cantidad = 0;
         $kmsInicio = array();
         $kmsTermino = array();
+        $obs = " Agrupado desde:";
 
         foreach ($trabajos as $trabajo) {
             array_push($trabajo_ids, $trabajo['trabajo_id']);
@@ -274,6 +275,11 @@ class ProgramarController extends \BaseController
             array_push($kmsTermino, $trabajo['km_termino']);
             $cantidad = $cantidad + $trabajo['cantidad'];
             $causa = $trabajo['causa'];
+            $obs .= "[".$trabajo['nombre'].
+            " ".$trabajo['km_inicio'].
+            " ".$trabajo['km_termino'].
+            " ".$trabajo['cantidad'].
+            "]";
         }
 
         if (count(array_unique($trabajo_ids)) != 1)
@@ -287,11 +293,13 @@ class ProgramarController extends \BaseController
             'cantidad' => $cantidad);
 
         $t = Programa::create($new);
+        $t->obs_ce = $t->obs_ce.$obs;
+        $t->save();
 
         $trabajo = DB::table('programa')
             ->join('trabajo', 'trabajo.id', '=', 'programa.trabajo_id')
             ->leftJoin('grupo_trabajo', 'grupo_trabajo.id', '=', 'programa.grupo_trabajo_id')
-            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones',
+            ->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones', 'obs_ce',
                 'grupo_trabajo_id', 'trabajo_id', 'unidad', 'nombre', 'semana', 'vencimiento',
                 'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom',
                 'grupo_trabajo.id as grupo_trabajo_id')
@@ -353,6 +361,8 @@ class ProgramarController extends \BaseController
             'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom'];
         Input::has('obs') ? array_push($fields, 'observaciones as Observaciones') : null;
 
+        $realizados = Input::has('arch') ? true : false;
+
         if (!Input::has('grupo') || $input['grupo'] == 'all') {
             $grupo = null;
             $trabajos = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
@@ -360,7 +370,7 @@ class ProgramarController extends \BaseController
                 ->where('tipo_mantenimiento.cod', '!=', 'autoc')
                 ->whereNotNull('programa.grupo_trabajo_id')
                 ->where('programa.semana', '=', $weekQuery)
-                ->where('programa.realizado', false)
+                ->where('programa.realizado', $realizados)
                 ->orderBy('km_inicio')
                 ->get($fields);
             $autocontrol = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
@@ -368,7 +378,7 @@ class ProgramarController extends \BaseController
                 ->where('tipo_mantenimiento.cod', '=', 'autoc')
                 ->whereNotNull('programa.grupo_trabajo_id')
                 ->where('programa.semana', '=', $weekQuery)
-                ->where('programa.realizado', false)
+                ->where('programa.realizado', $realizados)
                 ->orderBy('km_inicio', 'asc')
                 ->get($fields);
         } else {
@@ -378,7 +388,7 @@ class ProgramarController extends \BaseController
                 ->where('tipo_mantenimiento.cod', '!=', 'autoc')
                 ->where('programa.grupo_trabajo_id', '=', $grupo->id)
                 ->where('programa.semana', '=', $weekQuery)
-                ->where('programa.realizado', false)
+                ->where('programa.realizado', $realizados)
                 ->orderBy('km_inicio')
                 ->get($fields);
             $autocontrol = Programa::join('trabajo', 'trabajo.id', '=', 'trabajo_id')
@@ -386,7 +396,7 @@ class ProgramarController extends \BaseController
                 ->where('tipo_mantenimiento.cod', '=', 'autoc')
                 ->where('programa.grupo_trabajo_id', '=', $grupo->id)
                 ->where('programa.semana', '=', $weekQuery)
-                ->where('programa.realizado', false)
+                ->where('programa.realizado', $realizados)
                 ->orderBy('trabajo.nombre', 'asc')
                 ->orderBy('km_inicio', 'asc')
                 ->get($fields);
