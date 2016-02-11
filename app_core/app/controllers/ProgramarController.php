@@ -32,21 +32,31 @@ class ProgramarController extends \BaseController
         if (Input::has('trabajo_id') && Input::get('trabajo_id') != 'all')
             $query->where('programa.trabajo_id', '=', Input::get('trabajo_id'));
 
-        if (Input::has('realizado') && Input::get('realizado') == 'true')
-            $query->where('programa.realizado', true);
-        else
+        if (!Input::has('realizado')) {
             $query->where('programa.realizado', false);
-
+        } else {
+            switch (Input::get('realizado')) {
+                case 1:
+                    $query->where('programa.realizado', true);
+                    break;
+                case 0:
+                    $query->where('programa.realizado', false);
+                    break;
+                case 2:
+                    break;
+                default:
+                    $query->where('programa.realizado', false);
+                    break;
+            }
+        }
         if (Input::has('semana')) {
             $semana = Carbon::createFromFormat('d/m/Y', Input::get('semana'))->toDateString();
             $query->whereDate('programa.semana', '=', $semana);
-            // $query->orWhereNull('programa.semana');
         }
 
         if (Input::has('vencimiento')) {
             $vencimiento = Carbon::createFromFormat('d/m/Y', Input::get('vencimiento'))->toDateString();
             $query->where('programa.vencimiento', '=', $vencimiento);
-            // $query->orWhereNull('programa.vencimiento');
         }
 
         if (Input::has('grupo_trabajo_id') && Input::get('grupo_trabajo_id') != 'all') {
@@ -55,8 +65,8 @@ class ProgramarController extends \BaseController
         }
 
         $trabajos = $query->select('programa.id', 'causa', 'cantidad', 'km_inicio', 'km_termino', 'observaciones', 'obs_ce',
-                'grupo_trabajo_id', 'trabajo_id', 'unidad', 'nombre', 'semana', 'no_programable', 'vencimiento', 'realizado',
-                'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
+            'grupo_trabajo_id', 'trabajo_id', 'unidad', 'nombre', 'semana', 'no_programable', 'vencimiento', 'realizado',
+            'lun', 'mar', 'mie', 'juv', 'vie', 'sab', 'dom')
             ->orderBy('km_inicio')
             ->orderBy('trabajo.nombre', 'asc')
             ->paginate(50);
@@ -213,7 +223,8 @@ class ProgramarController extends \BaseController
             if (isset($modal['semana'])) {
                 try {
                     $programa->semana = Carbon::createFromFormat('d/m/Y', $modal['semana']);
-                } catch (Exception $e) {}
+                } catch (Exception $e) {
+                }
             }
 
             if (isset($modal['vencimiento'])) {
@@ -229,7 +240,8 @@ class ProgramarController extends \BaseController
                     else $class = 'success';
 
                     array_push($status, ['id' => $programa->id, 'class' => $class]);
-                } catch (Exception $e) {}
+                } catch (Exception $e) {
+                }
             }
 
             if (isset($modal['lun']))
@@ -275,11 +287,11 @@ class ProgramarController extends \BaseController
             array_push($kmsTermino, $trabajo['km_termino']);
             $cantidad = $cantidad + $trabajo['cantidad'];
             $causa = $trabajo['causa'];
-            $obs .= "[".$trabajo['nombre'].
-            " ".$trabajo['km_inicio'].
-            " ".$trabajo['km_termino'].
-            " ".$trabajo['cantidad'].
-            "]";
+            $obs .= "[" . $trabajo['nombre'] .
+                " " . $trabajo['km_inicio'] .
+                " " . $trabajo['km_termino'] .
+                " " . $trabajo['cantidad'] .
+                "]";
         }
 
         if (count(array_unique($trabajo_ids)) != 1)
@@ -293,7 +305,7 @@ class ProgramarController extends \BaseController
             'cantidad' => $cantidad);
 
         $t = Programa::create($new);
-        $t->obs_ce = $t->obs_ce.$obs;
+        $t->obs_ce = $t->obs_ce . $obs;
         $t->save();
 
         $trabajo = DB::table('programa')
@@ -490,6 +502,46 @@ class ProgramarController extends \BaseController
     }
 
     /**
+     * Transforma los dias de semana
+     * 'Checked' a x y el resto en blanco
+     * @param $row
+     * @return mixed
+     */
+    private function parseDays($row)
+    {
+        if (isset($row['lun']) && $row['lun'] == 'checked')
+            $row['lun'] = 'x';
+        else
+            $row['lun'] = null;
+        if (isset($row['mar']) && $row['mar'] == 'checked')
+            $row['mar'] = 'x';
+        else
+            $row['mar'] = null;
+        if (isset($row['mie']) && $row['mie'] == 'checked')
+            $row['mie'] = 'x';
+        else
+            $row['mie'] = null;
+        if (isset($row['juv']) && $row['juv'] == 'checked')
+            $row['juv'] = 'x';
+        else
+            $row['juv'] = null;
+        if (isset($row['vie']) && $row['vie'] == 'checked')
+            $row['vie'] = 'x';
+        else
+            $row['vie'] = null;
+        if (isset($row['sab']) && $row['sab'] == 'checked')
+            $row['sab'] = 'x';
+        else
+            $row['sab'] = null;
+        if (isset($row['dom']) && $row['dom'] == 'checked')
+            $row['dom'] = 'x';
+        else
+            $row['dom'] = null;
+
+        return $row;
+    }
+
+    /**
      * @param $trabajos
      * @param $autocontrol
      * @param $startOfWeek
@@ -529,45 +581,5 @@ class ProgramarController extends \BaseController
     {
         $pathToFile = storage_path('static/iipzs-release.apk');
         return Response::download($pathToFile);
-    }
-
-    /**
-     * Transforma los dias de semana
-     * 'Checked' a x y el resto en blanco
-     * @param $row
-     * @return mixed
-     */
-    private function parseDays($row)
-    {
-        if (isset($row['lun']) && $row['lun'] == 'checked')
-            $row['lun'] = 'x';
-        else
-            $row['lun'] = null;
-        if (isset($row['mar']) && $row['mar'] == 'checked')
-            $row['mar'] = 'x';
-        else
-            $row['mar'] = null;
-        if (isset($row['mie']) && $row['mie'] == 'checked')
-            $row['mie'] = 'x';
-        else
-            $row['mie'] = null;
-        if (isset($row['juv']) && $row['juv'] == 'checked')
-            $row['juv'] = 'x';
-        else
-            $row['juv'] = null;
-        if (isset($row['vie']) && $row['vie'] == 'checked')
-            $row['vie'] = 'x';
-        else
-            $row['vie'] = null;
-        if (isset($row['sab']) && $row['sab'] == 'checked')
-            $row['sab'] = 'x';
-        else
-            $row['sab'] = null;
-        if (isset($row['dom']) && $row['dom'] == 'checked')
-            $row['dom'] = 'x';
-        else
-            $row['dom'] = null;
-
-        return $row;
     }
 }

@@ -95,14 +95,19 @@
                                 <label>Vencimiento</label>
                                 <input type="text" placeholder="dd/mm/aaaa" ng-model="filtro.vencimiento" class="form-control" jqdatepicker>
                             </div>
-                            <div class="form-group col-md-1">
-                                <label>Realizados</label>
-
-                                <div class="checkbox">
-                                    <input ng-model="filtro.realizado" ng-value="true" id="checkboxR" class="styled" type="checkbox">
-                                    <label for="checkboxR">
-                                        Incluir
-                                    </label>
+                            <div class="form-group col-md-3">
+                                <div><label>Estado</label></div>
+                                <div class="radio radio-primary radio-inline">
+                                    <input ng-model="filtro.realizado" ng-value="0" type="radio" id="inlineRadio1" value="option1" name="radioInline">
+                                    <label for="inlineRadio1">Pendiente</label>
+                                </div>
+                                <div class="radio radio-primary radio-inline">
+                                    <input ng-model="filtro.realizado" ng-value="1" type="radio" id="inlineRadio2" value="option1" name="radioInline">
+                                    <label for="inlineRadio2">Archivado</label>
+                                </div>
+                                <div class="radio radio-primary radio-inline">
+                                    <input ng-model="filtro.realizado" ng-value="2" type="radio" id="inlineRadio3" value="option1" name="radioInline">
+                                    <label for="inlineRadio3">Todos</label>
                                 </div>
                             </div>
                         </div>
