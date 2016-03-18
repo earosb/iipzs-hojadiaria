@@ -49,16 +49,18 @@ class HojaDiariaController extends \BaseController
      */
     public function index()
     {
-        $paginate = (Input::get('paginate') ? Input::get('paginate') : 20);
+        $paginate = (Input::has('paginate') ? Input::get('paginate') : 20);
 
-        if (Input::get('month')) {
-            if (Input::get('group')) {
+        if (Input::has('month') && Input::has('year')) {
+            if (Input::has('group')) {
                 $allHojas = HojaDiaria::whereIn('grupo_trabajo_id', Input::get('group'))
                     ->whereMonth('fecha', '=', Input::get('month'))
+                    ->whereYear('fecha', '=', Input::get('year'))
                     ->orderBy('fecha', 'desc')
                     ->paginate($paginate);
             } else {
                 $allHojas = HojaDiaria::whereMonth('fecha', '=', Input::get('month'))
+                    ->whereYear('fecha', '=', Input::get('year'))
                     ->orderBy('fecha', 'desc')
                     ->paginate($paginate);
             }
@@ -74,8 +76,11 @@ class HojaDiariaController extends \BaseController
 
         $grupos = GrupoTrabajo::orderBy('base', 'asc')->get(array('id', 'base'));
 
+        $year = Carbon::today()->year;
+
         return View::make('hoja_diaria.index')
             ->with('allHojas', $allHojas->appends(Input::except('page')))
+            ->with('year', $year)
             ->with('grupos', $grupos);
     }
 

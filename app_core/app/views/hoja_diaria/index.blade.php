@@ -88,6 +88,13 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    {{-- Año --}}
+                    {{ Form::label('year', 'Año', array('class' => 'col-xs-2 control-label')) }}
+                    <div class="col-xs-6">
+                        {{ Form::selectYear('year', 2015, $year, $year, ['class'=>'form-control']) }}
+                    </div>
+                </div>
+                <div class="form-group">
                     {{ Form::label('group', 'Grupos', array('class' => 'col-xs-2 control-label')) }}
 
                     <div class="col-xs-6">
