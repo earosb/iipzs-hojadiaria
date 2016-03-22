@@ -30,11 +30,11 @@
 @stop
 @section('content')
     <div class="row">
-        {{ Form::open(array(
-            'url' 		=>	'hd/'.$hoja->id,//PUT /hd/{id}
-            'method' 	=>	'PUT',
+        {{ Form::open([
+            'url' 		=>	'hd/'.$hoja->id,
+            'method' 	=>	'put',
             'id'		=>	'formHojaDiaria',
-            'class' 	=> 	'form-horizontal')) }}
+            'class' 	=> 	'form-horizontal']) }}
         <fieldset>
             <div class="col-md-12">
                 <table class="table">
@@ -61,7 +61,8 @@
                                     <select name="selectgrupos" id="selectgrupos" class="form-control">
                                         @foreach($grupos as $grupo)
                                             @if($hoja->grupo_trabajo_id == $grupo->id)
-                                                <option value="{{ $grupo->id }}" selected="selected">{{ $grupo->base }}</option>
+                                                <option value="{{ $grupo->id }}"
+                                                        selected="selected">{{ $grupo->base }}</option>
                                             @else
                                                 <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
                                             @endif
@@ -79,7 +80,8 @@
                                         <option selected="selected" disabled="disabled"> Seleccione un Sector</option>
                                         @foreach($sectores as $sector)
                                             @if($hoja->detalle_hoja_diaria[0]->block->sector_id == $sector->id)
-                                                <option selected="selected" value="{{ $sector->id }}">{{ $sector->nombre }}</option>
+                                                <option selected="selected"
+                                                        value="{{ $sector->id }}">{{ $sector->nombre }}</option>
                                             @else
                                                 <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
                                             @endif
@@ -142,13 +144,13 @@
                             {{ Form::select('trabajos[0][ubicacion]', $blockTodo, null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
-                            {{ Form::number('trabajos[0][km_inicio]', null, array('class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]', 'onblur' => 'onblurKmTermino(this);')) }}
+                            {{ Form::number('trabajos[0][km_inicio]', null, ['class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]', 'onblur' => 'onblurKmTermino(this);']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
-                            {{ Form::number('trabajos[0][km_termino]', null, array('class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]')) }}
+                            {{ Form::number('trabajos[0][km_termino]', null, ['class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
-                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
+                            {{ Form::number('trabajos[0][cantidad]', null, ['class' => 'form-control', 'min' => '0', 'step' => 'any']) }}
                         </td>
                     </tr>
                     @foreach($hoja->detalle_hoja_diaria as $cont => $detalle)
@@ -186,13 +188,13 @@
                                 </select>
                             </td>
                             <td data-name="trabajos" data-tipo="km_inicio">
-                                {{ Form::number('trabajos[' . ($cont + 1) .'][km_inicio]', $detalle->km_inicio, array('step' => '100', 'class' => 'form-control km-inicio', 'id' => 'trabajos[' . ($cont + 1) .'][km_inicio]')) }}
+                                {{ Form::number('trabajos[' . ($cont + 1) .'][km_inicio]', $detalle->km_inicio, ['step' => '100', 'class' => 'form-control km-inicio', 'id' => 'trabajos[' . ($cont + 1) .'][km_inicio]']) }}
                             </td>
                             <td data-name="trabajos" data-tipo="km_termino">
-                                {{ Form::number('trabajos[' . ($cont + 1) .'][km_termino]', $detalle->km_termino, array('step' => '100', 'class' => 'form-control km-termino', 'id' => 'trabajos[' . ($cont + 1) .'][km_termino]')) }}
+                                {{ Form::number('trabajos[' . ($cont + 1) .'][km_termino]', $detalle->km_termino, ['step' => '100', 'class' => 'form-control km-termino', 'id' => 'trabajos[' . ($cont + 1) .'][km_termino]']) }}
                             </td>
                             <td data-name="trabajos" data-tipo="cantidad">
-                                {{ Form::number('trabajos[' . ($cont + 1) .'][cantidad]', $detalle->cantidad, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
+                                {{ Form::number('trabajos[' . ($cont + 1) .'][cantidad]', $detalle->cantidad, ['class' => 'form-control', 'min' => '0', 'step' => '0.01']) }}
                             </td>
                             <script>
                                 addBtnDlt("#addr{{ ($cont +1)}}");
@@ -205,99 +207,104 @@
             {{-- Tabla materiales colocados
             ===================================================== --}}
             <div class="col-md-12">
-                <div class="col-md-6 form-group">
-                    <table class="table table-bordered table-striped" id="tab_material_colocado">
-                        <thead>
-                        <tr>
-                            <th>Materiales Colocados</th>
-                            <th>Reempleo</th>
-                            <th class="tdkilometro">Cantidad</th>
-                            <th class="text-center">
-                                <a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id='addrMatCol0' data-id="0" class="hidden">
+                <table class="table table-bordered table-striped" id="tab_material_colocado">
+                    <thead>
+                    <tr>
+                        <th>Materiales Colocados</th>
+                        <th>Reempleo</th>
+                        <th class="tdkilometro">Cantidad</th>
+                        <th class="text-center">
+                            <a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id='addrMatCol0' data-id="0" class="hidden">
+                        <td data-name="matCol" data-tipo="id">
+                            {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
+                        </td>
+                        <td data-name="matCol" data-tipo="reempleo">
+                            {{ Form::checkbox('matCol[0][reempleo]', 'true', false, ['class' => 'form-control']) }}
+                        </td>
+                        <td data-name="matCol" data-tipo="cant">
+                            {{ Form::number('matCol[0][cant]', null, ['class' => 'form-control', 'min' => '0', 'step' => '0.01']) }}
+                        </td>
+                    </tr>
+                    @foreach($hoja->detalle_material_colocado as $cont => $detalleMatCol)
+                        <tr id='addrMatCol{{ $cont +1 }}' data-id="{{ $cont +1 }}">
                             <td data-name="matCol" data-tipo="id">
-                                {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
+                                {{ Form::select('matCol['.($cont +1).'][id]', $materiales, $detalleMatCol->material_id, [ 'class'=>'form-control matCol']) }}
                             </td>
                             <td data-name="matCol" data-tipo="reempleo">
-                                {{ Form::checkbox('matCol[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
+                                {{ Form::checkbox('matCol['.($cont +1).'][reempleo]', 'true', $detalleMatCol->reempleo, ['class' => 'form-control']) }}
                             </td>
                             <td data-name="matCol" data-tipo="cant">
-                                {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
+                                {{ Form::number('matCol['.($cont +1).'][cant]', $detalleMatCol->cantidad, ['class' => 'form-control', 'min' => '0', 'step' => '0.01']) }}
                             </td>
                         </tr>
-                        @foreach($hoja->detalle_material_colocado as $cont => $detalleMatCol)
-                            <tr id='addrMatCol{{ $cont +1 }}' data-id="{{ $cont +1 }}">
-                                <td data-name="matCol" data-tipo="id">
-                                    {{ Form::select('matCol['.($cont +1).'][id]', $materiales, $detalleMatCol->material_id, [ 'class'=>'form-control matCol']) }}
-                                </td>
-                                <td data-name="matCol" data-tipo="reempleo">
-                                    {{ Form::checkbox('matCol['.($cont +1).'][reempleo]', 'true', $detalleMatCol->reempleo, array('class' => 'form-control')) }}
-                                </td>
-                                <td data-name="matCol" data-tipo="cant">
-                                    {{ Form::number('matCol['.($cont +1).'][cant]', $detalleMatCol->cantidad, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
-                                </td>
-                            </tr>
-                            <script>
-                                addBtnDlt("#addrMatCol{{ ($cont +1)}}");
-                            </script>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                {{-- Tabla materiales retirados
-                ===================================================== --}}
-                <div class="col-md-6 form-group pull-right">
-                    <table class="table table-bordered table-striped" id="tab_material_retirado">
-                        <thead>
-                        <tr>
-                            <th class="">Materiales Retirados</th>
-                            <th>Reempleo</th>
-                            <th class="col-md-2">Cantidad</th>
-                            <th class="text-center">
-                                <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id='addrMatRet0' data-id="0" class="hidden">
+                        <script>
+                            addBtnDlt("#addrMatCol{{ ($cont +1)}}");
+                        </script>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+            {{-- Tabla materiales retirados
+            ===================================================== --}}
+            <div class="col-md-12">
+                <table class="table table-bordered table-striped" id="tab_material_retirado">
+                    <thead>
+                    <tr>
+                        <th class="">Materiales Retirados</th>
+                        <th class="col-md-2">Centro de acopio</th>
+                        <th class="col-md-1">Reempleo</th>
+                        <th class="col-md-1">Cantidad</th>
+                        <th class="col-md-1 text-center">
+                            <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id='addrMatRet0' data-id="0" class="hidden">
+                        <td data-name="matRet" data-tipo="id">
+                            {{ Form::select('matRet[0][id]', $materialesRet, null, [ 'class'=>'form-control matRet']) }}
+                        </td>
+                        <td data-name="matRet" data-tipo="deposito">
+                            {{ Form::select('matRet[0][deposito]', $depositos, null, [ 'class'=>'form-control']) }}
+                        </td>
+                        <td data-name="matRet" data-tipo="reempleo">
+                            {{ Form::checkbox('matRet[0][reempleo]', 'true', false, ['class' => 'form-control']) }}
+                        </td>
+                        <td data-name="matRet" data-tipo="cant">
+                            {{ Form::number('matRet[0][cant]', null, ['class' => 'form-control', 'min' => '0', 'step' => '0.01']) }}
+                        </td>
+                    </tr>
+                    @foreach($hoja->detalle_material_retirado as $cont => $detalleMatRet)
+                        <tr id='addrMatRet{{ ($cont+1) }}' data-id="{{ ($cont+1) }}">
                             <td data-name="matRet" data-tipo="id">
-                                {{ Form::select('matRet[0][id]', $materialesRet, null, [ 'class'=>'form-control matRet']) }}
+                                {{ Form::select('matRet['.($cont+1).'][id]', $materialesRet, $detalleMatRet->material_retirado_id, [ 'class'=>'form-control matRet']) }}
+                            </td>
+                            <td data-name="matRet" data-tipo="deposito">
+                                {{ Form::select('matRet['.($cont+1).'][deposito]', $depositos, $detalleMatRet->deposito_id, [ 'class'=>'form-control']) }}
                             </td>
                             <td data-name="matRet" data-tipo="reempleo">
-                                {{ Form::checkbox('matRet[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
+                                {{ Form::checkbox('matRet['.($cont+1).'][reempleo]', 'true', $detalleMatRet->reempleo, ['class' => 'form-control']) }}
                             </td>
                             <td data-name="matRet" data-tipo="cant">
-                                {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
+                                {{ Form::number('matRet['.($cont+1).'][cant]', $detalleMatRet->cantidad, ['class' => 'form-control', 'min' => '0', 'step' => '0.01']) }}
                             </td>
                         </tr>
-                        @foreach($hoja->detalle_material_retirado as $cont => $detalleMatRet)
-                            <tr id='addrMatRet{{ ($cont+1) }}' data-id="{{ ($cont+1) }}">
-                                <td data-name="matRet" data-tipo="id">
-                                    {{ Form::select('matRet['.($cont+1).'][id]', $materialesRet, $detalleMatRet->material_retirado_id, [ 'class'=>'form-control matRet']) }}
-                                </td>
-                                <td data-name="matRet" data-tipo="reempleo">
-                                    {{ Form::checkbox('matRet['.($cont+1).'][reempleo]', 'true', $detalleMatRet->reempleo, array('class' => 'form-control')) }}
-                                </td>
-                                <td data-name="matRet" data-tipo="cant">
-                                    {{ Form::number('matRet['.($cont+1).'][cant]', $detalleMatRet->cantidad, array('class' => 'form-control', 'min' => '0', 'step' => '0.01')) }}
-                                </td>
-                            </tr>
-                            <script>
-                                addBtnDlt("#addrMatRet{{ ($cont +1)}}");
-                            </script>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        <script>
+                            addBtnDlt("#addrMatRet{{ ($cont +1)}}");
+                        </script>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
             {{-- Textarea Observaciones
             ===================================================== --}}
             <div class="col-xs-12 col-md-6">
-                {{ Form::label('obs', 'Observaciones', array('class' => 'control-label')) }}
+                {{ Form::label('obs', 'Observaciones', ['class' => 'control-label']) }}
                 <div class="controls">
                     {{ Form::textarea('obs', $hoja->observaciones, ['rows' => '3']) }}
                 </div>
@@ -305,7 +312,7 @@
             {{-- Botones
             ===================================================== --}}
             <div class="col-xs-12 col-md-12">
-                {{ Form::submit('Guardar', array('class' => 'btn btn-primary pull-right')) }}
+                {{ Form::submit('Guardar', ['class' => 'btn btn-primary pull-right']) }}
             </div>
         </fieldset>
         {{ Form::close() }}
@@ -322,8 +329,8 @@
     {{ HTML::script('js/hd/create/create.js') }}
     {{--{{ HTML::script('js/min/1425312083058.min.js') }}--}}
 
-    {{--{{ HTML::script('js/ajaxBlocks.js') }}--}}
-    {{ HTML::script('js/min/1425396779231.min.js') }}
+    {{ HTML::script('js/ajaxBlocks.js') }}
+    {{--{{ HTML::script('js/min/1425396779231.min.js') }}--}}
 @stop
 
 @if (Sentry::getUser()->hasAccess(['editor']))

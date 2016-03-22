@@ -14,11 +14,11 @@
 @stop
 @section('content')
     <div class="row">
-        {{ Form::open(array(
+        {{ Form::open([
             'url' 		=>	'hd',
             'method' 	=>	'post',
             'id'		=>	'formHojaDiaria',
-            'class' 	=> 	'form-horizontal')) }}
+            'class' 	=> 	'form-horizontal']) }}
         <fieldset>
             <div class="col-md-12">
                 <table class="table">
@@ -93,7 +93,7 @@
                         <th>Km inicio</th>
                         <th>Km término</th>
                         <th class="col-md-1">Cantidad</th>
-                        <th class="text-center">
+                        <th class="col-md-1 text-center">
                             <a id="add_row_trabajos" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                         </th>
                     </tr>
@@ -122,10 +122,10 @@
                             {{ Form::select('trabajos[0][ubicacion]', ['Seleccione Sector'], null, [ 'class'=>'form-control selectubicacion']) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_inicio">
-                            {{ Form::number('trabajos[0][km_inicio]', null, array('class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]', 'onblur' => 'onblurKmTermino(this);')) }}
+                            {{ Form::number('trabajos[0][km_inicio]', null, ['class' => 'form-control km-inicio', 'id' => 'trabajos[0][km_inicio]', 'onblur' => 'onblurKmTermino(this);', 'min' => 0]) }}
                         </td>
                         <td data-name="trabajos" data-tipo="km_termino">
-                            {{ Form::number('trabajos[0][km_termino]', null, array('class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]')) }}
+                            {{ Form::number('trabajos[0][km_termino]', null, array('class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]', 'min' => 0)) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
                             {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
@@ -136,63 +136,69 @@
             </div>
             {{-- Tabla materiales colocados
             ===================================================== --}}
-            <div class="col-md-12">
-                <div class="col-md-6 form-group">
-                    <table class="table table-bordered table-striped" id="tab_material_colocado">
-                        <thead>
-                        <tr>
-                            <th>Materiales Colocados</th>
-                            <th>Reempleo</th>
-                            <th class="tdkilometro">Cantidad</th>
-                            <th class="text-center">
-                                <a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id='addrMatCol0' data-id="0" class="hidden">
-                            <td data-name="matCol" data-tipo="id">
-                                {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
-                            </td>
-                            <td data-name="matCol" data-tipo="reempleo">
-                                {{ Form::checkbox('matCol[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
-                            </td>
-                            <td data-name="matCol" data-tipo="cant">
-                                {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                {{-- Tabla materiales retirados
-                ===================================================== --}}
-                <div class="col-md-6 form-group pull-right">
-                    <table class="table table-bordered table-striped" id="tab_material_retirado">
-                        <thead>
-                        <tr>
-                            <th class="">Materiales Retirados</th>
-                            <th>Reempleo</th>
-                            <th class="tdkilometro">Cantidad</th>
-                            <th class="text-center">
-                                <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr id='addrMatRet0' data-id="0" class="hidden">
-                            <td data-name="matRet" data-tipo="id">
-                                {{ Form::select('matRet[0][id]', $materialesRet, null, [ 'class'=>'form-control matRet']) }}
-                            </td>
-                            <td data-name="matRet" data-tipo="reempleo">
-                                {{ Form::checkbox('matRet[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
-                            </td>
-                            <td data-name="matRet" data-tipo="cant">
-                                {{ Form::number('matRet[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="col-md-5">
+                <table class="table table-bordered table-striped" id="tab_material_colocado">
+                    <thead>
+                    <tr>
+                        <th>Materiales Colocados</th>
+                        <th class="col-md-1">Reempleo</th>
+                        <th class="col-md-1">Cantidad</th>
+                        <th class="col-md-1 text-center">
+                            <a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id='addrMatCol0' data-id="0" class="hidden">
+                        <td data-name="matCol" data-tipo="id">
+                            {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
+                        </td>
+                        <td data-name="matCol" data-tipo="reempleo">
+                            {{ Form::checkbox('matCol[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
+                        </td>
+                        <td data-name="matCol" data-tipo="cant">
+                            {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            {{-- Tabla materiales retirados
+            ===================================================== --}}
+            <div class="col-md-7">
+                <table class="table table-bordered table-striped" id="tab_material_retirado">
+                    <thead>
+                    <tr>
+                        <th>Materiales Retirados</th>
+                        <th class="col-md-2">Centro de acopio</th>
+                        <th class="col-md-1">Reempleo</th>
+                        <th class="col-md-1">Cantidad</th>
+                        <th class="col-md-1 text-center">
+                            <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id='addrMatRet0' data-id="0" class="hidden">
+                        <td data-name="matRet" data-tipo="id">
+                            {{ Form::select('matRet[0][id]', $materialesRet, null, ['class'=>'form-control matRet']) }}
+                        </td>
+                        <td data-name="matRet" data-tipo="deposito">
+                            <select name="matRet[0][deposito]" id="matRet[0][deposito]" class="form-control">
+                                @foreach($depositos as $deposito)
+                                    <option value="{{ $deposito->id }}">{{ $deposito->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td data-name="matRet" data-tipo="reempleo">
+                            {{ Form::checkbox('matRet[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
+                        </td>
+                        <td data-name="matRet" data-tipo="cant">
+                            {{ Form::number('matRet[0][cant]', null, ['class' => 'form-control', 'min' => '0', 'step' => 'any']) }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             {{-- Textarea Observaciones
             ===================================================== --}}
@@ -205,7 +211,7 @@
             {{-- Botones
             ===================================================== --}}
             <div class="col-md-12">
-                {{ Form::submit('Guardar', array('class' => 'btn btn-primary pull-right')) }}
+                {{ Form::submit('Guardar', ['class' => 'btn btn-primary pull-right']) }}
             </div>
         </fieldset>
         {{ Form::close() }}
@@ -227,12 +233,12 @@
 @stop
 
 @if (Sentry::getUser()->hasAccess(['editor']))
-    @section('modals')
-        @include('modal.modalEditor')
-        @include('modal.formDesviador')
-        @include('modal.formDesvio')
-        @include('modal.formMaterialColocado')
-        @include('modal.formMaterialRetirado')
-        @include('modal.formTrabajo')
-    @stop
+@section('modals')
+    @include('modal.modalEditor')
+    @include('modal.formDesviador')
+    @include('modal.formDesvio')
+    @include('modal.formMaterialColocado')
+    @include('modal.formMaterialRetirado')
+    @include('modal.formTrabajo')
+@stop
 @endif

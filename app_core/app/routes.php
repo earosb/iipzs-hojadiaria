@@ -20,7 +20,7 @@ Route::post('login', 'UserController@postLogin');
 /**
  * Usuario logueado
  */
-Route::group(array('before' => 'auth'), function () {
+Route::group([ 'before' => 'auth' ], function () {
 
     Route::get('/', 'HomeController@showWelcome');
 
@@ -32,7 +32,7 @@ Route::group(array('before' => 'auth'), function () {
     /**
      * Usuario logueado con permiso hoja-diaria
      */
-    Route::group(array('before' => 'hasAccess:hoja-diaria'), function () {
+    Route::group([ 'before' => 'hasAccess:hoja-diaria' ], function () {
 
         /**
          * Hoja Diaria
@@ -68,7 +68,7 @@ Route::group(array('before' => 'auth'), function () {
     /**
      * Usuario logueado con permisos de creación en form hoja diaria
      */
-    Route::group(array('before' => 'hasAccess:editor'), function () {
+    Route::group([ 'before' => 'hasAccess:editor' ], function () {
         /**
          * Creación de desviador
          */
@@ -98,7 +98,7 @@ Route::group(array('before' => 'auth'), function () {
     /**
      * Usuario logueado con permisos para consultas/reportes
      */
-    Route::group(array('before' => 'hasAccess:reporte'), function () {
+    Route::group([ 'before' => 'hasAccess:reporte' ], function () {
         /**
          * Rutas para generar reportes
          */
@@ -115,7 +115,7 @@ Route::group(array('before' => 'auth'), function () {
     /**
      * Usuario logueado con permisos para form 2-3-4
      */
-    Route::group(array('before' => 'hasAccess:form2-3-4'), function () {
+    Route::group([ 'before' => 'hasAccess:form2-3-4' ], function () {
         /**
          * Rutas para generar formulario
          */
@@ -124,13 +124,16 @@ Route::group(array('before' => 'auth'), function () {
         Route::post('/r/form', function () {
             if (Input::get('tipo_mantenimiento') == 'mayor') {
                 $action = 'postFormMayor';
+
                 return App::make('ReporteController')->$action();
             } elseif (Input::get('tipo_mantenimiento') == 'menor') {
                 $action = 'postFormMenor';
+
                 return App::make('ReporteController')->$action();
             }
 
             Alert::message('Error al seleccionar el tipo de mantenimiento!', 'danger');
+
             return Redirect::back();
         });
 
@@ -139,7 +142,7 @@ Route::group(array('before' => 'auth'), function () {
     /**
      * Usuario logueado con permisos para mantención de datos
      */
-    Route::group(array('before' => 'hasAccess:mantencion'), function () {
+    Route::group([ 'before' => 'hasAccess:mantencion' ], function () {
         /**
          * Rutas para CRUD vías/trabajos/materiales
          */
@@ -160,12 +163,15 @@ Route::group(array('before' => 'auth'), function () {
 
         Route::resource('/m/grupo-trabajo', 'GrupoTrabajoController');
 
+        Route::resource('/m/deposito', 'DepositoController',
+            [ 'except' => [ 'show' ] ]);
+
     });
 
     /**
      * Usuario logueado con permisos para programar trabajos
      */
-    Route::group(array('before' => 'hasAccess:programar'), function () {
+    Route::group([ 'before' => 'hasAccess:programar' ], function () {
         /**
          * Rutas para programar trabajos
          */
@@ -184,7 +190,7 @@ Route::group(array('before' => 'auth'), function () {
 
         Route::get('programar/download-app', 'ProgramarController@downloadApp');
 
-        Route::get('programar/connection_status', function(){
+        Route::get('programar/connection_status', function () {
             return Response::json('ok');
         });
 
@@ -192,18 +198,17 @@ Route::group(array('before' => 'auth'), function () {
 
 });
 
-
 /**
  * Manejo de Errores
  */
-if (!Config::get('app.debug')) {
+if ( ! Config::get('app.debug')) {
 
     App::missing(function ($exception) {
-        return Response::view('error', array(
-            'code' => 'Error 404',
+        return Response::view('error', [
+            'code'      => 'Error 404',
             'exception' => $exception->getMessage(),
-            'message' => 'Ups...! La página solicitada no existe.'),
-            404);
+            'message'   => 'Ups...! La página solicitada no existe.'
+        ], 404);
     });
 
     App::error(function ($exception, $code) {
@@ -222,11 +227,11 @@ if (!Config::get('app.debug')) {
                 $message = trans('all.error.default');
         }
 
-        return Response::view('error', array(
-            'code' => 'Error ' . $code,
+        return Response::view('error', [
+            'code'      => 'Error ' . $code,
             'exception' => $exception->getMessage(),
-            'message' => $message),
-            $code);
+            'message'   => $message
+        ], $code);
     });
 
 }
@@ -234,7 +239,7 @@ if (!Config::get('app.debug')) {
 /**
  * Rutas para tareas de super administrador 8)
  */
-Route::group(array('before' => 'hasAccess:superadmin'), function () {
+Route::group([ 'before' => 'hasAccess:superadmin' ], function () {
 
     /**
      * Test para testear algo
@@ -251,13 +256,13 @@ Route::group(array('before' => 'hasAccess:superadmin'), function () {
 /**
  * API v1
  */
-Route::group(array('prefix' => 'api/v1'), function () {
+Route::group([ 'prefix' => 'api/v1' ], function () {
     /**
      * Login
      */
     Route::post('login', 'APIv1Controller@login');
 
-    Route::group(array('before' => 'auth_api'), function () {
+    Route::group([ 'before' => 'auth_api' ], function () {
         /**
          * Trabajos a granel
          */
@@ -275,14 +280,14 @@ Route::group(array('prefix' => 'api/v1'), function () {
 /**
  * Descarga de manuales
  */
-Route::group(array('prefix' => 'manual'), function () {
-    Route::get('admin', function (){
+Route::group([ 'prefix' => 'manual' ], function () {
+    Route::get('admin', function () {
         return Response::download(storage_path('static/manual-mantencion.pdf'));
     });
-    Route::get('programar', function (){
+    Route::get('programar', function () {
         return Response::download(storage_path('static/manual-programar.pdf'));
     });
-    Route::get('android', function (){
+    Route::get('android', function () {
         return Response::download(storage_path('static/manual-android.pdf'));
     });
 });
