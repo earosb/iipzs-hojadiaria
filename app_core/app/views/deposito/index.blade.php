@@ -26,7 +26,7 @@
                         <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th class="col-md-1">Opciones</th>
+                            <th class="col-md-2">Opciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,7 +36,8 @@
                                     {{ $deposito->nombre }}
                                 </td>
                                 <td class="text-center">
-                                    <a title="Editar" href="{{ URL::to('m/deposito/'.$deposito->id.'/edit') }}"><span class="glyphicon glyphicon-edit"></span>Editar</a>
+                                    <a title="Ver cargas" href="#cargas" onclick="getCargas({{$deposito->id}})" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                    <a title="Editar" href="{{ URL::to('m/deposito/'.$deposito->id.'/edit') }}" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -45,5 +46,23 @@
                 @endif
             </div>
         </div>
+        <div class="col-xs-12 col-md-6" id="cargas"></div>
     </div>
+@stop
+
+@section('js')
+    <script>
+        function getCargas(id) {
+            $("#cargas").html("<p>Cargando...</p>");
+            $.get("deposito/" + id, function (data) {
+                $("#cargas").html(data.html);
+            });
+        }
+        function getCargasForm(id) {
+            $("#cargas").html("<p>Cargando...</p>");
+            $.get("carga/create?d=" + id, function (data) {
+                $("#cargas").html(data.html);
+            });
+        }
+    </script>
 @stop

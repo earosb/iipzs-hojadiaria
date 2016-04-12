@@ -31,6 +31,9 @@
                                         class="caret"></b></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/r/param') }}">Consultar trabajos</a></li>
+                            @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
+                                <li><a href="{{ URL::to('/r/form') }}">Consultar centros de acopio </a></li>
+                            @endif
                             @if (Sentry::getUser()->hasAccess(['form2-3-4']))
                                 <li class="divider"></li>
                                 <li class="dropdown-header">Descargar</li>
@@ -72,21 +75,24 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
-                        class="glyphicon glyphicon-question-sign"></i><span> Ayuda <b
-                            class="caret"></b></span></a>
-                            <ul class="dropdown-menu">
-                                @if(Sentry::getUser()->hasAccess(['create-user']))
-                                    <li><a href="{{ URL::to('/manual/admin') }}" target="_blank">Manual admin</a></li>
-                                @endif
-                                @if(Sentry::getUser()->hasAccess(['programar']))
-                                    <li><a href="{{ URL::to('/manual/programar') }}" target="_blank">Manual programar</a></li>
-                                    <li><a href="{{ URL::to('/manual/android') }}" target="_blank">Manual Android</a></li>
-                                @endif
-                            </ul>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span><strong> {{ Sentry::getUser()->first_name }} {{ Sentry::getUser()->last_name }}
+                            </strong><b class="caret"></b></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Manuales</li>
+                        @if(Sentry::getUser()->hasAccess(['create-user']))
+                            <li><a href="{{ URL::to('/manual/admin') }}" target="_blank">Manual admin</a></li>
+                        @endif
+                        @if(Sentry::getUser()->hasAccess(['programar']))
+                            <li><a href="{{ URL::to('/manual/programar') }}" target="_blank">Manual programar</a></li>
+                            <li><a href="{{ URL::to('/manual/android') }}" target="_blank">Manual Android</a></li>
+                        @endif
+                        <li class="divider"></li>
+                        <li class="dropdown-header">Usuario</li>
+                        <li><a href="{{ URL::to('profile') }}"><i class="glyphicon glyphicon-user"></i> Perfil</a></li>
+                        <li><a href="{{ URL::to('logout') }}"><i class="glyphicon glyphicon-share-alt"></i> Salir</a>
                         </li>
-                <li><a href="{{ URL::to('profile') }}">Bienvenido, <strong>{{ Sentry::getUser()->first_name }}</strong></a></li>
-                <li><a href="{{ URL::to('logout') }}"><i class="glyphicon glyphicon-share-alt"></i> Salir</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     @endif

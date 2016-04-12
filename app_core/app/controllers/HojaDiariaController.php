@@ -22,13 +22,13 @@ class HojaDiariaController extends \BaseController
 
         $grupos = GrupoTrabajo::orderBy('base', 'asc')->get([ 'id', 'base' ]);
 
-        $materialesCollection = Material::all([ 'id', 'nombre', 'unidad' ]);
+        $materialesCollection = Material::orderBy('nombre')->get([ 'id', 'nombre', 'unidad' ]);
         $materiales           = [ ];
         foreach ($materialesCollection as $material) {
             $materiales[$material->id] = $material->nombre . ' (' . $material->unidad . ')';
         }
 
-        $matRetCollection = MaterialRetirado::all([ 'id', 'nombre' ]);
+        $matRetCollection = MaterialRetirado::orderBy('nombre')->get([ 'id', 'nombre' ]);
         $matRetirados     = [ ];
         foreach ($matRetCollection as $matRet) {
             $matRetirados[$matRet->id] = $matRet->nombre;
@@ -140,10 +140,13 @@ class HojaDiariaController extends \BaseController
             $rules['trabajos.' . $key . '.cantidad']  = 'required|numeric|min:0';
 
         }
+
         foreach ($input['matCol'] as $key => $value) {
-            $rules['matCol.' . $key . '.id']   = 'required|exists:material,id';
-            $rules['matCol.' . $key . '.cant'] = 'required|numeric|min:0';
+            $rules['matCol.' . $key . '.id']       = 'required|exists:material,id';
+            $rules['matCol.' . $key . '.deposito'] = 'required|exists:deposito,id';
+            $rules['matCol.' . $key . '.cant']     = 'required|numeric|min:0';
         }
+
         foreach ($input['matRet'] as $key => $value) {
             $rules['matRet.' . $key . '.id']       = 'required|exists:material_retirado,id';
             $rules['matRet.' . $key . '.deposito'] = 'required|exists:deposito,id';
@@ -214,24 +217,21 @@ class HojaDiariaController extends \BaseController
         }
 
         foreach ($input['matCol'] as $key => $value) {
-            $material = Material::find($value['id']);
-
             $detMatCol                 = new DetalleMaterialColocado();
             $detMatCol->cantidad       = $value['cant'];
             $detMatCol->reempleo       = ( array_key_exists('reempleo', $value) ) ? true : false;
-            $detMatCol->material_id    = $material->id;
+            $detMatCol->material_id    = $value['id'];
             $detMatCol->hoja_diaria_id = $hojaDiaria->id;
+            $detMatCol->deposito_id    = $value['deposito'];
 
             $detMatCol->save();
         }
 
         foreach ($input['matRet'] as $key => $value) {
-            $matRet = MaterialRetirado::find($value['id']);
-
             $detMatRet                       = new DetalleMaterialRetirado();
             $detMatRet->cantidad             = $value['cant'];
             $detMatRet->reempleo             = ( array_key_exists('reempleo', $value) ) ? true : false;
-            $detMatRet->material_retirado_id = $matRet->id;
+            $detMatRet->material_retirado_id = $value['id'];
             $detMatRet->hoja_diaria_id       = $hojaDiaria->id;
             $detMatRet->deposito_id          = $value['deposito'];
 
@@ -269,15 +269,16 @@ class HojaDiariaController extends \BaseController
 
         $hojaDiaria->grupoTrabajo;
 
+        $hojaDiaria->detalleMaterialColocado;
+        foreach ($hojaDiaria->detalleMaterialColocado as $materialCol) {
+            $materialCol->material;
+            $materialCol->deposito;
+        }
+
         $hojaDiaria->detalleMaterialRetirado;
         foreach ($hojaDiaria->detalleMaterialRetirado as $materialRet) {
             $materialRet->materialRetirado;
             $materialRet->deposito;
-        }
-
-        $hojaDiaria->detalleMaterialColocado;
-        foreach ($hojaDiaria->detalleMaterialColocado as $materialCol) {
-            $materialCol->material;
         }
 
         $hojaDiaria->detalleHojaDiaria;
@@ -309,15 +310,16 @@ class HojaDiariaController extends \BaseController
         $hoja        = HojaDiaria::findOrFail($id);
         $hoja->fecha = Carbon::parse($hoja->fecha)->format('d/m/Y');
 
+        $hoja->detalleMaterialColocado;
+        foreach ($hoja->detalleMaterialColocado as $materialCol) {
+            $materialCol->material;
+            $materialCol->deposito;
+        }
+
         $hoja->detalleMaterialRetirado;
         foreach ($hoja->detalleMaterialRetirado as $materialRet) {
             $materialRet->materialRetirado;
             $materialRet->deposito;
-        }
-
-        $hoja->detalleMaterialColocado;
-        foreach ($hoja->detalleMaterialColocado as $materialCol) {
-            $materialCol->material;
         }
 
         $hoja->detalleHojaDiaria;
@@ -337,19 +339,19 @@ class HojaDiariaController extends \BaseController
 
         $grupos = GrupoTrabajo::orderBy('base', 'asc')->get([ 'id', 'base' ]);
 
-        $materialesCollection = Material::all([ 'id', 'nombre', 'unidad' ]);
+        $materialesCollection = Material::orderBy('nombre')->get([ 'id', 'nombre', 'unidad' ]);
         $materiales           = [ ];
         foreach ($materialesCollection as $material) {
             $materiales[$material->id] = $material->nombre . ' (' . $material->unidad . ')';
         }
 
-        $matRetCollection = MaterialRetirado::all([ 'id', 'nombre' ]);
+        $matRetCollection = MaterialRetirado::orderBy('nombre')->get([ 'id', 'nombre' ]);
         $matRetirados     = [ ];
         foreach ($matRetCollection as $matRet) {
             $matRetirados[$matRet->id] = $matRet->nombre;
         }
 
-        $depositosCollection = Deposito::orderBy('nombre')->get();
+        $depositosCollection = Deposito::orderBy('nombre')->get([ 'id', 'nombre' ]);
         $depositos           = [ ];
         foreach ($depositosCollection as $dep) {
             $depositos[$dep->id] = $dep->nombre;
@@ -367,8 +369,6 @@ class HojaDiariaController extends \BaseController
         foreach ($desviadores as $desviador) {
             $blockTodo += [ "desviador-" . $desviador->id => $desviador->nombre ];
         }
-
-//        return $blockTodo;
 
         return View::make('hoja_diaria.edit', compact('hoja'))->with('sectores', $sectores)->with('grupos',
             $grupos)->with('materiales', $materiales)->with('materialesRet', $matRetirados)->with('depositos',
@@ -438,6 +438,7 @@ class HojaDiariaController extends \BaseController
         }
         foreach ($input['matCol'] as $key => $value) {
             $rules['matCol.' . $key . '.id']   = 'required|exists:material,id';
+            $rules['matCol.' . $key . '.deposito']   = 'required|exists:deposito,id';
             $rules['matCol.' . $key . '.cant'] = 'required|numeric|min:0';
         }
         foreach ($input['matRet'] as $key => $value) {

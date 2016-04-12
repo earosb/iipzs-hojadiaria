@@ -240,20 +240,19 @@ function getMateriales(obj) {
     }).done(function (data) {
 
         $.each(data.materiales, function (index, value) {
-
-            var chao = false; // No agrega el material si ya está seleccionado en la tabla
+            var exit = false; // No agrega el material si ya está seleccionado en la tabla
             var newid = 0;
 
             $.each($("#tab_material_colocado tr"), function () {
                 if (parseInt($(this).data("id")) > newid) {
                     newid = parseInt($(this).data("id"));
                     if ($(this).find('td').find('select').val() == value.id) {
-                        chao = true;
+                        exit = true;
                     }
                 }
             });
 
-            if (chao) return false;
+            if (exit) return false;
 
             newid++;
             // tr principal
@@ -275,6 +274,24 @@ function getMateriales(obj) {
             });
 
             var option = $("<option value=" + value.id + ">" + value.nombre + "</option>");
+
+            var tdDepositos = $("<td></td>", {
+                "data-name": "matCol",
+                id: "matCol." + newid + ".deposito",
+                name: "matCol." + newid + ".deposito"
+            });
+
+            var selectDepositos = $("<select></select>", {
+                class: "form-control",
+                name: "matCol[" + newid + "][deposito]",
+                id: "matCol[" + newid + "][deposito]"
+            });
+
+            $.each(data.depositos, function (index, value) {
+                var op = $("<option value=" + value.id + ">" + value.nombre + "</option>");
+                selectDepositos.append(op);
+            });
+
             // td reempleo
             var tdReempleo = $("<td></td>", {
                 "data-name": "matCol",
@@ -313,9 +330,11 @@ function getMateriales(obj) {
 
             select.append(option);
             tdSelect.append(select);
+            tdDepositos.append(selectDepositos);
             tdReempleo.append(inputReempleo);
             tdCantidad.append(inputCantidad);
             tr.append(tdSelect);
+            tr.append(tdDepositos);
             tr.append(tdReempleo);
             tr.append(tdCantidad);
             tr.append(tdBtnDelete);

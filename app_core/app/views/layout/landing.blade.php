@@ -38,7 +38,7 @@
     @if(Config::get('app.debug'))
         {{ HTML::style('css/bootstrap.min.css') }}
     @else
-        {{ HTML::style('https://maxcdn.bootstrapcdn.com/bootswatch/3.3.4/yeti/bootstrap.min.css') }}
+        {{ HTML::style('https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/yeti/bootstrap.min.css') }}
     @endif
     {{ HTML::style('css/alertify.core.css') }}
     {{ HTML::style('css/alertify.default.css') }}
@@ -75,8 +75,8 @@
     {{ HTML::script('js/jquery.min.js') }}
     {{ HTML::script('js/bootstrap.min.js') }}
 @else
-    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js') }}
-    {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js') }}
+    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js') }}
+    {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js') }}
 @endif
 {{ HTML::script('js/alertify.min.js') }}
 {{ HTML::script('js/back_to_top.js') }}

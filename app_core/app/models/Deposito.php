@@ -35,6 +35,18 @@ class Deposito extends \Eloquent
 
     public function detalleMaterialesRetirados()
     {
-        return $this->hasMany('DetalleMaterialRetirado', 'deposito_id');
+        return $this->hasMany('DetalleMaterialRetirado');
+    }
+
+
+    public function detalleMaterialesColocados()
+    {
+        return $this->hasMany('DetalleMaterialColocado');
+    }
+
+
+    public function cargas()
+    {
+        return $this->hasMany('Carga');
     }
 }

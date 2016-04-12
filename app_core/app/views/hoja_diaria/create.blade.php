@@ -10,7 +10,7 @@
 @stop
 @section('css')
     {{ HTML::style('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css') }}
-    {{ HTML::style('css/hd/create.min.css') }}
+    {{ HTML::style('css/hd/create.css') }}
 @stop
 @section('content')
     <div class="row">
@@ -20,6 +20,8 @@
             'id'		=>	'formHojaDiaria',
             'class' 	=> 	'form-horizontal']) }}
         <fieldset>
+            {{-- Datos hoja diaria
+            ===================================================== --}}
             <div class="col-md-12">
                 <table class="table">
                     <thead>
@@ -71,7 +73,9 @@
                             <div id="selectblock_div">
                                 <div class="controls">
                                     <select name="selectblock" id="selectblock" class="form-control">
-                                        <option selected="selected" disabled="disabled" value="null"> Seleccione un Sector</option>
+                                        <option selected="selected" disabled="disabled" value="null"> Seleccione un
+                                            Sector
+                                        </option>
                                     </select>
 
                                     <div class="help-block" id="selectblock_error"></div>
@@ -85,15 +89,15 @@
             {{-- Tabla trabajos realizados
             ===================================================== --}}
             <div class="col-md-12">
-                <table class="table table-bordered table-striped" id="tab_trabajados">
+                <table class="table table-bordered" id="tab_trabajados">
                     <thead>
                     <tr>
                         <th class="col-md-5">Trabajos Ejecutados</th>
                         <th class="col-md-2">Tipo vía</th>
-                        <th>Km inicio</th>
-                        <th>Km término</th>
+                        <th class="col-md-2">Km inicio</th>
+                        <th class="col-md-2">Km término</th>
                         <th class="col-md-1">Cantidad</th>
-                        <th class="col-md-1 text-center">
+                        <th class="tdButton text-center">
                             <a id="add_row_trabajos" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                         </th>
                     </tr>
@@ -101,7 +105,6 @@
                     <tbody>
                     <tr id='addr0' data-id="0" class="hidden">
                         <td data-name="trabajos" data-tipo="trabajo">
-                            {{--{{ Form::select('trabajos[0][trabajo]', $tipoMantenimiento, null, [ 'class'=>'form-control selecttrabajo']) }}--}}
                             <select name="trabajos[0][trabajo]" class="form-control selecttrabajo"
                                     onChange="getMateriales(this)">
                                 <option selected="selected" disabled="disabled" value="" style="display:none;">
@@ -128,7 +131,7 @@
                             {{ Form::number('trabajos[0][km_termino]', null, array('class' => 'form-control km-termino', 'id' => 'trabajos[0][km_termino]', 'min' => 0)) }}
                         </td>
                         <td data-name="trabajos" data-tipo="cantidad">
-                            {{ Form::number('trabajos[0][cantidad]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
+                            {{ Form::number('trabajos[0][cantidad]', null, ['class' => 'form-control', 'min' => '0', 'step' => 'any']) }}
                         </td>
                     </tr>
                     </tbody>
@@ -136,14 +139,15 @@
             </div>
             {{-- Tabla materiales colocados
             ===================================================== --}}
-            <div class="col-md-5">
-                <table class="table table-bordered table-striped" id="tab_material_colocado">
+            <div class="col-md-12">
+                <table class="table table-bordered" id="tab_material_colocado">
                     <thead>
                     <tr>
                         <th>Materiales Colocados</th>
-                        <th class="col-md-1">Reempleo</th>
+                        <th>Centro de acopio</th>
+                        <th>Reempleo</th>
                         <th class="col-md-1">Cantidad</th>
-                        <th class="col-md-1 text-center">
+                        <th class="tdButton text-center">
                             <a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                         </th>
                     </tr>
@@ -153,11 +157,18 @@
                         <td data-name="matCol" data-tipo="id">
                             {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
                         </td>
+                        <td data-name="matCol" data-tipo="deposito">
+                            <select name="matCol[0][deposito]" id="matCol[0][deposito]" class="form-control">
+                                @foreach($depositos as $deposito)
+                                    <option value="{{ $deposito->id }}">{{ $deposito->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </td>
                         <td data-name="matCol" data-tipo="reempleo">
-                            {{ Form::checkbox('matCol[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
+                            {{ Form::checkbox('matCol[0][reempleo]', 'true', false, ['class' => 'form-control']) }}
                         </td>
                         <td data-name="matCol" data-tipo="cant">
-                            {{ Form::number('matCol[0][cant]', null, array('class' => 'form-control', 'min' => '0', 'step' => 'any')) }}
+                            {{ Form::number('matCol[0][cant]', null, ['class' => 'form-control', 'min' => '0', 'step' => 'any']) }}
                         </td>
                     </tr>
                     </tbody>
@@ -165,15 +176,15 @@
             </div>
             {{-- Tabla materiales retirados
             ===================================================== --}}
-            <div class="col-md-7">
-                <table class="table table-bordered table-striped" id="tab_material_retirado">
+            <div class="col-md-12">
+                <table class="table table-bordered" id="tab_material_retirado">
                     <thead>
                     <tr>
                         <th>Materiales Retirados</th>
-                        <th class="col-md-2">Centro de acopio</th>
-                        <th class="col-md-1">Reempleo</th>
+                        <th>Centro de acopio</th>
+                        <th>Reempleo</th>
                         <th class="col-md-1">Cantidad</th>
-                        <th class="col-md-1 text-center">
+                        <th class="tdButton text-center">
                             <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
                         </th>
                     </tr>
@@ -191,7 +202,7 @@
                             </select>
                         </td>
                         <td data-name="matRet" data-tipo="reempleo">
-                            {{ Form::checkbox('matRet[0][reempleo]', 'true', false, array('class' => 'form-control')) }}
+                            {{ Form::checkbox('matRet[0][reempleo]', 'true', false, ['class' => 'form-control']) }}
                         </td>
                         <td data-name="matRet" data-tipo="cant">
                             {{ Form::number('matRet[0][cant]', null, ['class' => 'form-control', 'min' => '0', 'step' => 'any']) }}
@@ -201,12 +212,21 @@
                 </table>
             </div>
             {{-- Textarea Observaciones
+            table es innecesaria pero pero utilizó para mantener el formulario homogeneo
             ===================================================== --}}
-            <div class="col-md-6">
-                {{ Form::label('obs', 'Observaciones', array('class' => 'control-label')) }}
-                <div class="controls">
-                    {{ Form::textarea('obs', null, ['rows' => '3']) }}
-                </div>
+            <div class="col-md-4">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Observaciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ Form::textarea('obs', null, ['rows' => '5']) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             {{-- Botones
             ===================================================== --}}

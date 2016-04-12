@@ -211,6 +211,7 @@
                     <thead>
                     <tr>
                         <th>Materiales Colocados</th>
+                        <th>Centro de acopio</th>
                         <th>Reempleo</th>
                         <th class="tdkilometro">Cantidad</th>
                         <th class="text-center">
@@ -223,6 +224,9 @@
                         <td data-name="matCol" data-tipo="id">
                             {{ Form::select('matCol[0][id]', $materiales, null, [ 'class'=>'form-control matCol']) }}
                         </td>
+                        <td data-name="matCol" data-tipo="deposito">
+                            {{ Form::select('matCol[0][deposito]', $depositos, null, [ 'class'=>'form-control']) }}
+                        </td>
                         <td data-name="matCol" data-tipo="reempleo">
                             {{ Form::checkbox('matCol[0][reempleo]', 'true', false, ['class' => 'form-control']) }}
                         </td>
@@ -234,6 +238,9 @@
                         <tr id='addrMatCol{{ $cont +1 }}' data-id="{{ $cont +1 }}">
                             <td data-name="matCol" data-tipo="id">
                                 {{ Form::select('matCol['.($cont +1).'][id]', $materiales, $detalleMatCol->material_id, [ 'class'=>'form-control matCol']) }}
+                            </td>
+                            <td data-name="matCol" data-tipo="deposito">
+                                {{ Form::select('matCol['.($cont +1).'][deposito]', $depositos, $detalleMatCol->deposito_id, [ 'class'=>'form-control']) }}
                             </td>
                             <td data-name="matCol" data-tipo="reempleo">
                                 {{ Form::checkbox('matCol['.($cont +1).'][reempleo]', 'true', $detalleMatCol->reempleo, ['class' => 'form-control']) }}
@@ -303,11 +310,19 @@
             </div>
             {{-- Textarea Observaciones
             ===================================================== --}}
-            <div class="col-xs-12 col-md-6">
-                {{ Form::label('obs', 'Observaciones', ['class' => 'control-label']) }}
-                <div class="controls">
-                    {{ Form::textarea('obs', $hoja->observaciones, ['rows' => '3']) }}
-                </div>
+            <div class="col-md-4">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Observaciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{ Form::textarea('obs', $hoja->observaciones, ['rows' => '5']) }}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             {{-- Botones
             ===================================================== --}}

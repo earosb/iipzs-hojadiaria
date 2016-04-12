@@ -30,6 +30,35 @@ class DepositoController extends \BaseController
 
 
     /**
+     * GET /deposito/id
+     *
+     * @param $id
+     *
+     * @return Response
+     */
+    public function show($id)
+    {
+        $deposito = Deposito::findOrFail($id);
+        $cargas   = Carga::join('material', 'material.id', '=', 'material_id')
+            ->where('deposito_id', '=', $deposito->id)
+            ->orderBy('carga.fecha', 'desc')
+            ->get([
+                'carga.fecha',
+                'carga.total',
+                'carga.obs',
+                'material.nombre as material'
+            ]);
+
+        $html = View::make('deposito.show', compact('deposito', 'cargas'))->render();
+        if (Request::ajax()) {
+            return Response::json([ 'html' => $html ]);
+        }
+
+        return App::abort(404);
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      * POST /deposito
      *

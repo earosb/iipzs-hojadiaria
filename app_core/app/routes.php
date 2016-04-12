@@ -163,8 +163,9 @@ Route::group([ 'before' => 'auth' ], function () {
 
         Route::resource('/m/grupo-trabajo', 'GrupoTrabajoController');
 
-        Route::resource('/m/deposito', 'DepositoController',
-            [ 'except' => [ 'show' ] ]);
+        Route::resource('/m/deposito', 'DepositoController');
+
+        Route::resource('/m/carga', 'CargaController');
 
     });
 
