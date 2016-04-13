@@ -126,8 +126,8 @@
                     <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Clase</th>
                         <th>Cantidad</th>
+                        <th>Clase</th>
                     </tr>
                     </thead>
                     <tbody>

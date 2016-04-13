@@ -32,7 +32,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/r/param') }}">Consultar trabajos</a></li>
                             @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
-                                <li><a href="{{ URL::to('/r/form') }}">Consultar centros de acopio </a></li>
+                                <li><a href="{{ URL::to('/r/deposito') }}">Consultar centros de acopio </a></li>
                             @endif
                             @if (Sentry::getUser()->hasAccess(['form2-3-4']))
                                 <li class="divider"></li>

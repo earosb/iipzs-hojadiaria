@@ -144,8 +144,8 @@
                     <thead>
                     <tr>
                         <th>Materiales Colocados</th>
-                        <th>Centro de acopio</th>
-                        <th>Reempleo</th>
+                        <th class="col-md-3">Centro de acopio</th>
+                        <th class="tdButton">Reempleo</th>
                         <th class="col-md-1">Cantidad</th>
                         <th class="tdButton text-center">
                             <a id="add_row_matCol" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
@@ -181,8 +181,8 @@
                     <thead>
                     <tr>
                         <th>Materiales Retirados</th>
-                        <th>Centro de acopio</th>
-                        <th>Reempleo</th>
+                        <th class="col-md-3">Centro de acopio</th>
+                        <th class="tdButton">Reempleo</th>
                         <th class="col-md-1">Cantidad</th>
                         <th class="tdButton text-center">
                             <a id="add_row_matRet" class="btn btn-success btn-xs glyphicon glyphicon-plus"></a>
