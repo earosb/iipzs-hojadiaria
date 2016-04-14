@@ -36,7 +36,7 @@
                                     {{ $deposito->nombre }}
                                 </td>
                                 <td class="text-center">
-                                    <a title="Ver cargas" href="#cargas" onclick="getCargas({{$deposito->id}})" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                    {{--<a title="Ver cargas" href="#cargas" onclick="getCargas({{$deposito->id}})" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-list-alt"></span></a>--}}
                                     <a title="Editar" href="{{ URL::to('m/deposito/'.$deposito->id.'/edit') }}" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-edit"></span></a>
                                 </td>
                             </tr>

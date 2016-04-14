@@ -44,46 +44,18 @@
 
             </div>
             <div class="col-md-12">
-                {{-- Select sector
+                {{-- Depósitos
                 ===================================================== --}}
                 <div class="col-xs-12 col-md-3">
-                    {{ Form::label('sector', 'Sector', ['class' => 'control-label']) }}
+                    {{ Form::label('centro_de_acopio', 'Centro de acopio', ['class' => 'control-label']) }}
                     <div class="controls">
-                        <select name="sector" id="sector" class="form-control">
-                            <option value="all" selected="selected">Todos</option>
-                            @foreach($sectores as $sector)
-                                <option value="{{ $sector->id }}">{{ $sector->nombre }}</option>
+                        <select name="centro_de_acopio" id="centro_de_acopio" class="form-control">
+                            @foreach($depositos as $deposito)
+                                <option value="{{ $deposito->id }}">{{ $deposito->nombre }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <p class="text-danger">{{ $errors->first('sector') }}</p>
-                </div>
-                {{-- Select block
-                ===================================================== --}}
-                <div class="col-xs-12 col-md-3">
-                    {{ Form::label('block', 'Block', ['class' => 'control-label']) }}
-                    <div class="controls">
-                        <select name="block" id="block" class="form-control">
-                            <option value="all" selected="selected">Seleccione sector</option>
-                        </select>
-                    </div>
-                    <p class="text-danger">{{ $errors->first('block') }}</p>
-                </div>
-            </div>
-            <div class="col-md-12">
-                {{-- Grupo vía
-                ===================================================== --}}
-                <div class="col-xs-12 col-md-3">
-                    {{ Form::label('grupo_via', 'Grupo Vía', ['class' => 'control-label']) }}
-                    <div class="controls">
-                        <select name="grupo_via" id="grupo_via" class="form-control">
-                            <option selected="selected" value="all"> Todos</option>
-                            @foreach($grupos as $grupo)
-                                <option value="{{ $grupo->id }}">{{ $grupo->base }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <p class="text-danger">{{ $errors->first('grupo_via') }}</p>
+                    <p class="text-danger">{{ $errors->first('centro_de_acopio') }}</p>
                 </div>
             </div>
         </div>

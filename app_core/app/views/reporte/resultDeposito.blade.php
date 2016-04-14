@@ -20,99 +20,36 @@
         <li><a href="{{ URL::to('/r/deposito') }}">Consultas</a></li>
         <li class="active">Reporte centros de acopio</li>
         <div class="pull-right">
-            <a class="glyphicon glyphicon-print" title="Imprimir" href="javascript:window.print()"> Imprimir</a>
+            <a class="glyphicon glyphicon-print" title="Imprimir" href="javascript:window.print()">Imprimir</a>
         </div>
     </ul>
     <div class="col-xs-12 col-md-12">
-        <table class="table">
-            <legend>Parámetros de búsqueda</legend>
-            <thead>
-            <tr>
-                <th>Desde</th>
-                <th>Hasta</th>
-                <th>Sector</th>
-                <th>Block</th>
-                <th>Grupo</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>{{ Request::get('fecha_desde') }}</td>
-                <td>{{ Request::get('fecha_hasta') }}</td>
-                @if( isset($sector) )
-                    <td>{{ $sector->nombre }}</td>
-                @else
-                    <td>Todos</td>
-                @endif
-                @if( isset($block) )
-                    <td>{{ $block->estacion_inicio }} - {{ $block->estacion_termino }}</td>
-                @else
-                    <td>Todos</td>
-                @endif
-                @if( isset($grupo) )
-                    <td>{{ $grupo->base }}</td>
-                @else
-                    <td>Todos</td>
-                @endif
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    @if( isset($depositos) )
-        @foreach($depositos as $deposito)
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">{{ $deposito->nombre }}</div>
-                    @if(!$deposito->colocados->isEmpty())
-                        <div class="panel-body">
-                            <p>Materiales colocados</p>
-                        </div>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Material</th>
-                                <th>Cantidad</th>
-                                <th>Grupo</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($deposito->colocados as $material)
-                                <tr>
-                                    <td>{{ $material->material }}</td>
-                                    <td>{{ $material->cantidad }}</td>
-                                    <td>{{ $material->grupo }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
-                    @if(!$deposito->retirados->isEmpty())
-                        <div class="panel-body">
-                            <p>Materiales retirados</p>
-                        </div>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr>
-                                <th>Material</th>
-                                <th>Cantidad</th>
-                                <th>Grupo</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($deposito->retirados as $material)
-                                <tr>
-                                    <td>{{ $material->material }}</td>
-                                    <td>{{ $material->cantidad }}</td>
-                                    <td>{{ $material->grupo }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
+            {{-- Deposito --}}
+            <div class="col-xs 4 col-md-3">
+                {{ Form::label('deposito', 'Depósito', ['class' => 'control-label']) }}
+                <div class="input-group" id="deposito_div">
+                    {{--<legend><h3>{{ $deposito->nombre }}</h3></legend>--}}
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span>
+                    <span class="form-control">{{ $deposito->nombre }}</span>
                 </div>
             </div>
-        @endforeach
-    @endif
+            {{-- Fecha Inicio --}}
+            <div class="col-xs 4 col-md-3">
+                {{ Form::label('fecha_desde', 'Desde', ['class' => 'control-label']) }}
+                <div class="input-group" id="fecha_desde_div">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <span class="form-control">{{ Request::get('fecha_desde') }}</span>
+                </div>
+            </div>
+            {{-- Fecha término --}}
+            <div class="col-xs 4 col-md-3">
+                {{ Form::label('fecha_hasta', 'Hasta', ['class' => 'control-label']) }}
+                <div class="input-group" id="fecha_hasta_div">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    <span class="form-control">{{ Request::get('fecha_hasta') }}</span>
+                </div>
+            </div>
+    </div>
     <div class="col-md-12">
         @if( isset($colocados) )
             <div class="col-xs-12 col-md-6">
@@ -120,14 +57,18 @@
                 <table class="table table-bordered table-striped display">
                     <thead>
                     <tr>
+                        <th>Fecha</th>
                         <th>Material</th>
                         <th>Cantidad</th>
-                        <th>Centro de acopio</th>
+                        <th>Grupo</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($colocados as $colocado)
+                    @forelse($colocados as $colocado)
                         <tr>
+                            <td>
+                                {{ date('d/m/Y', strtotime($colocado->fecha)) }}
+                            </td>
                             <td>
                                 {{ $colocado->material }}
                             </td>
@@ -135,12 +76,15 @@
                                 {{ $colocado->cantidad }}
                             </td>
                             <td>
-                                {{ $colocado->deposito }}
+                                {{ $colocado->grupo }}
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr><td colspan="4">No existen registros</td></tr>
+                    @endforelse
                     </tbody>
                 </table>
+                {{--{{ $colocados->links() }}--}}
             </div>
         @endif
         @if( isset($retirados) )
@@ -149,14 +93,18 @@
                 <table class="table table-bordered table-striped display">
                     <thead>
                     <tr>
+                        <th>Fecha</th>
                         <th>Material</th>
                         <th>Cantidad</th>
-                        <th>Centro de acopio</th>
+                        <th>Grupo</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($retirados as $retirado)
+                    @forelse($retirados as $retirado)
                         <tr>
+                            <td>
+                                {{ date('d/m/Y', strtotime($retirado->fecha)) }}
+                            </td>
                             <td>
                                 {{ $retirado->material }}
                             </td>
@@ -164,12 +112,15 @@
                                 {{ $retirado->cantidad }}
                             </td>
                             <td>
-                                {{ $retirado->deposito }}
+                                {{ $retirado->grupo }}
                             </td>
                         </tr>
-                    @endforeach
+                        @empty
+                        <tr><td colspan="4">No existen registros</td></tr>
+                    @endforelse
                     </tbody>
                 </table>
+                {{--{{ $retirados->links() }}--}}
             </div>
         @endif
     </div>
@@ -179,4 +130,18 @@
 @section('js')
     {{ HTML::script('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js') }}
     {{ HTML::script('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js') }}
+    <script>
+        $(document).ready(function () {
+            $('table.display').DataTable({
+                paging: false,
+                ordering: true,
+                info: false,
+                stateSave: false,
+                filter: false,
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/f2c75b7247b/i18n/Spanish.json"
+                }
+            });
+        });
+    </script>
 @endsection
