@@ -20,7 +20,7 @@
         <li><a href="{{ URL::to('/r/deposito') }}">Consultas</a></li>
         <li class="active">Reporte centros de acopio</li>
         <div class="pull-right">
-            <a class="glyphicon glyphicon-print" title="Imprimir" href="javascript:window.print()">Imprimir</a>
+            <a class="glyphicon glyphicon-print" title="Imprimir" href="javascript:window.print()"> Imprimir</a>
         </div>
     </ul>
     <div class="col-xs-12 col-md-12">
@@ -64,7 +64,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse($colocados as $colocado)
+                    @foreach($colocados as $colocado)
                         <tr>
                             <td>
                                 {{ date('d/m/Y', strtotime($colocado->fecha)) }}
@@ -79,9 +79,7 @@
                                 {{ $colocado->grupo }}
                             </td>
                         </tr>
-                    @empty
-                        <tr><td colspan="4">No existen registros</td></tr>
-                    @endforelse
+                    @endforeach
                     </tbody>
                 </table>
                 {{--{{ $colocados->links() }}--}}
@@ -100,7 +98,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @forelse($retirados as $retirado)
+                    @foreach($retirados as $retirado)
                         <tr>
                             <td>
                                 {{ date('d/m/Y', strtotime($retirado->fecha)) }}
@@ -115,9 +113,7 @@
                                 {{ $retirado->grupo }}
                             </td>
                         </tr>
-                        @empty
-                        <tr><td colspan="4">No existen registros</td></tr>
-                    @endforelse
+                    @endforeach
                     </tbody>
                 </table>
                 {{--{{ $retirados->links() }}--}}
@@ -133,7 +129,7 @@
     <script>
         $(document).ready(function () {
             $('table.display').DataTable({
-                paging: false,
+                paging: true,
                 ordering: true,
                 info: false,
                 stateSave: false,

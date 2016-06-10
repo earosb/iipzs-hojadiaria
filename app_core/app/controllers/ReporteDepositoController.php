@@ -72,6 +72,16 @@ class ReporteDepositoController extends \BaseController
                 'detalle_material_retirado.cantidad',
                 'grupo_trabajo.base as grupo']);
 
+        $totalC = 0;
+        $totalR = 0;
+        foreach ($colocados as $c) {
+            $totalC += $c->cantidad;
+        }
+        foreach ($retirados as $r) {
+            $totalR += $r->cantidad;
+        }
+        Log::debug('Totales', [ 'Colocados' => $totalC, 'Retirados' => $totalR ]);
+
         return View::make('reporte.resultDeposito')
             ->with('deposito', $deposito)
             ->with('colocados', $colocados)
