@@ -48,11 +48,14 @@
     <div class="row" ng-controller="appController">
         <div ng-view>
             <div class="splash text-center" ng-cloak="">
-                <svg width="138px" height="138px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="uil-ring">
+                <svg width="138px" height="138px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                     preserveAspectRatio="xMidYMid" class="uil-ring">
                     <rect x="0" y="0" width="100" height="100" fill="none" class="bk"></rect>
-                    <circle cx="50" cy="50" r="30" stroke-dasharray="141.37166941154067 47.12388980384691" stroke="#ff9200" fill="none" stroke-width="30"
+                    <circle cx="50" cy="50" r="30" stroke-dasharray="141.37166941154067 47.12388980384691"
+                            stroke="#ff9200" fill="none" stroke-width="30"
                             transform="rotate(354 49.9999 49.9999)">
-                        <animateTransform attributeName="transform" type="rotate" values="0 50 50;180 50 50;360 50 50;" keyTimes="0;0.5;1" dur="1s"
+                        <animateTransform attributeName="transform" type="rotate" values="0 50 50;180 50 50;360 50 50;"
+                                          keyTimes="0;0.5;1" dur="1s"
                                           repeatCount="indefinite" begin="0s"></animateTransform>
                     </circle>
                 </svg>
@@ -61,18 +64,7 @@
     </div>
 
 </div>
-
 {{-- Archivos js --}}
-{{ HTML::script('angular2/bower_components/jquery/dist/jquery.min.js') }}
-{{ HTML::script('angular2/bower_components/jqueryui/jquery-ui.min.js') }}
-{{ HTML::script('angular2/bower_components/bootstrap/dist/js/bootstrap.min.js') }}
-{{ HTML::script('angular2/bower_components/angularjs/angular.min.js') }}
-{{ HTML::script('angular2/bower_components/angular-route/angular-route.min.js') }}
-{{ HTML::script('angular2/bower_components/alertify.js/dist/js/ngAlertify.js') }}
-
-{{ HTML::script('angular2/dist/app.js') }}
-{{ HTML::script('js/calendar/calendar.min.js') }}
-{{ HTML::script('js/back_to_top.js') }}
-
+{{ HTML::script('dist/nglibs.js') }}
 </body>
 </html>

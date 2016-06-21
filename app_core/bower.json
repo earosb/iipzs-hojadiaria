@@ -1,0 +1,27 @@
+{
+  "name": "iipzs",
+  "authors": [
+    "Eduardo Aros <e.arosb@gmail.com>"
+  ],
+  "description": "Módulo de programación de trabajos iipzs",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "1.4",
+    "angularjs": "~1.4.*",
+    "awesome-bootstrap-checkbox": "~0.3.*",
+    "bootswatch": "~3.3.6+2",
+    "jqueryui": "~1.11.*",
+    "alertify.js": "alertifyjs#~1.0.8"
+  }
+}

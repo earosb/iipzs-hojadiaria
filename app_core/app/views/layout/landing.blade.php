@@ -71,15 +71,7 @@
 </div>
 
 {{-- Archivos js --}}
-@if(Config::get('app.debug'))
-    {{ HTML::script('js/jquery.min.js') }}
-    {{ HTML::script('js/bootstrap.min.js') }}
-@else
-    {{ HTML::script('https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js') }}
-    {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js') }}
-@endif
-{{ HTML::script('js/alertify.min.js') }}
-{{ HTML::script('js/back_to_top.js') }}
+{{ HTML::script('dist/libs.js') }}
 
 {{-- yield para agregar scripts en cada página --}}
 @yield('js')

@@ -1,5 +1,4 @@
 app_core/bootstrap/compiled.php
-app_core/vendor
 app_core/composer.phar
 app_core/composer.lock
 .env.*.php
@@ -7,6 +6,9 @@ app_core/composer.lock
 .DS_Store
 Thumbs.db
 .directory
+.brackets.json
 .idea/
-.brackets.json 
+app_core/vendor/
 public_html/excel
+app_core/bower_components/
+app_core/node_modules/

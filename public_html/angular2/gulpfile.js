@@ -5,9 +5,19 @@ var templateCache = require('gulp-angular-templatecache');
 var htmlmin = require('gulp-htmlmin');
 
 /*
- * Minify JS
+ * Archivos javascript de la aplicación
  */
-gulp.task('js', function () {
+gulp.task('js_app', function () {
+    gulp.src('src/js/*.js')
+        .pipe(concat('app.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/'))
+});
+
+/*
+ * Archivos javascript bower components
+ */
+gulp.task('js_app', function () {
     gulp.src('src/js/*.js')
         .pipe(concat('app.js'))
         .pipe(uglify())
