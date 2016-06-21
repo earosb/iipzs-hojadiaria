@@ -81,6 +81,15 @@
                 </div>
             </div>
 
+            {{-- Orden --}}
+            <div class="form-group">
+                {{ Form::label('orden', 'Orden en form. 2', array('class' => 'col-sm-2 control-label')) }}
+                <div class="col-sm-10">
+                    {{ Form::number('orden', 0, array('class' => 'form-control', 'placeholder' => 'Orden en formulario 2', 'min' => '0', 'step' => '0', 'required' => 'required')) }}
+                    <p class="text-danger">{{ $errors->first('orden') }}</p>
+                </div>
+            </div>
+
             {{-- Radio tipo mantenimiento --}}
             <div class="form-group">
                 {{ Form::label('tMat', 'Mantenimiento', array('class' => 'col-sm-2 control-label')) }}

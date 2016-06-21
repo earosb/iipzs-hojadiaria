@@ -1,0 +1,1 @@
+/home/vagrant/web/iipzs/app_core/app/views/cargas/index.blade.php
