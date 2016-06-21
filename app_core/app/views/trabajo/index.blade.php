@@ -19,49 +19,110 @@
                         <a class="btn btn-primary" href="{{ URL::route('m.trabajo.create') }}"> Nuevo Trabajo </a>
                     </div>
                 </div>
-                @if( !$trabajos->isEmpty() )
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th class="col-md-1">Valor</th>
-                            <th class="col-md-1">Unidad</th>
-                            <th class="col-md-1">Form 2</th>
-                            <th class="col-md-2">Mantenimiento</th>
-                            <th class="col-md-1">Opciones</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($trabajos as $trabajo)
-                            <tr>
-                                <td>
-                                    {{ $trabajo->nombre }}
-                                </td>
-                                <td>
-                                    {{ $trabajo->valor }}
-                                </td>
-                                <td>
-                                    {{ $trabajo->unidad }}
-                                </td>
-                                <td>
-                                    @if ($trabajo->es_oficial == 1) Si
-                                    @else No
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ $trabajo->mantenimiento }}
-                                </td>
-                                <td class="text-center">
-                                    <a title="Editar" href="{{ URL::to('/m/trabajo/'.$trabajo->id.'/edit') }}"><span
-                                                class="glyphicon glyphicon-edit"></span></a>
-                                </td>
-                            </tr>
+
+                <div>
+                    <ul class="nav nav-tabs" role="tablist">
+                        @foreach($mantenimientos as $key => $mantenimiento)
+                            @if($key == 0)
+                                <li role="presentation" class="active"><a href="#{{ $mantenimiento->id }}"
+                                                                          aria-controls="home" role="tab"
+                                                                          data-toggle="tab">{{ $mantenimiento->nombre }}</a>
+                                </li>
+                            @else
+                                <li role="presentation"><a href="#{{ $mantenimiento->id }}" aria-controls="profile"
+                                                           role="tab" data-toggle="tab">{{ $mantenimiento->nombre }}</a>
+                                </li>
+                            @endif
                         @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    <h4>No existen registros</h4>
-                @endif
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        @foreach($mantenimientos as $key => $mantenimiento)
+                            @if($key == 0)
+                                <div role="tabpanel" class="tab-pane active" id="{{ $mantenimiento->id }}">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th class="col-md-1">Valor</th>
+                                            <th class="col-md-1">Unidad</th>
+                                            <th class="col-md-1">Form 2</th>
+                                            <th class="col-md-1">Opciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @forelse($mantenimiento->trabajos as $trabajo)
+                                            <tr>
+                                                <td>
+                                                    {{ $trabajo->nombre }}
+                                                </td>
+                                                <td>
+                                                    {{ $trabajo->valor }}
+                                                </td>
+                                                <td>
+                                                    {{ $trabajo->unidad }}
+                                                </td>
+                                                <td>
+                                                    @if ($trabajo->es_oficial == 1) Si (orden {{ $trabajo->orden }})
+                                                    @else No
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <a title="Editar" href="{{ URL::to('/m/trabajo/'.$trabajo->id.'/edit') }}"><span
+                                                                class="glyphicon glyphicon-edit"></span></a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <h4>NO EXISTEN REGISTROS</h4>
+                                        @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <div role="tabpanel" class="tab-pane"
+                                     id="{{ $mantenimiento->id }}">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th class="col-md-1">Valor</th>
+                                            <th class="col-md-1">Unidad</th>
+                                            <th class="col-md-1">Form 2</th>
+                                            <th class="col-md-1">Opciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @forelse($mantenimiento->trabajos as $trabajo)
+                                            <tr>
+                                                <td>
+                                                    {{ $trabajo->nombre }}
+                                                </td>
+                                                <td>
+                                                    {{ $trabajo->valor }}
+                                                </td>
+                                                <td>
+                                                    {{ $trabajo->unidad }}
+                                                </td>
+                                                <td>
+                                                    @if ($trabajo->es_oficial == 1) Si (orden {{ $trabajo->orden }})
+                                                    @else No
+                                                    @endif
+                                                </td>
+                                                <td class="text-center">
+                                                    <a title="Editar" href="{{ URL::to('/m/trabajo/'.$trabajo->id.'/edit') }}"><span
+                                                                class="glyphicon glyphicon-edit"></span></a>
+                                                </td>
+                                            </tr>
+                                            @empty
+                                            <h4>NO EXISTEN REGISTROS</h4>
+                                        @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -12,7 +12,7 @@ class ReporteController extends \BaseController
     private $months_fullname = [1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril', 5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto', 9 => 'Septiembre', 10 => 'Octubre', 11 => 'Nov', 12 => 'Diciembre'];
 
     /**
-     * Fomulario con los parámetros de la búsqueda
+     * Formulario con los parámetros de la búsqueda
      * GET /r/param
      *
      * @return Response
@@ -625,7 +625,7 @@ class ReporteController extends \BaseController
      */
     private static function normaliza($cadena)
     {
-        $originales  = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùüúûýýþÿŔŕñÑ';
+        $originales = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùüúûýýþÿŔŕñÑ';
         $modificadas = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuuyybyRrnN';
         $cadena = utf8_decode($cadena);
         $cadena = strtr($cadena, utf8_decode($originales), $modificadas);
@@ -737,7 +737,7 @@ class ReporteController extends \BaseController
     }
 
     /**
-     * Recibe parámetros y genera excel formulario 2-3-4 manteniminto mayor
+     * Recibe parámetros y genera excel formulario 2-3-4 mantenimiento menor
      * @return $this
      */
     public function postFormMenor()
@@ -835,6 +835,210 @@ class ReporteController extends \BaseController
 
         // Checkbox descargar generadores
         if (Input::has('g_menor')) $this->createGenerador($sector, $year, $mes, Input::get('g_menor'), $filename);
+
+        // Crear el zip
+        $this->createZip($filename);
+
+        // Borra la carpeta
+        $this->deleteFolder('excel/' . $filename);
+
+        return Response::download('excel/' . $filename . '.zip');
+    }
+
+    /**
+     * Recibe parámetros y genera excel formulario 2-3-4 mantenimiento mayor versión simple
+     * @return $this
+     */
+    public function postFormMayorSimple()
+    {
+        $input = Input::all();
+
+        $mes = $input['mes'];
+        $year = $input['year'];
+
+        $rules = array('mes' => 'required|numeric|between:1,12',
+            'year' => 'required|numeric|between:2015,' . $year,
+            'sector' => 'required|exists:sector,id',);
+
+        $validator = Validator::make($input, $rules);
+
+        if ($validator->fails()) {
+            return $this->redirectBackWithErrors($validator);
+        }
+
+        $sector = Sector::find($input['sector']);
+        $mes_nombre = $this->months[$mes];
+
+        // Nombre del archivo
+        $filename = 'Form2-3-4[' . $sector->nombre . '][' . $year . '][' . $mes_nombre . ']';
+
+        Excel::create($filename, function ($excel) use ($sector, $year, $mes, $mes_nombre) {
+
+            $excel->setTitle('Formularios 2-3-4');
+            $excel->setCreator('Icil-Icafal PZS');
+            $excel->setCompany('Icil Icafal Proyecto Zona Sur S.A.');
+            $excel->setLastModifiedBy('http://www.icilicafalpzs.cl/');
+            $excel->setDescription('Formulario 2-3-4');
+
+            $blocks = $sector->blocks;
+
+            // Nombre de cada hoja
+            $desdeQuery = date('Y-m-01', strtotime($year . '-' . $mes . '-01'));
+            $hastaQuery = date('Y-m-t', strtotime($year . '-' . $mes . '-01'));
+
+            $excel->sheet($mes_nombre, function ($sheet) use ($sector, $blocks, $desdeQuery, $hastaQuery) {
+
+                // Ancho de columnas automático
+                $sheet->setAutoSize(true);
+
+                $sheet->mergeCells('A1:C1');
+                $sheet->mergeCells('B2:C2');
+
+                /***********************************************
+                 * FORMULARIO 2
+                 * *********************************************
+                 */
+                // Título formulario 2
+                $sheet->cell('A1', 'Form. 2 Mantenimiento mayor');
+
+                // Cabecera
+                $sheet->appendRow(2, array('PART.', 'DESIGNACION', null, 'BLOCK'));
+
+                // Blocks en cabecera
+                $columna = 'E';
+                $fila = 2;
+                foreach ($blocks as $block) {
+                    $sheet->cell($columna . ($fila), $block->estacion);
+                    $columna++;
+                }
+
+                // Trabajos
+                $trabajos = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+                    ->where('tipo_mantenimiento.cod', '=', 'mayor')
+                    ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
+                    ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
+                    ->orderBy('orden')
+                    ->get();
+
+                $fila = $fila + 1;
+                foreach ($trabajos as $cont => $trabajo) {
+                    $tmp = 'B' . $fila . ':' . 'C' . $fila;
+                    $sheet->mergeCells($tmp);
+                    $sheet->appendRow($fila, array(($cont + 1), $trabajo->nombre, null, $trabajo->unidad));
+
+                    $dataTrabajo = Trabajo::where('sector.id', '=', $sector->id)->where('trabajo.id', '=', $trabajo->id)->whereBetween('hoja_diaria.fecha', array($desdeQuery, $hastaQuery))->join('detalle_hoja_diaria', 'detalle_hoja_diaria.trabajo_id', '=', 'trabajo.id')->join('hoja_diaria', 'hoja_diaria.id', '=', 'detalle_hoja_diaria.hoja_diaria_id')->join('block', 'block.id', '=', 'detalle_hoja_diaria.block_id')->join('sector', 'sector.id', '=', 'block.sector_id')->select('block.id', 'block.estacion', 'trabajo.id as trabajo_id', 'trabajo.nombre', 'trabajo.unidad', DB::raw('SUM(detalle_hoja_diaria.cantidad) as cantidad'))->groupBy('block.id')->get();
+
+                    $columna = 'E';
+                    foreach ($blocks as $block) {
+                        foreach ($dataTrabajo as $data) {
+                            if ($block->id == $data->id) {
+                                $styleCell = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '66B2FF')));
+                                $sheet->cell($columna . $fila, $data->cantidad);
+                                $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
+                                break 1;
+                            }
+                        }
+                        $columna++;
+                    }
+                    $fila++;
+                }
+
+                /***********************************************
+                 * FORMULARIO 3 Materiales colocados
+                 * *********************************************
+                 */
+                // Título Formulario 3
+                $sheet->cell('A' . ($fila + 2), 'Form. 3');
+                $fila = $fila + 3;
+
+                // Materiales colocados
+                $materialesColocados = Material::where('es_oficial', '=', '1')->select('id', 'nombre', 'unidad')->get();
+
+                foreach ($materialesColocados as $cont => $matCol) {
+                    $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, 'N', $matCol->unidad));
+                    $sheet->appendRow($fila + 1, array(($cont + 1), $matCol->nombre, 'R', $matCol->unidad));
+
+                    $columna = 'E';
+                    foreach ($blocks as $block) {
+                        $query = "SELECT m.nombre, dmc.reempleo, sum(dmc.cantidad) AS cantidad
+                                        FROM hoja_diaria hd, detalle_material_colocado dmc, material m
+                                        WHERE m.id = " . $matCol->id . "
+                                        AND hd.id = dmc.hoja_diaria_id
+                                        AND dmc.material_id = m.id
+                                        AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $block->km_inicio . "' AND dhd.km_inicio < '" . $block->km_termino . "' )
+                                        AND hd.fecha BETWEEN '" . $desdeQuery . "' AND '" . $hastaQuery . "' GROUP BY  m.id, dmc.reempleo";
+
+                        $dataMaterial = DB::select($query);
+
+                        foreach ($dataMaterial as $data) {
+                            if ($data->reempleo == 0) {
+                                $sheet->cell($columna . $fila, $data->cantidad);
+                                $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
+                            }
+                            if ($data->reempleo == 1) {
+                                $sheet->cell($columna . ($fila + 1), $data->cantidad);
+                                $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
+                            }
+                        }
+                        $columna++;
+                    }
+                    $fila++;
+                    $fila++;
+                }
+
+                /***********************************************
+                 * FORMULARIO 4 Materiales retirados
+                 * *********************************************
+                 */
+                // Título Formulario 4
+                $sheet->cell('A' . ($fila + 2), 'Form. 4');
+                $fila = $fila + 3;
+
+                // Materiales retirados
+                $materialesRetirados = MaterialRetirado::where('es_oficial', '=', '1')->select('id', 'nombre')->get();
+
+                $styleCell = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '66B2FF')));
+                foreach ($materialesRetirados as $cont => $matRet) {
+                    $sheet->appendRow($fila, array(($cont + 1), $matRet->nombre, null, 'Exc.'));
+                    $sheet->appendRow($fila + 1, array(($cont + 1), $matRet->nombre, null, 'R.'));
+
+                    $columna = 'E';
+                    $columnaSig = 'F';
+                    foreach ($blocks as $block) {
+                        $query = "SELECT mr.nombre, dmr.reempleo, sum(dmr.cantidad) AS cantidad
+                                        FROM hoja_diaria hd, detalle_material_retirado dmr, material_retirado mr
+                                        WHERE mr.id = " . $matRet->id . "
+                                        AND hd.id = dmr.hoja_diaria_id
+                                        AND dmr.material_retirado_id = mr.id
+                                        AND hd.id  in (select  dhd.hoja_diaria_id from detalle_hoja_diaria dhd where dhd.km_inicio >= '" . $block->km_inicio . "' AND dhd.km_inicio < '" . $block->km_termino . "' )
+                                        AND hd.fecha BETWEEN '" . $desdeQuery . "' AND '" . $hastaQuery . "' GROUP BY  mr.id, dmr.reempleo";
+
+                        $dataMaterialR = DB::select($query);
+
+                        foreach ($dataMaterialR as $data) {
+                            if ($data->reempleo == 0) {
+                                $sheet->cell($columna . $fila, $data->cantidad);
+                                $sheet->getStyle($columna . $fila)->applyFromArray($styleCell);
+                            }
+                            if ($data->reempleo == 1) {
+                                $sheet->cell($columna . ($fila + 1), $data->cantidad);
+                                $sheet->getStyle($columna . ($fila + 1))->applyFromArray($styleCell);
+                            }
+                        }
+                        $columna++;
+
+                    }
+                    $fila++;
+                    $fila++;
+                }
+
+
+            });
+
+        })->store('xls', public_path('excel/' . $filename));
+
+        // Checkbox descargar generadores
+        if (Input::has('g_mayor')) $this->createGenerador($sector, $year, $mes, Input::get('g_mayor'), $filename);
 
         // Crear el zip
         $this->createZip($filename);

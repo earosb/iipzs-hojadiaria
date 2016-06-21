@@ -129,7 +129,8 @@ Route::group([ 'before' => 'auth' ], function () {
 
         Route::post('/r/form', function () {
             if (Input::get('tipo_mantenimiento') == 'mayor') {
-                $action = 'postFormMayor';
+//                 $action = 'postFormMayor';
+                $action = 'postFormMayorSimple';
 
                 return App::make('ReporteController')->$action();
             } elseif (Input::get('tipo_mantenimiento') == 'menor') {
