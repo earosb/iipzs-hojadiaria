@@ -71,9 +71,8 @@ class ReporteController extends \BaseController
         /**
          * @grupoVia boolean Determina si se filtran los resultados por grupo o no.
          */
-        $grupoVia = Input::get('grupo_via') && Input::get('grupo_via') != 'all';
-
-        $grupoVia ? $grupo = GrupoTrabajo::find($grupoVia) : $grupo = null;
+        $grupoVia = Input::has('grupo_via') && Input::get('grupo_via') != 'all';
+        $grupo = $grupoVia ? GrupoTrabajo::find(Input::get('grupo_via')) : null;
 
         /*
         |--------------------------------------------------------------------------
