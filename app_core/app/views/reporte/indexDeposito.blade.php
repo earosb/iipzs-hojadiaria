@@ -10,7 +10,7 @@
 @stop
 
 @section('css')
-    {{ HTML::style('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css') }}
+    {{ HTML::style('dist/css/jquery-ui.min.css') }}
 @stop
 
 @section('content')
@@ -76,7 +76,5 @@
 @stop
 
 @section('js')
-    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js') }}
-    {{ HTML::script('js/calendar/calendar.min.js') }}
-    {{ HTML::script('js/consultas/r.deposito.js') }}
+    {{ HTML::script('dist/js/reportedeposito.js') }}
 @stop

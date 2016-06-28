@@ -10,11 +10,7 @@
 @stop
 
 @section('css')
-    @if(Config::get('app.debug'))
-        {{ HTML::style('css/awesome-bootstrap-checkbox.min.css') }}
-    @else
-        {{ HTML::style('https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.5/awesome-bootstrap-checkbox.min.css') }}
-    @endif
+    {{ HTML::style('dist/css/awesome-bootstrap-checkbox.css') }}
 @stop
 
 @section('content')

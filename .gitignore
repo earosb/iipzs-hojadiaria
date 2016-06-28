@@ -9,6 +9,7 @@ Thumbs.db
 .brackets.json
 .idea/
 app_core/vendor/
-public_html/excel
+public_html/excel/
 app_core/bower_components/
 app_core/node_modules/
+public_html/dist/
