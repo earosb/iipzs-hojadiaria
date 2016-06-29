@@ -9,11 +9,11 @@ app.config(['$httpProvider', function ($httpProvider) {
 // Route provider
 app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when("/", {
-            templateUrl: "angular2/src/templates/index.html"
+            templateUrl: "dist/html/index.html"
         })
         .when("/edit/:id", {
             title: 'Editar',
-            templateUrl: "angular2/src/templates/edit.html",
+            templateUrl: "dist/html/edit.html",
             controller: "editController"
         })
         .otherwise({redirectTo: "/"});

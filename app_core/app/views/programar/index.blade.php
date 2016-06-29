@@ -17,11 +17,7 @@
 
     <title> Programar trabajos - Icil Icafal PZS S.A. </title>
 
-    {{ HTML::style('angular2/bower_components/bootswatch/yeti/bootstrap.min.css') }}
-    {{ HTML::style('angular2/bower_components/jqueryui/themes/smoothness/jquery-ui.min.css') }}
-    {{ HTML::style('angular2/bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}
-    {{ HTML::style('angular2/bower_components/alertify.js/dist/css/alertify.css') }}
-    {{ HTML::style('css/landing.min.css') }}
+    {{ HTML::style('dist/css/ngstyles.css') }}
 
     <style>
         [ng-cloak].splash {
@@ -65,6 +61,6 @@
 
 </div>
 {{-- Archivos js --}}
-{{ HTML::script('dist/nglibs.js') }}
+{{ HTML::script('dist/js/nglibs.js') }}
 </body>
 </html>

@@ -35,15 +35,7 @@
         @yield('title') - Icil Icafal PZS S.A.
     </title>
 
-    @if(Config::get('app.debug'))
-        {{ HTML::style('css/bootstrap.min.css') }}
-    @else
-        {{ HTML::style('https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/yeti/bootstrap.min.css') }}
-    @endif
-    {{ HTML::style('css/alertify.core.css') }}
-    {{ HTML::style('css/alertify.default.css') }}
-    {{ HTML::style('css/landing.min.css') }}
-
+    {{ HTML::style('dist/css/styles.css') }}
     {{-- yield para agregar css en cada página --}}
     @yield('css')
 </head>
@@ -71,7 +63,7 @@
 </div>
 
 {{-- Archivos js --}}
-{{ HTML::script('dist/libs.js') }}
+{{ HTML::script('dist/js/libs.js') }}
 
 {{-- yield para agregar scripts en cada página --}}
 @yield('js')

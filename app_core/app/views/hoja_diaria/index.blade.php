@@ -10,7 +10,7 @@
 @stop
 
 @section('css')
-    {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
+    {{ HTML::style('dist/css/dataTables.bootstrap.min.css') }}
     <style type="text/css">
         @media print {
             #div_historico {
@@ -117,6 +117,5 @@
 @include('modal.viewHojaDiaria')
 
 @section('js')
-    {{ HTML::script('js/hd/index.js') }}
-    {{--{{ HTML::script('js/min/1425397825695.min.js') }}--}}
+    {{ HTML::script('dist/js/index_hoja-diaria.js') }}
 @endsection

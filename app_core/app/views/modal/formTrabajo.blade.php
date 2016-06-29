@@ -112,5 +112,4 @@
     </div>
 </div>
 
-{{--{{ HTML::script('js/hd/modal/formTrabajo.js') }}--}}
-{{ HTML::script('js/min/1425319861714.min.js') }}
+{{ HTML::script('dist/js/formTrabajo.js') }}

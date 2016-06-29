@@ -10,8 +10,7 @@
 @stop
 
 @section('css')
-    {{ HTML::style('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css') }}
-    {{ HTML::style('css/reporte.css') }}
+    {{ HTML::style('dist/css/reporte.css') }}
 @endsection
 
 @section('content')
@@ -190,8 +189,7 @@
 
 
 @section('js')
-    {{ HTML::script('//cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js') }}
-    {{ HTML::script('//cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js') }}
+    {{ HTML::script('dist/js/reportes.js') }}
     <script>
         $(document).ready(function () {
             $('table.display').DataTable({
@@ -201,7 +199,7 @@
                 stateSave: false,
                 filter: false,
                 language: {
-                    url: "//cdn.datatables.net/plug-ins/f2c75b7247b/i18n/Spanish.json"
+                    url: "dist/json/Spanish.json"
                 }
             });
         });

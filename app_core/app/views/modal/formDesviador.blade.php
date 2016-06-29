@@ -84,5 +84,4 @@
     </div>
 </div>
 
-{{--{{ HTML::script('js/hd/modal/formDesviador.js') }}--}}
-{{ HTML::script('js/min/1424963204554.min.js') }}
+{{ HTML::script('dist/js/formdesviador.js') }}
