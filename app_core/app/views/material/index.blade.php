@@ -49,7 +49,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                @else <p>No existen Registros</p>
+                @else <p>No existen registros</p>
                 @endif
             </div>
         </div>
@@ -86,7 +86,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                @else <p>No existen Registros</p>
+                @else <p>No existen registros</p>
                 @endif
             </div>
         </div>
