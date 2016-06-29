@@ -7,6 +7,7 @@ var cleanCSS = require('gulp-clean-css');
  * librerías javascript landing
  */
 gulp.task('js_libs', function () {
+    console.log('task js_libs');
     var jquery = 'bower_components/jquery/dist/jquery.js';
     var bootstrap = 'bower_components/bootstrap/dist/js/bootstrap.js';
     var alertify = 'bower_components/alertify.js/dist/js/alertify.js';
@@ -14,13 +15,15 @@ gulp.task('js_libs', function () {
     gulp.src([jquery, bootstrap, alertify, backToTop])
         .pipe(concat('libs.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('../public_html/dist/js'))
+        .pipe(gulp.dest('../public_html/dist/js'));
+    console.log('copy [jquery, bootstrap, alertify, backToTop] to dist/js/libs.js');
 });
 
 /**
  * librerias css landing
  */
 gulp.task('css_libs', function(){
+    console.log('task css_libs');
     var bootswatch = 'bower_components/bootswatch/yeti/bootstrap.css';
     var alertify = 'bower_components/alertify.js/dist/css/alertify.css';
     var landing = 'resources/css/landing.css';
@@ -28,10 +31,12 @@ gulp.task('css_libs', function(){
         .pipe(concat('styles.css'))
         .pipe(cleanCSS())
         .pipe(gulp.dest('../public_html/dist/css/'));
+    console.log('copy [bootswatch, alertify, landing] to dist/css/styles.css');
 
     // copia glyphicons de bootstrap
     gulp.src(['bower_components/bootstrap/dist/fonts/*'])
         .pipe(gulp.dest('../public_html/dist/fonts/'));
+    console.log('copy bootstrap glyphicons dist/fonts/*');
 });
 
 /**
@@ -53,13 +58,14 @@ gulp.task('css_nglibs', function(){
     // copia glyphicons de bootstrap
     gulp.src(['bower_components/jqueryui/themes/smoothness/images/*'])
         .pipe(gulp.dest('../public_html/dist/css/images/'));
-    console.log('copy jqueryui/themes/smoothness/images/* to dist/images/*');
+    console.log('copy jqueryui images to dist/images/*');
 });
 
 /**
  * librerías javascript y angular para /programar
  */
 gulp.task('js_nglibs', function () {
+    console.log('task js_nglibs');
     var jquery = 'bower_components/jquery/dist/jquery.js';
     var jqueryui = 'bower_components/jqueryui/jquery-ui.js';
     var bootstrap = 'bower_components/bootstrap/dist/js/bootstrap.js';
@@ -72,11 +78,12 @@ gulp.task('js_nglibs', function () {
     gulp.src([jquery, jqueryui, bootstrap, angular, angularRoute, alertifyNg, backToTop, calendar, app])
         .pipe(concat('nglibs.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('../public_html/dist/js'))
+        .pipe(gulp.dest('../public_html/dist/js'));
+    console.log('copy [jquery, jqueryui, bootstrap, angular, angularRoute, alertifyNg, backToTop, calendar, app] to dist/js/nglibs.js');
 });
 
 /**
- * librerías javascript hoja diaria /hd/create
+ * librerías javascript hoja diaria /hd/*
  */
 gulp.task('assets_hoja-diaria', function () {
     console.log('task assets_hoja-diaria');
@@ -89,6 +96,7 @@ gulp.task('assets_hoja-diaria', function () {
         .pipe(concat('hoja-diaria.js'))
         .pipe(uglify())
         .pipe(gulp.dest('../public_html/dist/js/'));
+    console.log('copy [jqueryui, calendar, table, create, ajaxBlocks] to dist/js/hoja-diaria.js');
     
     var cssJqueryui = 'bower_components/jqueryui/themes/smoothness/jquery-ui.css';
     var cssHojaDiaria = 'resources/css/hoja-diaria_create.css';
@@ -173,35 +181,42 @@ gulp.task('css_pages', function(){
  * funciones javascript
  */
 gulp.task('js_pages', function () {
+    console.log('task js_pages');
     gulp.src('resources/js/ajaxBlocks.js')
         .pipe(concat('ajaxblocks.js'))
         .pipe(uglify())
         .pipe(gulp.dest('../public_html/dist/js/'));
+    console.log('copy [resources/js/ajaxBlocks.js] to dist/js/ajaxblocks.js');
     
     gulp.src('resources/js/hoja_diaria/modal/formDesvio.js')
         .pipe(concat('formdesvio.js'))
         .pipe(uglify())
         .pipe(gulp.dest('../public_html/dist/js/'));
+    console.log('copy [resources/js/hoja_diaria/modal/formDesvio.js] to dist/js/formdesvio.js');
     
     gulp.src('resources/js/hoja_diaria/modal/formDesviador.js')
         .pipe(concat('formdesviador.js'))
         .pipe(uglify())
         .pipe(gulp.dest('../public_html/dist/js/'));
+    console.log('copy [resources/js/hoja_diaria/modal/formDesviador.js] to dist/js/formdesviador.js');
     
     gulp.src('resources/js/hoja_diaria/modal/formMaterialCol.js')
         .pipe(concat('formmaterialcol.js'))
         .pipe(uglify())
         .pipe(gulp.dest('../public_html/dist/js/'));
+    console.log('copy [resources/js/hoja_diaria/modal/formMaterialCol.js] to dist/js/formmaterialcol.js');
     
     gulp.src('resources/js/hoja_diaria/modal/formMaterialRet.js')
         .pipe(concat('formmaterialret.js'))
         .pipe(uglify())
         .pipe(gulp.dest('../public_html/dist/js/'));
+    console.log('copy [resources/js/hoja_diaria/modal/formMaterialRet.js] to dist/js/formmaterialret.js');
 
     gulp.src('resources/js/hoja_diaria/modal/formTrabajo.js')
         .pipe(concat('formTrabajo.js'))
         .pipe(uglify())
         .pipe(gulp.dest('../public_html/dist/js/'));
+    console.log('copy [resources/js/hoja_diaria/modal/formTrabajo.js] to dist/js/formTrabajo.js');
 
 });
 
@@ -209,8 +224,10 @@ gulp.task('js_pages', function () {
  * html programar
  */
 gulp.task('html', function () {
+    console.log('task html');
     gulp.src('resources/programar/src/templates/*')
         .pipe(gulp.dest('../public_html/dist/html/'));
+    console.log('copy [resources/programar/src/templates/*] to dist/html/*');
 });
 
 /**
