@@ -25,39 +25,56 @@ Sistema Icil Icafal Proyecto Zona Sur S.A.
 
 ##Instalación
 ###Ecosistema
-- Instalar servidor web (Homestead, LAMP, WAMP, XAMPP, etc.)
-- Instalar [composer](http://getcomposer.org/)
+- PHP >= 5.4
+- MCrypt PHP Extension
+- JSON PHP Extension
+- MySQL / PostgreSQL
+- Apache / Nginx
+- [composer](http://getcomposer.org/)
+- [nodejs](https://nodejs.org/), [npm](https://www.npmjs.com) y [bower](https://bower.io)
 - Clonar repositorio
 - Crear host virtual ~/iipzs/public_html/
 
 ###Aplicación
 - Dentro de app_core ejecutar
 ```
-$ composer update
+~/iipzs/app_core$ composer install
 ```
 - Crear manualmente bbdd llamada icilicaf_db (iipzs en homestead)
 ```
-$ mysql> CREATE DATABASE icilicaf_db;
+~/iipzs/app_core$ mysql> CREATE DATABASE icilicaf_db;
 ```
 - Instalar Syntara
 ```
-$ php artisan syntara:install
+~/iipzs/app_core$ php artisan syntara:install
 ```
 - Crear usuario administrador
 ```
-$ php artisan create:user [username] [email] [password] Admin
+~/iipzs/app_core$ php artisan create:user [username] [email] [password] Admin
 ```
 ```
-$ php artisan syntara:update
+~/iipzs/app_core$ php artisan syntara:update
 ```
 `nota:`Por defecto el login se realiza con el email, leer manual de [syntara](https://github.com/MrJuliuss/syntara) para cambiar email por username.
 - Migrar base de datos
 ```
-$ php artisan migrate
+~/iipzs/app_core$ php artisan migrate
 ```
 - Poblar bbdd
 ```
-$ php artisan db:seed
+~/iipzs/app_core$ php artisan db:seed
+```
+- Instalar dependencias node
+```
+~/iipzs/app_core$ npm install
+```
+- Instalar dependencias bower
+```
+~/iipzs/app_core$ bower install
+```
+- Compilar assets
+```
+~/iipzs/app_core$ gulp default
 ```
 
 Enjoy!

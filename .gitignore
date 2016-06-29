@@ -7,10 +7,11 @@ app_core/composer.lock
 Thumbs.db
 .directory
 .brackets.json
-iipzs.sublime-project
 .idea/
 app_core/vendor/
 public_html/excel/
 app_core/bower_components/
 app_core/node_modules/
 public_html/dist/
+/iipzs.sublime-workspace
+/iipzs.sublime-project
