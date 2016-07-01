@@ -37,6 +37,7 @@ class APIv1Controller extends \BaseController
             $usuario = Sentry::authenticate($cmredenciales, false);
 
             if ($usuario) {
+                Log::info('USER APIv1 LOGIN', [$username]);
                 $token = bin2hex(openssl_random_pseudo_bytes(16));
 
                 $user = Sentry::getUser();
@@ -71,7 +72,8 @@ class APIv1Controller extends \BaseController
      */
     public function store()
     {
-        Log::debug('AndroidApp', ['input' => Input::all()]);
+        $user = User::where('api_token', '=', Input::get('token'))->first();
+        Log::info('APIv1Controller::store', ['user' => $user->username, 'input' => Input::all()]);
         try {
             $trabajos = json_decode(Input::get('trabajos'));
             foreach ($trabajos as $p) {

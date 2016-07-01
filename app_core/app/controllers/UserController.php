@@ -84,6 +84,7 @@ class UserController extends BaseController
             $usuario = Sentry::authenticate($cmredenciales, false);
 
             if ($usuario) {
+                Log::info('UserController::postLogin', [$usuario->username]);
                 return Redirect::to('/r/param');
             }
         } catch (Cartalyst\Sentry\Users\LoginRequiredException $e) {
