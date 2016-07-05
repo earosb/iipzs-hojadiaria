@@ -12,6 +12,7 @@ class APIv1Controller extends \BaseController
         try {
             $trabajos = Trabajo::orderby('nombre')
                 ->get(array('id as remote_id', 'nombre', 'unidad'));
+            Log::info('APIv1Controller::trabajos', [$trabajos->count()]);
             return Response::json($trabajos);
         } catch (Exception $e) {
             return Response::json(['error' => true, 'msg' => 'Se produjo un error en la base de datos']);
@@ -37,7 +38,7 @@ class APIv1Controller extends \BaseController
             $usuario = Sentry::authenticate($cmredenciales, false);
 
             if ($usuario) {
-                Log::info('USER APIv1 LOGIN', [$username]);
+                Log::info('APIv1Controller::login', [$username]);
                 $token = bin2hex(openssl_random_pseudo_bytes(16));
 
                 $user = Sentry::getUser();
@@ -72,8 +73,8 @@ class APIv1Controller extends \BaseController
      */
     public function store()
     {
-        $user = User::where('api_token', '=', Input::get('token'))->first();
-        Log::info('APIv1Controller::store', ['user' => $user->username, 'input' => Input::all()]);
+        //$user = User::where('api_token', '=', Input::get('token'))->first();
+        Log::info('APIv1Controller::store', ['user' => '$user->username', 'input' => Input::all()]);
         try {
             $trabajos = json_decode(Input::get('trabajos'));
             foreach ($trabajos as $p) {
