@@ -23,9 +23,8 @@
                         <tr>
                             <th>Nombre</th>
                             <th class="col-md-1">Unidad</th>
-                            <th class="col-md-2">Valor(UF)</th>
-                            <th class="col-md-1">Proveedor</th>
                             <th class="col-md-2">Form 3</th>
+                            <th class="col-md-2">Pos en form 3</th>
                             <th class="col-md-1">Opciones</th>
                         </tr>
                         </thead>
@@ -34,14 +33,13 @@
                             <tr>
                                 <td>{{ $material->nombre }}</td>
                                 <td>{{ $material->unidad }}</td>
-                                <td>{{ $material->valor }}</td>
-                                <td>{{ $material->proveedor }}</td>
                                 <td>
                                     @if($material->es_oficial) Si
                                     @else No
                                     @endif
                                 </td>
-                                <td>
+                                <td>No asignado</td>
+                                <td class="text-center">
                                     <a class="glyphicon glyphicon-edit" title="Editar"
                                        href="{{ URL::to('/m/material/'.$material->id.'/edit') }}"></a>
                                 </td>
@@ -66,6 +64,7 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Form 4</th>
+                            <th>Pos. en form 4</th>
                             <th class="col-md-1">Opciones</th>
                         </tr>
                         </thead>
@@ -78,7 +77,8 @@
                                     @else No
                                     @endif
                                 </td>
-                                <td>
+                                <td>No asignado</td>
+                                <td class="text-center">
                                     <a class="glyphicon glyphicon-edit" title="Editar"
                                        href="{{ URL::to('/m/material-retirado/'.$matReti->id.'/edit') }}"></a>
                                 </td>

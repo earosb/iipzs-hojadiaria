@@ -11,7 +11,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-xs-12 col-md-12">
+        <div class="col-xs-12 col-sm-8">
             <div class="panel panel-default">
                 <div class="panel-heading"> Todos los Trabajos</div>
                 <div class="panel-body">
@@ -40,13 +40,13 @@
                         @foreach($mantenimientos as $key => $mantenimiento)
                             @if($key == 0)
                                 <div role="tabpanel" class="tab-pane active" id="{{ $mantenimiento->id }}">
-                                    <table class="table table-bordered table-striped">
+                                    <table class="table table-bordered table-striped display">
                                         <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th class="col-md-1">Valor</th>
                                             <th class="col-md-1">Unidad</th>
                                             <th class="col-md-1">Form 2</th>
+                                            <th class="col-md-2">Pos. en form 2</th>
                                             <th class="col-md-1">Opciones</th>
                                         </tr>
                                         </thead>
@@ -57,14 +57,18 @@
                                                     {{ $trabajo->nombre }}
                                                 </td>
                                                 <td>
-                                                    {{ $trabajo->valor }}
-                                                </td>
-                                                <td>
                                                     {{ $trabajo->unidad }}
                                                 </td>
                                                 <td>
-                                                    @if ($trabajo->es_oficial == 1) Si (orden {{ $trabajo->orden }})
+                                                    @if ($trabajo->es_oficial == 1) Si
                                                     @else No
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($trabajo->orden)
+                                                        {{ $trabajo->orden }}
+                                                    @else
+                                                        No asignado
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
@@ -85,9 +89,9 @@
                                         <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th class="col-md-1">Valor</th>
                                             <th class="col-md-1">Unidad</th>
                                             <th class="col-md-1">Form 2</th>
+                                            <th class="col-md-2">Pos. en form 2</th>
                                             <th class="col-md-1">Opciones</th>
                                         </tr>
                                         </thead>
@@ -98,14 +102,18 @@
                                                     {{ $trabajo->nombre }}
                                                 </td>
                                                 <td>
-                                                    {{ $trabajo->valor }}
-                                                </td>
-                                                <td>
                                                     {{ $trabajo->unidad }}
                                                 </td>
                                                 <td>
-                                                    @if ($trabajo->es_oficial == 1) Si (orden {{ $trabajo->orden }})
+                                                    @if ($trabajo->es_oficial == 1) Si
                                                     @else No
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($trabajo->orden)
+                                                        {{ $trabajo->orden }}
+                                                    @else
+                                                        No asignado
                                                     @endif
                                                 </td>
                                                 <td class="text-center">
