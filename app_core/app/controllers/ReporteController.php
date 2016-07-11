@@ -256,7 +256,7 @@ class ReporteController extends \BaseController
     }
 
     /**
-     * Recibe parámetros y genera excel formulario 2-3-4 manteniminto mayor
+     * Recibe parámetros y genera excel formulario 2-3-4 mantenimiento mayor
      * @return $this
      */
     public function postFormMayor()
@@ -801,9 +801,10 @@ class ReporteController extends \BaseController
                 // Trabajos
                 $trabajos = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
                     ->where('tipo_mantenimiento.cod', '=', 'menor')
+                    ->whereNotNull('orden')
                     ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
                     ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
-                    ->orderBy('orden', 'desc')
+                    ->orderBy('orden')
                     ->get();
 
                 $fila = $fila + 1;
@@ -913,6 +914,7 @@ class ReporteController extends \BaseController
 
                 // Trabajos
                 $trabajos = Trabajo::where('trabajo.es_oficial', '=', '1', 'and')
+                    ->whereNotNull('orden')
                     ->where('tipo_mantenimiento.cod', '=', 'mayor')
                     ->join('tipo_mantenimiento', 'trabajo.tipo_mantenimiento_id', '=', 'tipo_mantenimiento.id')
                     ->select('trabajo.id', 'trabajo.nombre', 'trabajo.unidad', 'trabajo.valor')
@@ -951,7 +953,7 @@ class ReporteController extends \BaseController
                 $fila = $fila + 3;
 
                 // Materiales colocados
-                $materialesColocados = Material::where('es_oficial', '=', '1')->select('id', 'nombre', 'unidad')->get();
+                $materialesColocados = Material::where('es_oficial', '=', '1')->whereNotNull('orden')->select('id', 'nombre', 'unidad')->orderBy('orden')->get();
 
                 foreach ($materialesColocados as $cont => $matCol) {
                     $sheet->appendRow($fila, array(($cont + 1), $matCol->nombre, 'N', $matCol->unidad));
@@ -994,7 +996,7 @@ class ReporteController extends \BaseController
                 $fila = $fila + 3;
 
                 // Materiales retirados
-                $materialesRetirados = MaterialRetirado::where('es_oficial', '=', '1')->select('id', 'nombre')->get();
+                $materialesRetirados = MaterialRetirado::where('es_oficial', '=', '1')->whereNotNull('orden')->select('id', 'nombre')->get();
 
                 $styleCell = array('fill' => array('type' => PHPExcel_Style_Fill::FILL_SOLID, 'color' => array('rgb' => '66B2FF')));
                 foreach ($materialesRetirados as $cont => $matRet) {

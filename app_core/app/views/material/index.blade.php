@@ -24,7 +24,7 @@
                             <th>Nombre</th>
                             <th class="col-md-1">Unidad</th>
                             <th class="col-md-2">Form 3</th>
-                            <th class="col-md-2">Pos en form 3</th>
+                            <th class="col-md-2">Pos. en form 3</th>
                             <th class="col-md-1">Opciones</th>
                         </tr>
                         </thead>
@@ -38,7 +38,13 @@
                                     @else No
                                     @endif
                                 </td>
-                                <td>No asignado</td>
+                                <td>
+                                    @if($material->orden)
+                                        {{ $material->orden }}
+                                    @else
+                                        No asignado
+                                    @endif
+                                </td>
                                 <td class="text-center">
                                     <a class="glyphicon glyphicon-edit" title="Editar"
                                        href="{{ URL::to('/m/material/'.$material->id.'/edit') }}"></a>
@@ -77,7 +83,13 @@
                                     @else No
                                     @endif
                                 </td>
-                                <td>No asignado</td>
+                                <td>
+                                    @if($matReti->orden)
+                                        {{ $matReti->orden }}
+                                    @else
+                                        No asignado
+                                    @endif
+                                </td>
                                 <td class="text-center">
                                     <a class="glyphicon glyphicon-edit" title="Editar"
                                        href="{{ URL::to('/m/material-retirado/'.$matReti->id.'/edit') }}"></a>

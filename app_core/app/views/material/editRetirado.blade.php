@@ -30,7 +30,6 @@
                         <p class="text-danger">{{ $errors->first('nombre') }}</p>
                     </div>
                 </div>
-
                 {{-- Checkbox esOficial --}}
                 <div id="es_oficial_div" class="form-group">
                     {{ Form::label('es_oficial', 'Form 4', array('class' => 'col-sm-2 control-label')) }}
@@ -47,7 +46,15 @@
                         </div>
                     </div>
                 </div>
-
+                {{-- Orden en formulario 4 --}}
+                <div class="form-group">
+                    {{ Form::label('orden', 'Orden en form. 4', array('class' => 'col-sm-2 control-label')) }}
+                    <div class="col-sm-10">
+                        {{ Form::number('orden', $matRet->orden, array('class' => 'form-control', 'placeholder' => 'Orden en formulario 4', 'min' => '0')) }}
+                        <p class="text-danger">{{ $errors->first('orden') }}</p>
+                    </div>
+                </div>
+                {{-- Submit --}}
                 <div class="form-group">
                     <label class="col-sm-2 control-label"></label>
 

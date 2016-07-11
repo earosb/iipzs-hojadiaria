@@ -14,8 +14,8 @@ class MaterialController extends \BaseController
      */
     public function index()
     {
-        $materiales = Material::all();
-        $matRetirados = MaterialRetirado::all();
+        $materiales = Material::orderBy('nombre')->get();
+        $matRetirados = MaterialRetirado::orderBy('nombre')->get();
         return View::make('material.index', compact('materiales', 'matRetirados'));
     }
 
@@ -53,6 +53,7 @@ class MaterialController extends \BaseController
         $material->valor = $input['valor'];
         $material->unidad = $input['unidad'];
         $material->proveedor = $input['proveedor'];
+        $material->orden = isset($input['orden']) ? $input['orden'] : null;
         $material->es_oficial = (isset($input['es_oficial'])) ? true : false;
 
         $material->save();
@@ -110,6 +111,7 @@ class MaterialController extends \BaseController
         $material->valor = $input['valor'];
         $material->unidad = $input['unidad'];
         $material->proveedor = $input['proveedor'];
+        $material->orden = isset($input['orden']) ? $input['orden'] : null;
         $material->es_oficial = (isset($input['es_oficial'])) ? true : false;
 
         $material->save();

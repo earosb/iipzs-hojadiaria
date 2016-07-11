@@ -54,7 +54,6 @@
                         <p class="text-danger">{{ $errors->first('unidad') }}</p>
                     </div>
                 </div>
-
                 {{-- Checkbox esOficial --}}
                 <div id="es_oficial_div" class="form-group">
                     {{ Form::label('es_oficial', 'Form 3', array('class' => 'col-sm-2 control-label')) }}
@@ -71,7 +70,15 @@
                         </div>
                     </div>
                 </div>
-
+                {{-- Orden en formulario 3 --}}
+                <div class="form-group">
+                    {{ Form::label('orden', 'Orden en form. 3', array('class' => 'col-sm-2 control-label')) }}
+                    <div class="col-sm-10">
+                        {{ Form::number('orden', $material->orden, array('class' => 'form-control', 'placeholder' => 'Orden en formulario 3', 'min' => '0')) }}
+                        <p class="text-danger">{{ $errors->first('orden') }}</p>
+                    </div>
+                </div>
+                {{-- Submit --}}
                 <div class="form-group">
                     <label class="col-sm-2 control-label"></label>
 

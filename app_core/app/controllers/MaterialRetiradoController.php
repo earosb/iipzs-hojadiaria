@@ -36,12 +36,7 @@ class MaterialRetiradoController extends \BaseController
      */
     public function store()
     {
-        $input = array(
-            '_token' => Input::get('_token'),
-            'nombre' => Input::get('nombre'),
-            'clase' => Input::get('clase'),
-            'es_oficial' => Input::get('es_oficial'),
-        );
+        $input = Input::except('_token');
 
         $validator = Validator::make($input, MaterialRetirado::$rules);
 
@@ -55,10 +50,8 @@ class MaterialRetiradoController extends \BaseController
         $matRet = new MaterialRetirado();
 
         $matRet->nombre = $input['nombre'];
-        if ($input['es_oficial'])
-            $matRet->es_oficial = true;
-        else
-            $matRet->es_oficial = false;
+        $matRet->es_oficial = isset($input['es_oficial']) ? true : false;
+        $matRet->orden = isset($input['orden']) ? $input['orden'] : null;
         $matRet->save();
 
         if (Request::ajax()) {
@@ -105,11 +98,7 @@ class MaterialRetiradoController extends \BaseController
     {
         $matRet = MaterialRetirado::find($id);
 
-        $input = array(
-            '_token' => Input::get('_token'),
-            'nombre' => Input::get('nombre'),
-            'es_oficial' => Input::get('es_oficial'),
-        );
+        $input = Input::except('_token');
 
         $validator = Validator::make($input, MaterialRetirado::$rules);
 
@@ -119,6 +108,7 @@ class MaterialRetiradoController extends \BaseController
 
         $matRet->nombre = $input['nombre'];
         $matRet->es_oficial = (isset($input['es_oficial'])) ? true : false;
+        $matRet->orden = isset($input['orden']) ? $input['orden'] : null;
 
         $matRet->save();
 
