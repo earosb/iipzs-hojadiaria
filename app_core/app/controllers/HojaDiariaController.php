@@ -9,7 +9,7 @@ class HojaDiariaController extends \BaseController
      * Show the form for creating a new resource.
      * GET /hd/create
      *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -46,7 +46,7 @@ class HojaDiariaController extends \BaseController
      * Display a listing of the resource.
      * GET /hd
      *
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -88,7 +88,6 @@ class HojaDiariaController extends \BaseController
      */
     public function store()
     {
-        Log::debug('INPUT', Input::all());
         /**
          * extrae todos los campos excepto los ocultos en el formulario
          */

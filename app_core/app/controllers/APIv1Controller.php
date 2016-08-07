@@ -22,7 +22,7 @@ class APIv1Controller extends \BaseController
     /**
      * POST /api/v1/login
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login()
     {
