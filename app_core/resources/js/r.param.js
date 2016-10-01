@@ -22,6 +22,12 @@ $(document).ready(function () {
             $(".ui-datepicker").css('font-size', 12)
         }
     });
+    // Lanza calendarios al hacer clic en icono
+    $( "span.input-group-addon" ).on('click', function(e){
+        var div = $(this).parent();
+        div.children('input').datepicker("show");
+        
+    });
     /**
      * Carga los blocks en select
      */

@@ -9,6 +9,11 @@ $(document).ready(function () {
             $(".ui-datepicker").css('font-size', 12)
         }
     });
+    // Lanza calendario al hacer clic en icono
+    $( "span.input-group-addon" ).on('click', function(e){
+        var parent = $(this).parent().parent();
+        parent.datepicker("show");
+    });
 
     /**
      * Launch modals

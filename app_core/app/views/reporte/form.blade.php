@@ -26,18 +26,16 @@
                 {{-- Mes Inicio --}}
                 <div class="col-md-3">
                     {{ Form::label('mes', 'Mes', array('class' => 'control-label')) }}
-                    <div class="input-group">
+                    <div class="controls">
                         {{ Form::select('mes', trans('form.months'), null, ['class'=>'form-control']) }}
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                     <p class="text-danger">{{ $errors->first('mes') }}</p>
                 </div>
                 {{-- Año --}}
                 <div class="col-xs-12 col-md-3">
                     {{ Form::label('year', 'Año', array('class' => 'control-label')) }}
-                    <div class="input-group">
+                    <div class="controls">
                         {{ Form::selectYear('year', 2015, $year, $year, ['class'=>'form-control']) }}
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                     </div>
                     <p class="text-danger">{{ $errors->first('year') }}</p>
                 </div>
