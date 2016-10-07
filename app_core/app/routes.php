@@ -88,6 +88,13 @@ Route::group([ 'prefix' => 'api/v1' ], function () {
 });
 
 /**
+ * API v2
+ */
+Route::group([ 'prefix' => 'api/v2' ], function () {
+    require __DIR__ . '/routes/apiv2.php';
+});
+
+/**
  * Descarga de manuales
  */
 Route::group([ 'prefix' => 'manual' ], function () {
