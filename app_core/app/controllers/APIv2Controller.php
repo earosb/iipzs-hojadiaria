@@ -26,7 +26,7 @@ class APIv2Controller extends \BaseController
 
             return Response::json([
                 'error' => false,
-                'data' => $trabajos
+                'msg' => $trabajos
             ]);
         } catch ( Exception $e ) {
             Log::error('APIv2Controller::trabajos', [ $e->getMessage() ]);
