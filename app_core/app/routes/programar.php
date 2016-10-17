@@ -21,6 +21,8 @@ Route::get('programar/getprograma', 'ProgramarController@getPrograma');
 
 Route::get('grupos', 'GrupoTrabajoController@index');
 
+Route::get('tipo-mant', 'TrabajoController@tipoMant');
+
 Route::get('trabajo', 'TrabajoController@index');
 
 Route::get('programar/download-app', 'ProgramarController@downloadApp');

@@ -19,6 +19,12 @@
                             <p ng-repeat="msg in errors.causa" class="text-danger">{{msg}}</p>
                         </div>
                         <div class="form-group col-md-3">
+                            <label>Tipo mantenimiento</label>
+                            <select class="form-control" ng-model="filtro.tipoMant" ng-change="filterTrabajos(filtro)"
+                                 ng-options="tmant.nombre for tmant in tipoMant track by tmant.id">
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
                             <label>Trabajo</label>
                             <select class="form-control" ng-model="nTrabajo.trabajo_id">
                                 <option ng-repeat="partida in partidas" value="{{ partida.id }}">{{ partida.nombre }}</option>
@@ -61,6 +67,12 @@
                             <div class="form-group col-md-2">
                                 <label>Causa</label>
                                 <input type="text" id="fcausa" name="fcausa" placeholder="Ej. ITPFM MES-AÑO" ng-model="filtro.causa" class="form-control" capitalize>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label>Tipo mantenimiento</label>
+                                <select class="form-control" ng-model="filtro.tipoMant" ng-change="filterTrabajos(filtro)"
+                                     ng-options="tmant.nombre for tmant in tipoMant track by tmant.id">
+                                </select>
                             </div>
                             <div class="form-group col-md-3">
                                 <label>Trabajo</label>

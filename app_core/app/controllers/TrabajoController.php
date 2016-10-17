@@ -8,6 +8,20 @@ class TrabajoController extends \BaseController
 {
 
     /**
+     * Retorna tipos de mantenimiento.
+     * GET /tipoMant
+     *
+     * @return Response
+     */
+    public function tipoMant()
+    {
+        $tipos = TipoMantenimiento::all(['id', 'nombre']);
+        
+        return Response::json($tipos);
+    }
+
+
+    /**
      * Display a listing of the resource.
      * GET /trabajo
      *
@@ -16,10 +30,19 @@ class TrabajoController extends \BaseController
     public function index()
     {
         if (Request::ajax()) {
-            $trabajos = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=',
-                'trabajo.tipo_mantenimiento_id')->select('tipo_mantenimiento.nombre as mantenimiento', 'trabajo.nombre',
-                'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial',
-                'trabajo.id')->whereNull('trabajo.deleted_at')->orderBy('trabajo.nombre', 'ASC')->get();
+            if ( Input::has('tipoMant') ) {
+                $trabajos = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=', 'trabajo.tipo_mantenimiento_id')
+                ->select('tipo_mantenimiento.nombre as mantenimiento', 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'trabajo.id')
+                ->where('tipo_mantenimiento.id', '=', Input::get('tipoMant'))
+                ->orderBy('trabajo.nombre', 'ASC')
+                ->get();
+            } else {
+                $trabajos = TipoMantenimiento::join('trabajo', 'tipo_mantenimiento.id', '=', 'trabajo.tipo_mantenimiento_id')
+                    ->select('tipo_mantenimiento.nombre as mantenimiento', 'trabajo.nombre', 'trabajo.valor', 'trabajo.unidad', 'trabajo.es_oficial', 'trabajo.id')
+                    ->whereNull('trabajo.deleted_at')
+                    ->orderBy('trabajo.nombre', 'ASC')
+                    ->get();
+            }
 
             return Response::json($trabajos);
         }

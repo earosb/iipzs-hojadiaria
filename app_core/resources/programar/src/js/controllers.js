@@ -29,6 +29,11 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
         console.info('trabajos', data.data.length);
     });
 
+    $http.get('tipo-mant').success(function(data) {
+        $scope.tipoMant = data;
+        console.info('tipoMant', data.length);
+    });
+
     $http.get('grupos').success(function(data) {
         $scope.grupos = data;
         console.info('grupos', data.length);
@@ -38,6 +43,16 @@ app.controller("appController", ['$scope', '$http', 'alertify', function appCont
         $scope.partidas = data;
         console.info('partidas', data.length);
     });
+
+    $scope.filterTrabajos = function(filtro){
+        $http.get('trabajo', {
+            params: {tipoMant: filtro.tipoMant.id}
+        }).success(function(data) {
+            $scope.partidas.length = 0;
+            $scope.partidas = data;
+            console.info('partidas filtradas', data.length);
+        });
+    };
 
     $scope.loadMore = function() {
         $scope.filtro.page = $scope.nextPage;
