@@ -59,6 +59,7 @@
                 @foreach($trabajos as $trabajo)
                     <tr>
                         <td>
+                            <span class="hidden">{{ $trabajo->fecha }}</span>
                             {{ Carbon\Carbon::parse($trabajo->fecha)->format('d/m/Y') }}
                         </td>
                         <td>
