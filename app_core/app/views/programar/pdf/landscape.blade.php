@@ -27,6 +27,10 @@
         .checked {
             background-color: #bdbebd;
         }
+
+        .obs {
+            font-size: x-small;
+        }
     </style>
 </head>
 
@@ -129,7 +133,7 @@
                     <td></td>
                 @endif
                 @if($showObs)
-                    <td>{{ $trabajo->Observaciones }}</td>
+                    <td class="obs">{{ $trabajo->Observaciones }}</td>
                 @endif
             </tr>
         @endforeach
@@ -177,7 +181,7 @@
                     <td></td>
                 @endif
                 @if($showObs)
-                    <td>{{ $trabajo->Observaciones }}</td>
+                    <td class="obs">{{ $trabajo->Observaciones }}</td>
                 @endif
             </tr>
         @endforeach
