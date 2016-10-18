@@ -24,6 +24,7 @@
     "jqueryui": "~1.11.*",
     "alertify.js": "alertifyjs#~1.0.8",
     "datatables.net": "~1.10.12",
-    "datatables.net-bs": "~1.10.12"
+    "datatables.net-bs": "~1.10.12",
+    "jquery": "2.2.4"
   }
 }
