@@ -133,7 +133,7 @@
                 stateSave: false,
                 filter: false,
                 language: {
-                    url: "dist/json/Spanish.json"
+                    url: "/dist/json/Spanish.json"
                 }
             });
         });
