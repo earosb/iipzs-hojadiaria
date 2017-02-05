@@ -57,7 +57,7 @@ return array(
             'host'      => 'localhost',
 			'database'  => 'iipzs',
 			'username'  => 'iipzs',
-			'password'  => 'iipzs',
+			'password'  => 'Y8yJokCv',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
