@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'https://' . getenv('OPENSHIFT_APP_DNS') . '/',
+	'url' => 'http://icilicafalpzs.cl/',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -128,7 +128,6 @@ return array(
 		'Fitztrev\LaravelHtmlMinify\LaravelHtmlMinifyServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Components\AlertProvider',
-        'Barryvdh\Debugbar\ServiceProvider',
 		'Barryvdh\DomPDF\ServiceProvider',
 
 	),

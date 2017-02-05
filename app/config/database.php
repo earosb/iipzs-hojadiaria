@@ -54,11 +54,10 @@ return array(
 
         'mysql'  => array(
             'driver'    => 'mysql',
-            'host'      => getenv('OPENSHIFT_MYSQL_DB_HOST'),
-			'port'      => getenv('OPENSHIFT_MYSQL_DB_PORT'),
-			'database'  => getenv('OPENSHIFT_APP_NAME'),
-			'username'  => getenv('OPENSHIFT_MYSQL_DB_USERNAME'),
-			'password'  => getenv('OPENSHIFT_MYSQL_DB_PASSWORD'),
+            'host'      => 'localhost',
+			'database'  => 'iipzs',
+			'username'  => 'iipzs',
+			'password'  => 'iipzs',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
@@ -66,11 +65,11 @@ return array(
 
         'pgsql'  => array(
             'driver'   => 'pgsql',
-            'host'     => getenv('OPENSHIFT_POSTGRESQL_DB_HOST'),
-			'port'     => getenv('OPENSHIFT_POSTGRESQL_DB_PORT'),
-			'database' => getenv('OPENSHIFT_APP_NAME'),
-			'username' => getenv('OPENSHIFT_POSTGRESQL_DB_USERNAME'),
-			'password' => getenv('OPENSHIFT_POSTGRESQL_DB_PASSWORD'),
+            'host'     => 'localhost',
+			'port'     => '5432',
+			'database' => 'iipzs',
+			'username' => 'iipzs',
+			'password' => 'iipzs',
             'charset'  => 'utf8',
             'prefix'   => '',
             'schema'   => 'public',
