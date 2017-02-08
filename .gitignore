@@ -1,18 +1,14 @@
 .idea/
-app_core/composer.lock
-app_core/bower_components/
-app_core/node_modules/
-app_core/vendor/
-public_html/excel/
-public_html/dist/
-logs/
-app_core/bootstrap/compiled.php
-app_core/composer.phar
+# composer.lock
+bower_components/
+node_modules/
+vendor/
+public/excel/
+
+bootstrap/compiled.php
+composer.phar
 .env.*.php
 .env.php
 .DS_Store
 Thumbs.db
 .directory
-.brackets.json
-/iipzs.sublime-workspace
-/iipzs.sublime-project
