@@ -295,9 +295,12 @@
             </td>
             <td ng-class="orderByField == 'causa' ? 'active' : ''">{{ trabajo.causa }}</td>
             <td ng-click="checkByClick(trabajo)" class="checkByClick" ng-class="orderByField == 'nombre' ? 'active' : ''">
-                {{ trabajo.nombre }}
-                <span ng-if="trabajo.realizado != 0" class="pull-right"><span class="label label-success" title="Trabajo realizado"><span
-                        class="glyphicon glyphicon-ok"></span></span></span>
+                {{ trabajo.nombre }} [{{ trabajo.realizado }}]
+                <span ng-if="trabajo.realizado" class="pull-right">
+                    <span class="label label-success" title="Trabajo realizado">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </span>
+                </span>
                 <span ng-if="!trabajo.realizado == 0" class="pull-right">{{ trabajo.unidad }}</span>
             </td>
             <td ng-class="orderByField == 'km_inicio' ? 'active' : ''">{{ trabajo.km_inicio }}</td>
