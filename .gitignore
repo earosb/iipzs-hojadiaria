@@ -1,5 +1,4 @@
 .idea/
-# composer.lock
 bower_components/
 node_modules/
 vendor/
@@ -7,6 +6,7 @@ public/excel/
 
 bootstrap/compiled.php
 composer.phar
+composer.lock
 .env.*.php
 .env.php
 .DS_Store
