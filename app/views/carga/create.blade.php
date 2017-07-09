@@ -1,61 +1,103 @@
-<div class="panel panel-default">
-    <div class="panel-heading">Nueva carga {{ $deposito->nombre }}</div>
-    <div class="panel-body">
-        {{ Form::open(['url' => 'm/carga', 'class' => 'form-horizontal', 'id' => 'causaForm']) }}
+@extends('layout.landing')
 
-        <fieldset>
+@section('meta')
+    <meta name="description" content="Formulario para la creación de un sector">
+    <meta name="author" content="earosb">
+@stop
 
-            <div class="hidden">
-                <label class="col-md-4 control-label" for="deposito_id">deposito_id</label>
+@section('title')
+    Nuevo Sector
+@stop
 
-                <div class="col-md-4">
-                    <input id="deposito_id" name="deposito_id" type="number" value="{{ $deposito->id }}">
+@section('content')
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            {{ Form::open(['url' => 'm/carga', 'class' => 'form-horizontal', 'id' => 'causaForm']) }}
+
+            <fieldset>
+
+                <legend>Nueva carga</legend>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="tipo">Tipo</label>
+
+                    <div class="col-md-8">
+                        <label class="radio-inline"><input type="radio" name="tipo" value="carga" checked>Carga</label>
+                        <label class="radio-inline"><input type="radio" name="tipo" value="rect">Rectificación</label>
+                        <p class="text-danger">{{ $errors->first('tipo') }}</p>
+                    </div>
+
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="alias">Nombre</label>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="fecha">Fecha</label>
 
-                <div class="col-md-4">
-                    <input id="alias" name="alias" type="text" class="form-control input-md">
+                    <div class="col-md-4">
+                        <input id="fecha" name="fecha" type="date" class="form-control input-md">
+                        <p class="text-danger">{{ $errors->first('fecha') }}</p>
+                    </div>
+                {{--</div>--}}
+
+                {{--<div class="form-group">--}}
+                    <label class="col-md-2 control-label" for="deposito">Depósito</label>
+
+                    <div class="col-md-4">
+                        <select name="deposito" id="deposito" class="form-control">
+                            @foreach($depositos as $deposito)
+                                <option value="{{ $deposito->id }}">{{ $deposito->nombre }}</option>
+                            @endforeach
+                        </select>
+                        <p class="text-danger">{{ $errors->first('deposito') }}</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="fecha">Total</label>
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="material">Material</label>
 
-                <div class="col-md-4">
-                    <input id="fecha" name="fecha" type="date" class="form-control input-md">
+                    <div class="col-md-4">
+                        <select name="material" id="material" class="form-control">
+                            @foreach($materiales as $material)
+                                <option value="{{ $material->id }}">{{ $material->nombre }}</option>
+                            @endforeach
+                        </select>
+                        <p class="text-danger">{{ $errors->first('material') }}</p>
+                    </div>
+                    <label class="col-md-2 control-label" for="cantidad">Cantidad</label>
+
+                    <div class="col-md-4">
+                        <input id="cantidad" name="cantidad" type="number" class="form-control input-md">
+                        <p class="text-danger">{{ $errors->first('cantidad') }}</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="total">Total</label>
+                {{--<div class="form-group">--}}
+                    {{--<label class="col-md-2 control-label" for="cantidad">Cantidad</label>--}}
 
-                <div class="col-md-4">
-                    <input id="total" name="total" type="number" class="form-control input-md" min="0">
+                    {{--<div class="col-md-10">--}}
+                        {{--<input id="cantidad" name="cantidad" type="number" class="form-control input-md">--}}
+                        {{--<p class="text-danger">{{ $errors->first('cantidad') }}</p>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="obs">Observaciones</label>
+
+                    <div class="col-md-10">
+                        {{ Form::textarea('obs', null, ['rows' => '3', 'class' => 'form-control input-md']) }}
+                        <p class="text-danger">{{ $errors->first('obs') }}</p>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="material_id">Material</label>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
 
-                <div class="col-md-4">
-                    <select name="material_id" id="material_id" class="form-control">
-                        @foreach($materiales as $material)
-                            <option value="{{ $material->id }}">{{ $material->nombre }}</option>
-                        @endforeach
-                    </select>
+                    <div class="col-sm-10">
+                        <button class="btn btn-primary pull-right">Guardar</button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-md-4 pull-right">
-                    <input type="submit" class="btn btn-primary" value="Guardar">
-                </div>
-            </div>
-
-        </fieldset>
-        {{ Form::close() }}
+            </fieldset>
+            {{ Form::close() }}
+        </div>
     </div>
-</div>
+@stop

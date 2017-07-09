@@ -37,6 +37,13 @@ Route::group([ 'before' => 'auth' ], function () {
     });
 
     /**
+     * Usuario logueado con permiso deposito
+     */
+    Route::group([ 'before' => 'hasAccess:deposito' ], function () {
+        require __DIR__ . '/routes/deposito.php';
+    });
+
+    /**
      * Usuario logueado con permisos de creación en form hoja diaria
      */
     Route::group([ 'before' => 'hasAccess:editor' ], function () {

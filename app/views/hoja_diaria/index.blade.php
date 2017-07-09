@@ -37,8 +37,7 @@
                 <th>Fecha</th>
                 <th>Grupo</th>
                 <th>Ingresada por</th>
-                <th class="hidden-xs">Ingresada el</th>
-                <th class="hidden-xs">Última edición</th>
+                <th>Observaciones</th>
             </tr>
             </thead>
             <tbody>
@@ -53,11 +52,8 @@
                     <td>
                         {{ $hoja->user->username }}
                     </td>
-                    <td class="hidden-xs">
-                        {{ Carbon\Carbon::parse($hoja->created_at)->format('d-m-Y H:i:s') }}
-                    </td>
-                    <td class="hidden-xs">
-                        {{ Carbon\Carbon::parse($hoja->updated_at)->format('d-m-Y H:i:s') }}
+                    <td>
+                        {{ $hoja->observaciones }}
                     </td>
                 </tr>
             @endforeach

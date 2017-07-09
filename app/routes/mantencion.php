@@ -29,4 +29,5 @@ Route::resource('/m/grupo-trabajo', 'GrupoTrabajoController');
 
 Route::resource('/m/deposito', 'DepositoController');
 
-Route::resource('/m/carga', 'CargaController');
+Route::resource('/m/carga', 'CargaController',
+    array('only' => array('index', 'create', 'store', 'destroy')));

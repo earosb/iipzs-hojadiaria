@@ -17,10 +17,21 @@
                 @if (Sentry::getUser()->hasAccess(['hoja-diaria']))
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
-                                    class="glyphicon glyphicon-file"></i><span> Hoja diaria<b class="caret"></b></span></a>
+                                    class="glyphicon glyphicon-file"></i><span> Hoja diaria <b class="caret"></b></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/hd/create') }}">Ingresar hoja diaria</a></li>
                             <li><a href="{{ URL::to('/hd') }}">Histórico</a></li>
+                        </ul>
+                    </li>
+                @endif
+                @if (Sentry::getUser()->hasAccess(['deposito']))
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown"><i
+                                    class="glyphicon glyphicon-oil"></i><span> Centros de acopio <b class="caret"></b></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ URL::to('carga/create') }}">Ingresar carga</a></li>
+                            <li><a href="{{ URL::to('/carga') }}">Histórico</a></li>
+                            <li><a href="{{ URL::to('r/depositos') }}">Reporte</a></li>
                         </ul>
                     </li>
                 @endif
@@ -32,7 +43,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ URL::to('/r/param') }}">Consultar trabajos</a></li>
                             @if (Sentry::getUser()->hasAccess(['reporte-avanzado']))
-                                <li><a href="{{ URL::to('/r/deposito') }}">Consultar centros de acopio </a></li>
+                                <li><a href="{{ URL::to('/r/depositos') }}">Consultar centros de acopio </a></li>
                             @endif
                             @if (Sentry::getUser()->hasAccess(['form2-3-4']))
                                 <li class="divider"></li>

@@ -48,7 +48,7 @@ class Desviador extends \Eloquent
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function desvioNorte()
     {
@@ -56,7 +56,7 @@ class Desviador extends \Eloquent
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function desvioSur()
     {

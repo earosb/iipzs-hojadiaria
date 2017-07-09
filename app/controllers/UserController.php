@@ -3,7 +3,7 @@
 class UserController extends BaseController
 {
     /**
-     * @return $this
+     * @return \Illuminate\View\View
      */
     public function getProfile()
     {
@@ -14,7 +14,7 @@ class UserController extends BaseController
     }
 
     /**
-     * @return $this
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function postProfile()
     {
@@ -52,12 +52,12 @@ class UserController extends BaseController
     /**
      * Despliega vista de login de usuario
      *
-     * @return View
+     * @return \Illuminate\View\View
      */
     public function getLogin()
     {
         //checkea si el usuario esta logueado
-        if (\Sentry::check()) {
+        if (Sentry::check()) {
             // echo "usuario logueado";
             return View::make("home");
         } else {
@@ -110,7 +110,7 @@ class UserController extends BaseController
     /**
      * Termina la sesión de un usuario.
      *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function getLogout()
     {

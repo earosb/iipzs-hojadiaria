@@ -7,7 +7,7 @@ class GrupoTrabajoController extends \BaseController
      * Display a listing of the resource.
      * GET /grupo-trabajo
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class GrupoTrabajoController extends \BaseController
      * Show the form for creating a new resource.
      * GET /grupo-trabajo/create
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
@@ -35,7 +35,7 @@ class GrupoTrabajoController extends \BaseController
      * Store a newly created resource in storage.
      * POST /grupo-trabajo
      *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store()
     {
@@ -57,7 +57,7 @@ class GrupoTrabajoController extends \BaseController
      * GET /grupo-trabajo/{id}
      *
      * @param  int $id
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
@@ -69,7 +69,7 @@ class GrupoTrabajoController extends \BaseController
      * GET /grupo-trabajo/{id}/edit
      *
      * @param  int $id
-     * @return Response
+     * @return \Illuminate\View\View
      */
     public function edit($id)
     {
@@ -82,7 +82,7 @@ class GrupoTrabajoController extends \BaseController
      * PUT /grupo-trabajo/{id}
      *
      * @param  int $id
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id)
     {
@@ -105,7 +105,7 @@ class GrupoTrabajoController extends \BaseController
      * DELETE /grupo-trabajo/{id}
      *
      * @param  int $id
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {

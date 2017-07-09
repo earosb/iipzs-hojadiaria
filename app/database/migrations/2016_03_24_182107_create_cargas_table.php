@@ -15,9 +15,10 @@ class CreateCargasTable extends Migration
     {
         Schema::create('carga', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('tipo');
             $table->date('fecha');
-            $table->integer('total');
-            $table->string('obs');
+            $table->integer('cantidad');
+            $table->text('obs');
             $table->integer('deposito_id')->unsigned()->nullable();
             $table->foreign('deposito_id')->references('id')->on('deposito');
             $table->integer('material_id')->unsigned()->nullable();

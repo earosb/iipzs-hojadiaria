@@ -29,7 +29,7 @@
                         {{ $carga->fecha }}
                     </td>
                     <td>
-                        {{ $carga->total }}
+                        {{ $carga->cantidad }}
                     </td>
                     <td>
                         <a title="Borrar" href="{{ URL::to('m/deposito/') }}"><span class="glyphicon glyphicon-trash"></span></a>

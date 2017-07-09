@@ -4,14 +4,14 @@ class Carga extends \Eloquent
 {
 
     public static $rules = [
-        'alias'       => 'required', //'required|max:10',
+        'tipo'        => 'required',
         'fecha'       => 'required|date',
-        'total'       => 'required|numeric',
-        'deposito_id' => 'required|exists:deposito,id',
-        'material_id' => 'required|exists:material,id'
+        'cantidad'    => 'required|numeric',
+        'deposito'    => 'required|exists:deposito,id',
+        'material'    => 'required|exists:material,id'
     ];
 
-    protected $fillable = [ 'alias', 'fecha', 'total', 'restante', 'deposito_id' ];
+    protected $fillable = [ 'tipo', 'fecha', 'cantidad', 'obs', 'deposito_id', 'material_id' ];
 
     protected $table = 'carga';
 

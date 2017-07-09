@@ -18,7 +18,7 @@ class BaseController extends Controller {
     /**
      * Redirect back with errors
      * @param $validator
-     * @return $this
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function redirectBackWithErrors($validator)
     {

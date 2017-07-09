@@ -84,7 +84,7 @@ class HojaDiariaController extends \BaseController
      * El formulario se valida en dos partes!
      * POST /hojadiaria
      *
-     * @return Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store()
     {
@@ -215,6 +215,9 @@ class HojaDiariaController extends \BaseController
             $detHojaDiaria->save();
         }
 
+        $lastSaldo = DepositoHistorico::orderBy('created_at', 'desc')->first()->saldo;
+        $depHistoricos = array();
+
         foreach ($input['matCol'] as $key => $value) {
             $detMatCol                 = new DetalleMaterialColocado();
             $detMatCol->cantidad       = $value['cant'];
@@ -224,6 +227,18 @@ class HojaDiariaController extends \BaseController
             $detMatCol->deposito_id    = $value['deposito'];
 
             $detMatCol->save();
+
+            $lastSaldo -= $detMatCol->cantidad;
+            $depHistoricos[] = [
+                'ingreso' => null,
+                'egreso' => $detMatCol->cantidad,
+                'descripcion' => null,
+                'saldo' => $lastSaldo,
+                'deposito_id' => $detMatCol->deposito_id,
+                'material_id' => $detMatCol->material_id,
+                'material_retirado_id' => null,
+                'hoja_diaria_id' => $hojaDiaria->id,
+            ];
         }
 
         foreach ($input['matRet'] as $key => $value) {
@@ -235,7 +250,21 @@ class HojaDiariaController extends \BaseController
             $detMatRet->deposito_id          = $value['deposito'];
 
             $detMatRet->save();
+
+            $lastSaldo += $detMatRet->cantidad;
+            $depHistoricos[] = [
+                'ingreso' => $detMatRet->cantidad,
+                'egreso' => null,
+                'descripcion' => null,
+                'saldo' => $lastSaldo,
+                'deposito_id' => $detMatCol->deposito_id,
+                'material_id' => $detMatCol->material_id,
+                'material_retirado_id' => null,
+                'hoja_diaria_id' => $hojaDiaria->id,
+            ];
         }
+
+        DepositoHistorico::create(array('name' => 'John'));
 
         return Response::json([
             'error' => false,
