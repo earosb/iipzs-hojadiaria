@@ -40,7 +40,9 @@
                         {{ Carbon\Carbon::parse($carga->fecha)->format('d-m-Y') }}
                     </td>
                     <td>
-                        {{ $carga->deposito->nombre }}
+                        @if(isset($carga->deposito)) {{ $carga->deposito->nombre }}
+                        @else Acopio eliminado
+                        @endif
                     </td>
                     <td>
                         {{ $carga->material->nombre }}
