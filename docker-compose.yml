@@ -1,4 +1,4 @@
-version: "3.7"
+version: "3"
 
 services:
 
@@ -31,11 +31,39 @@ services:
   nginx:
     image: nginx:alpine
     restart: unless-stopped
+    environment:
+      - VIRTUAL_HOST=icilicafalpzs.cl
+      - LETSENCRYPT_HOST=icilicafalpzs.cl
     ports:
-      - "80:80"
+      - "80"
     volumes:
       - ./:/var/www
       - ./docker/nginx:/etc/nginx/conf.d
+
+  proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./docker/proxy/certs:/etc/nginx/certs
+      - ./docker/proxy/vhost:/etc/nginx/vhost.d
+      - ./docker/proxy/html:/usr/share/nginx/html
+
+  companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-companion
+    environment:
+      - DEFAULT_EMAIL=eduardoaros@pm.me
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/proxy/certs:/etc/nginx/certs
+      - ./docker/proxy/vhost:/etc/nginx/vhost.d
+      - ./docker/proxy/html:/usr/share/nginx/html
 
 volumes:
   data:
