@@ -1,11 +1,11 @@
 {
-	"name": "earosb/iipzs",
+	"name": "earosb/iipzs-hojadiaria",
 	"description": "Sistema Icil Icafal Proyecto Zona Sur S.A., icilicafalpzs.cl",
 	"type": "project",
     "authors": [
       {
         "name": "Eduardo Aros",
-        "email": "earosb@gmail.com"
+        "email": "eduardoaros@pm.me"
       }
     ],
 	"require": {
