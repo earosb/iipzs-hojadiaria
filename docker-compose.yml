@@ -3,7 +3,12 @@ version: "3"
 services:
 
   app:
-    image: earosb/iipzs-hojadiaria
+    build:
+      args:
+        user: nunan
+        uid: 1000
+      context: ./
+      dockerfile: docker/Dockerfile
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
@@ -26,9 +31,6 @@ services:
   nginx:
     image: nginx:alpine
     restart: unless-stopped
-    environment:
-      - VIRTUAL_HOST=icilicafalpzs.cl
-      - LETSENCRYPT_HOST=icilicafalpzs.cl
     ports:
       - "80:80"
       - "443:443"

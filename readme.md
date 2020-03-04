@@ -1,9 +1,10 @@
-#Icil Icafal Proyecto Zona Sur S.A.
-Sistema Icil Icafal Proyecto Zona Sur S.A.
+# iipzs
 
 - Laravel 4.2.x
-##Librerías utilizadas
-###Backend
+
+## Librerías utilizadas
+
+### Backend
 
 - <https://github.com/JeffreyWay/Laravel-4-Generators>
 - <https://github.com/cartalyst/sentry>
@@ -13,7 +14,7 @@ Sistema Icil Icafal Proyecto Zona Sur S.A.
 - <https://github.com/fitztrev/laravel-html-minify>
 - <https://github.com/Maatwebsite/Laravel-Excel>
 
-###Fontend
+### Fontend
 
 - <https://github.com/jquery/jquery>
 - <https://github.com/twbs/bootstrap>
@@ -23,8 +24,9 @@ Sistema Icil Icafal Proyecto Zona Sur S.A.
 - <https://datatables.net/>
 - <https://github.com/flatlogic/awesome-bootstrap-checkbox>
 
-##Instalación
-###Ecosistema
+## Instalación
+### Ecosistema
+
 - PHP >= 5.4
 - MCrypt PHP Extension
 - JSON PHP Extension
@@ -35,7 +37,8 @@ Sistema Icil Icafal Proyecto Zona Sur S.A.
 - Clonar repositorio
 - Crear host virtual ~/iipzs/public_html/
 
-###Aplicación
+### Aplicación
+
 - Dentro de app_core ejecutar
 ```
 ~/iipzs/app_core$ composer install
